@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-// Pages
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import OnboardingPage from "@/pages/OnboardingPage";
@@ -17,46 +16,57 @@ import PlayerPage from "@/pages/PlayerPage";
 import TasbihPage from "@/pages/TasbihPage";
 import ProfilePage from "@/pages/ProfilePage";
 import QuranPage from "@/pages/QuranPage";
+import QuranSurahPage from "@/pages/QuranSurahPage";
 import MoodPage from "@/pages/MoodPage";
+import NamesOfAllahPage from "@/pages/NamesOfAllahPage";
+import QiblaPage from "@/pages/QiblaPage";
+import MasjidFinderPage from "@/pages/MasjidFinderPage";
+import ZakatCalculatorPage from "@/pages/ZakatCalculatorPage";
+import IslamicCalendarPage from "@/pages/IslamicCalendarPage";
+import QurbaniGuidePage from "@/pages/QurbaniGuidePage";
+import FarzGuidePage from "@/pages/FarzGuidePage";
+import SadqaGuidePage from "@/pages/SadqaGuidePage";
+import WuduGuidePage from "@/pages/WuduGuidePage";
+import SalahGuidePage from "@/pages/SalahGuidePage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to="/home" replace />
-  },
-  {
-    path: "/login",
-    element: <LoginPage />
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />
-  },
-  {
-    element: <ProtectedRoute />,
-    children: [
-      { path: "/onboarding", element: <OnboardingPage /> },
-      { path: "/home", element: <HomePage /> },
-      { path: "/prayer-times", element: <PrayerTimesPage /> },
-      { path: "/duas", element: <DuasPage /> },
-      { path: "/names", element: <NamesPage /> },
-      { path: "/player/:id", element: <PlayerPage /> },
-      { path: "/tasbih", element: <TasbihPage /> },
-      { path: "/profile", element: <ProfilePage /> },
-      { path: "/quran", element: <QuranPage /> },
-      { path: "/mood", element: <MoodPage /> },
-    ]
-  },
-  {
-    path: "*",
-    element: <NotFound />
-  }
-], {
-  basename: import.meta.env.BASE_URL.replace(/\/$/, "")
-});
+const router = createBrowserRouter(
+  [
+    { path: "/", element: <Navigate to="/home" replace /> },
+    { path: "/login", element: <LoginPage /> },
+    { path: "/register", element: <RegisterPage /> },
+    {
+      element: <ProtectedRoute />,
+      children: [
+        { path: "/onboarding", element: <OnboardingPage /> },
+        { path: "/home", element: <HomePage /> },
+        { path: "/prayer-times", element: <PrayerTimesPage /> },
+        { path: "/duas", element: <DuasPage /> },
+        { path: "/names", element: <NamesPage /> },
+        { path: "/player/:id", element: <PlayerPage /> },
+        { path: "/tasbih", element: <TasbihPage /> },
+        { path: "/profile", element: <ProfilePage /> },
+        { path: "/quran", element: <QuranPage /> },
+        { path: "/quran/:number", element: <QuranSurahPage /> },
+        { path: "/mood", element: <MoodPage /> },
+        { path: "/99-names", element: <NamesOfAllahPage /> },
+        { path: "/qibla", element: <QiblaPage /> },
+        { path: "/masjid-finder", element: <MasjidFinderPage /> },
+        { path: "/zakat-calculator", element: <ZakatCalculatorPage /> },
+        { path: "/islamic-calendar", element: <IslamicCalendarPage /> },
+        { path: "/qurbani-guide", element: <QurbaniGuidePage /> },
+        { path: "/farz-guide", element: <FarzGuidePage /> },
+        { path: "/sadqa-guide", element: <SadqaGuidePage /> },
+        { path: "/wudu-guide", element: <WuduGuidePage /> },
+        { path: "/salah-guide", element: <SalahGuidePage /> },
+      ],
+    },
+    { path: "*", element: <NotFound /> },
+  ],
+  { basename: import.meta.env.BASE_URL.replace(/\/$/, "") }
+);
 
 function App() {
   return (

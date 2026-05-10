@@ -43,19 +43,57 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 - **JWT in localStorage**: Token stored as `noor_token`. Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
 - **Seed on startup**: API server seeds all content (sessions, duas, names, hadiths) on first boot if DB is empty.
 - **AI rate limit**: 20 AI requests per user per day, tracked in `aiUsage:{userId}:{date}`.
+- **External Quran data**: Verses fetched from `api.qurancdn.com`, audio from `everyayah.com` (Alafasy). No server-side caching needed.
+- **External APIs**: Overpass API (mosque finder), metals.live (gold price), aladhan.com (Hijri dates + prayer times).
 
-## Product
+## Product — Part 1 (complete)
 
 - Prayer Times: Live prayer times via aladhan.com API, salah logging with khushoo rating
 - Streak Tracker: Daily streaks, weekly goals, progress rings
 - Sessions: 25 guided audio sessions across AZKAR, QURAN, DHIKR, SLEEP, DUA60, SALAH categories
-- Duas Library: 25 curated duas with Arabic, transliteration, meaning, category filtering, favorites
+- Duas Library: curated duas with Arabic, transliteration, meaning, category filtering, favorites
 - Baby Names: 40 Islamic names with Arabic, meaning, origin, prophet connection, gender filter
 - Names of Allah: All 99 names with Arabic, transliteration, meaning, daily rotation
 - Daily Content: Name of Allah + Hadith + Dua of the day (rotates daily by day-of-year)
-- Tasbih: Digital dhikr counter (SubhanAllah / Alhamdulillah / Allahu Akbar)
+- Tasbih: Digital dhikr counter
 - AI Companion: Noor AI powered by Claude, 20 req/day limit, Islamic adab guidelines
 - Onboarding: 5-step wizard (madhab, city/GPS, goals, language, reminder time)
+
+## Product — Part 2 (complete)
+
+- **Quran Reader** (`/quran`, `/quran/:number`): All 114 surahs, verse-by-verse with Arabic + English translation, ayah audio playback (Alafasy), bookmarks, continue reading
+- **99 Names of Allah** (`/99-names`): Full list with daily featured name, search, detail modal
+- **Qibla Compass** (`/qibla`): Mathematical bearing from GPS + SVG animated compass, distance to Kaaba
+- **Masjid Finder** (`/masjid-finder`): Overpass API query, OSM iframe map, distance sort, save favourite
+- **Zakat Calculator** (`/zakat-calculator`): Gold/silver/cash/debt inputs, live gold price (metals.live), nisab check, 2.5% calculation
+- **Islamic Calendar** (`/islamic-calendar`): Hijri date via aladhan.com, Gregorian grid view, all major Islamic events
+- **Qurbani Guide** (`/qurbani-guide`): Accordion sections + duas with Arabic, countdown to Eid ul Adha
+- **Farz Guide** (`/farz-guide`): 8 accordion sections (Five Pillars, Salah, Wudu/Ghusl, 40 Sunnahs, Janazah, Aqiqah, Nikah, Halal/Haram) with keyword search
+- **Sadqa Guide** (`/sadqa-guide`): Sadqa Jariyah, Nafilah, Fitrana calculator, daily suggestion widget
+- **Wudu Guide** (`/wudu-guide`): 3 tabs (Wudu 11 steps / Ghusl / Tayammum), Read + Audio (step-by-step) modes, Arabic duas per step
+- **Salah Guide** (`/salah-guide`): 5 prayers selector, full rakaat walkthrough with Arabic text, Read + Audio guide modes
+- **Enhanced Duas** (`/duas`): 8 mood/emotion chips filter, detail modal, WhatsApp share
+- **Enhanced Names** (`/names`): A-Z letter index, category chips (Quranic/Prophet/Sahaba/Rare/Trending), detail modal, share
+- **Enhanced Tasbih** (`/tasbih`): SVG circular progress ring, 33 animated bead ring, vibration on completion, correct targets (34 for Allahu Akbar), session total
+- **Home Tools Grid**: 12-tile Islamic Tools grid on homepage linking to all tools
+
+## New API routes (Part 2)
+
+- `GET /api/names-of-allah` — all 99 Names from DB
+- `GET /api/masjid/nearby?lat=&lng=` — Overpass proxy, returns sorted mosque list
+- `GET /api/masjid/favourite` + `POST /api/masjid/favourite` — per-user favourite masjid (auth required)
+- `GET /api/zakat/gold-price` — metals.live proxy, INR/gram conversion
+
+## Routes (all frontend pages)
+
+```
+/ → /home         /login         /register        /onboarding
+/home             /prayer-times  /duas             /names
+/player/:id       /tasbih        /profile          /quran
+/quran/:number    /mood          /99-names         /qibla
+/masjid-finder    /zakat-calculator  /islamic-calendar  /qurbani-guide
+/farz-guide       /sadqa-guide   /wudu-guide        /salah-guide
+```
 
 ## Design tokens
 
@@ -77,6 +115,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 - All generated query hooks require `queryKey` in options if you pass a custom `query` option — use the exported `getGet*QueryKey()` helpers.
 - Never call services directly by port. Always use `localhost:80/<path>` through the shared proxy.
 - Seed data is written to @replit/database on first boot only (checks if DB is empty first).
+- Part 2 pages (Quran, Qibla, Masjid, Zakat, Calendar, guides) use direct `fetch()` calls to external APIs or `/api/...` — not generated hooks. Generated hooks only exist for Part 1 endpoints.
+- New API routes (namesOfAllah, masjid, zakat) are NOT yet in openapi.yaml — add them before running codegen.
 
 ## Pointers
 

@@ -9,6 +9,9 @@ import duasRouter from "./duas.js";
 import namesRouter from "./names.js";
 import dailyRouter from "./daily.js";
 import aiRouter from "./ai.js";
+import namesOfAllahRouter from "./namesOfAllah.js";
+import masjidRouter from "./masjid.js";
+import zakatRouter from "./zakat.js";
 
 const router: IRouter = Router();
 
@@ -22,5 +25,8 @@ router.use(duasRouter);
 router.use(namesRouter);
 router.use(dailyRouter);
 router.use(aiRouter);
+router.use(namesOfAllahRouter);
+router.use(masjidRouter);
+router.use(zakatRouter);
 
 export default router;

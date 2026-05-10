@@ -9,7 +9,7 @@ import {
   useGetDailyContent
 } from "@workspace/api-client-react";
 import { format } from "date-fns";
-import { PlayCircle, CheckCircle2, Circle } from "lucide-react";
+import { PlayCircle, CheckCircle2, Compass, BookOpen, Calculator, Calendar, Star, Droplets, MapPin, Church } from "lucide-react";
 
 const HomePage: React.FC = () => {
   const { user } = useAuth();
@@ -208,6 +208,33 @@ const HomePage: React.FC = () => {
                 className="bg-[var(--surface)] border border-[var(--border)] px-4 py-3 rounded-full whitespace-nowrap text-sm font-semibold hover:bg-[var(--card)] hover:border-[var(--gold)] transition-colors"
               >
                 {dhikr}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 10: Islamic Tools */}
+        <div className="space-y-3">
+          <h3 className="font-cinzel text-lg text-[var(--gold)]">Islamic Tools</h3>
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { to: "/quran", icon: <BookOpen size={22} />, label: "Quran" },
+              { to: "/99-names", icon: <Star size={22} />, label: "99 Names" },
+              { to: "/qibla", icon: <Compass size={22} />, label: "Qibla" },
+              { to: "/tasbih", icon: <span className="text-xl">📿</span>, label: "Tasbih" },
+              { to: "/masjid-finder", icon: <MapPin size={22} />, label: "Masjid" },
+              { to: "/zakat-calculator", icon: <Calculator size={22} />, label: "Zakat" },
+              { to: "/islamic-calendar", icon: <Calendar size={22} />, label: "Calendar" },
+              { to: "/wudu-guide", icon: <Droplets size={22} />, label: "Wudu" },
+              { to: "/salah-guide", icon: <Church size={22} />, label: "Salah" },
+              { to: "/qurbani-guide", icon: <span className="text-xl">🐑</span>, label: "Qurbani" },
+              { to: "/farz-guide", icon: <span className="text-xl">📖</span>, label: "Farz" },
+              { to: "/sadqa-guide", icon: <span className="text-xl">💚</span>, label: "Sadqa" },
+            ].map(({ to, icon, label }) => (
+              <Link key={to} to={to}
+                className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-3 flex flex-col items-center gap-2 hover:border-[var(--green)]/60 hover:bg-[var(--card)] transition-colors text-center">
+                <span className="text-[var(--green)]">{icon}</span>
+                <span className="text-[10px] text-[var(--muted)] font-medium leading-tight">{label}</span>
               </Link>
             ))}
           </div>
