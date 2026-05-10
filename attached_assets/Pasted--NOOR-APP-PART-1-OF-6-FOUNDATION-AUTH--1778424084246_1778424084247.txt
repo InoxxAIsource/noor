@@ -1,0 +1,416 @@
+═══════════════════════════════════════════════════════
+NOOR APP — PART 1 OF 6: FOUNDATION + AUTH + DATABASE
+═══════════════════════════════════════════════════════
+Run this FIRST. Creates the entire project structure,
+database, authentication, and home screen.
+
+════════════════════════════════════════
+TECH STACK
+════════════════════════════════════════
+Frontend  : React 18 + Vite
+Backend   : Express.js (Node 20)
+Database  : Replit Database (@replit/database)
+Styling   : Tailwind CSS
+PWA       : manifest.json + service worker
+Auth      : JWT (bcryptjs + jsonwebtoken)
+
+DO NOT use Supabase, PostgreSQL, or any external DB.
+USE only Replit Database for ALL storage.
+
+REPLIT SECRETS needed:
+  ANTHROPIC_API_KEY=sk-ant-...
+  JWT_SECRET=noor-secret-key-2026
+
+════════════════════════════════════════
+BRAND & DESIGN TOKENS
+════════════════════════════════════════
+App name : Noor
+Tagline  : "Remember Allah. Every day."
+Domain   : noorapp.com
+
+Add to client/src/index.css:
+:root {
+  --bg:      #001a00;
+  --surface: #002800;
+  --card:    #003800;
+  --border:  rgba(0,165,80,0.18);
+  --green:   #00a550;
+  --gold:    #ffd700;
+  --text:    #e8f5e8;
+  --muted:   #4a7a4a;
+  --faint:   #2a4a2a;
+  --danger:  #c04848;
+}
+@keyframes crescent-glow {
+  0%,100%{box-shadow:0 0 20px rgba(0,165,80,0.2)}
+  50%{box-shadow:0 0 40px rgba(0,165,80,0.5)}
+}
+@keyframes fade-in {
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes float-up {
+  0%{opacity:0;transform:translateY(0)}
+  20%{opacity:.8}
+  100%{opacity:0;transform:translateY(-160px)}
+}
+
+Fonts: import Cinzel + Amiri from Google Fonts
+  Cinzel → headings, logo
+  Amiri  → all Arabic text (right-aligned, dir=rtl)
+  System sans → UI, navigation
+
+════════════════════════════════════════
+FOLDER STRUCTURE — CREATE ALL FILES
+════════════════════════════════════════
+/
+├── client/src/
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Onboarding.jsx
+│   │   ├── Login.jsx
+│   │   └── Register.jsx
+│   ├── components/
+│   │   ├── CrescentAnimation.jsx
+│   │   ├── NavBar.jsx
+│   │   ├── BottomNav.jsx
+│   │   ├── StreakTracker.jsx
+│   │   └── IslamicBanner.jsx
+│   ├── hooks/
+│   │   └── useAuth.js
+│   └── lib/
+│       └── api.js
+├── server/
+│   ├── index.js
+│   ├── db.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── prayer.js
+│   │   ├── streak.js
+│   │   └── progress.js
+│   ├── middleware/
+│   │   └── auth.js
+│   └── seed/
+│       ├── sessions.js
+│       ├── duas.js
+│       └── names.js
+├── public/
+│   └── manifest.json
+└── package.json
+
+════════════════════════════════════════
+REPLIT DATABASE SCHEMA (server/db.js)
+════════════════════════════════════════
+Import @replit/database and export these helpers:
+
+Key patterns:
+  users:{userId}          → full user object
+  email:{email}           → userId (index)
+  streak:{userId}         → streak data
+  progress:{userId}:{ts}  → session progress
+  salahLog:{userId}:{date}→ daily prayer log
+  journal:{userId}:{ts}   → journal entries
+  aiUsage:{userId}:{date} → { count }
+  nameFavs:{userId}       → { nameIds:[] }
+  duaFavs:{userId}        → { duaIds:[] }
+  sessions:all            → JSON array
+  duas:all                → JSON array
+  names:all               → JSON array
+  namesOfAllah:all        → JSON array
+  hadiths:all             → JSON array
+  blog:index              → JSON array
+  blog:{slug}             → blog post object
+  room:{code}             → room object
+  gift:{token}            → gift object
+
+Export all helpers:
+  getUser / setUser / getUserByEmail
+  getStreak / setStreak
+  logProgress / getProgress
+  logSalah / getSalahLog
+  saveJournal / getJournals
+  getAllSessions / getAllDuas / getAllNames
+  getNamesOfAllah / getDailyHadith
+  getDailyNameOfAllah (index by dayOfYear % 99)
+  getRoom / setRoom / getGift / setGift
+  getAIUsage / incrementAIUsage
+  getNameFavs / addNameFav
+  getDuaFavs / addDuaFav
+
+════════════════════════════════════════
+AUTH SYSTEM (server/routes/auth.js)
+════════════════════════════════════════
+npm install bcryptjs jsonwebtoken nanoid cors helmet
+
+POST /api/auth/register
+  Body: { email, name, password }
+  - Check email not already taken (email: index)
+  - Hash password: bcrypt.hash(password, 10)
+  - userId = nanoid()
+  - Store user: db.set('users:'+userId, {
+      id, email, name, passwordHash,
+      madhab: null, sunniMadhab: 'hanafi',
+      language: 'en', city: null, lat: null, lng: null,
+      goals: [], reminderHour: 7,
+      onboardingComplete: false,
+      subscriptionStatus: 'free',
+      createdAt: Date.now(), lastActive: Date.now()
+    })
+  - Store index: db.set('email:'+email, userId)
+  - Create streak: db.set('streak:'+userId, {
+      currentStreak: 0, longestStreak: 0,
+      lastPrayerDate: null, weeklyGoal: 5,
+      weeklyCompleted: 0, totalPrayers: 0, totalMinutes: 0
+    })
+  - Return JWT: sign({ userId }, JWT_SECRET, { expiresIn:'30d' })
+
+POST /api/auth/login
+  - Get userId from email index
+  - Fetch user, bcrypt.compare password
+  - Return JWT
+
+GET /api/auth/me (requires auth middleware)
+  - Decode JWT, fetch user, return (minus passwordHash)
+
+Auth middleware (server/middleware/auth.js):
+  Read Authorization: Bearer {token}
+  Verify JWT → attach req.userId
+  Return 401 if invalid
+
+Frontend (hooks/useAuth.js):
+  Store JWT as 'noor_token' in localStorage
+  Decode payload to get userId
+  Provide: user, isLoggedIn, logout, refetchUser
+  On app load: verify token still valid via GET /api/auth/me
+
+════════════════════════════════════════
+ONBOARDING (5 steps) — Onboarding.jsx
+════════════════════════════════════════
+Show only if !user.onboardingComplete
+Progress bar across top (1-5)
+
+Step 1: Islamic tradition
+  Three large tap cards:
+  ☀ SUNNI — Hanafi · Shafi'i · Maliki · Hanbali
+  🌙 SHIA — Twelver / Jafari fiqh
+  💚 JUST MUSLIM — Show everything
+  If Sunni: show sub-selection for madhab
+
+Step 2: Your city
+  Text search input with city suggestions
+  "Use my location" GPS button
+  Store: city name + lat + lng in user record
+
+Step 3: Your goals (multi-select chips)
+  Peace of mind / Deeper ibadah / Learn duas
+  Quran / Consistency / Ramadan / Find mosque
+  Baby names / Learn Arabic
+
+Step 4: Language for explanations
+  🇬🇧 English / اردو Urdu / عربي Arabic
+
+Step 5: Daily reminder + notifications
+  Time picker (default 6:00am)
+  Weekly goal slider (1-7 days, default 5)
+  Request Notification permission
+
+On complete:
+  PATCH user: onboardingComplete=true, madhab, city, goals, etc.
+  Redirect to /home
+
+════════════════════════════════════════
+HOME DASHBOARD — Home.jsx
+════════════════════════════════════════
+Components top to bottom:
+
+1. ISLAMIC BANNER (IslamicBanner.jsx)
+   Detect current Islamic period from today's date.
+   Show coloured banner:
+   Ramadan: gold #ffd700 "رمضان مبارك — Ramadan Mubarak"
+   Muharram: teal #2a4a6a "Month of Muharram"
+   Dhul Hijjah (1-10): green "Days of Hajj"
+   Regular: show Hijri date in green
+   Fetch Hijri: GET https://api.aladhan.com/v1/gToH?date={DD-MM-YYYY}
+
+2. GREETING
+   "As-salamu alaykum, {name}!"
+   "{weekday}, {HijriDate}"
+
+3. PRAYER TIMES WIDGET
+   Fetch: GET https://api.aladhan.com/v1/timingsByCity
+   ?city={user.city}&country=IN&method=1
+   (method=1 for Hanafi, method=0 for Shia)
+   Show: all 5 prayer times
+   Show: live countdown to next prayer (updates every second)
+   Tap any prayer → mark as prayed (POST /api/salah/log)
+
+4. CRESCENT ANIMATION (CrescentAnimation.jsx)
+   SVG crescent moon with gold glow animation
+   5 floating gold particles (float-up keyframe)
+
+5. IBADAH STREAK (StreakTracker.jsx)
+   Large number: currentStreak
+   Label: "day streak 🔥"
+   7 small dots: filled green = completed, empty = missed
+   Progress ring SVG: weeklyCompleted / weeklyGoal
+
+6. DAILY CONTENT (3 cards in horizontal scroll)
+   Today's Name of Allah: Arabic + English meaning
+   Today's Hadith: short text (first 100 chars)
+   Dua of the day: based on user goals
+
+7. QUICK-START GRID (2×2 session cards)
+   Morning Azkar / Evening Azkar / 60s Dua / Quran Reflection
+   Each card: title + duration + category icon
+   Tap → navigate to /player/:id
+
+8. "What do you need today?" button → /mood
+
+9. TASBIH QUICK-START row
+   Three pills: SubhanAllah / Alhamdulillah / Allahu Akbar
+   Tap → navigate to /tasbih with that dhikr preset
+
+════════════════════════════════════════
+PRAYER TIMES PAGE — PrayerTimes.jsx
+════════════════════════════════════════
+Route: /prayer-times
+Full display of all 5 prayer times for user city.
+Each prayer row:
+  Arabic name + English name + time
+  Checkbox: "I prayed" → POST /api/salah/log
+  After checking: 1-5 star khushoo rating prompt
+  Note input: "What distracted me?"
+
+Calculation method by madhab:
+  Hanafi:  method=1
+  Shafi'i: method=4
+  Shia:    method=0
+
+Sunnah display:
+  Tap any prayer → slide up showing rakaat breakdown
+  e.g. Fajr: 2 sunnah + 2 farz
+
+GET /api/prayer/times
+  Fetch from aladhan.com, return times + method used
+
+GET /api/salah/log?date=YYYY-MM-DD
+  Return today's prayer completion status
+
+════════════════════════════════════════
+STREAK API (server/routes/streak.js)
+════════════════════════════════════════
+GET /api/streak/me — return streak object
+POST /api/streak/checkin
+  - Get current streak
+  - Check lastPrayerDate
+  - If today: already checked in, return current
+  - If yesterday: increment streak
+  - If older: reset to 1
+  - Update longestStreak if needed
+  - Increment totalPrayers + totalMinutes
+  - Save updated streak
+
+════════════════════════════════════════
+PROGRESS API (server/routes/progress.js)
+════════════════════════════════════════
+POST /api/progress
+  Body: { sessionId, durationListened, moodBefore, moodAfter, category }
+  - Save to progress:{userId}:{Date.now()}
+  - Trigger streak checkin
+  - Return updated streak
+
+GET /api/progress/me
+  - db.list('progress:'+userId+':')
+  - Fetch all values, sort by timestamp desc
+  - Return array
+
+════════════════════════════════════════
+BOTTOM NAVIGATION — BottomNav.jsx
+════════════════════════════════════════
+5 tabs fixed at bottom on mobile:
+  🏠 Home     → /home
+  🕌 Salah    → /prayer-times
+  📖 Quran    → /quran
+  🤲 Duas     → /duas
+  👤 Profile  → /profile
+
+Active tab highlighted in green #00a550
+
+════════════════════════════════════════
+PWA — public/manifest.json
+════════════════════════════════════════
+{
+  "name": "Noor — Islamic Prayer App",
+  "short_name": "Noor",
+  "description": "Remember Allah. Every day.",
+  "theme_color": "#001a00",
+  "background_color": "#001a00",
+  "display": "standalone",
+  "start_url": "/home",
+  "scope": "/"
+}
+
+════════════════════════════════════════
+SEED DATA — auto-run on first server start
+════════════════════════════════════════
+In server/index.js, after DB init:
+  const sessions = await db.get('sessions:all')
+  if (!sessions) { await seedSessions() }
+  const duas = await db.get('duas:all')
+  if (!duas) { await seedDuas() }
+  const names = await db.get('names:all')
+  if (!names) { await seedNames() }
+  const allah = await db.get('namesOfAllah:all')
+  if (!allah) { await seedNamesOfAllah() }
+  const hadiths = await db.get('hadiths:all')
+  if (!hadiths) { await seedHadiths() }
+
+server/seed/sessions.js — seed 25 sessions:
+Each: { id, title, slug, description, durationSeconds,
+  audioUrl:null, guideName:'Noor Team', category,
+  scriptureRef, scriptureArabic, scriptureText,
+  isPremium:false, language:'en', tags:[], madhab,
+  playCount:0 }
+
+Categories + titles:
+AZKAR(5): Morning Azkar Full(600s), Dua After Fajr(480s),
+  Dua for Rizq(420s), Ayatul Kursi Explained(540s),
+  Evening Azkar Full(600s)
+QURAN(5): Surah Fatiha Reflection(720s),
+  Ayatul Kursi Deep Dive(780s), Surah Ar-Rahman(900s),
+  Last Three Surahs(600s), Surah Al-Kahf(840s)
+DHIKR(4): SubhanAllah 33x with Meaning(600s),
+  Salawat on the Prophet(540s),
+  La ilaha illallah Meditation(720s),
+  Istighfar Session(600s)
+SLEEP(4): Ibrahim AS and the Fire(1200s),
+  Yunus AS in the Whale(1080s),
+  Musa AS and the Sea(1140s),
+  The Night Journey Isra Miraj(1200s)
+DUA60(4): 60s Dua for Anxiety(60s),
+  60s Morning Fiat(60s),
+  60s Dua for Gratitude(60s),
+  60s Dua Before Sleep(60s)
+SALAH(3): Understanding Fatiha in Salah(720s),
+  Khushoo Guide(840s),
+  Post-Salah Dhikr(600s)
+
+server/seed/duas.js — seed 100 core duas
+Each: { id, title, arabic, transliteration,
+  meaningEnglish, source, category, madhab,
+  audioUrl:null, tags:[], isPopular:false }
+
+server/seed/names.js — seed 200 names
+(full 5000 generated later via admin)
+Each: { id, nameEnglish, nameArabic, nameUrdu,
+  gender, meaningEnglish, meaningUrdu, origin,
+  categories:[], quranReference, prophetConnection,
+  pronunciationAudioUrl:null, isForbidden:false,
+  popularityRank, trending2025:false, similarNames:[] }
+
+════════════════════════════════════════
+BUILD ALL FILES COMPLETELY.
+No placeholder components.
+Every route must work with real Replit DB.
+Test: register → login → onboarding → home screen shows.
+═══════════════════════════════════════════════════════
