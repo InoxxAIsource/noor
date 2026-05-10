@@ -367,6 +367,42 @@ const GrowthPage: React.FC = () => {
           </div>
         )}
 
+        {/* Khushoo insight */}
+        {salahLast7.length >= 4 && (() => {
+          const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+          const older = salahLast7.slice(0, Math.floor(salahLast7.length / 2));
+          const recent = salahLast7.slice(Math.floor(salahLast7.length / 2));
+          let bestPrayer = "";
+          let bestDelta = 0;
+          let oldAvg = 0;
+          let newAvg = 0;
+          for (const p of prayers) {
+            const o = older.flatMap(d => d.entries).filter(e => e.prayer === p && e.khushooRating);
+            const r = recent.flatMap(d => d.entries).filter(e => e.prayer === p && e.khushooRating);
+            if (o.length === 0 || r.length === 0) continue;
+            const oa = o.reduce((s, e) => s + (e.khushooRating ?? 0), 0) / o.length;
+            const ra = r.reduce((s, e) => s + (e.khushooRating ?? 0), 0) / r.length;
+            const delta = ra - oa;
+            if (delta > bestDelta) { bestDelta = delta; bestPrayer = p; oldAvg = oa; newAvg = ra; }
+          }
+          if (!bestPrayer) return null;
+          return (
+            <div className="bg-[var(--gold)]/8 border border-[var(--gold)]/30 rounded-2xl p-4 flex items-center gap-3">
+              <span className="text-2xl">⭐</span>
+              <div>
+                <p className="text-xs text-[var(--muted)] mb-0.5">Khushoo Insight</p>
+                <p className="text-sm text-[var(--text)] font-medium">
+                  Your <span className="text-[var(--gold)] font-semibold">{bestPrayer}</span> focus improved!{" "}
+                  Up from{" "}
+                  <span className="text-[var(--muted)]">{oldAvg.toFixed(1)}</span>{" "}
+                  to{" "}
+                  <span className="text-[var(--green)] font-semibold">{newAvg.toFixed(1)}</span> ⭐
+                </p>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Milestones */}
         <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5">
           <p className="font-cinzel text-[var(--gold)] mb-4">Milestones</p>

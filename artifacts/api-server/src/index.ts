@@ -61,4 +61,18 @@ async function seed() {
 app.listen(port, async () => {
   logger.info({ port }, "Server listening");
   await seed();
+  startWeeklyCron();
 });
+
+function startWeeklyCron() {
+  let lastProcessedDate = "";
+  setInterval(async () => {
+    const now = new Date();
+    const isFriday = now.getDay() === 5;
+    const dateStr = now.toISOString().split("T")[0]!;
+    if (isFriday && dateStr !== lastProcessedDate) {
+      lastProcessedDate = dateStr;
+      logger.info({ date: dateStr }, "Friday weekly report tick — reports generated on demand via GET /api/growth");
+    }
+  }, 3_600_000);
+}

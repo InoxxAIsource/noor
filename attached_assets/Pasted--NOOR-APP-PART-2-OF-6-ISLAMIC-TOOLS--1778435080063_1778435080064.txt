@@ -1,0 +1,387 @@
+═══════════════════════════════════════════════════════
+NOOR APP — PART 2 OF 6: ISLAMIC TOOLS
+═══════════════════════════════════════════════════════
+Run after Part 1 is working.
+Adds: Quran reader, Duas library, Names finder,
+99 Names, Tasbih, Qibla, Masjid finder,
+Zakat calculator, Islamic calendar.
+
+════════════════════════════════════════
+QURAN READER
+════════════════════════════════════════
+Pages: Quran.jsx (surah list) + QuranSurah.jsx (reader)
+
+Quran.jsx (/quran):
+  List all 114 surahs in order
+  Each row: number + Arabic name + English name
+    + ayah count + Meccan/Medinan label
+  Search bar to filter by name
+  Tap → navigate to /quran/:surahNumber
+
+QuranSurah.jsx (/quran/:number):
+  Fetch surah data from quran.com API (free):
+    GET https://api.qurancdn.com/api/qdc/verses/by_chapter/{number}
+    ?words=true&translation_fields=text&per_page=286
+  Display each ayah:
+    Arabic text RIGHT-ALIGNED (font: Amiri, 22px, color: #ffd700)
+    dir="rtl" lang="ar" on Arabic elements
+    English translation below (16px, color: #c8e8c8)
+    Ayah number circle
+    Tap play icon → fetch + play audio:
+      URL: https://everyayah.com/data/Alafasy_128kbps/
+           {surah3digits}{ayah3digits}.mp3
+      Example: Surah 2, Ayah 255 = 002255.mp3
+    Tap Arabic word → tooltip with word meaning
+  Bookmark button per ayah
+  Continue reading: save lastSurah + lastAyah in localStorage
+  Progress bar: ayahsRead / totalAyahs
+
+════════════════════════════════════════
+DUA LIBRARY
+════════════════════════════════════════
+Pages: Duas.jsx (library) + DuaDetail.jsx (detail)
+
+Duas.jsx (/duas):
+  Category tabs (horizontal scroll):
+    morning / evening / food / travel / home /
+    anxiety / grief / work / study / sickness /
+    marriage / children / masjid / wudu /
+    weather / special
+  Filter by madhab (sunni/shia/both)
+  Search bar (name or meaning)
+  Grid of DuaCard components
+
+Each DuaCard shows:
+  Title + category badge + [▶] play button
+  Arabic first line (truncated)
+
+DuaDetail.jsx (modal or /duas/:id):
+  Large Arabic text (Amiri font, right-aligned, gold)
+  Transliteration (italic, green, 14px)
+  English meaning (white, 14px)
+  Source cited (Sahih Bukhari 3:123 style)
+  [▶ Listen] → plays ElevenLabs audio if audioUrl exists
+  [♡ Save] → POST /api/duas/favourites
+  [Share] → WhatsApp: "wa.me/?text={name}%0A{arabic}%0A{meaning}%0AFrom Noor app"
+
+Mood filter on /duas:
+  8 emotion chips at top:
+  😰 Anxious / 🙏 Grateful / 💔 Grieving / 😤 Frustrated
+  😊 Joyful / 😔 Lonely / 😵 Overwhelmed / 😌 Peaceful
+  Selecting mood filters duas by matching tags
+
+API routes (server/routes/duas.js):
+  GET /api/duas?category=&madhab=&mood=&search=
+    Filter duas:all array from Replit DB
+    Return matching duas
+  GET /api/duas/:id
+    Return single dua
+  POST /api/duas/favourites (auth)
+    Body: { duaId }
+    Add to duaFavs:{userId}
+  GET /api/duas/favourites (auth)
+    Return user's favourite duas
+
+════════════════════════════════════════
+MUSLIM NAMES FINDER
+════════════════════════════════════════
+Pages: Names.jsx (finder) + NameDetail.jsx (detail)
+
+Names.jsx (/names):
+  Search bar: "Search by name or meaning..."
+  Boy / Girl toggle (prominent, styled buttons)
+  A-Z letter index (scrollable horizontal bar)
+    Tap letter → scroll to that section
+  Category filter chips:
+    Quranic / Prophet / Sahaba / Rare / Trending / Forbidden
+  Grid of NameCards (2 columns)
+
+Each NameCard:
+  Arabic name (Amiri font, gold, right-aligned)
+  English name (bold, white)
+  Short meaning (truncated, muted)
+  Category badge (Quranic/Prophet etc)
+  Heart icon (save favourite)
+  Tap card → NameDetail
+
+NameDetail (modal or /names/:id):
+  Large Arabic calligraphy (36px, gold, centered)
+  English name (22px, centered)
+  Pronunciation guide (italic, muted)
+  Grid of info:
+    Meaning / Origin / Root / Quran reference
+    Prophet connection / Famous bearers / Variants
+  [▶ Hear pronunciation] → plays short audio clip
+  [♡ Favourite] → saves to user
+  [Share as card] → generate canvas PNG:
+    Dark green background
+    Gold Arabic name (large)
+    English meaning below
+    "Noor app — noorapp.com" watermark
+    Download as PNG
+  Similar names: 3 name cards below
+
+Special sections:
+  /names/forbidden → List of names not allowed in Islam
+    Each with brief Islamic ruling explanation
+  /names/trending → "Trending Muslim Names 2025"
+
+API routes (server/routes/names.js):
+  GET /api/names?gender=&category=&letter=&search=&limit=50&offset=0
+    Filter names:all from Replit DB
+    Paginated (50 per page)
+  GET /api/names/:id
+  GET /api/names/trending
+  POST /api/names/favourites (auth)
+  GET /api/names/favourites (auth)
+
+════════════════════════════════════════
+99 NAMES OF ALLAH
+════════════════════════════════════════
+Page: NamesOfAllah.jsx (/99-names)
+
+Daily name: getDailyNameOfAllah()
+  index = Math.floor(Date.now() / 86400000) % 99
+  Returns the name for today
+
+Display:
+  Today's name card (prominent, full width):
+    Arabic: اللَّهُ (large, 42px, gold, Amiri font)
+    Transliteration: "Allah" (20px, green italic)
+    Meaning: "The One worthy of worship" (16px, white)
+    A dua using this name (italic, muted)
+    [▶ 2-min reflection] → plays audio if exists
+  
+  List of all 99 below (scrollable):
+    Number + Arabic + transliteration + English meaning
+    Search/filter by meaning keyword
+    Tap any → see full detail + dua + audio
+
+════════════════════════════════════════
+TASBIH COUNTER
+════════════════════════════════════════
+Page: Tasbih.jsx (/tasbih)
+
+Full-screen counter, large tap area (entire screen taps).
+Three dhikr modes (toggle at top):
+  SubhanAllah   → target 33
+  Alhamdulillah → target 33
+  Allahu Akbar  → target 34
+  Custom        → user enters target
+
+Features:
+  Large count number (centre, 72px)
+  Target shown below (e.g. "23 / 33")
+  Circular progress ring around number
+  On target reached:
+    navigator.vibrate([200,100,200])
+    Flash animation
+    Auto-continue or reset (user setting)
+  Session total + daily lifetime total
+  Animated 33 bead tasbih (CSS circles around ring)
+
+Log daily tasbih count to progress DB.
+
+════════════════════════════════════════
+QIBLA COMPASS
+════════════════════════════════════════
+Page: Qibla.jsx (/qibla)
+
+Calculate Qibla bearing (mathematical, works offline):
+  Kaaba: lat=21.3891, lng=39.8579
+  User GPS: navigator.geolocation.getCurrentPosition
+  Formula: bearing = atan2(sin(Δlng)×cos(lat2),
+    cos(lat1)×sin(lat2) - sin(lat1)×cos(lat2)×cos(Δlng))
+
+Use DeviceOrientationEvent to get compass heading.
+Qibla direction = bearing - deviceHeading
+
+Display:
+  Animated SVG compass rose
+  Green arrow pointing to Qibla
+  Degrees shown (e.g. "267° NW")
+  Distance to Kaaba in km
+  "Kaaba is {X}km away"
+  Permission request for device orientation
+
+Fallback (if no orientation): show static bearing only
+
+════════════════════════════════════════
+MASJID FINDER
+════════════════════════════════════════
+Page: MasjidFinder.jsx (/masjid-finder)
+
+npm install leaflet react-leaflet
+
+Get user location → query OpenStreetMap (FREE, no key):
+  POST https://overpass-api.de/api/interpreter
+  Body (text/plain):
+  [out:json];
+  node["amenity"="place_of_worship"]["religion"="muslim"]
+  (around:5000,{lat},{lng});
+  out;
+
+Display:
+  Leaflet.js map (OpenStreetMap tiles):
+    Green mosque pins
+    User location blue dot
+  List below map:
+    Mosque name + distance in km
+    [Navigate] → opens "https://maps.google.com/maps?daddr={lat},{lng}"
+  Filter chips: All / Sunni / Shia / Jama Masjid
+  "Favourite masjid" star button → saves to user record
+  Saved favourite shows at top of home screen
+
+API route:
+  GET /api/masjid/nearby?lat=&lng=
+    Server calls Overpass API
+    Returns array of { name, lat, lng, distance }
+  POST /api/masjid/favourite — save masjid to user
+  GET /api/masjid/favourite — get user's favourite
+
+════════════════════════════════════════
+ZAKAT CALCULATOR
+════════════════════════════════════════
+Page: ZakatCalculator.jsx (/zakat-calculator)
+
+Input fields (all in INR):
+  Cash (bank + hand)
+  Gold value → show: "Current gold price: ₹{price}/gram"
+    Fetch: GET https://api.metals.live/v1/spot/gold
+    Convert troy oz to grams: ÷ 31.1035
+    Convert USD to INR: × 83 (or fetch live rate)
+    OR: manual grams input × price per gram
+  Silver value
+  Business inventory
+  Investments / shares
+  Money owed TO you
+  MINUS: your debts
+
+Calculation button → show results:
+  Total zakatable wealth: ₹{amount}
+  Nisab threshold (87.48g gold × price): ₹{nisab}
+  BIG YES/NO: "✓ Zakat is obligatory on you"
+    OR "✗ You are below nisab — no zakat due"
+  If yes: Zakat due = 2.5% = ₹{amount}
+  Breakdown table showing each asset contribution
+  "Donate your zakat" section with links:
+    Islamic Relief India / Human Appeal / Edhi Foundation
+
+Save calculation → remind next year (store zakatDate in user)
+
+API route:
+  GET /api/zakat/gold-price
+    Fetch from metals.live, convert to INR/gram, return
+
+════════════════════════════════════════
+ISLAMIC CALENDAR
+════════════════════════════════════════
+Page: IslamicCalendar.jsx (/islamic-calendar)
+
+Fetch current Hijri date:
+  GET https://api.aladhan.com/v1/gToH?date={DD-MM-YYYY}
+
+Display:
+  Current month in both Hijri and Gregorian
+  Calendar grid (days of month)
+  Mark special dates with colored badges:
+    Ramadan: gold star
+    Eid ul Fitr (1 Shawwal): gold crescent
+    Eid ul Adha (10 Dhul Hijjah): gold moon
+    Muharram: teal badge
+    Ashura (10 Muharram): teal (shown for Shia users)
+    Mawlid (12 Rabi ul Awwal): green badge
+    Shab-e-Barat (15 Sha'ban): purple badge
+    Laylatul Qadr (27 Ramadan): bright gold
+    Isra Miraj (27 Rajab): blue badge
+
+Upcoming events widget:
+  Next 3 Islamic events listed
+  "Ramadan begins in 47 days"
+
+════════════════════════════════════════
+QURBANI GUIDE
+════════════════════════════════════════
+Page: QurbaniGuide.jsx (/qurbani-guide)
+
+Sections (accordion style):
+1. What is Qurbani + who must perform it
+2. Animals accepted (cow 7 shares, goat 1, camel 7)
+3. Age requirements per animal
+4. Days allowed (10th, 11th, 12th Dhul Hijjah)
+5. DUAS SECTION (text + audio):
+   - Niyyah dua: Arabic + transliteration + meaning + [▶] button
+   - Dua at slaughter:
+     Arabic: بِسْمِ اللَّهِ اللَّهُ أَكْبَرُ
+     Transliteration: Bismillahi Allahu Akbar
+     Meaning: In the name of Allah, Allah is the Greatest
+     [▶ Hear dua] button
+   - Post-slaughter dua
+6. Meat distribution rules (1/3, 1/3, 1/3)
+7. Animal inspection checklist (valid / invalid)
+8. FAQ (5 questions for SEO)
+9. Online Qurbani links
+
+Countdown badge: "Eid ul Adha in {X} days" on page header
+
+════════════════════════════════════════
+FARZ GUIDE
+════════════════════════════════════════
+Page: FarzGuide.jsx (/farz-guide)
+
+Text reference pages — Claude generates content, stored in DB.
+Accordion sections:
+  1. Five Pillars of Islam (full explanation each)
+  2. Farz of Salah (7 conditions + 7 within salah)
+  3. Farz of Wudu + Ghusl + Tayammum
+  4. 40 Daily Sunnahs
+  5. Janazah guide
+  6. Aqiqah guide
+  7. Nikah guide
+  8. Halal and Haram reference
+
+Keyword search within guide.
+All content stored in farz:content key in Replit DB.
+
+════════════════════════════════════════
+SADQA GUIDE
+════════════════════════════════════════
+Page: SadqaGuide.jsx (/sadqa-guide)
+
+Sections:
+  1. What is Sadqa (difference from Zakat)
+  2. Sadqa Jariyah — ongoing: well, mosque, teaching
+  3. Sadqa Nafilah — voluntary good deeds
+  4. Sadqa ul Fitr (Fitrana) calculator:
+     - Family size input
+     - Amount per person (₹{amount} — update annually)
+     - Total Fitrana due: ₹{total}
+     - "Must give before Eid salah"
+  5. Non-financial Sadqa — Prophet hadith on smile + stone
+  6. Daily sadqa reminder widget: one suggestion per day
+
+════════════════════════════════════════
+WUDU + SALAH GUIDES
+════════════════════════════════════════
+WuduGuide.jsx (/wudu-guide):
+  Two modes: READ or AUDIO (toggle at top)
+  
+  READ mode: numbered steps with Arabic dua per step
+  AUDIO mode: continuous narration (plays all steps sequentially)
+    Step 1: Niyyah + dua → [PAUSE] → Step 2: Hands + dua...
+  
+  Steps (Hanafi, 11 steps total):
+    Each step: animation placeholder + Arabic dua + transliteration
+  
+  Also: Ghusl tab + Tayammum tab
+
+SalahGuide.jsx (/salah-guide):
+  Salah selector: Fajr / Dhuhr / Asr / Maghrib / Isha
+  READ mode: all rakaat positions with Arabic text
+  AUDIO mode: full guided salah walkthrough
+
+════════════════════════════════════════
+BUILD ALL PAGES COMPLETELY.
+All API routes must return real data from Replit DB.
+Test each page works before running Part 3.
+═══════════════════════════════════════════════════════

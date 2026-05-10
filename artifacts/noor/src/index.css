@@ -289,3 +289,7 @@ html, body, #root {
     inset: -1px;
   }
 }
+
+.noor-float-particle {
+  animation: float-up linear infinite;
+}

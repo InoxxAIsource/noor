@@ -60,6 +60,8 @@ const HomePage: React.FC = () => {
   const [showIftarDua, setShowIftarDua] = useState(false);
   const [hadithModalOpen, setHadithModalOpen] = useState(false);
   const [hadithData, setHadithData] = useState<HadithData | null>(null);
+  const [nextPrayerName, setNextPrayerName] = useState("");
+  const [nextPrayerCountdown, setNextPrayerCountdown] = useState("");
 
   const todayStr = format(new Date(), "yyyy-MM-dd");
   const todayFormat = format(new Date(), "dd-MM-yyyy");
@@ -71,6 +73,7 @@ const HomePage: React.FC = () => {
 
   const maghribTimeRef = useRef<string>("");
   const fajrTimeRef = useRef<string>("");
+  const allPrayerTimesRef = useRef<Array<{ name: string; time: string }>>([]);
 
   useEffect(() => {
     if (prayerData?.times) {
@@ -78,6 +81,7 @@ const HomePage: React.FC = () => {
       const fajr = prayerData.times.find(t => t.name === "Fajr");
       if (maghrib) maghribTimeRef.current = maghrib.time;
       if (fajr) fajrTimeRef.current = fajr.time;
+      allPrayerTimesRef.current = prayerData.times.map(t => ({ name: t.name, time: t.time }));
     }
   }, [prayerData]);
 
@@ -118,8 +122,27 @@ const HomePage: React.FC = () => {
         const maghribDate = parseTimeToDate(maghribTimeRef.current);
         const secsLeft = Math.floor((maghribDate.getTime() - now.getTime()) / 1000);
         setIftarCountdown(formatCountdown(Math.max(0, secsLeft)));
-        // Show iftar dua 10 min before Maghrib
         setShowIftarDua(secsLeft > 0 && secsLeft <= 600);
+      }
+
+      // Next prayer countdown (always on)
+      if (allPrayerTimesRef.current.length > 0) {
+        const upcoming = allPrayerTimesRef.current
+          .map(pt => ({ name: pt.name, date: parseTimeToDate(pt.time) }))
+          .filter(pt => pt.date.getTime() > now.getTime())
+          .sort((a, b) => a.date.getTime() - b.date.getTime());
+        const next = upcoming[0];
+        if (next) {
+          const secs = Math.floor((next.date.getTime() - now.getTime()) / 1000);
+          const h = Math.floor(secs / 3600);
+          const m = Math.floor((secs % 3600) / 60);
+          const s = secs % 60;
+          setNextPrayerName(next.name);
+          setNextPrayerCountdown(h > 0 ? `${h}h ${m.toString().padStart(2,"0")}m` : `${m}m ${s.toString().padStart(2,"0")}s`);
+        } else {
+          setNextPrayerName("Fajr");
+          setNextPrayerCountdown("Tomorrow");
+        }
       }
     }, 1000);
     return () => clearInterval(timer);
@@ -169,6 +192,35 @@ const HomePage: React.FC = () => {
         <div className="relative z-10 py-4 px-6 text-center animate-fade-in" style={{ background: "linear-gradient(135deg, #ffd700, #ff6b00)" }}>
           <p className="font-amiri text-2xl text-white mb-1">عيد مبارك</p>
           <p className="font-cinzel text-white font-bold">🌙 Eid Mubarak!</p>
+          <button
+            onClick={() => {
+              const canvas = document.createElement("canvas");
+              canvas.width = 640; canvas.height = 400;
+              const ctx = canvas.getContext("2d")!;
+              const grd = ctx.createLinearGradient(0, 0, 640, 400);
+              grd.addColorStop(0, "#2a1800"); grd.addColorStop(1, "#001a00");
+              ctx.fillStyle = grd; ctx.fillRect(0, 0, 640, 400);
+              ctx.strokeStyle = "rgba(255,215,0,0.4)"; ctx.lineWidth = 4;
+              ctx.strokeRect(16, 16, 608, 368);
+              ctx.fillStyle = "#ffd700"; ctx.font = "bold 52px serif"; ctx.textAlign = "center";
+              ctx.fillText("عيد مبارك", 320, 120);
+              ctx.fillStyle = "#e8f5e8"; ctx.font = "bold 30px system-ui";
+              ctx.fillText("Eid Mubarak!", 320, 178);
+              ctx.fillStyle = "#00a550"; ctx.font = "20px system-ui";
+              ctx.fillText(`This Ramadan I prayed ${(streakData as unknown as Record<string,unknown>)?.["totalMinutes"] ?? 0} minutes`, 320, 240);
+              ctx.fillStyle = "#ffd700"; ctx.font = "18px system-ui";
+              ctx.fillText(`🔥 Streak: ${streakData?.currentStreak ?? 0} days`, 320, 282);
+              ctx.fillStyle = "#4a7a4a"; ctx.font = "13px system-ui";
+              ctx.fillText("Noor app — noorapp.com", 320, 370);
+              const link = document.createElement("a");
+              link.download = "my-ramadan-journey.png";
+              link.href = canvas.toDataURL("image/png");
+              link.click();
+            }}
+            className="mt-3 inline-block bg-white/20 border border-white/40 text-white text-xs font-semibold px-4 py-1.5 rounded-full"
+          >
+            📊 Share my Ramadan Journey
+          </button>
         </div>
       )}
 
@@ -202,12 +254,45 @@ const HomePage: React.FC = () => {
       )}
 
       <div className="relative z-10 p-6 space-y-6">
-        {/* Greeting */}
-        <div className="space-y-1">
-          <h1 className={`font-cinzel text-3xl ${isRamadan ? "text-[var(--gold)]" : "text-[var(--gold)]"}`}>
-            As-salamu alaykum, {user?.name?.split(' ')[0] || 'Friend'}!
-          </h1>
-          <p className="text-[var(--muted)] text-sm">{format(new Date(), "EEEE, MMMM d")}{isRamadan ? ` · Day ${hijriDay} of Ramadan` : ""}</p>
+        {/* Greeting + Crescent */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h1 className="font-cinzel text-3xl text-[var(--gold)]">
+              As-salamu alaykum, {user?.name?.split(' ')[0] || 'Friend'}!
+            </h1>
+            <p className="text-[var(--muted)] text-sm">{format(new Date(), "EEEE, MMMM d")}{isRamadan ? ` · Day ${hijriDay} of Ramadan` : ""}</p>
+          </div>
+
+          {/* SVG crescent with floating gold particles */}
+          <div className="relative w-14 h-14 flex-shrink-0" style={{ filter: "drop-shadow(0 0 10px rgba(0,165,80,0.5))" }}>
+            <svg viewBox="0 0 60 60" width="56" height="56">
+              <defs>
+                <radialGradient id="crescentGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#ffd700" stopOpacity="0.15" />
+                  <stop offset="100%" stopColor="#00a550" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              <circle cx="30" cy="30" r="28" fill="url(#crescentGlow)" />
+              <path
+                d="M30 6 A24 24 0 1 1 30 54 A16 16 0 1 0 30 6 Z"
+                fill="#ffd700"
+                opacity="0.9"
+              />
+            </svg>
+            {[
+              { x: 8, y: 4, d: "0s", dur: "2.2s" },
+              { x: 42, y: 8, d: "0.4s", dur: "2.8s" },
+              { x: 20, y: 2, d: "0.8s", dur: "2.4s" },
+              { x: 50, y: 20, d: "1.2s", dur: "3s" },
+              { x: 14, y: 18, d: "1.6s", dur: "2.6s" },
+            ].map((p, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-[var(--gold)] rounded-full opacity-70 noor-float-particle"
+                style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: p.d, animationDuration: p.dur }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Iftar countdown — Ramadan only */}
@@ -302,12 +387,21 @@ const HomePage: React.FC = () => {
           <div className="absolute -right-10 -top-10 opacity-20 pointer-events-none">
             <div className="w-40 h-40 rounded-full border-[10px] border-[var(--gold)]" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 50%)' }}></div>
           </div>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-3">
             <h3 className="font-cinzel text-[var(--gold)] text-lg">Today's Salah</h3>
             <Link to="/prayer-times" className="text-xs text-[var(--green)] flex items-center gap-1">
               Full view <ChevronRight size={12} />
             </Link>
           </div>
+          {nextPrayerName && (
+            <div className="flex items-center justify-between bg-[var(--card)] rounded-xl px-4 py-2.5 mb-3 border border-[var(--green)]/20">
+              <div>
+                <p className="text-[10px] text-[var(--muted)] uppercase tracking-wider">Next Prayer</p>
+                <p className="font-cinzel text-[var(--green)] text-sm font-bold">{nextPrayerName}</p>
+              </div>
+              <p className="font-mono text-[var(--gold)] text-base font-bold">{nextPrayerCountdown}</p>
+            </div>
+          )}
           <div className="space-y-3 relative z-10">
             {prayerData?.times?.map((pt) => (
               <div key={pt.name} className="flex items-center justify-between p-2 rounded-lg">

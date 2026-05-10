@@ -37,6 +37,7 @@ import GrowthPage from "@/pages/GrowthPage";
 import HalaqahPage from "@/pages/HalaqahPage";
 import HalaqahGroupPage from "@/pages/HalaqahGroupPage";
 import HalaqahAdminPage from "@/pages/HalaqahAdminPage";
+import ForbiddenNamesPage from "@/pages/ForbiddenNamesPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -79,6 +80,7 @@ const router = createBrowserRouter(
         { path: "/halaqah", element: <HalaqahPage /> },
         { path: "/halaqah/:code", element: <HalaqahGroupPage /> },
         { path: "/halaqah/:code/admin", element: <HalaqahAdminPage /> },
+        { path: "/names/forbidden", element: <ForbiddenNamesPage /> },
       ],
     },
     { path: "*", element: <NotFound /> },

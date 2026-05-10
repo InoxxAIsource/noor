@@ -1,0 +1,261 @@
+═══════════════════════════════════════════════════════
+NOOR APP — PART 4 OF 6: GROWTH + HALAQAH + RAMADAN
+═══════════════════════════════════════════════════════
+Run after Part 3 is working.
+Adds: Spiritual growth dashboard, Halaqah group mode,
+Ramadan special mode, Hadith of day,
+Salah quality journal, daily name of Allah.
+
+npm install chart.js react-chartjs-2
+
+════════════════════════════════════════
+SPIRITUAL GROWTH DASHBOARD — Growth.jsx
+════════════════════════════════════════
+Route: /growth
+Auth required.
+
+Fetch all data:
+  progress: await getProgress(userId) — all sessions
+  streak: await getStreak(userId)
+  salahLogs: last 30 days of getSalahLog(userId, date)
+
+STATS ROW (4 cards):
+  Total prayers logged (count of progress entries)
+  Total minutes (sum of durationListened / 60)
+  Longest streak (streak.longestStreak)
+  This month (count of progress this calendar month)
+
+CATEGORY BREAKDOWN (Chart.js Doughnut):
+  Group progress by category
+  Colors: azkar=#00a550, quran=#ffd700, dhikr=#6495ed,
+          sleep=#9b59b6, dua60=#ff9900, salah=#c04848
+  Labels with percentages
+
+365-DAY HEATMAP:
+  CSS grid of 365 small squares (10×10px each)
+  Color intensity based on minutes prayed that day:
+    0 min → #002800 (dark, almost invisible)
+    1-10 → #004400
+    10-30 → #006600
+    30-60 → #00a550
+    60+ → #00ff66 (bright)
+  Tooltip on hover: "{date} — {X} minutes"
+  Group by weeks (columns) for GitHub-style layout
+
+MOOD JOURNEY (Chart.js Line):
+  X axis: last 30 days
+  Two lines:
+    Dashed: moodBefore scores (1=Anxious...5=Peaceful)
+    Solid: moodAfter scores
+  Color: before=#c04848, after=#00a550
+  Shows improvement over time
+
+KHUSHOO CHART (Chart.js Bar):
+  Last 7 days
+  5 bars per day (one per prayer)
+  Y axis: 1-5 stars
+  Color: #ffd700
+
+MILESTONES / BADGES:
+  Grid of achievement badges:
+  First Dua (unlocked day 1)
+  7-Day Streak (unlock at 7)
+  30-Day Streak (unlock at 30)
+  100 Sessions (unlock at 100 progress entries)
+  1000 Minutes (unlock at 1000 total minutes)
+  Quran Completer (all 114 surahs read — track separately)
+  Ramadan Warrior (prayed every day of Ramadan)
+  Fajr Champion (logged Fajr 30 consecutive days)
+  Gifted (sent at least 1 gift dua)
+
+  Locked badges: shown greyed out with condition text
+  Unlocked: shown in gold with unlock date
+
+WEEKLY REPORT (every Friday):
+  Check if today is Friday in server cron (setInterval daily)
+  Generate report for each user active in last 7 days:
+    Sessions completed, total minutes, streak status
+  Store as report:{userId}:{week} in DB
+  Show on dashboard: "This week's report"
+
+════════════════════════════════════════
+SALAH QUALITY JOURNAL
+════════════════════════════════════════
+Already partially built in PrayerTimes.jsx (Part 1).
+Expand with:
+
+After marking a prayer as prayed:
+  Modal appears:
+  "How was your khushoo (focus)?"
+  5-star tap rating (default shows 3)
+  Optional text: "What distracted me?"
+  [Save] → POST /api/salah/khushoo
+
+API:
+  POST /api/salah/khushoo
+    Body: { prayer, date, rating, note }
+    Update salahLog:{userId}:{date}
+    Add khushooRatings: { fajr:4, dhuhr:3... }
+
+Display on /growth:
+  Average khushoo per prayer this week
+  "Your Fajr focus improved! Up from 3.1 to 4.2 ⭐"
+  Weekly trend chart
+
+════════════════════════════════════════
+HALAQAH GROUP MODE — Halaqah.jsx
+════════════════════════════════════════
+Route: /halaqah + /halaqah/admin
+
+JOIN FLOW:
+  /halaqah → input invite code or "Create new group"
+  Enter 6-char code → GET /api/halaqah/:code
+  Show group name + member count + [Join] button
+  On join: POST /api/halaqah/:code/join
+
+MEMBER VIEW (/halaqah/:code):
+  Group name + "🕌 {X} members"
+  Today's assigned session card (set by admin)
+    [Start this session] → /player/:id
+  Group ibadah streak: "{X} days consecutive"
+  Member participation grid:
+    Each member avatar (initials) + green dot if prayed today
+  Shared dua board:
+    List of intentions posted by members
+    [🤲 Pray for this] button
+    Post your intention: text input
+
+ADMIN VIEW (/halaqah/:code/admin):
+  Visible only to admin (creator)
+  Assign today's session: dropdown of all sessions + [Assign]
+  Member list: name + last active + sessions this week
+  Weekly stats: "82% of members prayed this week"
+
+Replit DB:
+  halaqah:{code} → {
+    name, adminId, inviteCode,
+    members: [{userId, name, joinedAt}],
+    assignedSession: sessionId,
+    groupStreak: 0,
+    intentions: [{userId, name, text, prayerCount, createdAt}]
+  }
+
+API routes:
+  POST /api/halaqah — create group
+    Body: { name }
+    Generate 6-char invite code
+    Admin = req.userId
+    Return { code }
+  GET /api/halaqah/:code — group details
+  POST /api/halaqah/:code/join — add member
+  POST /api/halaqah/:code/assign — admin assigns session
+  POST /api/halaqah/:code/intention — post intention
+  POST /api/halaqah/:code/pray — increment intention prayer count
+  GET /api/halaqah/:code/stats — weekly participation stats
+
+════════════════════════════════════════
+RAMADAN SPECIAL MODE
+════════════════════════════════════════
+Auto-detect Ramadan from Islamic calendar API.
+Store: isRamadan (boolean) checked daily on server.
+
+When Ramadan is active — HOME SCREEN TRANSFORMS:
+  Gold banner: "رمضان مبارك — Ramadan Mubarak"
+  Background: slightly warmer, gold particle effects
+  
+  IFTAR COUNTDOWN (prominent on home):
+    Large countdown: "Iftar in 2h 34m 17s"
+    Fetch Maghrib time from aladhan.com = iftar time
+    Auto-updates every second
+  
+  SUHOOR TIME displayed:
+    "Suhoor ends at 4:23am (Fajr)"
+    Alarm option: 30 minutes before Fajr
+  
+  RAMADAN SESSION CARD:
+    Day {X} of 30
+    Today's recommended Quran portion (1/30 of Quran)
+    [Start today's portion] → Quran reader at correct surah
+  
+  DAILY RAMADAN DUA:
+    Traditional dua for that specific day (30 duas total)
+    Arabic + transliteration + meaning + audio
+  
+  IFTAR DUA (shown 10 min before Maghrib):
+    Arabic: اللَّهُمَّ لَكَ صُمْتُ
+    Transliteration: Allahumma laka sumtu
+    Meaning: O Allah, for You I fasted
+    [▶ Hear dua] button
+
+LAST 10 NIGHTS MODE (nights 21-30):
+  Extra gold banner: "✨ Last 10 Nights — Seek Laylatul Qadr"
+  Night 27: bright pulsing gold banner
+  Special content: Dua for Laylatul Qadr
+    Arabic: اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي
+    With full explanation + audio
+
+SHIA RAMADAN EXTRAS:
+  For users with madhab='shia':
+    Show Dua Iftitah reminder every night of Ramadan
+    Specific amaal for nights 1, 19, 21, 23, 27
+
+EID NOTIFICATION:
+  Day of Eid ul Fitr:
+    Banner: "🌙 Eid Mubarak! عيد مبارك"
+    Eid prayer time for user's city
+    Eid dua: Arabic + audio
+    Shareable stats card: "This Ramadan I prayed {X} minutes"
+    [Share my Ramadan journey] → generates PNG stats card
+
+════════════════════════════════════════
+HADITH OF THE DAY
+════════════════════════════════════════
+getDailyHadith():
+  index = Math.floor(Date.now() / 86400000) % 365
+  Returns hadiths[index] from hadiths:all
+
+Each hadith object:
+  { id, textEnglish, textArabic, narrator,
+    source, book, hadithNumber, category }
+
+Display on home screen:
+  Short preview card (first 120 chars)
+  Source: "Sahih Bukhari — Book 3, Hadith 123"
+  Tap → full hadith modal
+
+Seed 365 hadiths covering:
+  Intentions / Prayer / Kindness / Knowledge
+  Charity / Fasting / Character / Family
+  Business / Community / Remembrance of Allah
+  (Claude generates all 365 with source verification)
+
+════════════════════════════════════════
+DAILY DUA OF THE DAY WIDGET
+════════════════════════════════════════
+On home screen, daily rotating dua based on:
+  User's goals (mapped to dua categories)
+  Day of week (Friday = Jumu'ah duas)
+  Upcoming events (Qurbani near Eid ul Adha)
+
+Small card showing:
+  Dua title + first line Arabic
+  [Read full dua] → opens DuaDetail
+
+════════════════════════════════════════
+STREAK API ENHANCEMENTS
+════════════════════════════════════════
+Add to POST /api/streak/checkin:
+  Check if it's Ramadan → bonus "Ramadan streak" counter
+  Check if Fajr logged today → increment fajrStreak
+  Check if all 5 prayers logged → "Perfect day" badge
+
+Add to GET /api/streak/me:
+  Return { ...streak, fajrStreak, ramadanStreak,
+           perfectDays, thisWeekPrayers }
+
+════════════════════════════════════════
+BUILD ALL COMPLETELY.
+Test: growth dashboard shows charts,
+halaqah creates/joins groups,
+Ramadan mode activates in Islamic calendar.
+═══════════════════════════════════════════════════════

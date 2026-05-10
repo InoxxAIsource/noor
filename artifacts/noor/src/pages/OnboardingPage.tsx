@@ -1,4 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+function NotificationButton() {
+  const [status, setStatus] = useState<NotificationPermission | "unsupported">("default");
+
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      setStatus("unsupported");
+    } else {
+      setStatus(Notification.permission);
+    }
+  }, []);
+
+  const request = async () => {
+    if (!("Notification" in window)) return;
+    const result = await Notification.requestPermission();
+    setStatus(result);
+  };
+
+  if (status === "granted") {
+    return (
+      <div className="flex items-center gap-2 text-[var(--green)] text-sm font-medium py-2">
+        <span className="text-lg">✅</span> Notifications enabled — JazakAllah khair!
+      </div>
+    );
+  }
+  if (status === "denied") {
+    return (
+      <p className="text-xs text-[var(--muted)]">Notifications are blocked. Enable them in your browser settings to receive prayer reminders.</p>
+    );
+  }
+  if (status === "unsupported") {
+    return (
+      <p className="text-xs text-[var(--muted)]">Push notifications are not supported on this browser.</p>
+    );
+  }
+  return (
+    <button
+      onClick={request}
+      className="w-full py-3 rounded-xl bg-[var(--green)] text-white font-semibold text-sm"
+    >
+      🔔 Enable Prayer Reminders
+    </button>
+  );
+}
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useUpdateMe } from "@workspace/api-client-react";
@@ -196,6 +240,11 @@ const OnboardingPage: React.FC = () => {
                 onChange={(e) => setReminderHour(parseInt(e.target.value.split(':')[0]))}
                 className="bg-[var(--card)] border-none text-2xl py-6"
               />
+            </div>
+
+            <div className="space-y-3 bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)]">
+              <p className="text-sm text-[var(--muted)]">Prayer Reminders</p>
+              <NotificationButton />
             </div>
 
             <div className="space-y-3 bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)]">

@@ -1,0 +1,36 @@
+{
+  "name": "Noor — Islamic Prayer App",
+  "short_name": "Noor",
+  "description": "Remember Allah. Every day.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#001a00",
+  "theme_color": "#00a550",
+  "categories": ["lifestyle", "health", "education"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/opengraph.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Prayer Times",
+      "url": "/prayer-times",
+      "description": "Today's salah schedule"
+    },
+    {
+      "name": "Tasbih",
+      "url": "/tasbih",
+      "description": "Digital dhikr counter"
+    }
+  ]
+}
