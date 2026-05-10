@@ -1,0 +1,376 @@
+═══════════════════════════════════════════════════════
+NOOR APP — PART 5 OF 6: COMPLETE SEO LAYER
+═══════════════════════════════════════════════════════
+Run after Parts 1-4 are working.
+Adds: 500+ SSR pages, blog, prayer time city pages,
+name pages, dua pages, Quran pages, tools pages,
+sitemap, robots.txt.
+
+CRITICAL: ALL pages below MUST be server-side rendered
+via Express template literals. NOT React Router.
+Googlebot must crawl without JavaScript execution.
+
+════════════════════════════════════════
+SHARED SSR COMPONENTS (server/seo/shared.js)
+════════════════════════════════════════
+Export these functions:
+
+seoHead({ title, description, canonical, schema, hreflang }) →
+returns <head> HTML string:
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{title} | Noor — Islamic Prayer App</title>
+  <meta name="description" content="{description}">
+  <link rel="canonical" href="https://noorapp.com{canonical}">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{description}">
+  <meta property="og:image" content="https://noorapp.com/og-image.jpg">
+  <meta property="og:url" content="https://noorapp.com{canonical}">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{JSON.stringify(schema)}</script>
+  <link rel="stylesheet" href="/seo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Cinzel&display=swap" rel="stylesheet">
+
+nav() → returns:
+  <nav style="display:flex;justify-content:space-between;
+    align-items:center;padding:16px 24px;
+    background:#001a00;border-bottom:1px solid rgba(0,165,80,0.2)">
+    <a href="/" style="font-family:Cinzel,serif;font-size:20px;
+      color:#00a550;letter-spacing:3px;text-decoration:none">NOOR</a>
+    <a href="/download" style="background:#00a550;color:#001a00;
+      padding:8px 20px;border-radius:8px;font-weight:bold;
+      text-decoration:none">Download Free</a>
+  </nav>
+
+footer() → returns links:
+  / | /prayer-times | /duas | /names | /quran
+  /zakat-calculator | /masjid-finder | /ramadan | /blog
+
+ctaBlock() → returns gold CTA:
+  "Remember Allah every day — Download Noor free"
+  [Download Noor App →] button → /download
+
+public/seo.css:
+  body { background:#001a00; color:#e8f5e8;
+    font-family:Georgia,serif; margin:0; }
+  h1 { font-family:Cinzel,serif; color:#ffd700;
+    font-size:2rem; line-height:1.3; }
+  h2 { color:#00a550; }
+  a { color:#00a550; }
+  .arabic { font-family:Amiri,serif; direction:rtl;
+    text-align:right; color:#ffd700; font-size:1.4em; }
+  .transliteration { color:#00a550; font-style:italic; }
+  .cta-box { background:rgba(0,165,80,0.1);
+    border:1px solid rgba(0,165,80,0.3); border-radius:10px;
+    padding:20px; margin:24px 0; text-align:center; }
+  .cta-btn { background:#00a550; color:#001a00;
+    padding:12px 28px; border-radius:8px; font-weight:bold;
+    text-decoration:none; display:inline-block; }
+  .faq-item { margin:12px 0; padding:12px;
+    background:rgba(0,165,80,0.05); border-radius:8px; }
+  .card { background:#002800; border:1px solid rgba(0,165,80,0.2);
+    border-radius:10px; padding:14px; margin:8px 0; }
+
+════════════════════════════════════════
+LANDING PAGE — server/seo/landing.js
+════════════════════════════════════════
+GET / → Express SSR (not React)
+
+MobileApplication schema:
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Noor — Islamic Prayer App",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "iOS, Android",
+  "offers": { "@type":"Offer", "price":"0", "priceCurrency":"INR" },
+  "description": "Muslim prayer app with Quran, prayer times, duas, names finder, zakat calculator, masjid finder, AI Islamic guide",
+  "aggregateRating": { "@type":"AggregateRating",
+    "ratingValue":"4.9", "ratingCount":"5000" }
+}
+
+Sections:
+1. Nav
+2. Hero: H1 "Remember Allah. Every day." + subline + CTA
+3. Features grid (6 cards)
+4. Comparison table vs Muslim Pro
+5. Testimonials (3 static)
+6. FAQ (5 questions) with FAQPage schema
+7. CTA section
+8. Footer
+
+════════════════════════════════════════
+PRAYER TIMES PAGES — server/seo/prayer-times.js
+════════════════════════════════════════
+GET /prayer-times → index listing all cities
+GET /prayer-times/:city → individual city page
+GET /namaz-times/:city → Pakistan cities (same template)
+
+For each city page:
+  Fetch live times: aladhan.com API
+  H1: "Prayer Times in {City} Today — {formattedDate}"
+  Display Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha
+  Breadcrumb: Home > Prayer Times > {City}
+  FAQPage schema with questions:
+    "What is Fajr time in {City} today?"
+    "What time is Zuhr in {City}?"
+    "What is the Isha prayer time in {City}?"
+  CTA block
+  Internal links: /masjid-finder, /salah-guide, /duas/after-salah
+
+India cities list (50):
+Delhi, Mumbai, Hyderabad, Lucknow, Bangalore, Kolkata, Chennai,
+Jaipur, Bhopal, Patna, Srinagar, Aligarh, Moradabad, Meerut,
+Agra, Varanasi, Allahabad, Saharanpur, Bareilly, Firozabad,
+Rampur, Sambhal, Amroha, Hapur, Shahjahanpur, Muzaffarnagar,
+Mau, Azamgarh, Gorakhpur, Faizabad, Bahraich, Gonda, Sitapur,
+Hardoi, Lakhimpur, Unnao, Rae-Bareli, Sultanpur, Ambedkar-Nagar,
+Ballia, Deoria, Kushinagar, Basti, Siddharth-Nagar, Maharajganj,
+Shravasti, Balrampur, Ghazipur, Jaunpur, Mirzapur
+
+Pakistan cities (30):
+Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, Quetta, Multan,
+Faisalabad, Gujranwala, Sialkot, Bahawalpur, Sargodha, Sukkur,
+Larkana, Hyderabad-PK, Abbottabad, Mardan, Mingora, Dera-Ghazi-Khan,
+Sahiwal, Okara, Wah, Gujrat, Sheikhupura, Jhang,
+Dera-Ismail-Khan, Kasur, Chiniot, Kamoke, Hafizabad
+
+════════════════════════════════════════
+NAMES SEO PAGES — server/seo/names-seo.js
+════════════════════════════════════════
+GET /names → hub page (SSR with React hydration for search)
+GET /names/boy → "Muslim boy names A-Z with meaning"
+GET /names/girl → "Muslim girl names"
+GET /names/boy/letter/:letter → "Muslim boy names starting with {A}"
+GET /names/girl/letter/:letter → "Muslim girl names starting with {F}"
+GET /names/quranic → "Quranic names for boys and girls"
+GET /names/prophet → "Prophet names in Islam"
+GET /names/forbidden → "Forbidden names in Islam"
+GET /names/trending → "Trending Muslim names 2025 India"
+GET /names/:slug → individual name page
+
+Individual name page:
+  H1: "{Name} name meaning in Islam — Arabic, origin, Quran"
+  Arabic name display (Amiri font, large, gold)
+  Meaning, origin, root
+  Quran reference if applicable
+  FAQPage schema:
+    "What does {name} mean in Islam?"
+    "Is {name} mentioned in the Quran?"
+    "Is {name} a prophet name?"
+    "What is the Arabic of {name}?"
+  Similar names (3 internal links)
+  Internal links: /names/{similar1}, /names/{similar2}, /names/{category}
+  CTA block
+
+════════════════════════════════════════
+DUA SEO PAGES — server/seo/duas-seo.js
+════════════════════════════════════════
+GET /duas → hub page (all categories listed)
+GET /duas/:category → category page
+GET /duas/:slug → individual dua page
+
+Individual dua page:
+  H1: "{Dua name} — Arabic, meaning and when to say it"
+  Arabic text (Amiri, large, gold, rtl)
+  Transliteration (italic, green)
+  English meaning
+  Source (Bukhari/Muslim etc)
+  When to say it
+  FAQPage schema (3 questions about this dua)
+  Article schema
+  Internal links: 3 related duas + 1 blog post + CTA
+
+════════════════════════════════════════
+QURAN SEO PAGES — server/seo/quran-seo.js
+════════════════════════════════════════
+GET /quran → Quran hub page
+GET /quran/:surahSlug → individual surah page
+  e.g. /quran/surah-fatiha, /quran/ayatul-kursi
+
+Individual surah page:
+  H1: "Surah {Name} — meaning, translation, benefits"
+  Arabic text (first 3 ayahs shown)
+  English translation
+  Benefits and virtues (text content)
+  Article schema
+  FAQPage (when to recite, what it means, benefits)
+  Internal links: related surahs + duas + blog
+
+════════════════════════════════════════
+TOOL SEO PAGES — server/seo/tools-seo.js
+════════════════════════════════════════
+GET /zakat-calculator → SSR page wrapping React calculator
+  H1: "Zakat Calculator India 2026 — Calculate in INR"
+  HowTo schema:
+    Step 1: Enter your total cash savings
+    Step 2: Add value of gold you own
+    Step 3: Subtract debts owed
+    Step 4: Multiply by 2.5% if above nisab
+  FAQPage (5 zakat questions)
+  Interactive calculator (React component embedded)
+
+GET /masjid-finder → SSR page wrapping React map
+  H1: "Masjid Near Me — Find Mosque in India"
+  LocalBusiness schema for featured mosques
+  FAQPage (how to find mosque, prayer times etc)
+
+GET /qibla-direction → tool page
+  H1: "Qibla Direction from India — Find Qibla Compass"
+  Interactive compass (React)
+  FAQPage
+
+GET /ramadan → Ramadan 2026 guide
+  H1: "Ramadan 2026 — Start Date, Schedule, Duas"
+  Ramadan 2026 start date: February 18, 2026 (India)
+  Sehri and iftar times (Delhi) table
+  30 days of Ramadan info
+  FAQPage (5 Ramadan questions)
+
+GET /islamic-calendar/2026
+  H1: "Islamic Calendar 2026 India — Hijri Calendar"
+  Full year calendar with all events marked
+
+════════════════════════════════════════
+BLOG — server/seo/blog.js
+════════════════════════════════════════
+GET /blog → index (all posts, filterable by category)
+GET /blog/:slug → individual post
+
+Post page structure:
+  seoHead (BlogPosting schema)
+  nav
+  Breadcrumb: Home > Blog > {category} > {title}
+  H1 (primary keyword first)
+  ctaBlock (ABOVE content — "Download Noor free")
+  Article body (content_html from DB)
+  Internal links section:
+    "Continue learning:" → 3 related page cards
+  Related blog posts (3 same category)
+  ctaBlock (BELOW content)
+  footer
+
+BlogPosting schema:
+  headline, description, datePublished, wordCount,
+  author: { "@type":"Organization", "name":"Noor App" }
+
+Blog seeds (Claude generates full content via /admin/blog/generate):
+Store in Replit DB as blog:{slug} with content_html.
+Initial: store 40 post stubs (title + meta + slug only).
+Admin generates full content on demand.
+
+40 blog post slugs (already listed in Part 1 overview).
+Internal links per post:
+  morning-azkar-guide → /duas/morning-azkar, /prayer-times/delhi, /salah-guide
+  dua-for-anxiety → /duas/anxiety, /99-names, /sessions
+  how-to-pray-namaz → /salah-guide, /wudu-guide, /prayer-times
+  ... (3 internal links per post minimum)
+
+════════════════════════════════════════
+COMPARISON PAGE
+════════════════════════════════════════
+GET /best-muslim-prayer-app-india
+  H1: "Best Muslim Prayer App in India 2026 (Ranked)"
+  Comparison table:
+    Feature | Noor | Muslim Pro | WeMuslim | Athan
+    Prayer times: ✓ | ✓ | ✓ | ✓
+    AI Islamic Guide: ✓ | ✗ | ✗ | ✗
+    Names finder: ✓ | ✗ | ✗ | ✗
+    Khushoo journal: ✓ | ✗ | ✗ | ✗
+    Ads in free tier: No ads | Yes | Yes | Yes
+    Zakat calculator: ✓ | ✗ | ✓ | ✗
+    Masjid finder: ✓ | ✓ | ✗ | ✗
+    Live prayer rooms: ✓ | ✗ | ✗ | ✗
+    Shia content: ✓ | Partial | ✗ | ✗
+  ItemList schema
+  FAQPage (5 questions)
+  CTA
+
+════════════════════════════════════════
+SITEMAP + ROBOTS
+════════════════════════════════════════
+GET /sitemap.xml — dynamic XML:
+  Priority 1.0: /, /download
+  Priority 0.9: /prayer-times/:city (all 80)
+  Priority 0.9: /names/:slug (all seeded names)
+  Priority 0.9: /duas/:slug (all seeded duas)
+  Priority 0.8: /quran/:slug (all 114 surahs)
+  Priority 0.8: /blog/:slug (all 40 posts)
+  Priority 0.7: /names/boy, /names/girl, /names/quranic etc
+  Priority 0.7: /zakat-calculator, /masjid-finder, /ramadan
+  Priority 0.6: /best-muslim-prayer-app-india
+
+Include <lastmod> for all dynamic pages.
+Prayer times pages: lastmod = today (they update daily).
+
+GET /robots.txt:
+  User-agent: *
+  Allow: /
+  Disallow: /api/
+  Disallow: /home
+  Disallow: /player/
+  Disallow: /profile
+  Disallow: /journal
+  Disallow: /halaqah/
+  Disallow: /admin
+  Sitemap: https://noorapp.com/sitemap.xml
+
+════════════════════════════════════════
+SCHEMA ON EVERY PAGE TYPE
+════════════════════════════════════════
+Landing:   MobileApplication + FAQPage
+Prayer:    FAQPage + BreadcrumbList
+Names:     FAQPage + BreadcrumbList + (Person for famous bearers)
+Duas:      Article + FAQPage + BreadcrumbList
+Quran:     Article + FAQPage
+Blog:      BlogPosting + FAQPage + BreadcrumbList
+Zakat:     HowTo + FAQPage
+Masjid:    FAQPage (LocalBusiness per mosque in results)
+Ramadan:   FAQPage + Article
+
+BreadcrumbList on every page:
+{
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://noorapp.com"},
+    {"@type":"ListItem","position":2,"name":"{section}","item":"https://noorapp.com/{path}"},
+    {"@type":"ListItem","position":3,"name":"{page title}"}
+  ]
+}
+
+════════════════════════════════════════
+INTERNAL LINK RULES (enforce in code)
+════════════════════════════════════════
+Every SSR page MUST have:
+  min 3 internal links in body content
+  Footer with 8 hub page links
+  CTA block linking to /download
+
+Prayer times pages link to:
+  /masjid-finder?city={city}
+  /salah-guide
+  /duas/after-salah
+  /prayer-times/{nearby_city}
+
+Name pages link to:
+  /names/{similar1}, /names/{similar2}
+  /quran/{quranReference} (if Quranic name)
+  /blog/how-to-choose-muslim-name
+
+Dua pages link to:
+  3 related duas (same category)
+  1 relevant blog post
+  /sessions (to hear guided version)
+
+Blog posts link to:
+  Relevant dua page
+  Relevant prayer times page
+  Relevant name category
+  /download (CTA)
+
+════════════════════════════════════════
+BUILD ALL SSR PAGES.
+Verify /sitemap.xml loads and lists all pages.
+Verify /robots.txt is correct.
+Test: Google-fetch simulation on 5 pages.
+═══════════════════════════════════════════════════════

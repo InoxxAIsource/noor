@@ -265,3 +265,30 @@ export async function setStreakExtended(
 ): Promise<void> {
   await dbSet(`streakExt:${userId}`, data);
 }
+
+// ─── Blog helpers ──────────────────────────────────────────────────────────────
+
+export interface BlogPostRecord {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  datePublished: string;
+  content_html: string;
+  internalLinks: Array<{ href: string; label: string }>;
+  wordCount?: number;
+  generatedAt?: string;
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPostRecord | null> {
+  return dbGet<BlogPostRecord>(`blog:${slug}`);
+}
+
+export async function setBlogPost(slug: string, post: BlogPostRecord): Promise<void> {
+  await dbSet(`blog:${slug}`, post);
+}
+
+export async function getAllBlogSlugs(): Promise<string[]> {
+  const keys = await dbList("blog:");
+  return keys.map(k => k.replace("blog:", ""));
+}

@@ -1,5 +1,5 @@
 kind = "api"
-previewPath = "/api" # TODO - should be excluded from preview in the first place
+previewPath = "/api"
 title = "API Server"
 version = "1.0.0"
 id = "3B4_FFSkEVBkAeYMFRJ2e"
@@ -7,7 +7,26 @@ id = "3B4_FFSkEVBkAeYMFRJ2e"
 [[services]]
 localPort = 8080
 name = "API Server"
-paths = ["/api"]
+paths = [
+  "/api",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/seo.css",
+  "/landing",
+  "/download",
+  "/prayer-times",
+  "/namaz-times",
+  "/names",
+  "/duas",
+  "/quran",
+  "/blog",
+  "/ramadan",
+  "/qibla-direction",
+  "/zakat-calculator",
+  "/masjid-finder",
+  "/islamic-calendar",
+  "/best-muslim-prayer-app-india",
+]
 
 [services.development]
 run = "pnpm --filter @workspace/api-server run dev"
