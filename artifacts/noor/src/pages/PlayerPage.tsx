@@ -18,6 +18,11 @@ const MOODS = [
 
 const RAIN_URL = "https://cdn.pixabay.com/audio/2022/03/10/audio_e9b83e60fa.mp3";
 
+const MOOD_SCORE: Record<string, number> = {
+  "Joyful": 5, "Peaceful": 5, "Grateful": 4,
+  "Anxious": 2, "Frustrated": 2, "Overwhelmed": 2, "Lonely": 2, "Grieving": 1,
+};
+
 function ConfettiEffect() {
   const particles = useMemo(
     () =>
@@ -160,7 +165,7 @@ const PlayerPage: React.FC = () => {
         body: JSON.stringify({
           sessionId: id,
           durationListened: duration || s?.["durationSeconds"] || 0,
-          moodBefore: 3,
+          moodBefore: MOOD_SCORE[moodBefore ?? ""] ?? 3,
           moodAfter: 3,
           category: s?.["category"] || "",
         }),

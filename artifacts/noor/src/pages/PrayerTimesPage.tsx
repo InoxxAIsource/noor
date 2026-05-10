@@ -6,8 +6,37 @@ import {
 } from "@workspace/api-client-react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
-import { CheckCircle2, Circle, Star } from "lucide-react";
+import { CheckCircle2, Circle, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const RAKAAT_INFO: Record<string, { rows: Array<{ label: string; count: number; color: string }> }> = {
+  Fajr: { rows: [
+    { label: "Sunnah (before)", count: 2, color: "text-[var(--gold)]" },
+    { label: "Farz", count: 2, color: "text-[var(--green)]" },
+  ]},
+  Dhuhr: { rows: [
+    { label: "Sunnah (before)", count: 4, color: "text-[var(--gold)]" },
+    { label: "Farz", count: 4, color: "text-[var(--green)]" },
+    { label: "Sunnah (after)", count: 2, color: "text-[var(--gold)]" },
+    { label: "Nafl", count: 2, color: "text-[var(--muted)]" },
+  ]},
+  Asr: { rows: [
+    { label: "Sunnah (before)", count: 4, color: "text-[var(--gold)]" },
+    { label: "Farz", count: 4, color: "text-[var(--green)]" },
+  ]},
+  Maghrib: { rows: [
+    { label: "Farz", count: 3, color: "text-[var(--green)]" },
+    { label: "Sunnah (after)", count: 2, color: "text-[var(--gold)]" },
+    { label: "Nafl", count: 2, color: "text-[var(--muted)]" },
+  ]},
+  Isha: { rows: [
+    { label: "Sunnah (before)", count: 4, color: "text-[var(--gold)]" },
+    { label: "Farz", count: 4, color: "text-[var(--green)]" },
+    { label: "Sunnah (after)", count: 2, color: "text-[var(--gold)]" },
+    { label: "Nafl", count: 2, color: "text-[var(--muted)]" },
+    { label: "Witr", count: 3, color: "text-[#9b59b6]" },
+  ]},
+};
 
 const PrayerTimesPage: React.FC = () => {
   const { user } = useAuth();
@@ -22,6 +51,7 @@ const PrayerTimesPage: React.FC = () => {
   const [rating, setRating] = useState(3);
   const [note, setNote] = useState("");
   const [hoverRating, setHoverRating] = useState(0);
+  const [expandedPrayer, setExpandedPrayer] = useState<string | null>(null);
 
   const handleTogglePrayer = (prayerName: string, isLogged: boolean) => {
     if (isLogged) return;
@@ -79,30 +109,74 @@ const PrayerTimesPage: React.FC = () => {
         <div className="space-y-4">
           {prayerData?.times?.map((pt) => {
             const isLogged = logData?.prayers.includes(pt.name) || false;
+            const isExpanded = expandedPrayer === pt.name;
+            const rakaatInfo = RAKAAT_INFO[pt.name];
             
             return (
               <div 
                 key={pt.name} 
-                className={`bg-[var(--surface)] p-5 rounded-2xl border ${isLogged ? 'border-[var(--green)]/50' : 'border-[var(--border)]'} flex items-center justify-between transition-colors`}
+                className={`bg-[var(--surface)] rounded-2xl border ${isLogged ? 'border-[var(--green)]/50' : 'border-[var(--border)]'} overflow-hidden transition-all`}
               >
-                <div className="flex flex-col flex-1">
-                  <span className="font-amiri text-2xl text-[var(--gold)] rtl text-left pr-4">{pt.arabicName}</span>
-                  <span className="font-semibold text-lg">{pt.name}</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-xl">{pt.time}</span>
-                  <button 
-                    onClick={() => handleTogglePrayer(pt.name, isLogged)}
-                    disabled={isLogged}
-                    className="p-1 focus:outline-none"
+                <div className="p-5 flex items-center justify-between">
+                  <button
+                    onClick={() => setExpandedPrayer(isExpanded ? null : pt.name)}
+                    className="flex flex-col flex-1 text-left focus:outline-none"
                   >
-                    {isLogged ? (
-                      <CheckCircle2 size={32} className="text-[var(--green)]" />
-                    ) : (
-                      <Circle size={32} className="text-[var(--muted)] hover:text-[var(--gold)]" />
-                    )}
+                    <span className="font-amiri text-2xl text-[var(--gold)] rtl text-left pr-4">{pt.arabicName}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-lg">{pt.name}</span>
+                      <ChevronDown
+                        size={14}
+                        className={`text-[var(--muted)] transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                      />
+                    </div>
                   </button>
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-xl">{pt.time}</span>
+                    <button 
+                      onClick={() => handleTogglePrayer(pt.name, isLogged)}
+                      disabled={isLogged}
+                      className="p-1 focus:outline-none"
+                    >
+                      {isLogged ? (
+                        <CheckCircle2 size={32} className="text-[var(--green)]" />
+                      ) : (
+                        <Circle size={32} className="text-[var(--muted)] hover:text-[var(--gold)]" />
+                      )}
+                    </button>
+                  </div>
                 </div>
+
+                {/* Rakaat breakdown slide-down */}
+                {isExpanded && rakaatInfo && (
+                  <div className="border-t border-[var(--border)] bg-[var(--card)] px-5 py-4 animate-fade-in">
+                    <p className="text-xs text-[var(--muted)] uppercase tracking-wider mb-3">Rakaat Breakdown</p>
+                    <div className="space-y-2">
+                      {rakaatInfo.rows.map((row) => (
+                        <div key={row.label} className="flex items-center justify-between">
+                          <span className="text-sm text-[var(--text)]">{row.label}</span>
+                          <div className="flex items-center gap-2">
+                            <div className="flex gap-1">
+                              {Array.from({ length: row.count }).map((_, i) => (
+                                <div
+                                  key={i}
+                                  className={`w-2 h-2 rounded-full ${row.color.replace("text-", "bg-").replace("[var(--gold)]", "[var(--gold)]").replace("[var(--green)]", "[var(--green)]").replace("[var(--muted)]", "[var(--muted)]")}`}
+                                  style={{
+                                    backgroundColor: row.color.includes("gold") ? "var(--gold)" : row.color.includes("green") ? "var(--green)" : row.color.includes("9b59b6") ? "#9b59b6" : "var(--muted)"
+                                  }}
+                                />
+                              ))}
+                            </div>
+                            <span className={`text-sm font-semibold ${row.color}`}>{row.count}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-[var(--muted)] mt-3">
+                      Total: {rakaatInfo.rows.reduce((s, r) => s + r.count, 0)} rakaat
+                    </p>
+                  </div>
+                )}
               </div>
             );
           })}

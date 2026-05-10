@@ -97,6 +97,8 @@ const BADGES = [
   { id: "fajr", label: "Fajr Champion", emoji: "🌅", desc: "Log Fajr 7 days this week", check: (d: GrowthData) => d.salahLast7.filter(day => day.entries.some((e) => e.prayer === "Fajr")).length >= 7 },
   { id: "gifted", label: "Gifted", emoji: "🎁", desc: "Gift a dua to someone", check: (_d: GrowthData) => false },
   { id: "perfect", label: "Perfect Day", emoji: "🕌", desc: "All 5 prayers in one day", check: (d: GrowthData) => d.salahLast7.some(day => day.entries.length >= 5) },
+  { id: "ramadan", label: "Ramadan Warrior", emoji: "🌙", desc: "Log all 5 prayers for 3+ days in a row", check: (d: GrowthData) => d.salahLast7.filter(day => day.entries.length >= 5).length >= 3 },
+  { id: "quran_completer", label: "Quran Completer", emoji: "📗", desc: "Complete all 114 surahs", check: (d: GrowthData) => d.progress.filter(p => p.category?.toLowerCase().includes("quran")).length >= 114 },
 ];
 
 const PRAYER_ORDER = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];

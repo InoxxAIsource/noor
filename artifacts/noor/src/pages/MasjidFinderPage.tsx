@@ -16,6 +16,15 @@ const MasjidFinderPage: React.FC = () => {
   const [favourite, setFavourite] = useState<Masjid | null>(() => {
     try { return JSON.parse(localStorage.getItem("favMasjid") ?? "null"); } catch { return null; }
   });
+  const [filter, setFilter] = useState("All");
+
+  const FILTERS = ["All", "Sunni", "Shia", "Jama Masjid"];
+
+  const filterKeywords: Record<string, string[]> = {
+    "Sunni": ["sunni", "hanafi", "shafi", "maliki", "hanbali", "barelvi", "deobandi"],
+    "Shia": ["shia", "shi'a", "jafari", "ithna", "husain", "hussain"],
+    "Jama Masjid": ["jama", "jami", "jamia", "friday", "central"],
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -48,11 +57,34 @@ const MasjidFinderPage: React.FC = () => {
     }).catch(() => {});
   };
 
+  const filteredMosques = filter === "All"
+    ? mosques
+    : mosques.filter(m => {
+        const nameLower = m.name.toLowerCase();
+        return filterKeywords[filter]?.some(kw => nameLower.includes(kw));
+      });
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 flex flex-col">
       <div className="sticky top-0 z-10 bg-[var(--bg)]/95 backdrop-blur-md pt-6 pb-3 px-4 border-b border-[var(--border)]">
         <h1 className="font-cinzel text-3xl text-[var(--gold)] text-center">Masjid Finder</h1>
         <p className="text-center text-[var(--muted)] text-sm mt-1">Mosques near you</p>
+        {/* Filter chips */}
+        <div className="flex gap-2 mt-3 overflow-x-auto pb-1 scrollbar-hide">
+          {FILTERS.map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors flex-shrink-0 ${
+                filter === f
+                  ? "bg-[var(--green)] text-white border-[var(--green)]"
+                  : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--green)]/50"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -102,9 +134,12 @@ const MasjidFinderPage: React.FC = () => {
         {mosques.length > 0 && (
           <div className="space-y-3">
             <h2 className="font-semibold text-[var(--muted)] text-sm uppercase tracking-wider">
-              {mosques.length} mosques within 5km
+              {filteredMosques.length} mosque{filteredMosques.length !== 1 ? "s" : ""} {filter === "All" ? "within 5km" : `matching "${filter}"`}
             </h2>
-            {mosques.map((m, i) => (
+            {filteredMosques.length === 0 && (
+              <p className="text-center text-[var(--muted)] py-6 text-sm">No {filter} mosques found nearby. Try "All".</p>
+            )}
+            {filteredMosques.map((m, i) => (
               <div key={i} className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4">
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 rounded-full bg-[var(--green)]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
