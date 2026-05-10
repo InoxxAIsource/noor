@@ -33,6 +33,10 @@ import RoomsPage from "@/pages/RoomsPage";
 import RoomPage from "@/pages/RoomPage";
 import JournalPage from "@/pages/JournalPage";
 import GiftPage from "@/pages/GiftPage";
+import GrowthPage from "@/pages/GrowthPage";
+import HalaqahPage from "@/pages/HalaqahPage";
+import HalaqahGroupPage from "@/pages/HalaqahGroupPage";
+import HalaqahAdminPage from "@/pages/HalaqahAdminPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -71,6 +75,10 @@ const router = createBrowserRouter(
         { path: "/sadqa-guide", element: <SadqaGuidePage /> },
         { path: "/wudu-guide", element: <WuduGuidePage /> },
         { path: "/salah-guide", element: <SalahGuidePage /> },
+        { path: "/growth", element: <GrowthPage /> },
+        { path: "/halaqah", element: <HalaqahPage /> },
+        { path: "/halaqah/:code", element: <HalaqahGroupPage /> },
+        { path: "/halaqah/:code/admin", element: <HalaqahAdminPage /> },
       ],
     },
     { path: "*", element: <NotFound /> },

@@ -15,6 +15,8 @@ import zakatRouter from "./zakat.js";
 import roomsRouter from "./rooms.js";
 import giftsRouter from "./gifts.js";
 import journalRouter from "./journal.js";
+import halaqahRouter from "./halaqah.js";
+import growthRouter from "./growth.js";
 
 const router: IRouter = Router();
 
@@ -34,5 +36,7 @@ router.use(zakatRouter);
 router.use(roomsRouter);
 router.use(giftsRouter);
 router.use(journalRouter);
+router.use(halaqahRouter);
+router.use(growthRouter);
 
 export default router;

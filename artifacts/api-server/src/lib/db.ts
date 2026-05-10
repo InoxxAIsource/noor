@@ -238,3 +238,30 @@ export async function getGift(token: string): Promise<unknown | null> {
 export async function setGift(token: string, data: unknown): Promise<void> {
   await dbSet(`gift:${token}`, data);
 }
+
+// ─── Halaqah helpers ──────────────────────────────────────────────────────────
+
+export async function getHalaqah(code: string): Promise<unknown | null> {
+  return dbGet(`halaqah:${code}`);
+}
+
+export async function setHalaqah(code: string, data: unknown): Promise<void> {
+  await dbSet(`halaqah:${code}`, data);
+}
+
+// ─── Extended streak fields ───────────────────────────────────────────────────
+
+export async function getStreakExtended(userId: string): Promise<{
+  fajrStreak: number;
+  ramadanStreak: number;
+  perfectDays: number;
+} | null> {
+  return dbGet(`streakExt:${userId}`);
+}
+
+export async function setStreakExtended(
+  userId: string,
+  data: { fajrStreak: number; ramadanStreak: number; perfectDays: number }
+): Promise<void> {
+  await dbSet(`streakExt:${userId}`, data);
+}

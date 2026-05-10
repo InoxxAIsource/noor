@@ -6,7 +6,7 @@ import {
 } from "@workspace/api-client-react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2, Circle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PrayerTimesPage: React.FC = () => {
@@ -19,16 +19,22 @@ const PrayerTimesPage: React.FC = () => {
 
   const [ratingModalOpen, setRatingModalOpen] = useState(false);
   const [selectedPrayer, setSelectedPrayer] = useState("");
+  const [rating, setRating] = useState(3);
+  const [note, setNote] = useState("");
+  const [hoverRating, setHoverRating] = useState(0);
 
   const handleTogglePrayer = (prayerName: string, isLogged: boolean) => {
-    if (isLogged) return; // For MVP, we don't un-log easily
+    if (isLogged) return;
     setSelectedPrayer(prayerName);
+    setRating(3);
+    setNote("");
+    setHoverRating(0);
     setRatingModalOpen(true);
   };
 
-  const submitLog = (rating: number) => {
+  const submitLog = () => {
     logSalahMutation.mutate(
-      { data: { prayer: selectedPrayer, date: todayStr, khushooRating: rating } },
+      { data: { prayer: selectedPrayer, date: todayStr, khushooRating: rating, note: note || undefined } },
       {
         onSuccess: () => {
           refetchLog();
@@ -39,6 +45,14 @@ const PrayerTimesPage: React.FC = () => {
   };
 
   const loggedCount = logData?.prayers.length || 0;
+
+  const PRAYER_LABELS: Record<string, string> = {
+    1: "Distracted",
+    2: "Somewhat focused",
+    3: "Focused",
+    4: "Very focused",
+    5: "Full khushoo",
+  };
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] p-6 pb-24 animate-fade-in">
@@ -99,21 +113,51 @@ const PrayerTimesPage: React.FC = () => {
       {ratingModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
           <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 w-full max-w-sm">
-            <h3 className="font-cinzel text-xl text-[var(--gold)] text-center mb-2">Log {selectedPrayer}</h3>
-            <p className="text-center text-[var(--muted)] text-sm mb-6">How was your focus (Khushoo) during this prayer?</p>
+            <h3 className="font-cinzel text-xl text-[var(--gold)] text-center mb-1">Log {selectedPrayer}</h3>
+            <p className="text-center text-[var(--muted)] text-sm mb-5">How was your khushoo (focus)?</p>
             
-            <div className="flex justify-center gap-2 mb-8">
-              {[1, 2, 3, 4, 5].map(rating => (
-                <button 
-                  key={rating}
-                  onClick={() => submitLog(rating)}
-                  className="w-12 h-12 rounded-full bg-[var(--card)] border border-[var(--border)] text-[var(--gold)] hover:bg-[var(--green)] hover:text-white hover:border-[var(--green)] transition-colors text-xl"
+            {/* Star rating */}
+            <div className="flex justify-center gap-2 mb-2">
+              {[1, 2, 3, 4, 5].map(r => (
+                <button
+                  key={r}
+                  onClick={() => setRating(r)}
+                  onMouseEnter={() => setHoverRating(r)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className="focus:outline-none transition-transform hover:scale-110"
                 >
-                  ⭐
+                  <Star
+                    size={32}
+                    className={`transition-colors ${r <= (hoverRating || rating) ? "text-[var(--gold)] fill-[var(--gold)]" : "text-[var(--muted)]"}`}
+                  />
                 </button>
               ))}
             </div>
-            
+            <p className="text-center text-xs text-[var(--green)] mb-5 h-4">
+              {PRAYER_LABELS[hoverRating || rating] || ""}
+            </p>
+
+            {/* Note */}
+            <div className="mb-5">
+              <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">
+                What distracted me? (optional)
+              </label>
+              <textarea
+                value={note}
+                onChange={e => setNote(e.target.value)}
+                placeholder="Write a short reflection..."
+                rows={2}
+                className="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm text-[var(--text)] placeholder-[var(--muted)] focus:outline-none focus:border-[var(--green)] resize-none"
+              />
+            </div>
+
+            <Button
+              onClick={submitLog}
+              disabled={logSalahMutation.isPending}
+              className="w-full bg-[var(--green)] hover:bg-[var(--green)]/90 text-white font-semibold rounded-xl mb-2"
+            >
+              {logSalahMutation.isPending ? "Saving..." : "Save Prayer"}
+            </Button>
             <Button 
               variant="ghost" 
               className="w-full text-[var(--muted)]"

@@ -99,4 +99,31 @@ router.get("/salah/log", requireAuth, async (req: AuthRequest, res: Response) =>
   res.json({ date, prayers });
 });
 
+// POST /api/salah/khushoo — update/add khushoo note for a logged prayer
+router.post("/salah/khushoo", requireAuth, async (req: AuthRequest, res: Response) => {
+  const { prayer, date, rating, note } = req.body as {
+    prayer: string;
+    date: string;
+    rating: number;
+    note?: string;
+  };
+
+  if (!prayer || !date || !rating) {
+    res.status(400).json({ error: "prayer, date, and rating required" });
+    return;
+  }
+
+  const entry = {
+    prayer,
+    date,
+    userId: req.userId!,
+    khushooRating: rating,
+    note: note || null,
+    loggedAt: Date.now(),
+  };
+
+  await logSalah(req.userId!, date, entry);
+  res.json(entry);
+});
+
 export default router;
