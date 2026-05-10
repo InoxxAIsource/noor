@@ -129,6 +129,8 @@ const HomePage: React.FC = () => {
   const isEid = hijriMonth === "Shawwal" && hijriDay === 1;
   const isLast10 = isRamadan && hijriDay >= 21;
   const isNight27 = isRamadan && hijriDay === 27;
+  const u = user as Record<string, unknown> | null;
+  const isShia = u?.["madhab"] === "shia";
 
   const ramadanDua = RAMADAN_DUAS.find(d => d.day === hijriDay) || RAMADAN_DUAS[0]!;
   const ramadanPortionSurah = QURAN_PORTION_SURAHS[hijriDay] || 1;
@@ -233,6 +235,36 @@ const HomePage: React.FC = () => {
             <p className="font-amiri text-xl text-[var(--gold)] rtl text-right mb-2 leading-relaxed">{ramadanDua.arabic}</p>
             <p className="text-xs text-[var(--muted)] italic mb-1">{ramadanDua.transliteration}</p>
             <p className="text-xs text-[var(--text)]/80">{ramadanDua.meaning}</p>
+          </div>
+        )}
+
+        {/* Shia Ramadan extras */}
+        {isRamadan && isShia && (
+          <div className="bg-[#1a0d00] border border-[var(--gold)]/40 rounded-2xl p-5 space-y-3">
+            <p className="font-cinzel text-[var(--gold)] text-sm">Shia Amaal for Night {hijriDay}</p>
+
+            {/* Dua Iftitah reminder every night */}
+            <div className="bg-[var(--card)]/60 rounded-xl p-3">
+              <p className="text-xs text-[var(--green)] font-medium mb-1">Dua Iftitah — Tonight</p>
+              <p className="font-amiri text-lg text-[var(--gold)] rtl text-right leading-relaxed">اللَّهُمَّ إِنِّي أَفْتَتِحُ الثَّنَاءَ بِحَمْدِكَ</p>
+              <p className="text-[10px] text-[var(--muted)] mt-1">Recommended every night of Ramadan — recite after Isha</p>
+            </div>
+
+            {/* Special amaal for specific nights */}
+            {[1, 19, 21, 23, 27].includes(hijriDay) && (
+              <div className="bg-[var(--gold)]/10 border border-[var(--gold)]/30 rounded-xl p-3">
+                <p className="text-xs text-[var(--gold)] font-semibold mb-1">
+                  Special Night {hijriDay} Amaal
+                </p>
+                <p className="text-xs text-[var(--text)]/80">
+                  {hijriDay === 1 && "Recite Dua Iftitah, Dua Jawshan Kabeer and perform 2 rak'at nafilah"}
+                  {hijriDay === 19 && "Night of Qadr possibility — perform ghusl, recite Ziyarat Imam Ali (AS), 100× Astaghfirullah"}
+                  {hijriDay === 21 && "Probable Laylatul Qadr — recite Dua Jawshan Kabir and Surah Ankabut (29), Rum (30), Dukhan (44)"}
+                  {hijriDay === 23 && "Another probable Laylatul Qadr — recite Dua Iftitah and 1000× Astaghfirullah after midnight"}
+                  {hijriDay === 27 && "Laylatul Qadr — stay awake, perform ghusl, recite Surah Qadr 1000×, Dua Jawshan Sagheer"}
+                </p>
+              </div>
+            )}
           </div>
         )}
 
