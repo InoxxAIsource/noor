@@ -266,6 +266,65 @@ export async function setStreakExtended(
   await dbSet(`streakExt:${userId}`, data);
 }
 
+// ─── Gold price cache ─────────────────────────────────────────────────────────
+
+export interface GoldPriceCache {
+  pricePerGramINR: number;
+  pricePerGramUSD: number;
+  updatedAt: number;
+}
+
+export async function getGoldPriceCache(): Promise<GoldPriceCache | null> {
+  return dbGet<GoldPriceCache>("goldPrice:latest");
+}
+
+export async function setGoldPriceCache(data: GoldPriceCache): Promise<void> {
+  await dbSet("goldPrice:latest", data);
+}
+
+// ─── Masjid cache ─────────────────────────────────────────────────────────────
+
+export async function getMasjidCache(key: string): Promise<{ mosques: unknown[]; cachedAt: number } | null> {
+  return dbGet(`masjidCache:${key}`);
+}
+
+export async function setMasjidCache(key: string, data: { mosques: unknown[]; cachedAt: number }): Promise<void> {
+  await dbSet(`masjidCache:${key}`, data);
+}
+
+// ─── Waitlist ─────────────────────────────────────────────────────────────────
+
+export async function addToWaitlist(email: string): Promise<void> {
+  const existing = await dbGet<string[]>("waitlist:emails") ?? [];
+  if (!existing.includes(email)) {
+    existing.push(email);
+    await dbSet("waitlist:emails", existing);
+  }
+}
+
+export async function getWaitlist(): Promise<string[]> {
+  return (await dbGet<string[]>("waitlist:emails")) ?? [];
+}
+
+// ─── Stats helpers ─────────────────────────────────────────────────────────────
+
+export async function getAllUserIds(): Promise<string[]> {
+  const keys = await dbList("users:");
+  return keys.map(k => k.replace("users:", ""));
+}
+
+export async function getTotalAIUsageToday(): Promise<number> {
+  const today = new Date().toISOString().split("T")[0]!;
+  const keys = await dbList(`aiUsage:`);
+  const todayKeys = keys.filter(k => k.includes(today));
+  let total = 0;
+  for (const k of todayKeys) {
+    const val = await dbGet<number>(k);
+    total += typeof val === "number" ? val : 0;
+  }
+  return total;
+}
+
 // ─── Blog helpers ──────────────────────────────────────────────────────────────
 
 export interface BlogPostRecord {

@@ -39,6 +39,9 @@ import HalaqahGroupPage from "@/pages/HalaqahGroupPage";
 import HalaqahAdminPage from "@/pages/HalaqahAdminPage";
 import ForbiddenNamesPage from "@/pages/ForbiddenNamesPage";
 import TrendingNamesPage from "@/pages/TrendingNamesPage";
+import AdminPage from "@/pages/AdminPage";
+import SubscribePage from "@/pages/SubscribePage";
+import DownloadPage from "@/pages/DownloadPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -49,6 +52,9 @@ const router = createBrowserRouter(
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
     { path: "/gift/:token", element: <GiftPage /> },
+    { path: "/subscribe", element: <SubscribePage /> },
+    { path: "/download", element: <DownloadPage /> },
+    { path: "/admin", element: <AdminPage /> },
     {
       element: <ProtectedRoute />,
       children: [

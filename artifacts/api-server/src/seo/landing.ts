@@ -118,7 +118,77 @@ ${faqHtml(faqs)}
 });
 
 router.get("/download", (_req, res) => {
-  res.redirect(302, "/register");
+  const head = seoHead({
+    title: "Download Noor — Islamic Prayer App | Free PWA for Android & iOS",
+    description: "Download Noor Islamic prayer app. Free PWA — works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
+    canonical: "/download",
+  });
+
+  const body = `
+<div style="text-align:center;padding:40px 20px 24px">
+  <div style="font-size:4rem;margin-bottom:12px">🌙</div>
+  <h1>Download Noor — Islamic Prayer App</h1>
+  <p style="color:#4a7a4a;font-size:1rem;max-width:420px;margin:0 auto 24px;line-height:1.6">
+    Your personal Islamic companion. Remember Allah — every day. Free forever, no ads.
+  </p>
+
+  <div style="background:rgba(0,165,80,0.1);border:1px solid rgba(0,165,80,0.3);border-radius:10px;padding:14px 24px;display:inline-block;margin-bottom:28px">
+    <p style="color:#00a550;margin:0;font-size:14px;font-weight:bold">✅ Available now as a PWA — works on any device</p>
+  </div>
+
+  <div>
+    <a href="/register" class="cta-btn" style="font-size:1.1rem;padding:16px 40px;display:inline-block">📲 Install Noor Free →</a>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:700px;margin:32px auto;padding:0 16px">
+  ${[
+    ["🕌","Prayer Times","Live times for 80+ cities"],
+    ["📖","Quran Reader","All 114 surahs + audio"],
+    ["🤲","Duas Library","200+ authentic supplications"],
+    ["🧭","Qibla Compass","Accurate direction anywhere"],
+    ["📿","Digital Tasbih","With vibration & progress ring"],
+    ["🕌","Masjid Finder","Nearby mosques on map"],
+    ["🤖","Noor AI","Islamic companion (20 req/day free)"],
+    ["📊","Growth Tracker","Streaks, badges, journal"],
+  ].map(([icon, title, desc]) => `
+    <div class="card">
+      <p style="font-size:1.8rem;margin:0 0 6px">${icon}</p>
+      <p style="color:#ffd700;font-family:Cinzel,serif;font-size:0.85rem;margin:0 0 4px">${title}</p>
+      <p style="color:#4a7a4a;font-size:12px;margin:0">${desc}</p>
+    </div>
+  `).join("")}
+</div>
+
+<div style="max-width:500px;margin:0 auto 32px;padding:0 16px">
+  <h2>How to Install</h2>
+  <div class="card" style="margin-bottom:12px">
+    <p style="color:#00a550;font-weight:bold;margin:0 0 6px">Android (Chrome)</p>
+    <p style="color:#a0c8a0;font-size:14px;margin:0">Tap the ⋮ menu → "Install Noor" → Install. The app appears on your home screen like a native app.</p>
+  </div>
+  <div class="card">
+    <p style="color:#00a550;font-weight:bold;margin:0 0 6px">iPhone / iPad (Safari)</p>
+    <p style="color:#a0c8a0;font-size:14px;margin:0">Tap Share button → "Add to Home Screen" → Add. Works on iOS 16.4+ with full PWA support.</p>
+  </div>
+</div>
+
+<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px">
+  <div style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:12px;padding:14px 28px;opacity:0.6;text-align:center">
+    <p style="color:#e8f5e8;font-weight:bold;margin:0 0 4px;font-size:14px">🍎 App Store</p>
+    <p style="color:#4a7a4a;font-size:12px;margin:0">Coming soon</p>
+  </div>
+  <div style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:12px;padding:14px 28px;opacity:0.6;text-align:center">
+    <p style="color:#e8f5e8;font-weight:bold;margin:0 0 4px;font-size:14px">🤖 Google Play</p>
+    <p style="color:#4a7a4a;font-size:12px;margin:0">Coming soon</p>
+  </div>
+</div>
+
+${ctaBlock()}
+`;
+
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("Cache-Control", "public, max-age=3600");
+  res.send(page(head, body));
 });
 
 export default router;

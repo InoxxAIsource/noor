@@ -1,7 +1,9 @@
 import { Router } from "express";
 import type { Response } from "express";
 import { requireAuth, type AuthRequest } from "../middleware/auth.js";
-import { getUser, setUser } from "../lib/db.js";
+import { getUser, setUser, getMasjidCache, setMasjidCache } from "../lib/db.js";
+
+const MASJID_CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const router = Router();
 
@@ -12,6 +14,17 @@ router.get("/masjid/nearby", async (req, res) => {
     res.status(400).json({ error: "lat and lng required" });
     return;
   }
+
+  const cacheKey = `${Math.round(lat * 10) / 10}:${Math.round(lng * 10) / 10}`;
+
+  try {
+    const cached = await getMasjidCache(cacheKey);
+    if (cached && Date.now() - cached.cachedAt < MASJID_CACHE_TTL) {
+      res.json(cached.mosques);
+      return;
+    }
+  } catch { /* ignore cache miss */ }
+
   try {
     const query = `[out:json];node["amenity"="place_of_worship"]["religion"="muslim"](around:5000,${lat},${lng});out;`;
     const resp = await fetch("https://overpass-api.de/api/interpreter", {
@@ -45,6 +58,7 @@ router.get("/masjid/nearby", async (req, res) => {
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 20);
 
+    await setMasjidCache(cacheKey, { mosques, cachedAt: Date.now() }).catch(() => {});
     res.json(mosques);
   } catch {
     res.json([]);
