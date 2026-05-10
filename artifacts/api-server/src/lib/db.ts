@@ -226,6 +226,11 @@ export async function setRoom(code: string, data: unknown): Promise<void> {
   await dbSet(`room:${code}`, data);
 }
 
+export async function dbListRooms(): Promise<string[]> {
+  const data = await dbGet<string[]>("room:__active__");
+  return data ?? [];
+}
+
 export async function getGift(token: string): Promise<unknown | null> {
   return dbGet(`gift:${token}`);
 }

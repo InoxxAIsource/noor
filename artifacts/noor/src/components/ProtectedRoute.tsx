@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "./BottomNav";
+import AIGuide from "./AIGuide";
 
 export const ProtectedRoute: React.FC = () => {
   const { isLoggedIn, user, isLoading } = useAuth();
@@ -20,6 +21,7 @@ export const ProtectedRoute: React.FC = () => {
   }
 
   const hideBottomNav = location.pathname === "/onboarding";
+  const hidePlayer = location.pathname.startsWith("/player/");
 
   return (
     <div className="flex flex-col min-h-screen pb-20">
@@ -27,6 +29,7 @@ export const ProtectedRoute: React.FC = () => {
         <Outlet />
       </main>
       {!hideBottomNav && <BottomNav />}
+      {!hideBottomNav && !hidePlayer && <AIGuide />}
     </div>
   );
 };

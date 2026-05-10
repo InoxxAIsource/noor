@@ -13,6 +13,7 @@ import PrayerTimesPage from "@/pages/PrayerTimesPage";
 import DuasPage from "@/pages/DuasPage";
 import NamesPage from "@/pages/NamesPage";
 import PlayerPage from "@/pages/PlayerPage";
+import SessionsPage from "@/pages/SessionsPage";
 import TasbihPage from "@/pages/TasbihPage";
 import ProfilePage from "@/pages/ProfilePage";
 import QuranPage from "@/pages/QuranPage";
@@ -28,6 +29,10 @@ import FarzGuidePage from "@/pages/FarzGuidePage";
 import SadqaGuidePage from "@/pages/SadqaGuidePage";
 import WuduGuidePage from "@/pages/WuduGuidePage";
 import SalahGuidePage from "@/pages/SalahGuidePage";
+import RoomsPage from "@/pages/RoomsPage";
+import RoomPage from "@/pages/RoomPage";
+import JournalPage from "@/pages/JournalPage";
+import GiftPage from "@/pages/GiftPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -37,6 +42,7 @@ const router = createBrowserRouter(
     { path: "/", element: <Navigate to="/home" replace /> },
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
+    { path: "/gift/:token", element: <GiftPage /> },
     {
       element: <ProtectedRoute />,
       children: [
@@ -46,8 +52,12 @@ const router = createBrowserRouter(
         { path: "/duas", element: <DuasPage /> },
         { path: "/names", element: <NamesPage /> },
         { path: "/player/:id", element: <PlayerPage /> },
+        { path: "/sessions", element: <SessionsPage /> },
         { path: "/tasbih", element: <TasbihPage /> },
         { path: "/profile", element: <ProfilePage /> },
+        { path: "/journal", element: <JournalPage /> },
+        { path: "/rooms", element: <RoomsPage /> },
+        { path: "/room/:code", element: <RoomPage /> },
         { path: "/quran", element: <QuranPage /> },
         { path: "/quran/:number", element: <QuranSurahPage /> },
         { path: "/mood", element: <MoodPage /> },

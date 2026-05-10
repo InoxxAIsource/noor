@@ -12,6 +12,9 @@ import aiRouter from "./ai.js";
 import namesOfAllahRouter from "./namesOfAllah.js";
 import masjidRouter from "./masjid.js";
 import zakatRouter from "./zakat.js";
+import roomsRouter from "./rooms.js";
+import giftsRouter from "./gifts.js";
+import journalRouter from "./journal.js";
 
 const router: IRouter = Router();
 
@@ -28,5 +31,8 @@ router.use(aiRouter);
 router.use(namesOfAllahRouter);
 router.use(masjidRouter);
 router.use(zakatRouter);
+router.use(roomsRouter);
+router.use(giftsRouter);
+router.use(journalRouter);
 
 export default router;

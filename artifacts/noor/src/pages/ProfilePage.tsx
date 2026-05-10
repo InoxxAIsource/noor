@@ -1,160 +1,248 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useGetMyStreak, useAiCompanion } from "@workspace/api-client-react";
-import { format } from "date-fns";
-import { LogOut, Send, Settings, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useGetMyStreak } from "@workspace/api-client-react";
+import { LogOut, Save, MapPin, BookOpen, Link as LinkIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProfilePage: React.FC = () => {
   const { user, logout } = useAuth();
   const { data: streakData } = useGetMyStreak();
-  const aiMutation = useAiCompanion();
+  const token = localStorage.getItem("noor_token");
 
-  const [aiMessage, setAiMessage] = useState("");
-  const [chatHistory, setChatHistory] = useState<{role: 'user'|'ai', content: string}[]>([
-    { role: 'ai', content: "As-salamu alaykum. I am your AI companion for Islamic guidance based on Quran and Sunnah. How can I help you today?" }
-  ]);
-  const [chatOpen, setChatOpen] = useState(false);
+  const u = user as Record<string, unknown> | null;
+
+  const [city, setCity] = useState((u?.["city"] as string) || "");
+  const [madhab, setMadhab] = useState((u?.["madhab"] as string) || "sunni");
+  const [sunniMadhab, setSunniMadhab] = useState((u?.["sunniMadhab"] as string) || "hanafi");
+  const [language, setLanguage] = useState((u?.["language"] as string) || "en");
+  const [reminderHour, setReminderHour] = useState((u?.["reminderHour"] as number) ?? 7);
+  const [weeklyGoal, setWeeklyGoal] = useState((u?.["weeklyGoal"] as number) ?? 5);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [detectingGps, setDetectingGps] = useState(false);
 
   const getInitials = (name?: string) => {
     if (!name) return "N";
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    return name.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase();
   };
 
-  const handleSendAi = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!aiMessage.trim()) return;
+  const detectGPS = () => {
+    setDetectingGps(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=en`
+          );
+          const data = await res.json() as { city?: string; locality?: string };
+          setCity(data.city || data.locality || "");
+        } catch { /* ignore */ }
+        setDetectingGps(false);
+      },
+      () => setDetectingGps(false)
+    );
+  };
 
-    const newHistory = [...chatHistory, { role: 'user' as const, content: aiMessage }];
-    setChatHistory(newHistory);
-    setAiMessage("");
+  const saveSettings = async () => {
+    setSaving(true);
+    try {
+      await fetch("/api/auth/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ city, madhab, sunniMadhab, language, reminderHour, weeklyGoal }),
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch { /* ignore */ }
+    finally { setSaving(false); }
+  };
 
-    // Build context string from history
-    const context = chatHistory.map(msg => `${msg.role}: ${msg.content}`).join("\n");
-
-    aiMutation.mutate({ data: { message: aiMessage, context } }, {
-      onSuccess: (data) => {
-        setChatHistory([...newHistory, { role: 'ai', content: data.reply }]);
-      }
-    });
+  const fmt2 = (h: number) => {
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 === 0 ? 12 : h % 12;
+    return `${h12}:00 ${ampm}`;
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 p-6 animate-fade-in">
-      {/* Header Profile */}
-      <div className="flex items-center gap-6 mb-10 bg-[var(--surface)] p-6 rounded-3xl border border-[var(--border)] shadow-lg">
-        <div className="w-20 h-20 rounded-full bg-[var(--green)] flex items-center justify-center text-2xl font-cinzel font-bold border-[3px] border-[var(--gold)]">
-          {getInitials(user?.name)}
-        </div>
-        <div>
-          <h1 className="font-cinzel text-2xl text-[var(--gold)]">{user?.name}</h1>
-          <p className="text-[var(--muted)]">{user?.email}</p>
-        </div>
-      </div>
-
-      {/* Stats Grid */}
-      <h2 className="font-cinzel text-xl text-[var(--gold)] mb-4">Your Journey</h2>
-      <div className="grid grid-cols-2 gap-4 mb-10">
-        <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)] text-center">
-          <p className="text-[var(--muted)] text-xs uppercase tracking-wider mb-1">Current Streak</p>
-          <p className="font-cinzel text-3xl text-[var(--green)]">{streakData?.currentStreak || 0}</p>
-        </div>
-        <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)] text-center">
-          <p className="text-[var(--muted)] text-xs uppercase tracking-wider mb-1">Longest Streak</p>
-          <p className="font-cinzel text-3xl text-[var(--gold)]">{streakData?.longestStreak || 0}</p>
-        </div>
-        <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)] text-center">
-          <p className="text-[var(--muted)] text-xs uppercase tracking-wider mb-1">Total Prayers</p>
-          <p className="font-cinzel text-3xl text-white">{streakData?.totalPrayers || 0}</p>
-        </div>
-        <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)] text-center">
-          <p className="text-[var(--muted)] text-xs uppercase tracking-wider mb-1">Minutes Listening</p>
-          <p className="font-cinzel text-3xl text-white">{streakData?.totalMinutes || 0}</p>
-        </div>
-      </div>
-
-      {/* AI Companion */}
-      <div className="mb-10">
-        <button 
-          onClick={() => setChatOpen(!chatOpen)}
-          className="w-full bg-gradient-to-r from-[var(--surface)] to-[var(--card)] p-5 rounded-2xl border border-[var(--green)] flex justify-between items-center text-left"
-        >
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 animate-fade-in">
+      {/* Header */}
+      <div className="p-6 pb-0">
+        <div className="flex items-center gap-5 mb-6 bg-[var(--surface)] p-5 rounded-3xl border border-[var(--border)]">
+          <div className="w-16 h-16 rounded-full bg-[var(--green)] flex items-center justify-center font-cinzel text-xl font-bold border-[3px] border-[var(--gold)] shrink-0">
+            {getInitials(u?.["name"] as string)}
+          </div>
           <div>
-            <h2 className="font-cinzel text-xl text-[var(--gold)]">AI Islamic Companion</h2>
-            <p className="text-sm text-[var(--muted)]">Ask questions based on Quran & Sunnah</p>
+            <h1 className="font-cinzel text-xl text-[var(--gold)]">{u?.["name"] as string}</h1>
+            <p className="text-[var(--muted)] text-sm">{u?.["email"] as string}</p>
+            <p className="text-xs text-[var(--green)] mt-1">Beta — Free for now ✓</p>
           </div>
-          <div className={`w-8 h-8 rounded-full bg-[var(--green)]/20 flex items-center justify-center text-[var(--green)] transition-transform ${chatOpen ? 'rotate-180' : ''}`}>
-            ▼
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {[
+            { label: "Streak", value: `${streakData?.currentStreak || 0}🔥`, color: "text-[var(--gold)]" },
+            { label: "Longest", value: `${streakData?.longestStreak || 0} days`, color: "text-[var(--green)]" },
+            { label: "Total Sessions", value: streakData?.totalPrayers || 0, color: "text-white" },
+            { label: "Minutes Listened", value: streakData?.totalMinutes || 0, color: "text-white" },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-[var(--surface)] p-4 rounded-2xl border border-[var(--border)] text-center">
+              <p className="text-[var(--muted)] text-[10px] uppercase tracking-wider mb-1">{stat.label}</p>
+              <p className={`font-cinzel text-2xl ${stat.color}`}>{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Quick links */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <Link to="/journal" className="flex items-center gap-3 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 hover:border-[var(--green)]/50 transition-colors">
+            <BookOpen size={20} className="text-[var(--green)]" />
+            <div>
+              <p className="text-sm font-semibold">My Journal</p>
+              <p className="text-[10px] text-[var(--muted)]">Reflections</p>
+            </div>
+          </Link>
+          <Link to="/rooms" className="flex items-center gap-3 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 hover:border-[var(--green)]/50 transition-colors">
+            <span className="text-xl">🕌</span>
+            <div>
+              <p className="text-sm font-semibold">Prayer Rooms</p>
+              <p className="text-[10px] text-[var(--muted)]">Pray together</p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Settings form */}
+        <h2 className="font-cinzel text-lg text-[var(--gold)] mb-4">Settings</h2>
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 space-y-5 mb-6">
+          {/* Language */}
+          <div>
+            <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">Language</label>
+            <div className="flex gap-2">
+              {[["en", "English"], ["ur", "Urdu"], ["ar", "Arabic"]].map(([code, label]) => (
+                <button
+                  key={code}
+                  onClick={() => setLanguage(code)}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                    language === code
+                      ? "bg-[var(--green)] text-white border-[var(--green)]"
+                      : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--green)]/50"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Islamic tradition */}
+          <div>
+            <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">Islamic Tradition</label>
+            <div className="flex gap-2">
+              {[["sunni", "Sunni"], ["shia", "Shia"], ["general", "Just Muslim"]].map(([code, label]) => (
+                <button
+                  key={code}
+                  onClick={() => setMadhab(code)}
+                  className={`flex-1 py-2 rounded-xl text-xs font-medium border transition-colors ${
+                    madhab === code
+                      ? "bg-[var(--green)] text-white border-[var(--green)]"
+                      : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--green)]/50"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Madhab (if Sunni) */}
+          {madhab === "sunni" && (
+            <div>
+              <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">Madhab</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[["hanafi", "Hanafi"], ["shafii", "Shafi'i"], ["maliki", "Maliki"], ["hanbali", "Hanbali"]].map(([code, label]) => (
+                  <button
+                    key={code}
+                    onClick={() => setSunniMadhab(code)}
+                    className={`py-2 rounded-xl text-sm border transition-colors ${
+                      sunniMadhab === code
+                        ? "bg-[var(--green)] text-white border-[var(--green)]"
+                        : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--green)]/50"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* City */}
+          <div>
+            <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">City</label>
+            <div className="flex gap-2">
+              <input
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="e.g. London"
+                className="flex-1 bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-sm text-[var(--text)] placeholder-[var(--muted)] focus:outline-none focus:border-[var(--green)]"
+              />
+              <button
+                onClick={detectGPS}
+                disabled={detectingGps}
+                className="w-10 h-10 bg-[var(--card)] border border-[var(--border)] rounded-xl flex items-center justify-center text-[var(--green)] disabled:opacity-50 hover:border-[var(--green)] transition-colors"
+                title="Detect from GPS"
+              >
+                {detectingGps ? <span className="animate-spin text-xs">⌛</span> : <MapPin size={16} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Reminder time */}
+          <div>
+            <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">
+              Daily reminder — {fmt2(reminderHour)}
+            </label>
+            <input
+              type="range" min="4" max="23" value={reminderHour}
+              onChange={(e) => setReminderHour(parseInt(e.target.value))}
+              className="w-full accent-[var(--green)]"
+            />
+            <div className="flex justify-between text-[10px] text-[var(--muted)] mt-1">
+              <span>4 AM</span><span>11 PM</span>
+            </div>
+          </div>
+
+          {/* Weekly goal */}
+          <div>
+            <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">
+              Weekly goal — {weeklyGoal} day{weeklyGoal !== 1 ? "s" : ""}
+            </label>
+            <input
+              type="range" min="1" max="7" value={weeklyGoal}
+              onChange={(e) => setWeeklyGoal(parseInt(e.target.value))}
+              className="w-full accent-[var(--gold)]"
+            />
+            <div className="flex justify-between text-[10px] text-[var(--muted)] mt-1">
+              <span>1</span><span>7</span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={saveSettings}
+          disabled={saving}
+          className="w-full bg-[var(--green)] text-white py-4 rounded-2xl font-cinzel text-base font-semibold mb-4 flex items-center justify-center gap-2 hover:bg-[var(--green)]/90 transition-colors disabled:opacity-60"
+        >
+          {saved ? "✓ Saved!" : saving ? "Saving..." : <><Save size={18} /> Save Settings</>}
         </button>
 
-        {chatOpen && (
-          <div className="mt-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 flex flex-col h-96">
-            <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
-              {chatHistory.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] p-3 rounded-xl text-sm leading-relaxed ${
-                    msg.role === 'user' 
-                      ? 'bg-[var(--green)] text-white rounded-br-sm' 
-                      : 'bg-[var(--card)] border border-[var(--border)] border-l-4 border-l-[var(--green)] rounded-bl-sm'
-                  }`}>
-                    {msg.content}
-                  </div>
-                </div>
-              ))}
-              {aiMutation.isPending && (
-                <div className="flex justify-start">
-                  <div className="bg-[var(--card)] border border-[var(--border)] border-l-4 border-l-[var(--green)] p-3 rounded-xl rounded-bl-sm text-sm">
-                    <span className="animate-pulse">Thinking...</span>
-                  </div>
-                </div>
-              )}
-            </div>
-            <form onSubmit={handleSendAi} className="flex gap-2">
-              <Input 
-                value={aiMessage}
-                onChange={(e) => setAiMessage(e.target.value)}
-                placeholder="Ask a question..."
-                className="flex-1 bg-[var(--card)] border-[var(--border)] rounded-full px-4"
-              />
-              <button 
-                type="submit" 
-                disabled={aiMutation.isPending || !aiMessage.trim()}
-                className="w-10 h-10 rounded-full bg-[var(--green)] text-white flex items-center justify-center disabled:opacity-50"
-              >
-                <Send size={16} />
-              </button>
-            </form>
-          </div>
-        )}
+        <button
+          onClick={logout}
+          className="w-full py-4 rounded-2xl border border-red-900/40 text-red-400 font-semibold flex items-center justify-center gap-2 hover:bg-red-900/10 transition-colors"
+        >
+          <LogOut size={18} /> Sign Out
+        </button>
       </div>
-
-      {/* Settings Summary */}
-      <h2 className="font-cinzel text-xl text-[var(--gold)] mb-4">Settings</h2>
-      <div className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] divide-y divide-[var(--border)] mb-10">
-        <div className="p-4 flex justify-between items-center">
-          <span className="text-[var(--muted)]">Location</span>
-          <span className="font-semibold">{user?.city || 'Not set'}</span>
-        </div>
-        <div className="p-4 flex justify-between items-center">
-          <span className="text-[var(--muted)]">Tradition</span>
-          <span className="font-semibold">{user?.madhab || 'Not set'}</span>
-        </div>
-        <div className="p-4 flex justify-between items-center">
-          <span className="text-[var(--muted)]">Language</span>
-          <span className="font-semibold uppercase">{user?.language || 'EN'}</span>
-        </div>
-      </div>
-
-      <Button 
-        variant="outline" 
-        onClick={logout}
-        className="w-full py-6 text-[var(--danger)] border-[var(--danger)]/30 hover:bg-[var(--danger)]/10 hover:text-[var(--danger)] rounded-xl text-lg font-semibold"
-      >
-        <LogOut className="mr-2" size={20} />
-        Sign Out
-      </Button>
     </div>
   );
 };
