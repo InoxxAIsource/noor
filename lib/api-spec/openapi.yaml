@@ -3,20 +3,38 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Noor Islamic Prayer App API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: prayer
+    description: Prayer times and salah logging
+  - name: streak
+    description: Ibadah streaks
+  - name: progress
+    description: Session progress
+  - name: sessions
+    description: Guided sessions
+  - name: duas
+    description: Duas library
+  - name: names
+    description: Baby names library
+  - name: daily
+    description: Daily content
+  - name: ai
+    description: AI companion
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,7 +42,407 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateMe
+      tags: [auth]
+      summary: Update current user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /prayer/times:
+    get:
+      operationId: getPrayerTimes
+      tags: [prayer]
+      summary: Get prayer times for user's city
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: date
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Prayer times
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrayerTimes"
+
+  /salah/log:
+    post:
+      operationId: logSalah
+      tags: [prayer]
+      summary: Log a prayer as completed
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SalahLogInput"
+      responses:
+        "200":
+          description: Logged
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SalahLogEntry"
+    get:
+      operationId: getSalahLog
+      tags: [prayer]
+      summary: Get salah log for a date
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Salah log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SalahLog"
+
+  /streak/me:
+    get:
+      operationId: getMyStreak
+      tags: [streak]
+      summary: Get current user streak
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Streak data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Streak"
+
+  /streak/checkin:
+    post:
+      operationId: streakCheckin
+      tags: [streak]
+      summary: Check in for today
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckinInput"
+      responses:
+        "200":
+          description: Updated streak
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Streak"
+
+  /progress:
+    post:
+      operationId: logProgress
+      tags: [progress]
+      summary: Log session progress
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProgressInput"
+      responses:
+        "200":
+          description: Logged progress and updated streak
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressResult"
+    get:
+      operationId: getMyProgress
+      tags: [progress]
+      summary: Get progress history
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Progress entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProgressEntry"
+
+  /sessions:
+    get:
+      operationId: getSessions
+      tags: [sessions]
+      summary: Get all guided sessions
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Sessions list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+
+  /sessions/{id}:
+    get:
+      operationId: getSession
+      tags: [sessions]
+      summary: Get a session by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+
+  /duas:
+    get:
+      operationId: getDuas
+      tags: [duas]
+      summary: Get duas library
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Duas list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Dua"
+
+  /duas/{id}/favorite:
+    post:
+      operationId: toggleDuaFavorite
+      tags: [duas]
+      summary: Toggle dua favorite
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Favorite toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteResult"
+
+  /names:
+    get:
+      operationId: getBabyNames
+      tags: [names]
+      summary: Get baby names library
+      parameters:
+        - name: gender
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Names list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BabyName"
+
+  /names/{id}/favorite:
+    post:
+      operationId: toggleNameFavorite
+      tags: [names]
+      summary: Toggle name favorite
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Favorite toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteResult"
+
+  /daily:
+    get:
+      operationId: getDailyContent
+      tags: [daily]
+      summary: Get today's daily content (name of Allah, hadith, dua)
+      responses:
+        "200":
+          description: Daily content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyContent"
+
+  /ai/companion:
+    post:
+      operationId: aiCompanion
+      tags: [ai]
+      summary: Islamic AI companion chat
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiMessageInput"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiMessageResponse"
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +452,412 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RegisterInput:
+      type: object
+      required: [email, name, password]
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    User:
+      type: object
+      required: [id, email, name, onboardingComplete]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        madhab:
+          type: ["string", "null"]
+        sunniMadhab:
+          type: string
+        language:
+          type: string
+        city:
+          type: ["string", "null"]
+        lat:
+          type: ["number", "null"]
+        lng:
+          type: ["number", "null"]
+        goals:
+          type: array
+          items:
+            type: string
+        reminderHour:
+          type: integer
+        onboardingComplete:
+          type: boolean
+        subscriptionStatus:
+          type: string
+        createdAt:
+          type: integer
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        madhab:
+          type: string
+        sunniMadhab:
+          type: string
+        language:
+          type: string
+        city:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        goals:
+          type: array
+          items:
+            type: string
+        reminderHour:
+          type: integer
+        weeklyGoal:
+          type: integer
+        onboardingComplete:
+          type: boolean
+
+    PrayerTime:
+      type: object
+      required: [name, arabicName, time]
+      properties:
+        name:
+          type: string
+        arabicName:
+          type: string
+        time:
+          type: string
+
+    PrayerTimes:
+      type: object
+      required: [times, method, date, hijriDate]
+      properties:
+        times:
+          type: array
+          items:
+            $ref: "#/components/schemas/PrayerTime"
+        method:
+          type: integer
+        date:
+          type: string
+        hijriDate:
+          type: string
+        city:
+          type: string
+
+    SalahLogInput:
+      type: object
+      required: [prayer, date]
+      properties:
+        prayer:
+          type: string
+        date:
+          type: string
+        khushooRating:
+          type: ["integer", "null"]
+        note:
+          type: ["string", "null"]
+
+    SalahLogEntry:
+      type: object
+      required: [prayer, date, userId]
+      properties:
+        prayer:
+          type: string
+        date:
+          type: string
+        userId:
+          type: string
+        khushooRating:
+          type: ["integer", "null"]
+        note:
+          type: ["string", "null"]
+        loggedAt:
+          type: integer
+
+    SalahLog:
+      type: object
+      required: [date, prayers]
+      properties:
+        date:
+          type: string
+        prayers:
+          type: array
+          items:
+            type: string
+
+    Streak:
+      type: object
+      required: [currentStreak, longestStreak, weeklyGoal, weeklyCompleted, totalPrayers, totalMinutes]
+      properties:
+        currentStreak:
+          type: integer
+        longestStreak:
+          type: integer
+        lastPrayerDate:
+          type: ["string", "null"]
+        weeklyGoal:
+          type: integer
+        weeklyCompleted:
+          type: integer
+        totalPrayers:
+          type: integer
+        totalMinutes:
+          type: integer
+
+    CheckinInput:
+      type: object
+      properties:
+        minutes:
+          type: integer
+
+    ProgressInput:
+      type: object
+      required: [sessionId, durationListened, category]
+      properties:
+        sessionId:
+          type: string
+        durationListened:
+          type: integer
+        moodBefore:
+          type: ["integer", "null"]
+        moodAfter:
+          type: ["integer", "null"]
+        category:
+          type: string
+
+    ProgressEntry:
+      type: object
+      required: [sessionId, durationListened, category, userId, timestamp]
+      properties:
+        sessionId:
+          type: string
+        durationListened:
+          type: integer
+        moodBefore:
+          type: ["integer", "null"]
+        moodAfter:
+          type: ["integer", "null"]
+        category:
+          type: string
+        userId:
+          type: string
+        timestamp:
+          type: integer
+
+    ProgressResult:
+      type: object
+      required: [progress, streak]
+      properties:
+        progress:
+          $ref: "#/components/schemas/ProgressEntry"
+        streak:
+          $ref: "#/components/schemas/Streak"
+
+    Session:
+      type: object
+      required: [id, title, slug, durationSeconds, category]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: ["string", "null"]
+        durationSeconds:
+          type: integer
+        audioUrl:
+          type: ["string", "null"]
+        guideName:
+          type: string
+        category:
+          type: string
+        scriptureRef:
+          type: ["string", "null"]
+        scriptureArabic:
+          type: ["string", "null"]
+        scriptureText:
+          type: ["string", "null"]
+        isPremium:
+          type: boolean
+        language:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        madhab:
+          type: ["string", "null"]
+        playCount:
+          type: integer
+
+    Dua:
+      type: object
+      required: [id, title, arabic, meaningEnglish, source, category]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        arabic:
+          type: string
+        transliteration:
+          type: ["string", "null"]
+        meaningEnglish:
+          type: string
+        source:
+          type: string
+        category:
+          type: string
+        madhab:
+          type: ["string", "null"]
+        audioUrl:
+          type: ["string", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+        isPopular:
+          type: boolean
+        isFavorite:
+          type: boolean
+
+    BabyName:
+      type: object
+      required: [id, nameEnglish, nameArabic, gender, meaningEnglish, origin]
+      properties:
+        id:
+          type: string
+        nameEnglish:
+          type: string
+        nameArabic:
+          type: string
+        nameUrdu:
+          type: ["string", "null"]
+        gender:
+          type: string
+        meaningEnglish:
+          type: string
+        meaningUrdu:
+          type: ["string", "null"]
+        origin:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        quranReference:
+          type: ["string", "null"]
+        prophetConnection:
+          type: ["string", "null"]
+        pronunciationAudioUrl:
+          type: ["string", "null"]
+        isForbidden:
+          type: boolean
+        popularityRank:
+          type: ["integer", "null"]
+        trending2025:
+          type: boolean
+        isFavorite:
+          type: boolean
+
+    FavoriteResult:
+      type: object
+      required: [isFavorite]
+      properties:
+        isFavorite:
+          type: boolean
+
+    NameOfAllah:
+      type: object
+      required: [id, number, arabic, transliteration, meaningEnglish]
+      properties:
+        id:
+          type: string
+        number:
+          type: integer
+        arabic:
+          type: string
+        transliteration:
+          type: string
+        meaningEnglish:
+          type: string
+        explanation:
+          type: ["string", "null"]
+
+    Hadith:
+      type: object
+      required: [id, text, source]
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        source:
+          type: string
+        arabic:
+          type: ["string", "null"]
+
+    DailyContent:
+      type: object
+      required: [nameOfAllah, hadith, dua]
+      properties:
+        nameOfAllah:
+          $ref: "#/components/schemas/NameOfAllah"
+        hadith:
+          $ref: "#/components/schemas/Hadith"
+        dua:
+          $ref: "#/components/schemas/Dua"
+
+    AiMessageInput:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+        context:
+          type: ["string", "null"]
+
+    AiMessageResponse:
+      type: object
+      required: [reply]
+      properties:
+        reply:
+          type: string
