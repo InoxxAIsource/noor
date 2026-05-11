@@ -12,8 +12,8 @@ router.get("/prayer-times", (_req: Request, res: Response) => {
     description: "Accurate Fajr, Dhuhr, Asr, Maghrib, Isha prayer times for 80+ cities in India and Pakistan. Updated daily.",
     canonical: "/prayer-times",
     schema: faqSchema([
-      { q: "What are today's prayer times in Delhi?", a: "Get live Delhi prayer times at noorapp.com/prayer-times/delhi." },
-      { q: "How do I find prayer times near me?", a: "Use Noor app for GPS-based prayer times anywhere in India and Pakistan." },
+      { q: "What are today's prayer times in Delhi?", a: "Get live Delhi prayer times at deenapp.app/prayer-times/delhi." },
+      { q: "How do I find prayer times near me?", a: "Use DeenApp for GPS-based prayer times anywhere in India and Pakistan." },
     ]),
   });
 
@@ -75,9 +75,9 @@ async function cityPageHandler(city: string, isNamaz: boolean, res: Response): P
   } catch { /* use empty times */ }
 
   const faqs = [
-    { q: `What is Fajr time in ${apiCity} today?`, a: times.find(t => t.name === "Fajr")?.time ? `Fajr time in ${apiCity} today is ${times.find(t => t.name === "Fajr")!.time}.` : `Get live Fajr times in ${apiCity} using the Noor app.` },
-    { q: `What time is Zuhr in ${apiCity}?`, a: times.find(t => t.name === "Dhuhr")?.time ? `Dhuhr (Zuhr) time in ${apiCity} today is ${times.find(t => t.name === "Dhuhr")!.time}.` : `Check live Dhuhr times in ${apiCity} on Noor app.` },
-    { q: `What is the Isha prayer time in ${apiCity}?`, a: times.find(t => t.name === "Isha")?.time ? `Isha time in ${apiCity} today is ${times.find(t => t.name === "Isha")!.time}.` : `Get live Isha times for ${apiCity} on Noor app.` },
+    { q: `What is Fajr time in ${apiCity} today?`, a: times.find(t => t.name === "Fajr")?.time ? `Fajr time in ${apiCity} today is ${times.find(t => t.name === "Fajr")!.time}.` : `Get live Fajr times in ${apiCity} using the DeenApp.` },
+    { q: `What time is Zuhr in ${apiCity}?`, a: times.find(t => t.name === "Dhuhr")?.time ? `Dhuhr (Zuhr) time in ${apiCity} today is ${times.find(t => t.name === "Dhuhr")!.time}.` : `Check live Dhuhr times in ${apiCity} on DeenApp.` },
+    { q: `What is the Isha prayer time in ${apiCity}?`, a: times.find(t => t.name === "Isha")?.time ? `Isha time in ${apiCity} today is ${times.find(t => t.name === "Isha")!.time}.` : `Get live Isha times for ${apiCity} on DeenApp.` },
     { q: `How many prayers are there in a day?`, a: "There are 5 obligatory (farz) daily prayers: Fajr, Dhuhr, Asr, Maghrib, and Isha." },
   ];
 
@@ -116,12 +116,12 @@ ${times.length > 0 ? `
     <p style="margin:0;font-size:1.4rem;color:#00a550;font-weight:bold;font-family:monospace">${esc(t.time)}</p>
   </div>`).join("")}
 </div>
-` : `<div class="card"><p style="color:#4a7a4a;margin:0">Prayer times are loading. Download Noor app for live times.</p></div>`}
+` : `<div class="card"><p style="color:#4a7a4a;margin:0">Prayer times are loading. Download DeenApp for live times.</p></div>`}
 
 ${ctaBlock()}
 
 <h2>Mosques near ${esc(apiCity)}</h2>
-<p style="color:#4a7a4a">Find your nearest masjid with the <a href="/masjid-finder" style="color:#00a550">Noor Masjid Finder</a>. Navigate directly from your phone.</p>
+<p style="color:#4a7a4a">Find your nearest masjid with the <a href="/masjid-finder" style="color:#00a550">DeenApp Masjid Finder</a>. Navigate directly from your phone.</p>
 
 <h2>Learn Salah</h2>
 <p style="color:#4a7a4a">New to prayer? Follow the complete <a href="/salah-guide" style="color:#00a550">Salah Guide</a> with Arabic text and step-by-step instructions.</p>

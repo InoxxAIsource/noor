@@ -39,7 +39,7 @@ export async function seedSessions() {
   const sessions = SESSIONS.map((s, i) => ({
     id: nanoid(),
     slug: s.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-    guideName: "Noor Team",
+    guideName: "DeenApp Team",
     audioUrl: null,
     isPremium: false,
     language: "en",

@@ -213,7 +213,7 @@ router.post("/admin/blog/generate", async (req, res) => {
       system: "Return ONLY valid JSON. No markdown. No preamble.",
       messages: [{
         role: "user",
-        content: `Write a blog post for Noor (noorapp.com), a Muslim prayer app. Tagline: "Remember Allah. Every day."
+        content: `Write a blog post for DeenApp (deenapp.app), a Muslim prayer app. Tagline: "Remember Allah. Every day."
 
 Title: ${resolvedTitle}
 Target keyword: ${resolvedKeyword}
@@ -226,7 +226,7 @@ Rules:
 - Include 3 internal links as <a href='/path'>text</a>
   (link to relevant /duas/, /names/, /prayer-times/ pages)
 - Include 1-2 authentic hadith or Quran references
-- End with paragraph mentioning Noor app by name
+- End with paragraph mentioning DeenApp by name
 - Format: <p><h2><h3><ul><li><strong> tags ONLY
 - Warm Islamic tone, never preachy
 - Do NOT mention competitor apps
@@ -293,7 +293,7 @@ router.post("/admin/names/generate-batch", async (req, res) => {
       system: "Return ONLY valid JSON array. No markdown. No preamble.",
       messages: [{
         role: "user",
-        content: `Generate ${count} Muslim ${gender} names for Noor app names database.
+        content: `Generate ${count} Muslim ${gender} names for DeenApp names database.
 Categories: ${categories.join(", ")}.
 
 Each name object:

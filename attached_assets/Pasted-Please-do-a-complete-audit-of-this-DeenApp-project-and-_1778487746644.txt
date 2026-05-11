@@ -1,0 +1,372 @@
+Please do a complete audit of this DeenApp project and fix
+all issues found. Work through each section systematically.
+
+════════════════════════════════════════
+STEP 1: AUDIT — CHECK WHAT EXISTS
+════════════════════════════════════════
+Check these files exist and are complete:
+
+SERVER FILES — verify all exist:
+  server/index.js          (main Express server)
+  server/db.js             (Replit DB helpers)
+  server/routes/auth.js    (register/login/me)
+  server/routes/prayer.js  (prayer times)
+  server/routes/sessions.js (audio sessions)
+  server/routes/duas.js    (dua library)
+  server/routes/names.js   (Muslim names)
+  server/routes/streak.js  (streak tracking)
+  server/routes/progress.js (session progress)
+  server/routes/ai.js      (Claude AI guide)
+  server/routes/masjid.js  (mosque finder)
+  server/routes/zakat.js   (zakat calculator)
+  server/middleware/auth.js (JWT middleware)
+  server/seed/sessions.js  (25 sessions seed)
+  server/seed/duas.js      (duas seed)
+  server/seed/names.js     (names seed)
+
+CLIENT FILES — verify all exist:
+  client/src/App.jsx
+  client/src/pages/Home.jsx
+  client/src/pages/Login.jsx
+  client/src/pages/Register.jsx
+  client/src/pages/Onboarding.jsx
+  client/src/pages/PrayerTimes.jsx
+  client/src/pages/Quran.jsx
+  client/src/pages/Duas.jsx
+  client/src/pages/Names.jsx
+  client/src/pages/Sessions.jsx
+  client/src/pages/Player.jsx
+  client/src/pages/Tasbih.jsx
+  client/src/pages/ZakatCalculator.jsx
+  client/src/pages/MasjidFinder.jsx
+  client/src/pages/Profile.jsx
+  client/src/pages/Mood.jsx
+  client/src/pages/Growth.jsx
+  client/src/hooks/useAuth.js
+  client/src/components/BottomNav.jsx
+
+════════════════════════════════════════
+STEP 2: FIX ALL MISSING FILES
+════════════════════════════════════════
+For any missing file — create it now with full working code.
+
+════════════════════════════════════════
+STEP 3: FIX COMMON REPLIT AI MISTAKES
+════════════════════════════════════════
+
+FIX 1 — package.json scripts:
+Ensure package.json has:
+{
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server/index.js",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "node server/index.js"
+  }
+}
+Install concurrently if missing: npm install concurrently
+
+FIX 2 — server/index.js must:
+  a) Import and use ALL route files
+  b) Serve React build in production
+  c) Auto-seed DB on startup
+  d) Have correct CORS setup
+
+Correct server/index.js structure:
+```javascript
+import express from 'express'
+import cors from 'cors'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import authRoutes from './routes/auth.js'
+import prayerRoutes from './routes/prayer.js'
+import sessionRoutes from './routes/sessions.js'
+import duaRoutes from './routes/duas.js'
+import nameRoutes from './routes/names.js'
+import streakRoutes from './routes/streak.js'
+import progressRoutes from './routes/progress.js'
+import aiRoutes from './routes/ai.js'
+import masjidRoutes from './routes/masjid.js'
+import zakatRoutes from './routes/zakat.js'
+import { seedAll } from './seed/index.js'
+
+const app = express()
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+app.use(cors({ origin: '*' }))
+app.use(express.json({ limit: '10kb' }))
+
+// API routes
+app.use('/api/auth', authRoutes)
+app.use('/api/prayer', prayerRoutes)
+app.use('/api/sessions', sessionRoutes)
+app.use('/api/duas', duaRoutes)
+app.use('/api/names', nameRoutes)
+app.use('/api/streak', streakRoutes)
+app.use('/api/progress', progressRoutes)
+app.use('/api/ai', aiRoutes)
+app.use('/api/masjid', masjidRoutes)
+app.use('/api/zakat', zakatRoutes)
+
+// Serve React in production
+const clientDist = join(__dirname, '../client/dist')
+app.use(express.static(clientDist))
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(join(clientDist, 'index.html'))
+  }
+})
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, async () => {
+  console.log(`DeenApp server running on port ${PORT}`)
+  await seedAll()
+})
+```
+
+FIX 3 — server/db.js must have ALL helpers:
+Check it exports: getUser, setUser, getUserByEmail,
+getStreak, setStreak, logProgress, getProgress,
+getAllSessions, getAllDuas, getAllNames,
+getNamesOfAllah, getDailyHadith, getDailyNameOfAllah,
+getRoom, setRoom, getGift, setGift,
+getAIUsage, incrementAIUsage,
+getNameFavs, addNameFav, getDuaFavs, addDuaFav,
+logSalah, getSalahLog, saveJournal, getJournals
+
+If any are missing — add them now.
+
+FIX 4 — server/seed/index.js:
+Create this file if missing:
+```javascript
+import Database from '@replit/database'
+const db = new Database()
+import { sessions } from './sessions.js'
+import { duas } from './duas.js'
+import { names } from './names.js'
+import { namesOfAllah } from './namesOfAllah.js'
+import { hadiths } from './hadiths.js'
+
+export async function seedAll() {
+  try {
+    const existingSessions = await db.get('sessions:all')
+    if (!existingSessions) {
+      await db.set('sessions:all', JSON.stringify(sessions))
+      console.log('✓ Sessions seeded:', sessions.length)
+    }
+    const existingDuas = await db.get('duas:all')
+    if (!existingDuas) {
+      await db.set('duas:all', JSON.stringify(duas))
+      console.log('✓ Duas seeded:', duas.length)
+    }
+    const existingNames = await db.get('names:all')
+    if (!existingNames) {
+      await db.set('names:all', JSON.stringify(names))
+      console.log('✓ Names seeded:', names.length)
+    }
+    const existingAllah = await db.get('namesOfAllah:all')
+    if (!existingAllah) {
+      await db.set('namesOfAllah:all', JSON.stringify(namesOfAllah))
+      console.log('✓ 99 Names seeded')
+    }
+    const existingHadiths = await db.get('hadiths:all')
+    if (!existingHadiths) {
+      await db.set('hadiths:all', JSON.stringify(hadiths))
+      console.log('✓ Hadiths seeded:', hadiths.length)
+    }
+  } catch(err) {
+    console.error('Seed error:', err.message)
+  }
+}
+```
+
+FIX 5 — client/src/App.jsx routing:
+Must have ALL routes defined:
+```jsx
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Onboarding from './pages/Onboarding'
+import PrayerTimes from './pages/PrayerTimes'
+import Quran from './pages/Quran'
+import Duas from './pages/Duas'
+import Names from './pages/Names'
+import Sessions from './pages/Sessions'
+import Player from './pages/Player'
+import Tasbih from './pages/Tasbih'
+import ZakatCalculator from './pages/ZakatCalculator'
+import MasjidFinder from './pages/MasjidFinder'
+import Profile from './pages/Profile'
+import Mood from './pages/Mood'
+import Growth from './pages/Growth'
+import useAuth from './hooks/useAuth'
+
+function PrivateRoute({ children }) {
+  const { isLoggedIn } = useAuth()
+  return isLoggedIn ? children : <Navigate to="/login" />
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+        <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
+        <Route path="/prayer-times" element={<PrivateRoute><PrayerTimes /></PrivateRoute>} />
+        <Route path="/quran" element={<PrivateRoute><Quran /></PrivateRoute>} />
+        <Route path="/duas" element={<PrivateRoute><Duas /></PrivateRoute>} />
+        <Route path="/names" element={<PrivateRoute><Names /></PrivateRoute>} />
+        <Route path="/sessions" element={<PrivateRoute><Sessions /></PrivateRoute>} />
+        <Route path="/player/:id" element={<PrivateRoute><Player /></PrivateRoute>} />
+        <Route path="/tasbih" element={<PrivateRoute><Tasbih /></PrivateRoute>} />
+        <Route path="/zakat-calculator" element={<PrivateRoute><ZakatCalculator /></PrivateRoute>} />
+        <Route path="/masjid-finder" element={<PrivateRoute><MasjidFinder /></PrivateRoute>} />
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route path="/mood" element={<PrivateRoute><Mood /></PrivateRoute>} />
+        <Route path="/growth" element={<PrivateRoute><Growth /></PrivateRoute>} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+```
+
+FIX 6 — Rename ALL "Noor" references to "DeenApp":
+Find and replace throughout entire codebase:
+  "Noor" → "DeenApp"
+  "noorapp.com" → "deenapp.app"
+  "NOOR" → "DEENAPP"
+  "noor_token" → "deen_token"
+  In manifest.json: name → "DeenApp"
+  In all title tags: "Noor" → "DeenApp"
+
+FIX 7 — Prayer times route:
+Ensure server/routes/prayer.js fetches correctly:
+```javascript
+import express from 'express'
+const router = express.Router()
+
+router.get('/times', async (req, res) => {
+  try {
+    const { city = 'Delhi', lat, lng, madhab = 'sunni' } = req.query
+    const method = madhab === 'shia' ? 0 : 1
+    let url
+    if (lat && lng) {
+      url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${method}`
+    } else {
+      url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=IN&method=${method}`
+    }
+    const response = await fetch(url)
+    const data = await response.json()
+    res.json(data.data?.timings || {})
+  } catch(err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+router.get('/hijri', async (req, res) => {
+  try {
+    const today = new Date()
+    const dd = String(today.getDate()).padStart(2,'0')
+    const mm = String(today.getMonth()+1).padStart(2,'0')
+    const yyyy = today.getFullYear()
+    const response = await fetch(`https://api.aladhan.com/v1/gToH?date=${dd}-${mm}-${yyyy}`)
+    const data = await response.json()
+    res.json(data.data?.hijri || {})
+  } catch(err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+export default router
+```
+
+FIX 8 — AI route rate limiting:
+Ensure server/routes/ai.js has working rate limit:
+```javascript
+// Check rate limit
+const today = new Date().toISOString().split('T')[0]
+const usage = await db.get(`aiUsage:${userId}:${today}`) || '0'
+const count = parseInt(usage)
+if (count >= 5) {
+  return res.status(429).json({
+    error: 'Daily limit reached',
+    message: 'You have used your 5 free AI messages today. Upgrade to Premium for unlimited access.',
+    remaining: 0
+  })
+}
+// After successful response:
+await db.set(`aiUsage:${userId}:${today}`, String(count + 1))
+```
+
+FIX 9 — Environment variables:
+Verify these secrets exist in Replit:
+  ANTHROPIC_API_KEY — for AI guide
+  JWT_SECRET — for auth tokens
+
+If missing — add them in Replit Secrets tab.
+
+FIX 10 — client/vite.config.js proxy:
+Must proxy API calls to Express:
+```javascript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      }
+    }
+  }
+})
+```
+
+════════════════════════════════════════
+STEP 4: TEST EACH ROUTE
+════════════════════════════════════════
+After fixes, test these in the browser console:
+
+fetch('/api/auth/me', {headers:{Authorization:'Bearer '+localStorage.getItem('deen_token')}}).then(r=>r.json()).then(console.log)
+
+fetch('/api/sessions').then(r=>r.json()).then(d=>console.log('Sessions:', d.length))
+
+fetch('/api/duas').then(r=>r.json()).then(d=>console.log('Duas:', d.length))
+
+fetch('/api/names').then(r=>r.json()).then(d=>console.log('Names:', d.length))
+
+fetch('/api/prayer/times?city=Delhi').then(r=>r.json()).then(console.log)
+
+fetch('/api/prayer/hijri').then(r=>r.json()).then(console.log)
+
+════════════════════════════════════════
+STEP 5: FIX HOME.JSX
+════════════════════════════════════════
+Replace Home.jsx completely with the version
+from the home screen fix prompt (deenapp branding,
+live prayer countdown, streak dots, crescent animation,
+mood button, tasbih pills, bottom nav).
+
+All references must say "DeenApp" not "Noor".
+Token key must be 'deen_token' not 'noor_token'.
+
+════════════════════════════════════════
+STEP 6: VERIFY BUILD WORKS
+════════════════════════════════════════
+Run: npm run build
+Fix any TypeScript/JSX errors that appear.
+Then run: npm start
+Verify the app loads at localhost:3000
+
+Report back with:
+1. List of files created/fixed
+2. Any errors that remain
+3. Screenshot of home screen
+═══════════════════════════════════════════════════════

@@ -12,13 +12,13 @@ export function seoHead({ title, description, canonical, schema }: SeoHeadOpts):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} | Noor — Islamic Prayer App</title>
+<title>${esc(title)} | DeenApp — Islamic Prayer App</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="https://noorapp.com${canonical}">
+<link rel="canonical" href="https://deenapp.app${canonical}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="https://noorapp.com/og-image.jpg">
-<meta property="og:url" content="https://noorapp.com${canonical}">
+<meta property="og:image" content="https://deenapp.app/og-image.jpg">
+<meta property="og:url" content="https://deenapp.app${canonical}">
 <meta name="twitter:card" content="summary_large_image">
 ${schemas.map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}
 <link rel="stylesheet" href="/seo.css">
@@ -28,7 +28,7 @@ ${schemas.map(s => `<script type="application/ld+json">${JSON.stringify(s)}</scr
 
 export function nav(): string {
   return `<nav style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#001a00;border-bottom:1px solid rgba(0,165,80,0.2);position:sticky;top:0;z-index:100">
-  <a href="/" style="font-family:Cinzel,serif;font-size:20px;color:#00a550;letter-spacing:3px;text-decoration:none">NOOR</a>
+  <a href="/" style="font-family:Cinzel,serif;font-size:20px;color:#00a550;letter-spacing:3px;text-decoration:none">DEENAPP</a>
   <div style="display:flex;gap:12px;align-items:center">
     <a href="/prayer-times" style="color:#4a7a4a;text-decoration:none;font-size:14px">Prayer Times</a>
     <a href="/blog" style="color:#4a7a4a;text-decoration:none;font-size:14px">Blog</a>
@@ -55,16 +55,16 @@ export function footer(): string {
         ["/sitemap.xml", "Sitemap"],
       ].map(([href, label]) => `<a href="${href}" style="color:#4a7a4a;text-decoration:none;font-size:13px">${label}</a>`).join(" &nbsp;·&nbsp; ")}
     </div>
-    <p style="color:#2a4a2a;font-size:12px;margin:0">© 2026 Noor Islamic Prayer App. Remember Allah. Every day.</p>
+    <p style="color:#2a4a2a;font-size:12px;margin:0">© 2026 DeenApp Islamic Prayer App. Remember Allah. Every day.</p>
   </div>
 </footer>`;
 }
 
 export function ctaBlock(): string {
   return `<div class="cta-box">
-  <p style="color:#ffd700;font-family:Cinzel,serif;font-size:1.1rem;margin:0 0 8px">Remember Allah every day — Download Noor free</p>
+  <p style="color:#ffd700;font-family:Cinzel,serif;font-size:1.1rem;margin:0 0 8px">Remember Allah every day — Download DeenApp free</p>
   <p style="color:#4a7a4a;font-size:14px;margin:0 0 16px">Prayer times, Quran, duas, names, zakat calculator & AI Islamic guide</p>
-  <a href="/download" class="cta-btn">Download Noor App →</a>
+  <a href="/download" class="cta-btn">Download DeenApp →</a>
 </div>`;
 }
 
@@ -72,11 +72,11 @@ export function appRedirectBar(): string {
   return `<script>
 (function(){
   try{
-    var t=localStorage.getItem('noor_token');
+    var t=localStorage.getItem('deen_token');
     if(t){
       var b=document.createElement('div');
       b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#001a00;border-top:2px solid #00a550;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;z-index:9999;';
-      b.innerHTML='<span style="color:#4a7a4a;font-size:13px">You are logged in to Noor</span><a href="/home" style="background:#00a550;color:#001a00;padding:8px 18px;border-radius:8px;font-weight:bold;text-decoration:none;font-size:13px">Open App \u2192</a>';
+      b.innerHTML='<span style="color:#4a7a4a;font-size:13px">You are logged in to DeenApp</span><a href="/home" style="background:#00a550;color:#001a00;padding:8px 18px;border-radius:8px;font-weight:bold;text-decoration:none;font-size:13px">Open App \u2192</a>';
       document.body.appendChild(b);
     }
   }catch(e){}
@@ -101,7 +101,7 @@ export function breadcrumbSchema(items: Array<{ name: string; item?: string }>):
       "@type": "ListItem",
       "position": i + 1,
       "name": item.name,
-      ...(item.item ? { "item": `https://noorapp.com${item.item}` } : {}),
+      ...(item.item ? { "item": `https://deenapp.app${item.item}` } : {}),
     })),
   };
 }

@@ -65,6 +65,22 @@ router.get("/prayer/times", requireAuth, async (req: AuthRequest, res: Response)
   }
 });
 
+// GET /api/prayer/hijri — public, no auth required
+router.get("/prayer/hijri", async (_req, res: Response) => {
+  try {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const yyyy = today.getFullYear();
+    const response = await fetch(`https://api.aladhan.com/v1/gToH?date=${dd}-${mm}-${yyyy}`);
+    const data = await response.json() as Record<string, unknown>;
+    const hijri = (data["data"] as Record<string, unknown> | undefined)?.["hijri"];
+    res.json(hijri ?? {});
+  } catch {
+    res.status(500).json({ error: "Failed to fetch Hijri date" });
+  }
+});
+
 // POST /api/salah/log
 router.post("/salah/log", requireAuth, async (req: AuthRequest, res: Response) => {
   const { prayer, date, khushooRating, note } = req.body as {
