@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useLogin } from "@workspace/api-client-react";
@@ -9,9 +9,15 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const { login } = useAuth();
+  const { login, isLoggedIn, isLoading } = useAuth();
   const navigate = useNavigate();
   const loginMutation = useLogin();
+
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      void navigate("/home", { replace: true });
+    }
+  }, [isLoggedIn, isLoading, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +38,14 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 animate-fade-in">
+
+      {/* Back to landing */}
+      <div className="absolute top-4 left-4">
+        <Link to="/" className="flex items-center gap-1 text-[var(--muted)] hover:text-[var(--green)] text-sm transition-colors">
+          ← Home
+        </Link>
+      </div>
+
       <div className="text-center mb-12">
         <h1 className="font-amiri text-6xl text-[var(--gold)] mb-2">نور</h1>
         <h2 className="font-cinzel text-3xl tracking-widest text-[var(--green)]">NOOR</h2>
@@ -39,7 +53,7 @@ const LoginPage: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
-        {errorMsg && <div className="text-[var(--danger)] text-sm text-center">{errorMsg}</div>}
+        {errorMsg && <div className="text-red-400 text-sm text-center">{errorMsg}</div>}
         
         <Input
           type="email"
@@ -67,8 +81,8 @@ const LoginPage: React.FC = () => {
         </Button>
       </form>
 
-      <div className="mt-8">
-        <Link to="/register" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors">
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <Link to="/register" className="text-[var(--muted)] hover:text-[var(--text)] transition-colors text-sm">
           Don't have an account? <span className="text-[var(--green)]">Register</span>
         </Link>
       </div>
