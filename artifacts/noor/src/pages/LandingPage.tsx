@@ -47,7 +47,7 @@ export default function LandingPage() {
   if (isLoading) {
     return (
       <div style={{ minHeight: "100vh", background: "#001a00", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ color: "#00a550", fontFamily: "Cinzel, serif", fontSize: 18, letterSpacing: 4 }}>NOOR</div>
+        <div style={{ color: "#00a550", fontFamily: "Cinzel, serif", fontSize: 16, letterSpacing: 3 }}>DEENAPP</div>
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function LandingPage() {
 
       {/* Top nav */}
       <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "0.5px solid rgba(0,165,80,0.15)" }}>
-        <div style={{ fontFamily: "Cinzel, serif", fontSize: 20, fontWeight: 700, color: "#00a550", letterSpacing: 4 }}>NOOR</div>
+        <div style={{ fontFamily: "Cinzel, serif", fontSize: 16, fontWeight: 700, color: "#00a550", letterSpacing: 3 }}>DEENAPP</div>
         <div style={{ display: "flex", gap: 12 }}>
           <button
             onClick={() => void navigate("/login")}
@@ -173,7 +173,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <div style={{ padding: "20px 24px", textAlign: "center", color: "#2a4a2a", fontSize: 11 }}>
-        <span style={{ fontFamily: "Cinzel, serif", color: "#00a550", marginRight: 8 }}>NOOR</span>
+        <span style={{ fontFamily: "Cinzel, serif", color: "#00a550", marginRight: 8 }}>DEENAPP</span>
         Islamic Prayer & Spirituality App · Free to use
       </div>
     </div>

@@ -48,7 +48,7 @@ const GiftPage: React.FC = () => {
         <h2 className="font-cinzel text-[var(--gold)] text-xl mb-2">Gift not found</h2>
         <p className="text-[var(--muted)] text-sm mb-6">{error || "This gift may have expired."}</p>
         <Link to="/register" className="bg-[var(--green)] text-white px-6 py-3 rounded-xl font-semibold">
-          Join Noor — Free
+          Join DeenApp — Free
         </Link>
       </div>
     );
@@ -60,10 +60,10 @@ const GiftPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] flex flex-col items-center justify-center p-6">
-      {/* Noor Logo */}
+      {/* DeenApp Logo */}
       <div className="text-center mb-8">
         <p className="font-amiri text-4xl text-[var(--gold)] mb-1" dir="rtl">نور</p>
-        <p className="font-cinzel text-xs text-[var(--green)] tracking-widest">NOOR</p>
+        <p className="font-cinzel text-xs text-[var(--green)] tracking-widest">DEENAPP</p>
         <p className="text-[10px] text-[var(--muted)] mt-1">Remember Allah. Every day.</p>
       </div>
 
@@ -94,7 +94,7 @@ const GiftPage: React.FC = () => {
 
         {/* CTA */}
         <div className="text-center space-y-3">
-          <p className="text-sm text-[var(--muted)]">Listen to this dua — free on Noor</p>
+          <p className="text-sm text-[var(--muted)]">Listen to this dua — free on DeenApp</p>
           <Link
             to="/register"
             className="block w-full bg-[var(--green)] text-white py-4 rounded-2xl font-cinzel text-lg text-center shadow-[0_0_20px_rgba(0,165,80,0.3)] hover:bg-[var(--green)]/90 transition-colors"

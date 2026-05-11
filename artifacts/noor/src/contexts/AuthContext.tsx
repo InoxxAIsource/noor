@@ -16,16 +16,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem("noor_token"));
+  const [token, setToken] = useState<string | null>(localStorage.getItem("deen_token"));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setAuthTokenGetter(() => localStorage.getItem("noor_token"));
+    setAuthTokenGetter(() => localStorage.getItem("deen_token"));
   }, []);
 
   useEffect(() => {
     const validateToken = async () => {
-      const storedToken = localStorage.getItem("noor_token");
+      const storedToken = localStorage.getItem("deen_token");
       if (storedToken) {
         try {
           const userData = await getMe();
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setToken(storedToken);
         } catch (error) {
           console.error("Token validation failed:", error);
-          localStorage.removeItem("noor_token");
+          localStorage.removeItem("deen_token");
           setToken(null);
           setUser(null);
         }
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (newToken: string) => {
-    localStorage.setItem("noor_token", newToken);
+    localStorage.setItem("deen_token", newToken);
     setToken(newToken);
     // Ideally we'd fetch the user immediately, but usually login also redirects
     // which triggers a remount or subsequent fetches can use the new token.
@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem("noor_token");
+    localStorage.removeItem("deen_token");
     setToken(null);
     setUser(null);
   };

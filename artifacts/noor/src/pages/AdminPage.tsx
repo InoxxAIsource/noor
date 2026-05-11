@@ -145,7 +145,7 @@ export default function AdminPage() {
   return (
     <div style={css}>
       <div style={{ background: "#002800", padding: "16px 20px", borderBottom: "1px solid rgba(0,165,80,0.2)", position: "sticky", top: 0, zIndex: 10 }}>
-        <h1 style={{ color: "#ffd700", fontFamily: "Cinzel,serif", fontSize: "1.2rem", margin: 0 }}>Noor Admin Panel</h1>
+        <h1 style={{ color: "#ffd700", fontFamily: "Cinzel,serif", fontSize: "1.2rem", margin: 0 }}>DeenApp Admin Panel</h1>
         {msg && <p style={{ color: "#00a550", fontSize: 13, margin: "6px 0 0" }}>{msg}</p>}
       </div>
 

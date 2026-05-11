@@ -1,4 +1,4 @@
-# Noor — Islamic Prayer & Spirituality App
+# DeenApp — Islamic Prayer & Spirituality App
 
 A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal companion for daily salah, dhikr, duas, Quran reflection, and spiritual growth.
 

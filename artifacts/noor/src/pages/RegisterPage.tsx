@@ -49,7 +49,7 @@ const RegisterPage: React.FC = () => {
 
       <div className="text-center mb-12">
         <h1 className="font-amiri text-6xl text-[var(--gold)] mb-2">نور</h1>
-        <h2 className="font-cinzel text-3xl tracking-widest text-[var(--green)]">NOOR</h2>
+        <h2 className="font-cinzel text-2xl tracking-widest text-[var(--green)]">DEENAPP</h2>
         <p className="text-[var(--muted)] text-sm mt-2">Remember Allah. Every day.</p>
       </div>
 

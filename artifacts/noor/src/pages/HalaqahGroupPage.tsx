@@ -38,7 +38,7 @@ const HalaqahGroupPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [intention, setIntention] = useState("");
   const [sending, setSending] = useState(false);
-  const token = localStorage.getItem("noor_token");
+  const token = localStorage.getItem("deen_token");
   const u = user as Record<string, unknown> | null;
 
   useEffect(() => {

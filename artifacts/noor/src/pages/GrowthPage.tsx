@@ -107,7 +107,7 @@ const GrowthPage: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<GrowthData | null>(null);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("noor_token");
+  const token = localStorage.getItem("deen_token");
 
   useEffect(() => {
     fetch("/api/growth", { headers: { Authorization: `Bearer ${token}` } })

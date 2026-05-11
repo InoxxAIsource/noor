@@ -24,7 +24,7 @@ const RoomsPage: React.FC = () => {
   const [roomName, setRoomName] = useState("");
   const [creating, setCreating] = useState(false);
   const [createdCode, setCreatedCode] = useState("");
-  const token = localStorage.getItem("noor_token");
+  const token = localStorage.getItem("deen_token");
 
   useEffect(() => {
     fetchRooms();

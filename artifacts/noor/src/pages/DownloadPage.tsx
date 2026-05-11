@@ -47,7 +47,7 @@ export default function DownloadPage() {
       <div style={{ textAlign: "center", padding: "48px 20px 32px" }}>
         <div style={{ fontSize: "4rem", marginBottom: 12 }}>🌙</div>
         <h1 style={{ fontFamily: "Cinzel,serif", color: "#ffd700", fontSize: "2rem", margin: "0 0 12px" }}>
-          Download Noor
+          Download DeenApp
         </h1>
         <p style={{ color: "#4a7a4a", fontSize: "1.05rem", maxWidth: 420, margin: "0 auto 28px", lineHeight: 1.6 }}>
           Your personal Islamic companion. Remember Allah — every day. Available as a PWA (Progressive Web App) now.
@@ -56,7 +56,7 @@ export default function DownloadPage() {
         {/* PWA Install */}
         {installed ? (
           <div style={{ background: "rgba(0,165,80,0.15)", border: "1px solid #00a550", borderRadius: 12, padding: "16px 28px", display: "inline-block" }}>
-            <p style={{ color: "#00a550", fontWeight: "bold", margin: 0, fontSize: "1.1rem" }}>✅ Noor is installed!</p>
+            <p style={{ color: "#00a550", fontWeight: "bold", margin: 0, fontSize: "1.1rem" }}>✅ DeenApp is installed!</p>
             <p style={{ color: "#4a7a4a", margin: "4px 0 0", fontSize: 14 }}>Open it from your home screen</p>
           </div>
         ) : installPrompt ? (
@@ -64,7 +64,7 @@ export default function DownloadPage() {
             onClick={() => void handleInstall()}
             style={{ background: "#00a550", color: "#001a00", border: "none", borderRadius: 12, padding: "16px 36px", fontSize: "1.05rem", fontWeight: "bold", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 10 }}
           >
-            📲 Install Noor App
+            📲 Install DeenApp
           </button>
         ) : isIOS ? (
           <div style={{ background: "#002800", border: "1px solid rgba(0,165,80,0.3)", borderRadius: 12, padding: 20, maxWidth: 360, margin: "0 auto", textAlign: "left" }}>
@@ -80,7 +80,7 @@ export default function DownloadPage() {
             <p style={{ color: "#ffd700", fontFamily: "Cinzel,serif", margin: "0 0 10px" }}>Install in Chrome / Edge</p>
             <ol style={{ color: "#a0c8a0", fontSize: 14, lineHeight: 2, padding: "0 0 0 18px", margin: 0 }}>
               <li>Click the <strong style={{ color: "#00a550" }}>⋮</strong> menu in the address bar</li>
-              <li>Select <strong style={{ color: "#00a550" }}>Install Noor…</strong></li>
+              <li>Select <strong style={{ color: "#00a550" }}>Install DeenApp…</strong></li>
               <li>Click <strong style={{ color: "#00a550" }}>Install</strong></li>
             </ol>
           </div>
@@ -110,7 +110,7 @@ export default function DownloadPage() {
             ["🧭", "Qibla Compass", "Accurate direction anywhere"],
             ["📿", "Digital Tasbih", "With progress rings"],
             ["🕌", "Masjid Finder", "Nearby mosques on map"],
-            ["🤖", "Noor AI", "Personal Islamic companion"],
+            ["🤖", "DeenApp AI", "Personal Islamic companion"],
             ["📊", "Growth Tracker", "Streaks & badges"],
           ].map(([icon, title, desc]) => (
             <div key={title} style={{ background: "#002800", border: "1px solid rgba(0,165,80,0.15)", borderRadius: 10, padding: 14 }}>

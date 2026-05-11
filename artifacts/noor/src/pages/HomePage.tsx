@@ -203,7 +203,7 @@ export default function HomePage() {
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px 10px" }}>
           <div style={{ fontSize: 22, fontWeight: 600, color: "#00a550", letterSpacing: 4, fontFamily: "Cinzel, serif" }}>
-            NOOR
+            DEENAPP
           </div>
           <div style={{ display: "flex", gap: 16, color: "#4a7a4a" }}>
             <Bell size={20} />

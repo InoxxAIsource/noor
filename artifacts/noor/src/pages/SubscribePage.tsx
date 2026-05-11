@@ -41,7 +41,7 @@ const PLANS: Plan[] = [
     features: [
       "Everything in Free",
       "25 guided audio sessions",
-      "Noor AI companion (unlimited)",
+      "DeenApp AI companion (unlimited)",
       "Growth dashboard & badges",
       "Mood-based recommendations",
       "Streak analytics",
@@ -103,7 +103,7 @@ export default function SubscribePage() {
       {/* Header */}
       <div style={{ textAlign: "center", padding: "32px 20px 24px" }}>
         <h1 style={{ fontFamily: "Cinzel,serif", color: "#ffd700", fontSize: "1.8rem", margin: "0 0 8px" }}>
-          Noor Premium
+          DeenApp Premium
         </h1>
         <p style={{ color: "#4a7a4a", fontSize: "1rem", maxWidth: 420, margin: "0 auto" }}>
           Remember Allah. Every day. Unlock the full spiritual experience.

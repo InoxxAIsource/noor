@@ -16,7 +16,7 @@ const AIGuide: React.FC = () => {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [initialized, setInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const token = localStorage.getItem("noor_token");
+  const token = localStorage.getItem("deen_token");
 
   useEffect(() => {
     if (open && !initialized) {
@@ -73,7 +73,7 @@ const AIGuide: React.FC = () => {
       const data = await res.json() as { reply?: string; remaining?: number; error?: string };
 
       if (res.status === 429 || data.error) {
-        setMessages([...newMessages, { role: "assistant", content: data.error || "Daily limit reached. JazakAllah khair for using Noor!" }]);
+        setMessages([...newMessages, { role: "assistant", content: data.error || "Daily limit reached. JazakAllah khair for using DeenApp!" }]);
         setRemaining(0);
       } else if (data.reply) {
         setMessages([...newMessages, { role: "assistant", content: data.reply }]);
@@ -101,7 +101,7 @@ const AIGuide: React.FC = () => {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-24 right-4 z-40 w-14 h-14 bg-[var(--green)] rounded-full shadow-[0_0_20px_rgba(0,165,80,0.5)] flex items-center justify-center text-2xl hover:scale-110 transition-transform"
-        aria-label="Open Noor Guide"
+        aria-label="Open DeenApp Guide"
       >
         ☪️
       </button>
@@ -116,7 +116,7 @@ const AIGuide: React.FC = () => {
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-[var(--green)] rounded-full flex items-center justify-center text-lg">☪️</div>
                 <div>
-                  <h3 className="font-cinzel text-[var(--gold)] text-base leading-tight">Noor Guide</h3>
+                  <h3 className="font-cinzel text-[var(--gold)] text-base leading-tight">DeenApp Guide</h3>
                   <p className="text-[10px] text-[var(--muted)]">Islamic companion · Quran & Sunnah</p>
                 </div>
               </div>

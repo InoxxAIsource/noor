@@ -58,7 +58,7 @@ const DuasPage: React.FC = () => {
 
   const shareOnWhatsApp = (dua: Dua) => {
     const text = encodeURIComponent(
-      `${dua.title}\n${dua.arabic}\n${dua.meaningEnglish}\n\nFrom Noor app`
+      `${dua.title}\n${dua.arabic}\n${dua.meaningEnglish}\n\nFrom DeenApp`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };

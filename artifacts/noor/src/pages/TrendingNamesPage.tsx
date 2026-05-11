@@ -38,7 +38,7 @@ function generateNameCardPNG(n: Name): void {
   ctx.fillRect(0, 340, 640, 60);
   ctx.fillStyle = "#00a550";
   ctx.font = "14px system-ui";
-  ctx.fillText("Noor app — noorapp.com", 320, 378);
+  ctx.fillText("DeenApp — deenapp.app", 320, 378);
   const link = document.createElement("a");
   link.download = `${n.nameEnglish.toLowerCase()}-name-card.png`;
   link.href = canvas.toDataURL("image/png");
@@ -47,7 +47,7 @@ function generateNameCardPNG(n: Name): void {
 
 const TrendingNamesPage: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("noor_token");
+  const token = localStorage.getItem("deen_token");
   const [names, setNames] = useState<Name[]>([]);
   const [loading, setLoading] = useState(true);
   const [gender, setGender] = useState<"all" | "male" | "female">("all");
