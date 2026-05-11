@@ -269,9 +269,11 @@ export async function setStreakExtended(
 // ─── Gold price cache ─────────────────────────────────────────────────────────
 
 export interface GoldPriceCache {
-  pricePerGramINR: number;
-  pricePerGramUSD: number;
+  pricePerGram: number;
+  nisab: number;
+  currency: string;
   updatedAt: number;
+  fallback?: boolean;
 }
 
 export async function getGoldPriceCache(): Promise<GoldPriceCache | null> {

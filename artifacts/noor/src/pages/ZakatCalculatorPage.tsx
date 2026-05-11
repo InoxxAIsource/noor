@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 const NISAB_GOLD_GRAMS = 87.48;
 
 const ZakatCalculatorPage: React.FC = () => {
-  const [goldPriceINR, setGoldPriceINR] = useState(6200);
+  const [goldPriceINR, setGoldPriceINR] = useState(6500);
+  const [nisabThreshold, setNisabThreshold] = useState(568620);
   const [fields, setFields] = useState({
     cash: "", gold: "", goldGrams: "", silver: "",
     inventory: "", investments: "", owedToYou: "", debts: "",
@@ -15,7 +16,11 @@ const ZakatCalculatorPage: React.FC = () => {
   useEffect(() => {
     fetch("/api/zakat/gold-price")
       .then((r) => r.json())
-      .then((d) => { if (d.pricePerGramINR) setGoldPriceINR(d.pricePerGramINR); })
+      .then((d: { pricePerGram?: number; nisab?: number; pricePerGramINR?: number }) => {
+        const price = d.pricePerGram ?? d.pricePerGramINR ?? 6500;
+        setGoldPriceINR(price);
+        if (d.nisab) setNisabThreshold(d.nisab);
+      })
       .catch(() => {});
   }, []);
 
@@ -29,7 +34,7 @@ const ZakatCalculatorPage: React.FC = () => {
       parse(fields.cash) + goldValue + parse(fields.silver) +
       parse(fields.inventory) + parse(fields.investments) +
       parse(fields.owedToYou) - parse(fields.debts);
-    const nisab = NISAB_GOLD_GRAMS * goldPriceINR;
+    const nisab = nisabThreshold || NISAB_GOLD_GRAMS * goldPriceINR;
     const obligatory = total >= nisab;
     const due = obligatory ? total * 0.025 : 0;
     setResult({ total, nisab, due, obligatory });

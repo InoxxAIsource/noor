@@ -1,22 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useGetMyStreak, useGetDailyContent } from "@workspace/api-client-react";
-import {
-  Bell, Search, Menu, ChevronRight, Sun, Moon, Heart, BookOpen,
-  Compass, Calculator, CalendarDays, Droplets, MapPin, Star
-} from "lucide-react";
+import BottomNav from "../components/BottomNav";
+import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2 } from "lucide-react";
 
-interface PrayerTimings {
-  Fajr: string;
-  Dhuhr: string;
-  Asr: string;
-  Maghrib: string;
-  Isha: string;
-  [key: string]: string;
+interface PrayerTime { name: string; time: string; }
+interface HijriData { day: string; month: { number: number; en: string }; year: string; }
+interface Session {
+  id: string; title: string; category: string; durationSeconds: number; audioUrl?: string;
 }
+interface StreakData { currentStreak: number; weeklyCompleted: number; weeklyGoal: number; }
+interface NameOfAllah { arabic: string; nameEnglish: string; meaningEnglish: string; }
+interface Hadith { textEnglish: string; source: string; }
 
-const PRAYER_KEYS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"] as const;
+const PRAYER_ORDER = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
 function parseTimeToDate(timeStr: string): Date {
   const [h, m] = timeStr.split(":").map(Number) as [number, number];
@@ -33,93 +30,64 @@ function formatCountdown(ms: number): string {
   return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
+const CATEGORY_ICONS: Record<string, typeof Sun> = {
+  azkar: Sun, quran: BookOpen, dhikr: RotateCcw,
+  sleep: Moon, dua60: Heart, dua: Heart, salah: Building2,
+};
+
 export default function HomePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [prayerTimes, setPrayerTimes] = useState<PrayerTimings | null>(null);
-  const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string }>({ name: "Asr", time: "15:58" });
+  const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
+  const [hijri, setHijri] = useState<HijriData | null>(null);
+  const [streak, setStreak] = useState<StreakData>({ currentStreak: 0, weeklyCompleted: 0, weeklyGoal: 5 });
+  const [nameOfAllah, setNameOfAllah] = useState<NameOfAllah>({ arabic: "الرَّحْمَن", nameEnglish: "Ar-Rahman", meaningEnglish: "The Most Merciful" });
+  const [hadith, setHadith] = useState<Hadith>({ textEnglish: "The best of you are those who learn the Quran and teach it.", source: "Sahih Bukhari" });
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [countdown, setCountdown] = useState("--:--:--");
   const [iftarCountdown, setIftarCountdown] = useState("--:--:--");
-  const [hijriDate, setHijriDate] = useState("");
-  const [isRamadan, setIsRamadan] = useState(false);
-  const particleKeys = useRef(Array.from({ length: 10 }, () => Math.random()));
+  const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string }>({ name: "Fajr", time: "04:43" });
 
-  const { data: streakData } = useGetMyStreak();
-  const { data: dailyContent } = useGetDailyContent();
+  const particleKeys = useRef(Array.from({ length: 8 }, (_, i) => i));
+  const token = typeof window !== "undefined" ? localStorage.getItem("deen_token") : null;
+  const u = user as Record<string, unknown> | null;
+  const city = (u?.["city"] as string) || "Delhi";
+  const isRamadan = hijri?.month?.number === 9;
+  const isMuharram = hijri?.month?.number === 1;
 
-  const streak = {
-    current: streakData?.currentStreak ?? 0,
-    weekly: streakData?.weeklyCompleted ?? 0,
-    weeklyGoal: streakData?.weeklyGoal ?? 5,
-  };
-
-  const dailyName = dailyContent?.nameOfAllah
-    ? { arabic: dailyContent.nameOfAllah.arabic, english: `${dailyContent.nameOfAllah.transliteration} — ${dailyContent.nameOfAllah.meaningEnglish}` }
-    : { arabic: "الرَّحْمَن", english: "Ar-Rahman — The Most Merciful" };
-
-  const dailyHadith = dailyContent?.hadith
-    ? { text: dailyContent.hadith.text, source: dailyContent.hadith.source }
-    : { text: "The best of you are those who learn the Quran and teach it.", source: "Sahih Bukhari" };
-
-  // Fetch prayer times from aladhan.com
   useEffect(() => {
-    const city = (user as Record<string, unknown> | null)?.["city"] as string || "London";
-    const method = (user as Record<string, unknown> | null)?.["madhab"] === "shia" ? 0 : 3;
-    fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=IN&method=${method}`)
-      .then(r => r.json())
-      .then((d: { data?: { timings?: PrayerTimings } }) => {
-        if (d.data?.timings) {
-          const t = d.data.timings;
-          const clean: PrayerTimings = {
-            Fajr: t.Fajr?.split(" ")[0] ?? "04:43",
-            Dhuhr: t.Dhuhr?.split(" ")[0] ?? "12:11",
-            Asr: t.Asr?.split(" ")[0] ?? "15:58",
-            Maghrib: t.Maghrib?.split(" ")[0] ?? "18:54",
-            Isha: t.Isha?.split(" ")[0] ?? "20:23",
-          };
-          setPrayerTimes(clean);
-          calculateNextPrayer(clean);
-        }
-      })
-      .catch(() => {});
-  }, [user]);
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  // Fetch Hijri date
+    Promise.all([
+      fetch(`/api/prayer/times?city=${encodeURIComponent(city)}`).then(r => r.json()).catch(() => null),
+      fetch("/api/prayer/hijri").then(r => r.json()).catch(() => null),
+      token ? fetch("/api/streak/me", { headers }).then(r => r.json()).catch(() => null) : Promise.resolve(null),
+      fetch("/api/names-of-allah/today").then(r => r.json()).catch(() => null),
+      fetch("/api/hadith/today").then(r => r.json()).catch(() => null),
+      fetch("/api/sessions?limit=4").then(r => r.json()).catch(() => null),
+    ]).then(([prayerData, hijriData, streakData, nameData, hadithData, sessionsData]) => {
+      if (prayerData?.times) setPrayerTimes(prayerData.times);
+      if (hijriData?.day) setHijri(hijriData as HijriData);
+      if (streakData?.currentStreak !== undefined) setStreak(streakData as StreakData);
+      if (nameData?.arabic) setNameOfAllah(nameData as NameOfAllah);
+      if (hadithData?.textEnglish) setHadith(hadithData as Hadith);
+      if (Array.isArray(sessionsData)) setSessions((sessionsData as Session[]).slice(0, 4));
+    });
+  }, [city, token]);
+
   useEffect(() => {
+    if (!prayerTimes.length) return;
     const now = new Date();
-    const dd = String(now.getDate()).padStart(2, "0");
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const yyyy = now.getFullYear();
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    fetch(`https://api.aladhan.com/v1/gToH?date=${dd}-${mm}-${yyyy}`)
-      .then(r => r.json())
-      .then((d: { data?: { hijri?: { day: string; month: { en: string; number: number }; year: string } } }) => {
-        const h = d.data?.hijri;
-        if (h) {
-          setHijriDate(`${days[now.getDay()]} · ${h.day} ${h.month.en} ${h.year} AH`);
-          if (h.month.number === 9) setIsRamadan(true);
-        }
-      })
-      .catch(() => {
-        const days2 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        setHijriDate(days2[new Date().getDay()] ?? "");
-      });
-  }, []);
-
-  function calculateNextPrayer(times: PrayerTimings) {
-    const now = new Date();
-    for (const name of PRAYER_KEYS) {
-      const pt = parseTimeToDate(times[name] ?? "");
-      if (pt > now) {
-        setNextPrayer({ name, time: times[name] ?? "" });
-        return;
-      }
+    for (const p of prayerTimes) {
+      const pt = parseTimeToDate(p.time);
+      if (pt > now) { setNextPrayer({ name: p.name, time: p.time }); return; }
     }
-    setNextPrayer({ name: "Fajr", time: times.Fajr ?? "04:43" });
-  }
+    const first = prayerTimes[0];
+    if (first) setNextPrayer({ name: first.name, time: first.time });
+  }, [prayerTimes]);
 
-  // Countdown timer
   useEffect(() => {
     const interval = setInterval(() => {
       if (!nextPrayer.time) return;
@@ -128,8 +96,9 @@ export default function HomePage() {
       if (target <= now) target.setDate(target.getDate() + 1);
       setCountdown(formatCountdown(target.getTime() - now.getTime()));
 
-      if (prayerTimes?.Maghrib) {
-        const iftar = parseTimeToDate(prayerTimes.Maghrib);
+      const maghrib = prayerTimes.find(p => p.name === "Maghrib");
+      if (maghrib) {
+        const iftar = parseTimeToDate(maghrib.time);
         if (iftar <= now) iftar.setDate(iftar.getDate() + 1);
         setIftarCountdown(formatCountdown(iftar.getTime() - now.getTime()));
       }
@@ -137,51 +106,44 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [nextPrayer, prayerTimes]);
 
-  const prayers = PRAYER_KEYS.map(key => ({
-    key,
-    time: prayerTimes?.[key] ?? "--:--",
-  }));
+  const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const weekday = weekDays[new Date().getDay()] ?? "";
+  const hijriLine = hijri ? `${weekday}, ${hijri.day} ${hijri.month.en} ${hijri.year} AH` : `${weekday}`;
 
   const weekDots = Array(7).fill(null).map((_, i) => {
-    if (i < streak.weekly - 1) return "filled";
-    if (i === streak.weekly - 1) return "today";
+    if (i < streak.weeklyCompleted - 1) return "filled";
+    if (i === streak.weeklyCompleted - 1) return "today";
     return "empty";
   });
-
-  const quickSessions = [
-    { id: "morning-azkar", Icon: Sun, title: "Morning Azkar", meta: "10 min · Arabic + English" },
-    { id: "evening-azkar", Icon: Moon, title: "Evening Azkar", meta: "10 min · Guided" },
-    { id: "dua-anxiety-60", Icon: Heart, title: "60s Dua", meta: "1 min · For right now" },
-    { id: "quran-al-kahf", Icon: BookOpen, title: "Surah Al-Kahf", meta: "14 min · Friday" },
-  ];
-
-  const tools = [
-    { path: "/qibla", Icon: Compass, label: "Qibla" },
-    { path: "/zakat-calculator", Icon: Calculator, label: "Zakat" },
-    { path: "/islamic-calendar", Icon: CalendarDays, label: "Calendar" },
-    { path: "/wudu-guide", Icon: Droplets, label: "Wudu" },
-    { path: "/masjid-finder", Icon: MapPin, label: "Masjid" },
-    { path: "/99-names", Icon: Star, label: "99 Names" },
-  ];
 
   return (
     <div style={{
       background: "#001a00", minHeight: "100vh", color: "#e8f5e8",
-      position: "relative", overflow: "hidden", paddingBottom: 20,
+      position: "relative", overflow: "hidden", paddingBottom: 80,
     }}>
+      <style>{`
+        @keyframes crescentGlow {
+          0%,100% { filter: drop-shadow(0 0 8px rgba(0,165,80,0.3)); }
+          50% { filter: drop-shadow(0 0 20px rgba(0,165,80,0.7)); }
+        }
+        @keyframes floatUp {
+          0% { opacity:0; transform:translateY(0); }
+          20% { opacity:.8; }
+          80% { opacity:.3; }
+          100% { opacity:0; transform:translateY(-150px); }
+        }
+      `}</style>
 
-      {/* Floating gold particles */}
+      {/* Floating particles */}
       <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }}>
-        {particleKeys.current.map((k, i) => (
-          <div key={k} style={{
+        {particleKeys.current.map((i) => (
+          <div key={i} style={{
             position: "absolute",
-            left: `${20 + (i * 7.3) % 60}%`,
-            bottom: `${5 + (i * 11.7) % 40}%`,
-            width: `${1 + (i % 2)}px`,
-            height: `${1 + (i % 2)}px`,
-            background: "#ffd700",
-            borderRadius: "50%",
-            animation: `noor-float-up ${3 + (i % 4)}s ${(i * 0.7) % 5}s linear infinite`,
+            left: `${30 + (i * 5.7) % 40}%`,
+            bottom: `${10 + (i * 9.3) % 30}%`,
+            width: 2, height: 2,
+            background: "#ffd700", borderRadius: "50%",
+            animation: `floatUp ${3 + (i % 4)}s ${(i * 0.8) % 5}s linear infinite`,
             opacity: 0,
           }} />
         ))}
@@ -189,74 +151,100 @@ export default function HomePage() {
 
       <div style={{ position: "relative", zIndex: 1 }}>
 
-        {/* Ramadan banner */}
-        {isRamadan && (
+        {/* Section 1: Islamic Banner */}
+        {isRamadan ? (
           <div style={{
-            background: "rgba(255,215,0,0.1)", borderBottom: "0.5px solid rgba(255,215,0,0.2)",
+            background: "rgba(255,215,0,0.12)", borderBottom: "0.5px solid rgba(255,215,0,0.25)",
             padding: "8px 16px", display: "flex", justifyContent: "space-between", alignItems: "center",
           }}>
             <span style={{ fontSize: 12, color: "#ffd700" }}>Ramadan Mubarak</span>
             <span style={{ fontFamily: "Amiri, serif", fontSize: 14, color: "#ffd700", direction: "rtl" }}>رمضان مبارك</span>
           </div>
-        )}
+        ) : isMuharram ? (
+          <div style={{
+            background: "rgba(42,74,106,0.3)", borderBottom: "0.5px solid rgba(100,149,237,0.25)",
+            padding: "8px 16px", display: "flex", justifyContent: "space-between", alignItems: "center",
+          }}>
+            <span style={{ fontSize: 12, color: "#c8e8c8" }}>Month of Muharram</span>
+            <span style={{ fontFamily: "Amiri, serif", fontSize: 14, color: "#c8e8c8", direction: "rtl" }}>مُحَرَّم</span>
+          </div>
+        ) : hijri ? (
+          <div style={{
+            background: "rgba(0,165,80,0.08)", borderBottom: "0.5px solid rgba(0,165,80,0.15)",
+            padding: "8px 16px", display: "flex", justifyContent: "space-between", alignItems: "center",
+          }}>
+            <span style={{ fontSize: 12, color: "#4a7a4a" }}>{hijri.day} {hijri.month.en} {hijri.year} AH</span>
+            <span style={{ fontSize: 16, color: "#4a7a4a" }}>☪</span>
+          </div>
+        ) : null}
 
-        {/* Header */}
+        {/* Section 2: Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px 10px" }}>
           <div style={{ fontSize: 22, fontWeight: 600, color: "#00a550", letterSpacing: 4, fontFamily: "Cinzel, serif" }}>
             DEENAPP
           </div>
           <div style={{ display: "flex", gap: 16, color: "#4a7a4a" }}>
-            <Bell size={20} />
-            <Search size={20} />
-            <Menu size={20} />
+            <span style={{ fontSize: 20, cursor: "pointer" }}>🔔</span>
+            <span style={{ fontSize: 20, cursor: "pointer" }}>🔍</span>
+            <span style={{ fontSize: 20, cursor: "pointer" }}>☰</span>
           </div>
         </div>
 
-        {/* Greeting */}
+        {/* Section 3: Greeting */}
         <div style={{ padding: "0 16px 14px" }}>
           <div style={{ fontSize: 17, fontWeight: 500 }}>
-            As-salamu alaykum, {(user as Record<string, unknown> | null)?.["name"] as string || "friend"}
+            As-salamu alaykum, {(u?.["name"] as string) || "Guest"}
           </div>
           <div style={{ fontSize: 12, color: "#4a7a4a", marginTop: 3 }}>
-            {hijriDate || "Loading..."}
+            {hijriLine}
           </div>
         </div>
 
-        {/* Prayer Times Card */}
-        <div style={{
-          margin: "0 16px 14px", background: "rgba(0,165,80,0.08)",
-          border: "0.5px solid rgba(0,165,80,0.25)", borderRadius: 12, padding: 14,
-        }}>
+        {/* Section 4: Prayer Times Card */}
+        <div
+          onClick={() => void navigate("/prayer-times")}
+          style={{
+            margin: "0 16px 14px", background: "rgba(0,165,80,0.08)",
+            border: "0.5px solid rgba(0,165,80,0.25)", borderRadius: 12, padding: 14, cursor: "pointer",
+          }}
+        >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
             <div>
-              <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>
+              <div style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>
                 Next prayer
               </div>
               <div style={{ fontSize: 16, fontWeight: 500, color: "#00a550" }}>
                 {nextPrayer.name}
               </div>
             </div>
-            <div style={{ fontSize: 26, fontWeight: 500, color: "#ffd700", fontVariantNumeric: "tabular-nums" }}>
+            <div style={{ fontSize: 26, fontWeight: 500, color: "#ffd700", fontVariantNumeric: "tabular-nums", fontFamily: "monospace" }}>
               {countdown}
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 10, borderTop: "0.5px solid rgba(0,165,80,0.15)" }}>
-            {prayers.map(p => (
-              <div key={p.key} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 10, color: p.key === nextPrayer.name ? "#00a550" : "#4a7a4a", marginBottom: 2 }}>
-                  {p.key}{p.key === nextPrayer.name ? " ▸" : ""}
+            {PRAYER_ORDER.map(name => {
+              const p = prayerTimes.find(pt => pt.name === name);
+              const isNext = name === nextPrayer.name;
+              return (
+                <div key={name} style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 10, color: isNext ? "#00a550" : "#4a7a4a", marginBottom: 2 }}>
+                    {name}
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: isNext ? "#ffd700" : "#e8f5e8" }}>
+                    {p?.time ?? "--:--"}
+                  </div>
                 </div>
-                <div style={{ fontSize: 12, fontWeight: 500, color: p.key === nextPrayer.name ? "#ffd700" : "#e8f5e8" }}>
-                  {p.time}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* Crescent SVG */}
-        <div style={{ display: "flex", justifyContent: "center", margin: "4px 0 10px" }}>
-          <svg style={{ animation: "noor-crescent-glow 3s ease-in-out infinite" }} width="60" height="60" viewBox="0 0 60 60">
+        {/* Section 5: Crescent SVG */}
+        <div style={{ display: "flex", justifyContent: "center", margin: "4px 0 10px", position: "relative" }}>
+          <svg
+            style={{ animation: "crescentGlow 3s ease-in-out infinite" }}
+            width="60" height="60" viewBox="0 0 60 60"
+          >
             <circle cx="30" cy="30" r="28" fill="rgba(0,165,80,0.08)" />
             <path d="M38 10 A20 20 0 1 1 38 50 A14 14 0 1 0 38 10Z" fill="#00a550" opacity="0.85" />
             <circle cx="42" cy="16" r="2" fill="#ffd700" opacity="0.8" />
@@ -265,21 +253,19 @@ export default function HomePage() {
           </svg>
         </div>
 
-        {/* Streak */}
+        {/* Section 6: Ibadah Streak */}
         <div style={{
           margin: "0 16px 14px", background: "rgba(0,165,80,0.06)",
           border: "0.5px solid rgba(0,165,80,0.2)", borderRadius: 12,
           padding: 14, display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ fontSize: 36, fontWeight: 500, color: "#ffd700", lineHeight: 1 }}>
-              {streak.current}
+          <div>
+            <div style={{ fontSize: 36, color: "#ffd700", fontWeight: 500, lineHeight: 1, marginBottom: 2 }}>
+              {streak.currentStreak}
             </div>
-            <div>
-              <div style={{ fontSize: 11, color: "#4a7a4a", marginBottom: 2 }}>Ibadah streak</div>
-              <div style={{ fontSize: 12, color: "#00a550" }}>
-                {streak.weekly} / {streak.weeklyGoal} this week
-              </div>
+            <div style={{ fontSize: 11, color: "#4a7a4a" }}>Ibadah streak</div>
+            <div style={{ fontSize: 12, color: "#00a550", marginTop: 2 }}>
+              {streak.weeklyCompleted} / {streak.weeklyGoal} this week
             </div>
           </div>
           <div style={{ display: "flex", gap: 5 }}>
@@ -293,37 +279,37 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Daily cards horizontal scroll */}
+        {/* Section 7: Daily Cards horizontal scroll */}
         <div style={{ display: "flex", gap: 10, padding: "0 16px 14px", overflowX: "auto", scrollbarWidth: "none" }}>
           {/* Name of Allah */}
           <div style={{
-            flexShrink: 0, width: 148, background: "rgba(0,165,80,0.06)",
+            flexShrink: 0, width: 140, background: "rgba(0,165,80,0.06)",
             border: "0.5px solid rgba(0,165,80,0.2)", borderRadius: 10, padding: 11,
           }}>
             <div style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>
               Name of Allah
             </div>
             <div style={{ fontFamily: "Amiri, serif", fontSize: 18, color: "#ffd700", direction: "rtl", textAlign: "right", marginBottom: 3 }}>
-              {dailyName.arabic}
+              {nameOfAllah.arabic}
             </div>
             <div style={{ fontSize: 11, color: "#c8e8c8", lineHeight: 1.4 }}>
-              {dailyName.english}
+              {nameOfAllah.nameEnglish} — {nameOfAllah.meaningEnglish}
             </div>
           </div>
 
           {/* Hadith */}
           <div style={{
-            flexShrink: 0, width: 168, background: "rgba(0,165,80,0.06)",
+            flexShrink: 0, width: 160, background: "rgba(0,165,80,0.06)",
             border: "0.5px solid rgba(0,165,80,0.2)", borderRadius: 10, padding: 11,
           }}>
             <div style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>
               Hadith today
             </div>
             <div style={{ fontSize: 11, color: "#c8e8c8", lineHeight: 1.5 }}>
-              "{dailyHadith.text.slice(0, 100)}{dailyHadith.text.length > 100 ? "…" : ""}"
+              "{hadith.textEnglish.slice(0, 100)}{hadith.textEnglish.length > 100 ? "…" : ""}"
             </div>
             <div style={{ fontSize: 10, color: "#4a7a4a", marginTop: 4 }}>
-              — {dailyHadith.source}
+              — {hadith.source}
             </div>
           </div>
 
@@ -333,43 +319,54 @@ export default function HomePage() {
               flexShrink: 0, width: 130, background: "rgba(255,215,0,0.06)",
               border: "0.5px solid rgba(255,215,0,0.2)", borderRadius: 10, padding: 11, textAlign: "center",
             }}>
-              <div style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>
+              <div style={{ fontSize: 10, color: "#ffd700", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>
                 Iftar in
               </div>
               <div style={{ fontSize: 20, fontWeight: 500, color: "#ffd700", fontVariantNumeric: "tabular-nums" }}>
                 {iftarCountdown}
               </div>
               <div style={{ fontSize: 10, color: "#4a7a4a", marginTop: 3 }}>
-                Maghrib {prayerTimes?.Maghrib ?? "18:54"}
+                Maghrib {prayerTimes.find(p => p.name === "Maghrib")?.time ?? ""}
               </div>
             </div>
           )}
         </div>
 
-        {/* Quick start sessions */}
+        {/* Section 8: Quick Start Grid */}
         <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, padding: "0 16px", marginBottom: 8 }}>
           Start your ibadah
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "0 16px", marginBottom: 14 }}>
-          {quickSessions.map(s => (
-            <div
-              key={s.id}
-              onClick={() => void navigate(`/player/${s.id}`)}
-              style={{
-                background: "rgba(0,165,80,0.07)", border: "0.5px solid rgba(0,165,80,0.2)",
-                borderRadius: 10, padding: 12, cursor: "pointer", transition: "background .2s",
-              }}
-              onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.15)"; }}
-              onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.07)"; }}
-            >
-              <s.Icon size={20} color="#00a550" style={{ display: "block", marginBottom: 6 }} />
-              <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 2 }}>{s.title}</div>
-              <div style={{ fontSize: 11, color: "#4a7a4a" }}>{s.meta}</div>
-            </div>
-          ))}
+          {(sessions.length > 0 ? sessions : [
+            { id: "morning-azkar", title: "Morning Azkar", category: "azkar", durationSeconds: 600 },
+            { id: "evening-azkar", title: "Evening Azkar", category: "azkar", durationSeconds: 600 },
+            { id: "dua-anxiety-60", title: "60s Dua", category: "dua60", durationSeconds: 60 },
+            { id: "quran-al-kahf", title: "Surah Al-Kahf", category: "quran", durationSeconds: 840 },
+          ] as Session[]).map((s) => {
+            const catKey = s.category.toLowerCase();
+            const IconComp = CATEGORY_ICONS[catKey] ?? Heart;
+            return (
+              <div
+                key={s.id}
+                onClick={() => void navigate(`/player/${s.id}`)}
+                style={{
+                  background: "rgba(0,165,80,0.07)", border: "0.5px solid rgba(0,165,80,0.2)",
+                  borderRadius: 10, padding: 12, cursor: "pointer",
+                }}
+                onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.15)"; }}
+                onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.07)"; }}
+              >
+                <IconComp size={20} color="#00a550" style={{ display: "block", marginBottom: 6 }} />
+                <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 2 }}>{s.title}</div>
+                <div style={{ fontSize: 11, color: "#4a7a4a" }}>
+                  {Math.floor(s.durationSeconds / 60)} min · {s.category}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Mood button */}
+        {/* Section 9: Mood Button */}
         <div
           onClick={() => void navigate("/mood")}
           style={{
@@ -382,10 +379,10 @@ export default function HomePage() {
             <div style={{ fontSize: 13, color: "#ffd700", fontWeight: 500 }}>What do you need today?</div>
             <div style={{ fontSize: 11, color: "#4a7a4a", marginTop: 2 }}>Find the right dua for this moment</div>
           </div>
-          <ChevronRight size={20} color="#ffd700" />
+          <span style={{ fontSize: 20, color: "#ffd700" }}>→</span>
         </div>
 
-        {/* Quick tasbih row */}
+        {/* Section 10: Quick Tasbih Row */}
         <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, padding: "0 16px", marginBottom: 8 }}>
           Quick tasbih
         </div>
@@ -411,30 +408,9 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Islamic Tools grid */}
-        <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, padding: "0 16px", marginBottom: 8 }}>
-          Islamic Tools
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, padding: "0 16px", marginBottom: 8 }}>
-          {tools.map(t => (
-            <div
-              key={t.path}
-              onClick={() => void navigate(t.path)}
-              style={{
-                background: "rgba(0,165,80,0.06)", border: "0.5px solid rgba(0,165,80,0.18)",
-                borderRadius: 10, padding: "12px 8px", textAlign: "center", cursor: "pointer",
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-              }}
-              onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.13)"; }}
-              onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.06)"; }}
-            >
-              <t.Icon size={22} color="#00a550" />
-              <span style={{ fontSize: 11, color: "#c8e8c8" }}>{t.label}</span>
-            </div>
-          ))}
-        </div>
-
       </div>
+
+      <BottomNav />
     </div>
   );
 }

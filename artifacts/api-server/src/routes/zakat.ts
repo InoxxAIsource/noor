@@ -2,7 +2,9 @@ import { Router } from "express";
 import { getGoldPriceCache, setGoldPriceCache } from "../lib/db.js";
 
 const router = Router();
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const CACHE_TTL = 24 * 60 * 60 * 1000;
+const NISAB_GOLD_GRAMS = 87.48;
+const USD_TO_INR = 83;
 
 router.get("/zakat/gold-price", async (_req, res) => {
   try {
@@ -16,12 +18,13 @@ router.get("/zakat/gold-price", async (_req, res) => {
     if (!resp.ok) throw new Error("metals.live unavailable");
     const data = (await resp.json()) as Array<{ gold: number }>;
     const usdPerOz = data[0]?.gold ?? 2350;
-    const usdPerGram = usdPerOz / 31.1035;
-    const inrPerGram = usdPerGram * 83;
+    const pricePerGram = Math.round((usdPerOz / 31.1035) * USD_TO_INR);
+    const nisab = Math.round(NISAB_GOLD_GRAMS * pricePerGram);
 
     const result = {
-      pricePerGramINR: Math.round(inrPerGram),
-      pricePerGramUSD: Math.round(usdPerGram * 100) / 100,
+      pricePerGram,
+      nisab,
+      currency: "INR",
       updatedAt: Date.now(),
     };
     await setGoldPriceCache(result);
@@ -29,7 +32,13 @@ router.get("/zakat/gold-price", async (_req, res) => {
   } catch {
     const cached = await getGoldPriceCache().catch(() => null);
     if (cached) { res.json(cached); return; }
-    res.json({ pricePerGramINR: 6200, pricePerGramUSD: 74.7, updatedAt: Date.now() });
+    res.json({
+      pricePerGram: 6500,
+      nisab: 568620,
+      currency: "INR",
+      fallback: true,
+      updatedAt: Date.now(),
+    });
   }
 });
 

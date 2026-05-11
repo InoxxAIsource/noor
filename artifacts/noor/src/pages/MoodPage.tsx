@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const MOODS = [
   { label: "Anxious", emoji: "😰" },
@@ -15,12 +14,11 @@ const MOODS = [
 
 const INTENSITIES = ["Mild", "Moderate", "Intense"];
 
-interface Recommendation {
-  session: Record<string, unknown>;
-  reason: string;
-}
+interface Session { id: string; title: string; category: string; durationSeconds: number; }
+interface Recommendation { session: Session; reason: string; id?: string; }
 
 const MoodPage: React.FC = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [mood, setMood] = useState("");
   const [intensity, setIntensity] = useState("");
@@ -32,30 +30,33 @@ const MoodPage: React.FC = () => {
 
   const handleMoodSelect = (m: string) => {
     setMood(m);
+    setIntensity("");
     setStep(2);
   };
 
-  const handleIntensitySelect = async (i: string) => {
+  const handleIntensitySelect = (i: string) => {
     setIntensity(i);
+  };
+
+  const fetchRecommendations = async () => {
     setStep(3);
     setLoading(true);
     setError("");
-
     try {
       const res = await fetch("/api/ai/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ mood, intensity: i }),
+        body: JSON.stringify({ mood, intensity }),
       });
       const data = await res.json() as { recommendations?: Recommendation[]; error?: string };
-
       if (data.error) throw new Error(data.error);
       setRecommendations(data.recommendations || []);
       setStep(4);
-    } catch (err) {
+    } catch {
       setError("Could not load recommendations. Please try again.");
       setStep(1);
       setMood("");
+      setIntensity("");
     } finally {
       setLoading(false);
     }
@@ -70,51 +71,99 @@ const MoodPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 animate-fade-in">
-      <div className="p-6">
-        <h1 className="font-cinzel text-3xl text-[var(--gold)] mb-1">What do you need today?</h1>
-        <p className="text-[var(--muted)] text-sm mb-8">
-          {step === 1 && "Select how you feel — we'll find your perfect dua."}
-          {step === 2 && `You feel ${mood}. How intense?`}
-          {step === 3 && "Finding your guidance..."}
+    <div style={{ minHeight: "100vh", background: "#001a00", color: "#e8f5e8", paddingBottom: 80 }}>
+      <div style={{ padding: "24px 16px 0" }}>
+        <h1 style={{ fontFamily: "Cinzel, serif", fontSize: 26, color: "#ffd700", marginBottom: 4 }}>
+          What do you need right now?
+        </h1>
+        <p style={{ fontSize: 13, color: "#4a7a4a", marginBottom: 24 }}>
+          {step === 1 && "Find the perfect dua for this moment"}
+          {step === 2 && `You feel ${mood}. How intense is this feeling?`}
+          {(step === 3 || loading) && "Finding your dua..."}
           {step === 4 && "Your personalised guidance:"}
         </p>
 
+        {error && (
+          <div style={{
+            background: "rgba(192,72,72,0.15)", border: "0.5px solid rgba(192,72,72,0.4)",
+            borderRadius: 10, padding: "12px 16px", marginBottom: 16, textAlign: "center",
+          }}>
+            <p style={{ fontSize: 13, color: "#ff9999", marginBottom: 8 }}>{error}</p>
+            <button onClick={reset} style={{ fontSize: 12, color: "#00a550", textDecoration: "underline", background: "none", border: "none", cursor: "pointer" }}>
+              Try again
+            </button>
+          </div>
+        )}
+
         {/* Step 1: Mood selection */}
         {step === 1 && (
-          <div className="grid grid-cols-2 gap-3">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {MOODS.map((m) => (
-              <button
+              <div
                 key={m.label}
                 onClick={() => handleMoodSelect(m.label)}
-                className="bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--green)] rounded-3xl p-5 flex flex-col items-center gap-3 transition-all hover:shadow-[0_0_20px_rgba(0,165,80,0.15)] group"
+                style={{
+                  background: "rgba(0,165,80,0.06)", border: "0.5px solid rgba(0,165,80,0.2)",
+                  borderRadius: 12, padding: 16, cursor: "pointer", textAlign: "center",
+                  transition: "border-color .2s, background .2s",
+                }}
+                onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "#00a550"; }}
+                onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(0,165,80,0.2)"; }}
               >
-                <span className="text-4xl group-hover:scale-110 transition-transform">{m.emoji}</span>
-                <span className="font-cinzel text-base text-white">{m.label}</span>
-              </button>
+                <div style={{ fontSize: 32, marginBottom: 8 }}>{m.emoji}</div>
+                <div style={{ fontSize: 13, fontWeight: 500 }}>{m.label}</div>
+              </div>
             ))}
           </div>
         )}
 
-        {/* Step 2: Intensity */}
+        {/* Step 2: Intensity + Find button */}
         {step === 2 && (
-          <div className="max-w-sm mx-auto space-y-4">
-            <div className="flex items-center gap-3 text-3xl justify-center mb-6">
-              <span>{MOODS.find((m) => m.label === mood)?.emoji}</span>
-              <span className="font-cinzel text-xl text-white">{mood}</span>
+          <div style={{ maxWidth: 340, margin: "0 auto" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <span style={{ fontSize: 32 }}>{MOODS.find(m => m.label === mood)?.emoji}</span>
+              <span style={{ fontSize: 17, fontWeight: 500 }}>{mood}</span>
             </div>
-            {INTENSITIES.map((i) => (
+
+            <div style={{ fontSize: 13, color: "#4a7a4a", marginBottom: 12, textAlign: "center" }}>
+              How intense is this feeling?
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+              {INTENSITIES.map((i) => (
+                <div
+                  key={i}
+                  onClick={() => handleIntensitySelect(i)}
+                  style={{
+                    background: intensity === i ? "rgba(0,165,80,0.2)" : "rgba(0,165,80,0.06)",
+                    border: intensity === i ? "2px solid #00a550" : "0.5px solid rgba(0,165,80,0.2)",
+                    borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "center",
+                    fontSize: 15, fontWeight: 500, transition: "all .2s",
+                  }}
+                >
+                  {i === "Mild" ? "🌱 Mild" : i === "Moderate" ? "🌿 Moderate" : "🌊 Intense"}
+                </div>
+              ))}
+            </div>
+
+            {intensity && (
               <button
-                key={i}
-                onClick={() => handleIntensitySelect(i)}
-                className="w-full bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--green)] hover:bg-[var(--card)] rounded-2xl py-4 font-cinzel text-lg text-white transition-all"
+                onClick={() => void fetchRecommendations()}
+                style={{
+                  width: "100%", background: "#00a550", color: "#001a00",
+                  border: "none", borderRadius: 12, padding: "14px 16px",
+                  fontSize: 15, fontWeight: 600, cursor: "pointer",
+                  marginBottom: 10,
+                }}
               >
-                {i === "Mild" && "🌱 Mild"}
-                {i === "Moderate" && "🌿 Moderate"}
-                {i === "Intense" && "🌊 Intense"}
+                Find my dua →
               </button>
-            ))}
-            <button onClick={reset} className="w-full text-[var(--muted)] text-sm py-2">
+            )}
+
+            <button
+              onClick={reset}
+              style={{ width: "100%", background: "none", border: "none", color: "#4a7a4a", fontSize: 13, cursor: "pointer", padding: 8 }}
+            >
               ← Choose different mood
             </button>
           </div>
@@ -122,72 +171,85 @@ const MoodPage: React.FC = () => {
 
         {/* Step 3: Loading */}
         {step === 3 && loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-6">
-            <div className="text-6xl animate-pulse">☪️</div>
-            <p className="font-cinzel text-[var(--gold)] text-lg animate-pulse">Finding your dua...</p>
-            <p className="text-[var(--muted)] text-sm text-center max-w-xs">
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: 80, gap: 20 }}>
+            <div style={{ fontSize: 56, animation: "pulse 1.5s ease-in-out infinite" }}>☪️</div>
+            <p style={{ fontFamily: "Cinzel, serif", fontSize: 18, color: "#ffd700", animation: "pulse 1.5s ease-in-out infinite" }}>
+              Finding your dua...
+            </p>
+            <p style={{ fontSize: 13, color: "#4a7a4a", textAlign: "center", maxWidth: 240 }}>
               Searching through guided sessions for {mood.toLowerCase()} hearts
             </p>
           </div>
         )}
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-900/20 border border-red-900/30 rounded-xl p-4 text-center">
-            <p className="text-red-400 text-sm mb-3">{error}</p>
-            <button onClick={reset} className="text-[var(--green)] text-sm underline">Try again</button>
-          </div>
-        )}
-
         {/* Step 4: Results */}
         {step === 4 && recommendations.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-2xl">{MOODS.find((m) => m.label === mood)?.emoji}</span>
-              <span className="text-sm text-[var(--muted)]">{mood} · {intensity}</span>
-              <button onClick={reset} className="ml-auto text-xs text-[var(--green)] underline">
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <span style={{ fontSize: 22 }}>{MOODS.find(m => m.label === mood)?.emoji}</span>
+              <span style={{ fontSize: 13, color: "#4a7a4a" }}>{mood} · {intensity}</span>
+              <button
+                onClick={reset}
+                style={{ marginLeft: "auto", background: "none", border: "none", color: "#00a550", fontSize: 12, cursor: "pointer", textDecoration: "underline" }}
+              >
                 Start over
               </button>
             </div>
 
-            {recommendations.map((rec, i) => {
-              const s = rec.session;
-              return (
-                <div
-                  key={i}
-                  className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5"
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] uppercase tracking-wider text-[var(--green)] bg-[var(--green)]/10 px-2 py-0.5 rounded-full">
-                      {s["category"] as string}
-                    </span>
-                    <span className="text-xs text-[var(--muted)]">
-                      {Math.ceil((s["durationSeconds"] as number) / 60)} min
-                    </span>
-                  </div>
-                  <h3 className="font-cinzel text-white mb-2">{s["title"] as string}</h3>
-                  <p className="text-xs text-[var(--muted)] italic mb-4">"{rec.reason}"</p>
-                  <Link
-                    to={`/player/${s["id"]}`}
-                    className="flex items-center justify-center gap-2 w-full bg-[var(--green)] text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-[var(--green)]/90 transition-colors"
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {recommendations.map((rec, i) => {
+                const s = rec.session as unknown as Record<string, unknown>;
+                const sessionId = (s?.["id"] as string) ?? (rec.id as string) ?? String(i);
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      background: "rgba(0,165,80,0.06)", border: "0.5px solid rgba(0,165,80,0.2)",
+                      borderRadius: 10, padding: 14,
+                    }}
                   >
-                    <Play size={14} /> Begin this dua →
-                  </Link>
-                </div>
-              );
-            })}
+                    <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>
+                      {s?.["title"] as string}
+                    </div>
+                    <div style={{ fontSize: 12, color: "#4a7a4a", marginBottom: 6 }}>
+                      {Math.ceil(((s?.["durationSeconds"] as number) || 0) / 60)} min · {s?.["category"] as string}
+                    </div>
+                    <div style={{ fontSize: 12, color: "#4a7a4a", fontStyle: "italic", marginBottom: 12 }}>
+                      "{rec.reason}"
+                    </div>
+                    <button
+                      onClick={() => void navigate(`/player/${sessionId}`)}
+                      style={{
+                        width: "100%", background: "#00a550", color: "#001a00",
+                        border: "none", borderRadius: 8, padding: 10,
+                        fontSize: 13, fontWeight: 500, cursor: "pointer",
+                      }}
+                    >
+                      Begin this session →
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
 
-            {recommendations.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-[var(--muted)]">No specific sessions found. Browse all sessions:</p>
-                <Link to="/sessions" className="text-[var(--green)] underline text-sm mt-2 block">
-                  View all sessions →
-                </Link>
-              </div>
-            )}
+            <div style={{ textAlign: "center", marginTop: 16 }}>
+              <button
+                onClick={reset}
+                style={{ background: "none", border: "none", color: "#4a7a4a", fontSize: 13, cursor: "pointer", textDecoration: "underline" }}
+              >
+                Try again
+              </button>
+            </div>
           </div>
         )}
       </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 };

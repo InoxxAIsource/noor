@@ -117,6 +117,16 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-11 — Home, Player, Mood, Growth, Zakat, Masjid overhaul (Prompt 7)
+- **P1 — Home screen**: Fetches sessions from `/api/sessions?limit=4` (live API, no longer hardcoded); fetches prayer times + hijri from backend API; Muharram (month 1) + default hijri banner added alongside Ramadan; prayer card tappable → `/prayer-times`; BottomNav added; paddingBottom: 80
+- **P4 — Player**: 30-second progress autosave interval added (saves `durationListened` while playing); `POST /api/streak/checkin` called on session complete
+- **P5 — Mood engine**: Intensity selection now shows a "Find my dua →" button before triggering the API (two-step: select intensity → confirm → load); loading state full-screen with animated crescent; results use inline design tokens
+- **P6 — Growth**: Already complete from prior session; no changes needed
+- **P7 — Zakat**: API response renamed `pricePerGramINR` → `pricePerGram`, added `nisab` field; `GoldPriceCache` interface updated in `db.ts`; frontend reads new field names; nisab threshold from API used in calculation
+- **P8 — Masjid**: API now returns `mapsUrl` + `distanceKm` per mosque alongside existing `distance`
+- **Typecheck**: All clean (both `@workspace/api-server` and `@workspace/noor`)
+- **API tests**: Sessions 25+, Names 500, Duas public, Prayer times, Hijri, Gold price — all ✅
+
 ### 2026-05-11 — Public Routes, 500 Names, Manifest PWA Enhancements
 - **Names expanded**: Seed file rebuilt from 40 → 500 Islamic names (250 boys + 250 girls); fully seeded into DB via `POST /admin/names/reseed` endpoint (now live)
 - **Public routes**: Removed `requireAuth` from `GET /api/duas` and `GET /api/prayer/times`; both are now fully public. Auth is optional — `isFavorite` still populated when token present

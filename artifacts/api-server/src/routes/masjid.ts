@@ -54,6 +54,8 @@ router.get("/masjid/nearby", async (req, res) => {
         lat: el.lat,
         lng: el.lon,
         distance: Math.round(haversine(lat, lng, el.lat, el.lon) * 10) / 10,
+        distanceKm: Math.round(haversine(lat, lng, el.lat, el.lon) * 10) / 10,
+        mapsUrl: `https://maps.google.com/maps?daddr=${el.lat},${el.lon}`,
       }))
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 20);

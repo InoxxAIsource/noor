@@ -126,6 +126,26 @@ const PlayerPage: React.FC = () => {
     if (soundRef.current) soundRef.current.rate(playbackRate);
   }, [playbackRate]);
 
+  // 30-second progress autosave
+  useEffect(() => {
+    if (phase !== "playing") return;
+    const interval = setInterval(() => {
+      if (isPlaying && soundRef.current && token) {
+        const ct = soundRef.current.seek() as number;
+        fetch("/api/progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            sessionId: id,
+            durationListened: Math.floor(ct),
+            category: s?.["category"] || "",
+          }),
+        }).catch(() => {});
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [phase, isPlaying, id, token, s]);
+
   useEffect(() => {
     if (rainOn) {
       const rain = new Howl({ src: [RAIN_URL], loop: true, volume: 0.3, html5: true });
@@ -157,6 +177,8 @@ const PlayerPage: React.FC = () => {
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 2000);
 
+    const finalDuration = duration || (s?.["durationSeconds"] as number) || 0;
+
     // Log progress
     try {
       await fetch("/api/progress", {
@@ -164,11 +186,19 @@ const PlayerPage: React.FC = () => {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           sessionId: id,
-          durationListened: duration || s?.["durationSeconds"] || 0,
+          durationListened: finalDuration,
           moodBefore: MOOD_SCORE[moodBefore ?? ""] ?? 3,
           moodAfter: 3,
           category: s?.["category"] || "",
         }),
+      });
+    } catch { /* ignore */ }
+
+    // Checkin streak
+    try {
+      await fetch("/api/streak/checkin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
     } catch { /* ignore */ }
 
