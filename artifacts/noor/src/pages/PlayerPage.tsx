@@ -59,7 +59,7 @@ const PlayerPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: session, isLoading } = useGetSession(id || "", {
-    query: { enabled: !!id, queryKey: getGetSessionQueryKey(id || "") },
+    query: { enabled: !!id, queryKey: getGetSessionQueryKey(id || ""), retry: false },
   });
   const { data: allSessions } = useGetSessions();
 
@@ -274,10 +274,32 @@ const PlayerPage: React.FC = () => {
     ?.filter((rs) => rs["category"] === s?.["category"] && rs["id"] !== id)
     .slice(0, 3) || [];
 
-  if (isLoading || !session) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center text-[var(--gold)] font-cinzel text-xl">
-        Loading...
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center gap-4">
+        <div style={{
+          width: 48, height: 48, borderRadius: "50%",
+          border: "3px solid rgba(0,165,80,0.2)",
+          borderTopColor: "#00a550",
+          animation: "spin 0.9s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <p className="text-[var(--muted)] text-sm">Loading session…</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="text-[var(--gold)] font-cinzel text-xl">Session not found</p>
+        <p className="text-[var(--muted)] text-sm">This session may have been removed or the link is incorrect.</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-4 bg-[var(--green)] text-white px-6 py-2 rounded-xl text-sm"
+        >
+          ← Go back
+        </button>
       </div>
     );
   }

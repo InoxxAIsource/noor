@@ -337,12 +337,15 @@ export default function HomePage() {
           Start your ibadah
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "0 16px", marginBottom: 14 }}>
-          {(sessions.length > 0 ? sessions : [
-            { id: "morning-azkar", title: "Morning Azkar", category: "azkar", durationSeconds: 600 },
-            { id: "evening-azkar", title: "Evening Azkar", category: "azkar", durationSeconds: 600 },
-            { id: "dua-anxiety-60", title: "60s Dua", category: "dua60", durationSeconds: 60 },
-            { id: "quran-al-kahf", title: "Surah Al-Kahf", category: "quran", durationSeconds: 840 },
-          ] as Session[]).map((s) => {
+          {sessions.length === 0 ? (
+            [0, 1, 2, 3].map(i => (
+              <div key={i} style={{
+                background: "rgba(0,165,80,0.04)", border: "0.5px solid rgba(0,165,80,0.1)",
+                borderRadius: 10, padding: 12, height: 72,
+                animation: "pulse 1.5s ease-in-out infinite",
+              }} />
+            ))
+          ) : sessions.map((s) => {
             const catKey = s.category.toLowerCase();
             const IconComp = CATEGORY_ICONS[catKey] ?? Heart;
             return (

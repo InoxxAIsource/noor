@@ -117,6 +117,12 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-11 — Session card loading fix
+- **Root cause**: HomePage had hardcoded fallback session cards (`morning-azkar`, `evening-azkar`, etc.) shown while API data loaded. Clicking them sent the player to `/player/morning-azkar` which returned 404.
+- **Fix 1 — HomePage**: Replaced fallback hardcoded sessions with animated skeleton placeholders while sessions load from API. Real session IDs are only used once the API data arrives.
+- **Fix 2 — PlayerPage**: Split the `isLoading || !session` guard into two separate states — proper spinner while loading, clear "Session not found" error screen with back button when 404.
+- **Fix 3 — PlayerPage**: Added `retry: false` to `useGetSession` so React Query doesn't retry 404s 3× (which caused the apparent hang).
+
 ### 2026-05-11 — Home, Player, Mood, Growth, Zakat, Masjid overhaul (Prompt 7)
 - **P1 — Home screen**: Fetches sessions from `/api/sessions?limit=4` (live API, no longer hardcoded); fetches prayer times + hijri from backend API; Muharram (month 1) + default hijri banner added alongside Ramadan; prayer card tappable → `/prayer-times`; BottomNav added; paddingBottom: 80
 - **P4 — Player**: 30-second progress autosave interval added (saves `durationListened` while playing); `POST /api/streak/checkin` called on session complete
