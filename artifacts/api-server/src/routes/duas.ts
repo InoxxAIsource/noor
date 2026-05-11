@@ -1,20 +1,21 @@
 import { Router } from "express";
 import { getAllDuas, getDuaFavs, setDuaFavs } from "../lib/db.js";
-import { requireAuth, type AuthRequest } from "../middleware/auth.js";
+import { optionalAuth, requireAuth, type AuthRequest } from "../middleware/auth.js";
 import type { Response } from "express";
 
 const router = Router();
 
-// GET /api/duas
-router.get("/duas", requireAuth, async (req: AuthRequest, res: Response) => {
+// GET /api/duas — public; isFavorite populated only when authenticated
+router.get("/duas", optionalAuth, async (req: AuthRequest, res: Response) => {
   const duas = await getAllDuas();
-  const favIds = await getDuaFavs(req.userId!);
   const category = req.query["category"] as string | undefined;
 
   if (!duas) {
     res.json([]);
     return;
   }
+
+  const favIds = req.userId ? await getDuaFavs(req.userId) : [];
 
   let list: Array<Record<string, unknown>> = (duas as Array<Record<string, unknown>>).map((d) => ({
     ...d,
@@ -28,7 +29,7 @@ router.get("/duas", requireAuth, async (req: AuthRequest, res: Response) => {
   res.json(list);
 });
 
-// POST /api/duas/:id/favorite
+// POST /api/duas/:id/favorite — requires auth
 router.post("/duas/:id/favorite", requireAuth, async (req: AuthRequest, res: Response) => {
   const { id } = req.params as { id: string };
   const favIds = await getDuaFavs(req.userId!);

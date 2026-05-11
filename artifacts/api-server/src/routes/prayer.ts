@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth, type AuthRequest } from "../middleware/auth.js";
+import { requireAuth, optionalAuth, type AuthRequest } from "../middleware/auth.js";
 import { getUser, logSalah, getSalahLog } from "../lib/db.js";
 import type { Response } from "express";
 
@@ -20,9 +20,9 @@ function getMethodForMadhab(madhab: string | null | undefined, sunniMadhab: stri
   return 1;
 }
 
-// GET /api/prayer/times
-router.get("/prayer/times", requireAuth, async (req: AuthRequest, res: Response) => {
-  const user = await getUser(req.userId!);
+// GET /api/prayer/times — public; uses query city, or auth user's city if logged in
+router.get("/prayer/times", optionalAuth, async (req: AuthRequest, res: Response) => {
+  const user = req.userId ? await getUser(req.userId) : null;
   const city = (req.query["city"] as string) || (user?.["city"] as string) || "London";
   const date = (req.query["date"] as string) || new Date().toISOString().split("T")[0]!;
 

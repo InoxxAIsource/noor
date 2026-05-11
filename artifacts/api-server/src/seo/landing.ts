@@ -122,6 +122,7 @@ router.get("/download", (_req, res) => {
     title: "Download DeenApp — Islamic Prayer App | Free PWA for Android & iOS",
     description: "Download DeenApp Islamic prayer app. Free PWA — works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
     canonical: "/download",
+    schema: [],
   });
 
   const body = `

@@ -12,6 +12,7 @@ import {
 import Anthropic from "@anthropic-ai/sdk";
 import { logger } from "../lib/logger.js";
 import { BLOG_STUBS } from "../seo/blog-seo.js";
+import { seedNames } from "../seed/names.js";
 
 const router = Router();
 
@@ -273,6 +274,19 @@ JSON:
 router.post("/admin/blog/generate-all", async (req, res) => {
   const slugs = BLOG_STUBS.map(s => s.slug);
   res.json({ ok: true, queued: slugs.length, message: "Run /admin/blog/generate for each slug individually to avoid timeouts." });
+});
+
+// ─── Names reseed (force replace all names with seed data) ───────────────────
+
+router.post("/admin/names/reseed", async (_req, res) => {
+  try {
+    await seedNames();
+    const names = await getAllNames();
+    res.json({ ok: true, total: (names as unknown[])?.length ?? 0, message: "Names reseeded successfully" });
+  } catch (err) {
+    logger.error({ err }, "names reseed error");
+    res.status(500).json({ error: "Reseed failed" });
+  }
 });
 
 // ─── Names batch generate ─────────────────────────────────────────────────────

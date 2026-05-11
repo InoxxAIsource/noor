@@ -1,0 +1,376 @@
+he audit shows:
+✅ All 30+ routes working
+✅ 25 sessions seeded
+✅ 99 Names seeded
+✅ DeenApp branding complete
+✅ deen_token fixed everywhere
+
+NOW BUILD THESE MISSING/INCOMPLETE FEATURES:
+
+════════════════════════════════════════
+PRIORITY 1 — HOME SCREEN (most visible)
+════════════════════════════════════════
+Replace pages/HomePage.tsx completely.
+The home screen must show ALL of these, working:
+
+1. ISLAMIC BANNER (top)
+   Fetch /api/prayer/hijri to get current Hijri date
+   Show gold banner during Ramadan (month 9)
+   Show teal during Muharram (month 1)
+   Default: green banner with Hijri date
+   Format: "24 Dhū al-Qaʿdah 1447 AH"
+
+2. GREETING
+   "As-salamu alaykum, {user.name}!"
+   Hijri date below in muted text
+
+3. PRAYER TIMES WIDGET
+   Fetch /api/prayer/times with user.city
+   Show live countdown to next prayer (updates every second)
+   Show all 5 prayer times in a row
+   Highlight the next upcoming prayer in gold
+   Sunni: 5 separate times | Shia: show combined sessions
+
+4. CRESCENT SVG ANIMATION
+   Animated SVG crescent with gold glow
+   5 floating gold particles around it
+   CSS keyframes: cresGlow (opacity/shadow pulse 3s)
+
+5. IBADAH STREAK
+   Fetch /api/streak/me
+   Show streak number large in gold
+   7 dots: filled green = completed, gold = today, dark = missed
+   "X / 7 this week" text
+
+6. HORIZONTAL SCROLL CARDS
+   Card 1: Today's Name of Allah
+     Fetch /api/names-of-allah/today
+     Show Arabic (Amiri font, gold, rtl) + English meaning
+   Card 2: Hadith of the day
+     Fetch /api/hadith/today
+     First 120 chars + source
+   Card 3: Iftar countdown (if Ramadan)
+     Uses Maghrib time from prayer times
+     Live countdown HH:MM:SS in gold
+
+7. QUICK START GRID (2×2)
+   Show 4 sessions from /api/sessions
+   Filter by time of day:
+     Before 12pm: show azkar category first
+     After 12pm: show dhikr/quran
+   Each card: title + duration + category icon
+   Tap → navigate to /player/:id
+
+8. MOOD BUTTON
+   "What do you need today?" → /mood
+   Gold bordered button, full width
+
+9. TASBIH PILLS ROW
+   3 pills: SubhanAllah / Alhamdulillah / Allahu Akbar
+   Arabic text (Amiri font, gold)
+   Tap → /tasbih?dhikr=subhanallah etc
+
+10. BOTTOM NAV
+    Home | Salah | Quran | Duas | Profile
+    Active tab in green
+    Fixed at bottom
+
+Full dark Islamic theme:
+  background: #001a00
+  surface: #002800
+  green: #00a550
+  gold: #ffd700
+  text: #e8f5e8
+  muted: #4a7a4a
+
+════════════════════════════════════════
+PRIORITY 2 — NAMES ONLY 40, NEED 500+
+════════════════════════════════════════
+The audit shows only 40 names seeded.
+We need 500 minimum for the names finder to be useful.
+
+In server/seed/names.ts — expand the names array to
+include at least 250 boy names and 250 girl names.
+
+Each name object:
+{
+  id: string (slug format e.g. "ahmed-001"),
+  nameEnglish: string,
+  nameArabic: string,
+  nameUrdu: string,
+  gender: 'boy' | 'girl',
+  meaningEnglish: string,
+  meaningUrdu: string,
+  origin: 'Arabic' | 'Persian' | 'Urdu' | 'Turkish',
+  categories: string[] (e.g. ['prophet','quranic','popular']),
+  quranReference: string | null,
+  prophetConnection: string | null,
+  isForbidden: false,
+  popularityRank: number,
+  trending2025: boolean,
+  similarNames: string[]
+}
+
+Categories to cover:
+Boys: prophet_name, sahaba, quranic, popular_india,
+      popular_pakistan, persian_origin, rare, trending_2025
+Girls: sahabiyat, quranic, prophet_family, nature_inspired,
+       popular_india, popular_pakistan, modern_islamic, rare
+
+After expanding — force re-seed:
+In lib/db.ts add a function forceSeedNames() that
+deletes names:all key and re-seeds from the expanded array.
+Call it once then remove.
+
+════════════════════════════════════════
+PRIORITY 3 — DUAS NEED AUTH FIX
+════════════════════════════════════════
+Audit showed /api/duas returns auth-protected 401.
+For the dua LIBRARY page — public duas should be viewable
+without login (to allow SEO crawling and guest browsing).
+Only saving favourites requires auth.
+
+Fix server/routes/duas.ts:
+  GET /api/duas — REMOVE auth middleware (make public)
+  GET /api/duas/:id — REMOVE auth middleware (make public)
+  POST /api/duas/favourites — KEEP auth middleware
+  GET /api/duas/favourites — KEEP auth middleware
+
+Same fix for prayer times:
+  GET /api/prayer/times — REMOVE auth middleware (make public)
+  This allows the home screen to show times before login
+
+════════════════════════════════════════
+PRIORITY 4 — PLAYER PAGE COMPLETION
+════════════════════════════════════════
+Ensure pages/PlayerPage.tsx has ALL of these working:
+
+1. Fetch session by ID from /api/sessions/:id
+2. Display:
+   - Arabic scripture (Amiri font, 22px, gold, rtl, dir=rtl)
+   - Transliteration (italic, green, 14px)
+   - English meaning (white, 14px)
+3. Howler.js audio controls:
+   - If session.audioUrl exists: play/pause + seek bar + speed
+   - If audioUrl is null: show "Audio coming soon — read along"
+   - Background sound: Rain toggle (no music — Islamic preference)
+4. On COMPLETE:
+   - POST /api/progress with sessionId + durationListened
+   - POST /api/streak/checkin
+   - Show mood check-in (before/after comparison)
+   - Show 3 AI journal prompts from /api/ai/journal-prompt
+   - Show journal text area → POST /api/journal
+   - Show "Gift this dua" button → generate share link
+   - Show 3 related sessions (same category)
+
+5. Install howler if missing:
+   cd client && npm install howler @types/howler
+
+════════════════════════════════════════
+PRIORITY 5 — MOOD ENGINE COMPLETION
+════════════════════════════════════════
+Ensure pages/MoodPage.tsx:
+
+Step 1: 8 emotion chips (2×4 grid):
+  😰 Anxious | 🙏 Grateful | 💔 Grieving | 😤 Frustrated
+  😊 Joyful  | 😔 Lonely   | 😵 Overwhelmed | 😌 Peaceful
+
+Step 2: Intensity (after mood selected):
+  3 pills: Mild / Moderate / Intense
+
+Step 3: Loading — animated crescent + "Finding your dua..."
+  POST /api/ai/recommend
+  Body: { mood, intensity }
+
+Step 4: Show 3 result cards:
+  Session title + duration + category + AI reason text
+  [Begin this session →] → /player/:id
+
+════════════════════════════════════════
+PRIORITY 6 — GROWTH DASHBOARD
+════════════════════════════════════════
+Ensure pages/GrowthPage.tsx has working charts.
+Install if missing: npm install chart.js react-chartjs-2
+
+4 charts to show:
+1. CATEGORY DOUGHNUT — sessions by category
+   Fetch /api/progress/me → group by category
+   Colors: azkar=#00a550, quran=#ffd700, dhikr=#6495ed,
+           sleep=#9b59b6, dua60=#ff9900, salah=#c04848
+
+2. 365-DAY HEATMAP — CSS grid, no library needed
+   52 columns × 7 rows (GitHub-style)
+   Color by minutes that day: 0=#002800, 1-10=#004400,
+   10-30=#006600, 30-60=#00a550, 60+=#00ff66
+
+3. MOOD JOURNEY LINE — last 30 days
+   Two lines: moodBefore (dashed red) + moodAfter (solid green)
+   Shows spiritual improvement over time
+
+4. ACHIEVEMENT BADGES — grid of 9 badges:
+   First Dua / 7-Day Streak / 30-Day Streak /
+   100 Sessions / 1000 Minutes / Ramadan Warrior /
+   Fajr Champion / Quran Completer / Gift Sender
+   Locked = grey | Unlocked = gold with unlock date
+
+Stats row above charts (4 metric cards):
+   Total prayers | Total minutes | Longest streak | This month
+
+════════════════════════════════════════
+PRIORITY 7 — ZAKAT CALCULATOR FIX
+════════════════════════════════════════
+Ensure /api/zakat/gold-price works:
+
+server/routes/zakat.ts:
+  GET /api/zakat/gold-price:
+    Try: fetch('https://api.metals.live/v1/spot/gold')
+    Convert: troy oz USD → INR per gram
+      pricePerGram = (priceUSD / 31.1035) * 83
+    Cache in DB: goldPrice:latest with timestamp
+    If API fails: return fallback ₹6500/gram
+    Return: { pricePerGram, nisab, currency:'INR', updatedAt }
+
+  Nisab = 87.48 × pricePerGram
+
+Frontend ZakatCalculatorPage.tsx:
+  Fetch gold price on load
+  Show: "Today's gold price: ₹{price}/gram"
+  Show: "Nisab threshold: ₹{nisab}"
+  All 6 input fields with INR labels
+  Calculate button → show result
+  Green "Zakat Due: ₹{amount}" or grey "Below nisab"
+
+════════════════════════════════════════
+PRIORITY 8 — MASJID FINDER FIX
+════════════════════════════════════════
+Ensure masjid finder actually returns results.
+
+server/routes/masjid.ts:
+  GET /api/masjid/nearby?lat=&lng=:
+    Query Overpass API:
+    const query = `[out:json][timeout:10];
+      node["amenity"="place_of_worship"]["religion"="muslim"]
+      (around:5000,${lat},${lng});
+      out;`
+    POST to https://overpass-api.de/api/interpreter
+    Parse results → calculate distance for each
+    Return sorted array of nearest 10 mosques
+
+Distance formula:
+  function haversine(lat1, lng1, lat2, lng2) {
+    const R = 6371
+    const dLat = (lat2-lat1) * Math.PI/180
+    const dLng = (lng2-lng1) * Math.PI/180
+    const a = Math.sin(dLat/2)**2 +
+      Math.cos(lat1*Math.PI/180) *
+      Math.cos(lat2*Math.PI/180) *
+      Math.sin(dLng/2)**2
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+  }
+
+Return format:
+  [{ name, lat, lng, distanceKm, mapsUrl }]
+  mapsUrl = `https://maps.google.com/maps?daddr=${lat},${lng}`
+
+Frontend MasjidFinderPage.tsx:
+  On load: navigator.geolocation.getCurrentPosition
+  Fetch /api/masjid/nearby?lat=&lng=
+  Show list: name + distance + Navigate button
+  "Navigate" → opens maps URL in new tab
+  Loading state: "Finding mosques near you..."
+  Error state: "Please allow location access"
+
+════════════════════════════════════════
+PRIORITY 9 — SEO PAGES CHECK
+════════════════════════════════════════
+Verify these SSR routes exist in server:
+
+GET / → landing page (Express SSR, NOT React)
+GET /prayer-times/:city → city prayer times
+GET /names/:slug → individual name page
+GET /duas/:slug → individual dua page
+GET /blog → blog index
+GET /blog/:slug → blog post
+GET /sitemap.xml → dynamic sitemap
+GET /robots.txt → robots file
+
+If any are missing — add them now.
+All SSR pages must:
+  - Return complete HTML (not blank React shell)
+  - Have proper <title> and <meta description>
+  - Have Schema.org JSON-LD
+  - Have FAQPage schema with 3+ questions
+  - Have internal links to related pages
+  - Have footer with 8 hub links
+
+════════════════════════════════════════
+PRIORITY 10 — FINAL RENAME + CLEANUP
+════════════════════════════════════════
+1. Update public/manifest.json:
+{
+  "name": "DeenApp — Islamic Prayer & Quran",
+  "short_name": "DeenApp",
+  "description": "Your complete deen. Every day.",
+  "theme_color": "#001a00",
+  "background_color": "#001a00",
+  "display": "standalone",
+  "start_url": "/home",
+  "scope": "/"
+}
+
+2. Update client/index.html:
+<title>DeenApp — Islamic Prayer, Quran & Duas</title>
+<meta name="description" content="Your complete deen companion. Prayer times, Quran, 500+ duas, Muslim names, AI Islamic guide, zakat calculator and more.">
+<meta name="theme-color" content="#001a00">
+
+3. Add Google Fonts to index.html:
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+
+4. Ensure Amiri font used for ALL Arabic text:
+   Any element containing Arabic must have:
+   fontFamily: 'Amiri, serif'
+   direction: 'rtl'
+   textAlign: 'right'
+
+5. App icon: Update to dark green (#001a00) background
+   with gold crescent ☪ — use favicon.ico and
+   icon-192.png, icon-512.png for PWA
+
+════════════════════════════════════════
+AFTER ALL FIXES — RUN THESE TESTS:
+════════════════════════════════════════
+In browser console at your app URL:
+
+// Test 1: Auth
+const reg = await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'test@test.com',name:'Ahmed',password:'test123'})}).then(r=>r.json())
+console.log('Register:', reg.token ? '✅' : '❌', reg)
+
+// Test 2: Sessions
+const s = await fetch('/api/sessions').then(r=>r.json())
+console.log('Sessions:', s.length >= 25 ? '✅' : '❌', s.length)
+
+// Test 3: Names
+const n = await fetch('/api/names').then(r=>r.json())
+console.log('Names:', n.length >= 200 ? '✅' : '❌', n.length)
+
+// Test 4: Duas (should be public now)
+const d = await fetch('/api/duas').then(r=>r.json())
+console.log('Duas public:', Array.isArray(d) ? '✅' : '❌', d.length || d)
+
+// Test 5: Prayer times (should be public now)
+const p = await fetch('/api/prayer/times?city=Delhi').then(r=>r.json())
+console.log('Prayer times:', p.Fajr ? '✅' : '❌', p)
+
+// Test 6: Hijri
+const h = await fetch('/api/prayer/hijri').then(r=>r.json())
+console.log('Hijri:', h.day ? '✅' : '❌', h)
+
+// Test 7: Gold price
+const g = await fetch('/api/zakat/gold-price').then(r=>r.json())
+console.log('Gold price:', g.pricePerGram ? '✅' : '❌', g)
+
+// Test 8: 99 Names
+const a = await fetch('/api/names-of-allah').then(r=>r.json())
+console.log('99 Names:', a.length === 99 ? '✅' : '❌', a.length)
+
+Report results of all 8 tests.

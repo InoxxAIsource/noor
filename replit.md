@@ -117,6 +117,14 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-11 — Public Routes, 500 Names, Manifest PWA Enhancements
+- **Names expanded**: Seed file rebuilt from 40 → 500 Islamic names (250 boys + 250 girls); fully seeded into DB via `POST /admin/names/reseed` endpoint (now live)
+- **Public routes**: Removed `requireAuth` from `GET /api/duas` and `GET /api/prayer/times`; both are now fully public. Auth is optional — `isFavorite` still populated when token present
+- **optionalAuth middleware**: Added `optionalAuth` function in `artifacts/api-server/src/middleware/auth.ts` for routes that benefit from auth but don't require it
+- **Admin reseed**: Added `POST /admin/names/reseed` endpoint to force-replace all names from seed data without restarting the server
+- **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
+- **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
+
 ### 2026-05-11 — Full Audit & DeenApp Rebrand
 - **Rebrand**: All "Noor"/"NOOR" UI references renamed to "DeenApp"/"DEENAPP" across 30+ files (frontend pages, SEO layer, AI system prompts, admin panel, seed data, share text)
 - **Token rename**: `noor_token` → `deen_token` in localStorage across all 16 files (AuthContext, 13 pages, SEO shared.ts)
