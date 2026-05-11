@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
+import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import OnboardingPage from "@/pages/OnboardingPage";
@@ -48,7 +49,7 @@ const queryClient = new QueryClient();
 
 const router = createBrowserRouter(
   [
-    { path: "/", element: <Navigate to="/home" replace /> },
+    { path: "/", element: <LandingPage /> },
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
     { path: "/gift/:token", element: <GiftPage /> },
