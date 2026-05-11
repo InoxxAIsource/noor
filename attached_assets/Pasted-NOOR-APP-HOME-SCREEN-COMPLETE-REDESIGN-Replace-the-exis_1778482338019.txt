@@ -1,0 +1,487 @@
+NOOR APP — HOME SCREEN COMPLETE REDESIGN
+Replace the existing Home.jsx completely.
+═══════════════════════════════════════════════════════
+
+Replace client/src/pages/Home.jsx with this complete design.
+Also update client/src/index.css with the design tokens below.
+
+════════════════════════════════════════
+DESIGN TOKENS — add to index.css
+════════════════════════════════════════
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&display=swap');
+
+:root {
+  --bg:      #001a00;
+  --surface: #002800;
+  --card:    #003300;
+  --border:  rgba(0,165,80,0.18);
+  --green:   #00a550;
+  --gold:    #ffd700;
+  --text:    #e8f5e8;
+  --muted:   #4a7a4a;
+  --faint:   #2a4a2a;
+}
+
+body { background: var(--bg); color: var(--text);
+  font-family: system-ui, sans-serif; margin: 0; }
+
+.arabic { font-family: 'Amiri', serif; direction: rtl;
+  text-align: right; color: var(--gold); }
+
+@keyframes floatUp {
+  0%   { opacity:0; transform:translateY(0); }
+  20%  { opacity:.8; }
+  80%  { opacity:.3; }
+  100% { opacity:0; transform:translateY(-180px); }
+}
+@keyframes cGlow {
+  0%,100% { filter:drop-shadow(0 0 8px rgba(0,165,80,0.3)); }
+  50%     { filter:drop-shadow(0 0 20px rgba(0,165,80,0.7)); }
+}
+@keyframes pulse {
+  0%,100% { opacity:.7; }
+  50%     { opacity:1; }
+}
+
+════════════════════════════════════════
+HOME.JSX — complete file
+════════════════════════════════════════
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
+
+export default function Home() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const [prayerTimes, setPrayerTimes] = useState(null)
+  const [nextPrayer, setNextPrayer] = useState({ name:'Asr', time:'15:58' })
+  const [countdown, setCountdown] = useState('--:--:--')
+  const [iftarCountdown, setIftarCountdown] = useState('--:--:--')
+  const [streak, setStreak] = useState({ current:0, weekly:0, weeklyGoal:5 })
+  const [hijriDate, setHijriDate] = useState('')
+  const [isRamadan, setIsRamadan] = useState(false)
+  const [dailyName, setDailyName] = useState({ arabic:'الرَّحْمَن', english:'Ar-Rahman — The Most Merciful' })
+  const [dailyHadith, setDailyHadith] = useState('')
+  const particleRef = useRef(null)
+
+  // Fetch prayer times
+  useEffect(() => {
+    const city = user?.city || 'Delhi'
+    const method = user?.madhab === 'shia' ? 0 : 1
+    fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=IN&method=${method}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.data?.timings) {
+          setPrayerTimes(d.data.timings)
+          calculateNextPrayer(d.data.timings)
+        }
+      }).catch(() => {})
+  }, [user?.city])
+
+  // Fetch Hijri date
+  useEffect(() => {
+    const today = new Date()
+    const dd = String(today.getDate()).padStart(2,'0')
+    const mm = String(today.getMonth()+1).padStart(2,'0')
+    const yyyy = today.getFullYear()
+    fetch(`https://api.aladhan.com/v1/gToH?date=${dd}-${mm}-${yyyy}`)
+      .then(r => r.json())
+      .then(d => {
+        const h = d.data.hijri
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+        setHijriDate(`${days[today.getDay()]} · ${h.day} ${h.month.en} ${h.year} AH`)
+        // Check Ramadan
+        if (h.month.number === 9) setIsRamadan(true)
+      }).catch(() => {
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+        setHijriDate(days[new Date().getDay()])
+      })
+  }, [])
+
+  // Fetch streak
+  useEffect(() => {
+    fetch('/api/streak/me', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('noor_token')}` }
+    }).then(r => r.json())
+      .then(d => setStreak({ current: d.currentStreak || 0,
+        weekly: d.weeklyCompleted || 0, weeklyGoal: d.weeklyGoal || 5 }))
+      .catch(() => {})
+  }, [])
+
+  // Countdown timer
+  function calculateNextPrayer(times) {
+    const prayers = ['Fajr','Dhuhr','Asr','Maghrib','Isha']
+    const now = new Date()
+    for (const prayer of prayers) {
+      if (!times[prayer]) continue
+      const [h,m] = times[prayer].split(':').map(Number)
+      const pTime = new Date()
+      pTime.setHours(h, m, 0, 0)
+      if (pTime > now) {
+        setNextPrayer({ name: prayer, time: times[prayer] })
+        return
+      }
+    }
+    setNextPrayer({ name: 'Fajr', time: times?.Fajr || '04:43' })
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!nextPrayer.time) return
+      const [h, m] = nextPrayer.time.split(':').map(Number)
+      const target = new Date()
+      target.setHours(h, m, 0, 0)
+      const now = new Date()
+      if (target <= now) target.setDate(target.getDate() + 1)
+      const diff = Math.max(0, target - now)
+      const hh = Math.floor(diff / 3600000)
+      const mm2 = Math.floor((diff % 3600000) / 60000)
+      const ss = Math.floor((diff % 60000) / 1000)
+      setCountdown(`${hh}:${String(mm2).padStart(2,'0')}:${String(ss).padStart(2,'0')}`)
+
+      // Iftar countdown (Maghrib)
+      if (prayerTimes?.Maghrib) {
+        const [mh, mm3] = prayerTimes.Maghrib.split(':').map(Number)
+        const iftar = new Date()
+        iftar.setHours(mh, mm3, 0, 0)
+        if (iftar <= now) iftar.setDate(iftar.getDate() + 1)
+        const idiff = Math.max(0, iftar - now)
+        const ih = Math.floor(idiff / 3600000)
+        const im = Math.floor((idiff % 3600000) / 60000)
+        const is2 = Math.floor((idiff % 60000) / 1000)
+        setIftarCountdown(`${ih}:${String(im).padStart(2,'0')}:${String(is2).padStart(2,'0')}`)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [nextPrayer, prayerTimes])
+
+  const prayers = [
+    { key:'Fajr', label:'Fajr', time: prayerTimes?.Fajr || '04:43' },
+    { key:'Dhuhr', label:'Dhuhr', time: prayerTimes?.Dhuhr || '12:11' },
+    { key:'Asr', label:'Asr', time: prayerTimes?.Asr || '15:58' },
+    { key:'Maghrib', label:'Maghrib', time: prayerTimes?.Maghrib || '18:54' },
+    { key:'Isha', label:'Isha', time: prayerTimes?.Isha || '20:23' },
+  ]
+
+  const weekDots = Array(7).fill(null).map((_, i) => {
+    if (i < (streak.weekly - 1)) return 'filled'
+    if (i === streak.weekly - 1) return 'today'
+    return 'empty'
+  })
+
+  const quickSessions = [
+    { id:'morning-azkar', icon:'ti-sun', title:'Morning Azkar', meta:'10 min · Arabic + English' },
+    { id:'evening-azkar', icon:'ti-moon', title:'Evening Azkar', meta:'10 min · Guided' },
+    { id:'dua-anxiety-60', icon:'ti-heart', title:'60s Dua', meta:'1 min · For right now' },
+    { id:'quran-al-kahf', icon:'ti-book', title:'Surah Al-Kahf', meta:'14 min · Friday' },
+  ]
+
+  return (
+    <div style={{ background:'#001a00', minHeight:'100vh', color:'#e8f5e8',
+      position:'relative', overflow:'hidden', paddingBottom:80 }}>
+
+      {/* Floating particles */}
+      <div style={{ position:'absolute', top:0, left:0, width:'100%',
+        height:'100%', pointerEvents:'none', zIndex:0 }}>
+        {Array(10).fill(null).map((_, i) => (
+          <div key={i} style={{
+            position:'absolute',
+            left: `${25 + Math.random() * 50}%`,
+            bottom: `${5 + Math.random() * 40}%`,
+            width: `${1 + Math.random() * 2}px`,
+            height: `${1 + Math.random() * 2}px`,
+            background: '#ffd700',
+            borderRadius: '50%',
+            animation: `floatUp ${3 + Math.random() * 4}s ${Math.random() * 5}s linear infinite`,
+            opacity: 0,
+          }}/>
+        ))}
+      </div>
+
+      <div style={{ position:'relative', zIndex:1 }}>
+
+        {/* Islamic Banner */}
+        {isRamadan && (
+          <div style={{ background:'rgba(255,215,0,0.1)',
+            borderBottom:'0.5px solid rgba(255,215,0,0.2)',
+            padding:'8px 16px', display:'flex',
+            justifyContent:'space-between', alignItems:'center' }}>
+            <span style={{ fontSize:12, color:'#ffd700' }}>Ramadan Mubarak</span>
+            <span style={{ fontFamily:'Amiri,serif', fontSize:14,
+              color:'#ffd700', direction:'rtl' }}>رمضان مبارك</span>
+          </div>
+        )}
+
+        {/* Header */}
+        <div style={{ display:'flex', alignItems:'center',
+          justifyContent:'space-between', padding:'14px 16px 10px' }}>
+          <div style={{ fontSize:22, fontWeight:500, color:'#00a550',
+            letterSpacing:4 }}>NOOR</div>
+          <div style={{ display:'flex', gap:16, color:'#4a7a4a' }}>
+            <i className="ti ti-bell" style={{fontSize:20}} aria-hidden="true"/>
+            <i className="ti ti-search" style={{fontSize:20}} aria-hidden="true"/>
+            <i className="ti ti-menu-2" style={{fontSize:20}} aria-hidden="true"/>
+          </div>
+        </div>
+
+        {/* Greeting */}
+        <div style={{ padding:'0 16px 14px' }}>
+          <div style={{ fontSize:17, fontWeight:500 }}>
+            As-salamu alaykum, {user?.name || 'Ahmed'}
+          </div>
+          <div style={{ fontSize:12, color:'#4a7a4a', marginTop:3 }}>
+            {hijriDate || 'Loading...'}
+          </div>
+        </div>
+
+        {/* Prayer Times Card */}
+        <div style={{ margin:'0 16px 14px', background:'rgba(0,165,80,0.08)',
+          border:'0.5px solid rgba(0,165,80,0.25)', borderRadius:12, padding:14 }}>
+          <div style={{ display:'flex', justifyContent:'space-between',
+            alignItems:'center', marginBottom:10 }}>
+            <div>
+              <div style={{ fontSize:11, color:'#4a7a4a', textTransform:'uppercase',
+                letterSpacing:1, marginBottom:2 }}>Next prayer</div>
+              <div style={{ fontSize:16, fontWeight:500, color:'#00a550' }}>
+                {nextPrayer.name}
+              </div>
+            </div>
+            <div style={{ fontSize:26, fontWeight:500, color:'#ffd700',
+              fontVariantNumeric:'tabular-nums' }}>
+              {countdown}
+            </div>
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between',
+            paddingTop:10, borderTop:'0.5px solid rgba(0,165,80,0.15)' }}>
+            {prayers.map(p => (
+              <div key={p.key} style={{ textAlign:'center' }}>
+                <div style={{ fontSize:10, color: p.key===nextPrayer.name
+                  ? '#00a550' : '#4a7a4a', marginBottom:2 }}>
+                  {p.label}{p.key===nextPrayer.name ? ' ▸' : ''}
+                </div>
+                <div style={{ fontSize:12, fontWeight:500,
+                  color: p.key===nextPrayer.name ? '#ffd700' : '#e8f5e8' }}>
+                  {p.time}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Crescent SVG */}
+        <div style={{ display:'flex', justifyContent:'center', margin:'4px 0 10px' }}>
+          <svg style={{ animation:'cGlow 3s ease-in-out infinite' }}
+            width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="28"
+              fill="rgba(0,165,80,0.08)"/>
+            <path d="M38 10 A20 20 0 1 1 38 50 A14 14 0 1 0 38 10Z"
+              fill="#00a550" opacity="0.85"/>
+            <circle cx="42" cy="16" r="2" fill="#ffd700" opacity="0.8"/>
+            <circle cx="48" cy="22" r="1.2" fill="#ffd700" opacity="0.6"/>
+            <circle cx="46" cy="30" r="1.5" fill="#ffd700" opacity="0.5"/>
+          </svg>
+        </div>
+
+        {/* Streak */}
+        <div style={{ margin:'0 16px 14px', background:'rgba(0,165,80,0.06)',
+          border:'0.5px solid rgba(0,165,80,0.2)', borderRadius:12,
+          padding:14, display:'flex', justifyContent:'space-between',
+          alignItems:'center' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+            <div style={{ fontSize:36, fontWeight:500, color:'#ffd700',
+              lineHeight:1 }}>{streak.current}</div>
+            <div>
+              <div style={{ fontSize:11, color:'#4a7a4a', marginBottom:2 }}>
+                Ibadah streak
+              </div>
+              <div style={{ fontSize:12, color:'#00a550' }}>
+                {streak.weekly} / {streak.weeklyGoal} this week
+              </div>
+            </div>
+          </div>
+          <div style={{ display:'flex', gap:5 }}>
+            {weekDots.map((d, i) => (
+              <div key={i} style={{
+                width:8, height:8, borderRadius:'50%',
+                background: d==='today' ? '#ffd700' : d==='filled' ? '#00a550' : '#002800',
+                boxShadow: d==='today' ? '0 0 6px rgba(255,215,0,0.5)'
+                  : d==='filled' ? '0 0 4px rgba(0,165,80,0.4)' : 'none'
+              }}/>
+            ))}
+          </div>
+        </div>
+
+        {/* Daily cards horizontal scroll */}
+        <div style={{ display:'flex', gap:10, padding:'0 16px 14px',
+          overflowX:'auto', scrollbarWidth:'none' }}>
+          {/* Name of Allah */}
+          <div style={{ flexShrink:0, width:140,
+            background:'rgba(0,165,80,0.06)',
+            border:'0.5px solid rgba(0,165,80,0.2)',
+            borderRadius:10, padding:11 }}>
+            <div style={{ fontSize:10, color:'#4a7a4a', textTransform:'uppercase',
+              letterSpacing:1, marginBottom:5 }}>Name of Allah</div>
+            <div style={{ fontFamily:'Amiri,serif', fontSize:18, color:'#ffd700',
+              direction:'rtl', textAlign:'right', marginBottom:3 }}>
+              {dailyName.arabic}
+            </div>
+            <div style={{ fontSize:11, color:'#c8e8c8', lineHeight:1.4 }}>
+              {dailyName.english}
+            </div>
+          </div>
+          {/* Hadith */}
+          <div style={{ flexShrink:0, width:160,
+            background:'rgba(0,165,80,0.06)',
+            border:'0.5px solid rgba(0,165,80,0.2)',
+            borderRadius:10, padding:11 }}>
+            <div style={{ fontSize:10, color:'#4a7a4a', textTransform:'uppercase',
+              letterSpacing:1, marginBottom:5 }}>Hadith today</div>
+            <div style={{ fontSize:11, color:'#c8e8c8', lineHeight:1.5 }}>
+              "The best of you are those who learn the Quran and teach it."
+            </div>
+            <div style={{ fontSize:10, color:'#4a7a4a', marginTop:4 }}>
+              — Sahih Bukhari
+            </div>
+          </div>
+          {/* Iftar countdown (Ramadan) */}
+          {isRamadan && (
+            <div style={{ flexShrink:0, width:130,
+              background:'rgba(255,215,0,0.06)',
+              border:'0.5px solid rgba(255,215,0,0.2)',
+              borderRadius:10, padding:11, textAlign:'center' }}>
+              <div style={{ fontSize:10, color:'#4a7a4a', textTransform:'uppercase',
+                letterSpacing:1, marginBottom:5 }}>Iftar in</div>
+              <div style={{ fontSize:20, fontWeight:500, color:'#ffd700',
+                fontVariantNumeric:'tabular-nums' }}>
+                {iftarCountdown}
+              </div>
+              <div style={{ fontSize:10, color:'#4a7a4a', marginTop:3 }}>
+                Maghrib {prayerTimes?.Maghrib || '18:54'}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Quick start */}
+        <div style={{ fontSize:11, color:'#4a7a4a', textTransform:'uppercase',
+          letterSpacing:1, padding:'0 16px', marginBottom:8 }}>
+          Start your ibadah
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr',
+          gap:8, padding:'0 16px', marginBottom:14 }}>
+          {quickSessions.map(s => (
+            <div key={s.id}
+              onClick={() => navigate(`/player/${s.id}`)}
+              style={{ background:'rgba(0,165,80,0.07)',
+                border:'0.5px solid rgba(0,165,80,0.2)',
+                borderRadius:10, padding:12, cursor:'pointer',
+                transition:'all .2s' }}
+              onMouseOver={e => e.currentTarget.style.background='rgba(0,165,80,0.15)'}
+              onMouseOut={e => e.currentTarget.style.background='rgba(0,165,80,0.07)'}>
+              <i className={`ti ${s.icon}`}
+                style={{ fontSize:20, color:'#00a550', display:'block',
+                marginBottom:6 }} aria-hidden="true"/>
+              <div style={{ fontSize:13, fontWeight:500,
+                marginBottom:2 }}>{s.title}</div>
+              <div style={{ fontSize:11, color:'#4a7a4a' }}>{s.meta}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mood button */}
+        <div onClick={() => navigate('/mood')}
+          style={{ margin:'0 16px 14px',
+            background:'rgba(255,215,0,0.07)',
+            border:'0.5px solid rgba(255,215,0,0.25)',
+            borderRadius:10, padding:'13px 16px',
+            display:'flex', justifyContent:'space-between',
+            alignItems:'center', cursor:'pointer' }}>
+          <div>
+            <div style={{ fontSize:13, color:'#ffd700', fontWeight:500 }}>
+              What do you need today?
+            </div>
+            <div style={{ fontSize:11, color:'#4a7a4a', marginTop:2 }}>
+              Find the right dua for this moment
+            </div>
+          </div>
+          <i className="ti ti-arrow-right"
+            style={{ fontSize:20, color:'#ffd700' }} aria-hidden="true"/>
+        </div>
+
+        {/* Tasbih quick row */}
+        <div style={{ fontSize:11, color:'#4a7a4a', textTransform:'uppercase',
+          letterSpacing:1, padding:'0 16px', marginBottom:8 }}>
+          Quick tasbih
+        </div>
+        <div style={{ display:'flex', gap:8, padding:'0 16px',
+          marginBottom:14 }}>
+          {[
+            { arabic:'سُبْحَانَ اللَّهِ', english:'SubhanAllah', dhikr:'subhanallah' },
+            { arabic:'اَلْحَمْدُ لِلَّهِ', english:'Alhamdulillah', dhikr:'alhamdulillah' },
+            { arabic:'اللَّهُ أَكْبَرُ', english:'Allahu Akbar', dhikr:'allahuakbar' },
+          ].map(t => (
+            <div key={t.dhikr}
+              onClick={() => navigate(`/tasbih?dhikr=${t.dhikr}`)}
+              style={{ flex:1, background:'rgba(0,165,80,0.06)',
+                border:'0.5px solid rgba(0,165,80,0.2)',
+                borderRadius:8, padding:9, textAlign:'center',
+                cursor:'pointer' }}>
+              <div style={{ fontFamily:'Amiri,serif', fontSize:13,
+                color:'#ffd700', direction:'rtl' }}>{t.arabic}</div>
+              <div style={{ fontSize:10, color:'#4a7a4a',
+                marginTop:2 }}>{t.english}</div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      {/* Bottom Nav */}
+      <div style={{ position:'fixed', bottom:0, left:0, right:0,
+        display:'flex', justifyContent:'space-around',
+        padding:'10px 0 16px',
+        borderTop:'0.5px solid rgba(0,165,80,0.15)',
+        background:'#001a00', zIndex:100 }}>
+        {[
+          { icon:'ti-home', label:'Home', path:'/home', active:true },
+          { icon:'ti-clock', label:'Salah', path:'/prayer-times' },
+          { icon:'ti-book', label:'Quran', path:'/quran' },
+          { icon:'ti-hand-stop', label:'Duas', path:'/duas' },
+          { icon:'ti-user', label:'Profile', path:'/profile' },
+        ].map(n => (
+          <div key={n.path}
+            onClick={() => navigate(n.path)}
+            style={{ display:'flex', flexDirection:'column',
+              alignItems:'center', gap:3, cursor:'pointer',
+              opacity: n.active ? 1 : 0.5 }}>
+            <i className={`ti ${n.icon}`}
+              style={{ fontSize:22, color:'#00a550' }} aria-hidden="true"/>
+            <span style={{ fontSize:9, letterSpacing:1,
+              textTransform:'uppercase', color:'#4a7a4a' }}>
+              {n.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+════════════════════════════════════════
+WHAT THIS ADDS vs OLD HOME:
+════════════════════════════════════════
+✓ Live prayer countdown (real-time seconds)
+✓ All 5 prayer times from aladhan.com API
+✓ Real Hijri date from API
+✓ Ramadan banner + iftar countdown (when Ramadan)
+✓ Animated crescent moon SVG with glow
+✓ Gold particle effects floating up
+✓ Streak tracker with 7 coloured dots
+✓ Daily Name of Allah card (Arabic + Amiri font)
+✓ Hadith of the day card
+✓ 4 quick-start session cards with navigation
+✓ Mood dua engine button
+✓ 3 tasbih quick-start pills with Arabic text
+✓ Fixed bottom navigation bar
+✓ Real data from /api/streak/me and /api/prayer/times
+✓ Full dark Islamic green + gold theme

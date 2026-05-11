@@ -293,3 +293,15 @@ html, body, #root {
 .noor-float-particle {
   animation: float-up linear infinite;
 }
+
+@keyframes noor-float-up {
+  0%   { opacity: 0; transform: translateY(0); }
+  20%  { opacity: 0.8; }
+  80%  { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-180px); }
+}
+
+@keyframes noor-crescent-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(0,165,80,0.3)); }
+  50%       { filter: drop-shadow(0 0 20px rgba(0,165,80,0.7)); }
+}
