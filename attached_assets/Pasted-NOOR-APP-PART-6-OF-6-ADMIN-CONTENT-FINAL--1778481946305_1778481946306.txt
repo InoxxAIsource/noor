@@ -1,0 +1,351 @@
+NOOR APP — PART 6 OF 6: ADMIN + CONTENT + FINAL
+═══════════════════════════════════════════════════════
+Run LAST. Adds: Admin panel, AI content generation,
+full content seeding, final integrations,
+Subscribe page, Download page.
+
+════════════════════════════════════════
+ADMIN PANEL — React pages at /admin
+════════════════════════════════════════
+No auth for now (add later).
+React-based (NOT SSR — admin is not public).
+
+/admin → Main dashboard with 6 sections:
+
+1. AUDIO STATUS (/admin/audio)
+   Table: all 25 sessions
+   Columns: Title | Category | Duration | Audio | Actions
+   Audio status: 🔴 Missing | 🟢 Ready (has audioUrl)
+   Actions per session:
+     [Update URL] → input field to paste Cloudinary URL
+     POST /api/admin/sessions/:id/audio → saves to DB
+
+2. DUA AUDIO (/admin/duas-audio)
+   Table: all 100 seeded duas
+   Same pattern: paste audioUrl per dua
+   [Generate with ElevenLabs] button:
+     POST /api/admin/audio/generate-ai
+     Body: { contentId, contentType:'dua', text, voiceId }
+     → calls ElevenLabs API → uploads to Cloudinary → saves URL
+
+3. BLOG POSTS (/admin/blog)
+   Table: all 40 blog stubs
+   Columns: Slug | Title | WordCount | Status | Actions
+   Status: 🔴 No content | 🟢 Has content (word count shown)
+   [Generate] button per post:
+     POST /api/admin/blog/generate
+     Body: { slug, title, category, targetKeyword }
+     → calls Claude → saves content_html to blog:{slug} in DB
+   [Generate All] button → runs all 40 sequentially with 2s delay
+
+4. NAMES DATABASE (/admin/names)
+   Shows count: "200 / 5000 names loaded"
+   [Generate 500 more] button:
+     POST /api/admin/names/generate-batch
+     Body: { gender:'boy', count:500, categories:['quranic','prophet'] }
+     → Claude generates batch → appends to names:all
+   Progress bar showing 200/5000
+
+5. SAINTS / 99 NAMES AUDIO (/admin/allah-names)
+   List all 99 with audio status
+   [Generate reflection] per name → ElevenLabs 2-min audio
+
+6. STATS
+   Total users / sessions played / AI messages today
+   Estimated API cost: (totalTokens / 1000000) × 3.00
+
+════════════════════════════════════════
+AI CONTENT GENERATION ROUTES
+════════════════════════════════════════
+All in server/routes/ai.js (add to existing file):
+
+POST /api/admin/blog/generate
+Body: { slug, title, category, targetKeyword }
+
+Claude prompt (max_tokens: 1500):
+System: "Return ONLY valid JSON. No markdown. No preamble."
+User: `Write a blog post for Noor (noorapp.com),
+a Muslim prayer app. Tagline: "Remember Allah. Every day."
+
+Title: ${title}
+Target keyword: ${targetKeyword}
+Category: ${category}
+Word count: ~700 words
+
+Rules:
+- H1 = exact title
+- First paragraph includes keyword naturally
+- Include 3 internal links as <a href='/path'>text</a>
+  (link to relevant /duas/, /names/, /prayer-times/ pages)
+- Include 1-2 authentic hadith or Quran references
+- End with paragraph mentioning Noor app by name
+- Format: <p><h2><h3><ul><li><strong> tags ONLY
+- Warm Islamic tone, never preachy
+- Do NOT mention competitor apps
+
+JSON:
+{
+  "contentHtml": "full HTML article",
+  "metaDescription": "max 155 chars",
+  "wordCount": 700,
+  "internalLinks": [
+    {"text":"anchor text","url":"/path"},
+    {"text":"anchor text","url":"/path"},
+    {"text":"anchor text","url":"/path"}
+  ]
+}`
+
+After response: store in blog:{slug} with full data.
+
+POST /api/admin/names/generate-batch
+Body: { gender, count, categories[] }
+
+Claude prompt (max_tokens: 2000):
+System: "Return ONLY valid JSON array. No markdown."
+User: `Generate ${count} Muslim ${gender} names for Noor app names database.
+Categories: ${categories.join(', ')}.
+
+Each name object:
+{
+  "id": "unique_slug",
+  "nameEnglish": "string",
+  "nameArabic": "Arabic script",
+  "nameUrdu": "Urdu script",
+  "gender": "${gender}",
+  "meaningEnglish": "clear meaning",
+  "meaningUrdu": "Urdu meaning",
+  "origin": "Arabic|Persian|Turkish|Urdu",
+  "root": "Arabic root letters if applicable",
+  "categories": ["quranic","prophet","sahaba","rare"],
+  "quranReference": "Surah Name X:Y or null",
+  "prophetConnection": "string or null",
+  "isForbidden": false,
+  "popularityRank": 1-1000,
+  "trending2025": true|false,
+  "similarNames": ["name1","name2"]
+}
+
+Return JSON array of ${count} names.`
+
+After response: append to names:all array in Replit DB.
+
+POST /api/admin/audio/generate-ai
+Body: { contentId, contentType, text, voiceId }
+
+1. Call ElevenLabs API:
+   POST https://api.elevenlabs.io/v1/text-to-speech/{voiceId}
+   Headers: { 'xi-api-key': ELEVENLABS_API_KEY }
+   Body: {
+     text: text,
+     model_id: "eleven_v3",
+     voice_settings: { stability:0.8, similarity_boost:0.85,
+       style:0, use_speaker_boost:true }
+   }
+   Note: Use Arabic-capable voice ID for Islamic content
+
+2. Upload audio buffer to Cloudinary:
+   npm install cloudinary
+   cloudinary.uploader.upload_stream({
+     resource_type:'video', folder:'noor/audio',
+     public_id: contentId, format:'mp3'
+   }, callback).end(audioBuffer)
+
+3. Save URL to DB:
+   If contentType='session': update in sessions:all
+   If contentType='dua': update in duas:all
+   If contentType='allah-name': update in namesOfAllah:all
+
+4. Return { url, contentId }
+
+Add to Replit Secrets when ready:
+  ELEVENLABS_API_KEY=...
+  CLOUDINARY_CLOUD_NAME=noor
+  CLOUDINARY_API_KEY=...
+  CLOUDINARY_API_SECRET=...
+
+════════════════════════════════════════
+SUBSCRIBE + DOWNLOAD PAGES
+════════════════════════════════════════
+Subscribe.jsx (/subscribe):
+  3 pricing cards:
+  Free (current): prayer times, tasbih, basic duas, Quran
+  Premium ₹79/mo: all sessions + AI guide + growth dashboard
+  Halaqah ₹199/mo: group mode + admin
+
+  All marked: "Beta — Free for now. Paid features launching soon."
+  Email capture: "Join waitlist for premium"
+    POST /api/waitlist → store email in waitlist:emails array
+
+Download page (/download):
+  "Download Noor — Available Soon"
+  PWA install prompt (beforeinstallprompt event)
+  [Install App] button → triggers PWA install
+  Links to App Store + Play Store (placeholder)
+  Waitlist signup
+
+════════════════════════════════════════
+FINAL INTEGRATIONS
+════════════════════════════════════════
+
+1. PUSH NOTIFICATIONS (public/sw.js):
+  Service worker handles push events:
+  self.addEventListener('push', event => {
+    const data = event.data.json()
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/icon-192.png',
+      badge: '/icon-72.png',
+      data: { url: data.url }
+    })
+  })
+
+  Server sends notifications for:
+    Prayer time alerts (each of 5 prayers)
+    Suhoor reminder (Ramadan: 30 min before Fajr)
+    Dua Kumayl reminder (Shia users: Thursday 9pm)
+    Streak at risk (hasn't prayed by 8pm)
+    Weekly report (Friday afternoon)
+
+2. DAILY CRON (setInterval in server/index.js, runs every 24h):
+  Check each active user:
+    Has user prayed today? If not by 8pm → send reminder
+    Is today Thursday + user is Shia → Dua Kumayl notification
+    Is it Friday → send Jumu'ah reminder
+    Is it Ramadan → calculate and update iftar times
+    Check if any user streak is at risk
+
+3. GOLD PRICE CACHE:
+  Fetch gold price from metals.live once per day
+  Store in: goldPrice:latest → { price, updatedAt }
+  All zakat calculations use this cached price
+  Refresh if cache older than 24 hours
+
+4. ZAKAT ROUTE ENHANCEMENT:
+  GET /api/zakat/gold-price:
+    Check goldPrice:latest in DB
+    If fresh (< 24h): return cached
+    If stale: fetch new → store → return
+    Returns: { pricePerGram, currency:'INR', updatedAt }
+
+5. MASJID FINDER CACHE:
+  Cache Overpass API results per city (lat/lng area)
+  Store: masjidCache:{lat10}:{lng10} → { mosques[], cachedAt }
+  Round lat/lng to 1 decimal for cache key
+  Expire after 7 days (mosques don't move)
+
+6. RATE LIMITING (add to server/index.js):
+  npm install express-rate-limit
+  Apply to /api/ai/* routes:
+    windowMs: 24 * 60 * 60 * 1000
+    max: 5 (free users — checked in route handler separately)
+  Apply to /api/* overall:
+    windowMs: 15 * 60 * 1000 (15 min)
+    max: 300 (reasonable for a prayer app)
+
+7. SECURITY (server/index.js):
+  npm install helmet cors
+  app.use(helmet())
+  app.use(cors({ origin: ['https://noorapp.com',
+    'http://localhost:3000'] }))
+  app.use(express.json({ limit: '10kb' }))
+
+8. ARABIC TEXT HTML ATTRIBUTES:
+  Every Arabic text element MUST have:
+  dir="rtl" lang="ar"
+  font-family: Amiri, serif
+  Example:
+  <p dir="rtl" lang="ar" style="font-family:Amiri,serif;
+    font-size:22px;color:#ffd700;text-align:right">
+    سُبْحَانَ اللَّهِ
+  </p>
+
+════════════════════════════════════════
+COMPLETE PACKAGE.JSON DEPENDENCIES
+════════════════════════════════════════
+Server dependencies:
+{
+  "@replit/database": "latest",
+  "express": "^4.18.0",
+  "bcryptjs": "^2.4.3",
+  "jsonwebtoken": "^9.0.0",
+  "nanoid": "^3.3.6",
+  "cors": "^2.8.5",
+  "helmet": "^7.0.0",
+  "express-rate-limit": "^7.0.0",
+  "cloudinary": "^1.37.0",
+  "axios": "^1.4.0",
+  "dotenv": "^16.0.0"
+}
+
+Client dependencies (Vite):
+{
+  "react": "^18.0.0",
+  "react-dom": "^18.0.0",
+  "react-router-dom": "^6.0.0",
+  "howler": "^2.2.3",
+  "leaflet": "^1.9.0",
+  "react-leaflet": "^4.2.0",
+  "chart.js": "^4.4.0",
+  "react-chartjs-2": "^5.2.0"
+}
+
+════════════════════════════════════════
+FINAL TESTING CHECKLIST
+════════════════════════════════════════
+After all 6 parts are built, test:
+
+Auth flow:
+  ☐ Register new user
+  ☐ Login + JWT stored
+  ☐ Onboarding completes (5 steps)
+  ☐ Home screen loads with prayer times
+
+Islamic tools:
+  ☐ Prayer times fetches from aladhan.com
+  ☐ Quran reader loads surah list + ayah audio
+  ☐ Dua library filters by category
+  ☐ Names finder searches + shows detail
+  ☐ 99 Names shows today's name
+  ☐ Tasbih counter vibrates at 33
+  ☐ Qibla compass shows direction
+  ☐ Masjid finder shows nearby mosques
+  ☐ Zakat calculator computes correctly
+  ☐ Islamic calendar marks festivals
+  ☐ Qurbani guide shows duas
+  ☐ Wudu guide shows all steps
+
+Audio + AI:
+  ☐ Session player loads (shows text if no audio)
+  ☐ "Mark complete" logs progress
+  ☐ Mood engine returns 3 recommendations
+  ☐ AI Guide responds (check AI usage limit)
+  ☐ Gift dua creates shareable link
+  ☐ Prayer rooms create + join via SSE
+
+SEO pages (open in browser, check source code):
+  ☐ / loads as HTML (not blank React shell)
+  ☐ /prayer-times/delhi shows live times
+  ☐ /names/ahmed shows full name detail
+  ☐ /duas/morning-azkar shows dua content
+  ☐ /quran/surah-fatiha shows surah
+  ☐ /blog shows post list
+  ☐ /sitemap.xml loads valid XML
+  ☐ /robots.txt loads correctly
+
+Admin:
+  ☐ /admin loads
+  ☐ Blog generate creates content
+  ☐ Names generate adds to DB
+
+════════════════════════════════════════
+DEPLOYMENT NOTE
+════════════════════════════════════════
+Replit auto-deploys on save.
+For custom domain (noorapp.com):
+  Replit dashboard → Deployments → Custom domain
+  Add noorapp.com → copy CNAME record
+  Add to domain registrar DNS settings
+
+Bismillah — Noor is ready to launch.
+Remember Allah. Every day. 🌙
+═════════════════════════════════════════════════════

@@ -6,7 +6,7 @@ const api = (path: string) => `${BASE}${path}`;
 interface Session { id: string; title: string; category: string; duration: string; audioUrl?: string }
 interface Dua { id?: string; title: string; audioUrl?: string }
 interface AllaName { number: number; transliteration: string; arabic: string; audioUrl?: string }
-interface BlogPost { slug: string; title: string; wordCount?: number; content_html?: string }
+interface BlogPost { slug: string; title: string; category: string; hasContent: boolean; wordCount: number; generatedAt?: string | null }
 interface Stats { totalUsers: number; totalSessions: number; totalDuas: number; totalNames: number; aiRequestsToday: number; estimatedCostUSD: number }
 
 const TABS = ["Stats", "Sessions", "Duas", "Blog", "Names", "Allah Names", "Waitlist"] as const;
@@ -64,7 +64,8 @@ export default function AdminPage() {
   }, []);
 
   const loadBlogPosts = useCallback(async () => {
-    setBlogPosts(BLOG_STUB_LIST as BlogPost[]);
+    const r = await fetch(api("/api/admin/blog"));
+    if (r.ok) setBlogPosts(await r.json() as BlogPost[]);
   }, []);
 
   useEffect(() => { void loadStats(); }, [loadStats]);
@@ -74,7 +75,8 @@ export default function AdminPage() {
     if (tab === "Allah Names") void loadAllahNames();
     if (tab === "Names") void loadNames();
     if (tab === "Waitlist") void loadWaitlist();
-  }, [tab, loadSessions, loadDuas, loadAllahNames, loadNames, loadWaitlist]);
+    if (tab === "Blog") void loadBlogPosts();
+  }, [tab, loadSessions, loadDuas, loadAllahNames, loadNames, loadWaitlist, loadBlogPosts]);
 
   async function saveSessionAudio(id: string) {
     const url = audioInputs[id];
@@ -241,26 +243,37 @@ export default function AdminPage() {
         {/* BLOG */}
         {tab === "Blog" && (
           <div>
-            <p style={{ color: "#4a7a4a", fontSize: 13, marginBottom: 12 }}>40 blog post stubs — generate AI content per post using Claude.</p>
-            {BLOG_STUB_LIST.map(b => (
-              <div key={b.slug} style={{ ...card, padding: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-                  <div>
-                    <StatusDot ok={false} />
-                    <span style={{ color: "#e8f5e8", fontSize: 13, fontWeight: "bold" }}>{b.slug}</span>
-                    <span style={{ color: "#4a7a4a", fontSize: 12, marginLeft: 8 }}>{b.category}</span>
-                  </div>
-                  <button
-                    onClick={() => void generateBlog(b.slug, b.title, b.category)}
-                    disabled={generating[b.slug]}
-                    style={btn}
-                  >
-                    {generating[b.slug] ? "Generating…" : "Generate"}
-                  </button>
+            {blogPosts.length === 0 ? <Spinner /> : (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <p style={{ color: "#4a7a4a", fontSize: 13, margin: 0 }}>
+                    {blogPosts.filter(b => b.hasContent).length} / {blogPosts.length} posts generated
+                  </p>
+                  <button onClick={() => void loadBlogPosts()} style={{ ...btnSm }}>Refresh</button>
                 </div>
-                <p style={{ color: "#4a7a4a", fontSize: 12, margin: "4px 0 0" }}>{b.title}</p>
-              </div>
-            ))}
+                {blogPosts.map(b => (
+                  <div key={b.slug} style={{ ...card, padding: 12 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+                      <div>
+                        <StatusDot ok={b.hasContent} />
+                        <span style={{ color: "#e8f5e8", fontSize: 13, fontWeight: "bold" }}>{b.slug}</span>
+                        <span style={{ color: "#4a7a4a", fontSize: 12, marginLeft: 8 }}>{b.category}</span>
+                        {b.hasContent && <span style={{ color: "#00a550", fontSize: 11, marginLeft: 8 }}>{b.wordCount} words</span>}
+                      </div>
+                      <button
+                        onClick={() => void generateBlog(b.slug, b.title, b.category)}
+                        disabled={generating[b.slug]}
+                        style={{ ...btn, background: b.hasContent ? "#003800" : "#00a550", color: b.hasContent ? "#00a550" : "#001a00" }}
+                      >
+                        {generating[b.slug] ? "Generating…" : b.hasContent ? "Regenerate" : "Generate"}
+                      </button>
+                    </div>
+                    <p style={{ color: "#4a7a4a", fontSize: 12, margin: "4px 0 0" }}>{b.title}</p>
+                    {b.generatedAt && <p style={{ color: "#2a4a2a", fontSize: 11, margin: "2px 0 0" }}>Generated {new Date(b.generatedAt).toLocaleDateString()}</p>}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         )}
 
@@ -319,47 +332,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-// Inline stub list for the admin blog tab
-const BLOG_STUB_LIST = [
-  { slug: "morning-azkar-guide", title: "Complete Morning Azkar Guide", category: "Dhikr" },
-  { slug: "dua-for-anxiety", title: "Dua for Anxiety and Stress", category: "Duas" },
-  { slug: "how-to-pray-namaz", title: "How to Pray Namaz", category: "Prayer" },
-  { slug: "best-muslim-baby-names-2025", title: "Best Muslim Baby Names 2025", category: "Names" },
-  { slug: "quran-surah-fatiha-benefits", title: "Surah Al-Fatiha Benefits", category: "Quran" },
-  { slug: "zakat-gold-india-2026", title: "Zakat on Gold India 2026", category: "Zakat" },
-  { slug: "wudu-step-by-step", title: "Wudu Step by Step", category: "Prayer" },
-  { slug: "dua-for-parents", title: "Dua for Parents", category: "Duas" },
-  { slug: "ramadan-preparation-guide", title: "Ramadan 2026 Preparation", category: "Ramadan" },
-  { slug: "99-names-of-allah-meanings", title: "99 Names of Allah", category: "Dhikr" },
-  { slug: "tahajjud-prayer-guide", title: "Tahajjud Prayer Guide", category: "Prayer" },
-  { slug: "dua-after-salah", title: "Duas After Salah", category: "Duas" },
-  { slug: "how-to-make-dua", title: "How to Make Dua", category: "Duas" },
-  { slug: "quran-surah-yasin-benefits", title: "Surah Yasin Benefits", category: "Quran" },
-  { slug: "istikhara-prayer-guide", title: "Salatul Istikhara Guide", category: "Prayer" },
-  { slug: "sadqa-jariyah-guide", title: "Sadqa Jariyah Guide", category: "Charity" },
-  { slug: "baby-names-quran", title: "Baby Names in the Quran", category: "Names" },
-  { slug: "friday-jumma-guide", title: "Friday Jumma Guide", category: "Prayer" },
-  { slug: "dua-for-marriage", title: "Dua for Marriage", category: "Duas" },
-  { slug: "islamic-calendar-2026-india", title: "Islamic Calendar 2026 India", category: "Calendar" },
-  { slug: "quran-surah-kahf-benefits", title: "Surah Al-Kahf Benefits", category: "Quran" },
-  { slug: "namaz-times-india", title: "Namaz Times in India", category: "Prayer" },
-  { slug: "ayatul-kursi-benefits", title: "Ayatul Kursi Benefits", category: "Quran" },
-  { slug: "dua-for-protection", title: "Dua for Protection", category: "Duas" },
-  { slug: "muslim-names-meaning-light", title: "Muslim Names Meaning Light", category: "Names" },
-  { slug: "how-to-choose-muslim-name", title: "How to Choose a Muslim Name", category: "Names" },
-  { slug: "salah-mistakes-to-avoid", title: "10 Common Salah Mistakes", category: "Prayer" },
-  { slug: "surah-mulk-benefits", title: "Surah Al-Mulk Benefits", category: "Quran" },
-  { slug: "dua-for-rizq", title: "Dua for Rizq (Sustenance)", category: "Duas" },
-  { slug: "eid-ul-adha-2026", title: "Eid ul Adha 2026", category: "Events" },
-  { slug: "hajj-guide-2026", title: "Hajj 2026 Guide", category: "Events" },
-  { slug: "islamic-finance-zakat", title: "Islamic Finance & Zakat", category: "Zakat" },
-  { slug: "duas-for-students", title: "Duas for Students", category: "Duas" },
-  { slug: "masjid-etiquette", title: "Masjid Etiquette in Islam", category: "Prayer" },
-  { slug: "quran-reading-plan", title: "Quran 30-Day Reading Plan", category: "Quran" },
-  { slug: "dua-for-sick-person", title: "Dua for Sick Person", category: "Duas" },
-  { slug: "islamic-baby-shower", title: "Islamic Baby Shower & Aqiqah", category: "Family" },
-  { slug: "prayer-times-ramadan-2026", title: "Prayer Times Ramadan 2026", category: "Ramadan" },
-  { slug: "noor-app-guide", title: "Noor App Complete Guide", category: "App" },
-  { slug: "surah-ikhlas-falaq-nas", title: "Three Quls Guide", category: "Quran" },
-];

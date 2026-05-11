@@ -338,6 +338,30 @@ Return JSON array of ${count} names.`,
   }
 });
 
+// ─── Blog list (for admin UI status) ─────────────────────────────────────────
+
+router.get("/admin/blog", async (_req, res) => {
+  try {
+    const posts = await Promise.all(
+      BLOG_STUBS.map(async (stub) => {
+        const record = await getBlogPost(stub.slug);
+        return {
+          slug: stub.slug,
+          title: stub.title,
+          category: stub.category,
+          hasContent: !!(record?.content_html && record.content_html.length > 0),
+          wordCount: record?.wordCount ?? 0,
+          generatedAt: record?.generatedAt ?? null,
+        };
+      })
+    );
+    res.json(posts);
+  } catch (err) {
+    logger.error({ err }, "admin blog list error");
+    res.status(500).json({ error: "Failed to list blog posts" });
+  }
+});
+
 // ─── Waitlist ─────────────────────────────────────────────────────────────────
 
 router.post("/waitlist", async (req, res) => {
