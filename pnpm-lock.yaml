@@ -156,6 +156,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@replit/connectors-sdk':
+        specifier: ^0.4.0
+        version: 0.4.0
     devDependencies:
       prettier:
         specifier: ^3.8.1
@@ -1571,6 +1575,9 @@ packages:
   '@remix-run/router@1.23.2':
     resolution: {integrity: sha512-Ic6m2U/rMjTkhERIa/0ZtXJP17QUi2CbWE7cqx4J58M8aA3QTfW+2UlQ4psvTX9IO1RfNVhK3pcpdjej7L+t2w==}
     engines: {node: '>=14.0.0'}
+
+  '@replit/connectors-sdk@0.4.0':
+    resolution: {integrity: sha512-wRuktfdoBsM19NJUi24xzCkQ+idglmU4Cq2ZWvTAnNUVGdcMmn3rLN1F1/MNZCc2HdG+awcGa81XMLpZXZujUg==}
 
   '@replit/database@3.0.1':
     resolution: {integrity: sha512-uCmuttqjhI+unsEtXLVm28FTkdX4m815r+INkXJsIFAvHIw3+h5mJv6X/xf3YOy2jjrZVPppsjNRqFeWEQFYQw==}
@@ -4393,6 +4400,8 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@remix-run/router@1.23.2': {}
+
+  '@replit/connectors-sdk@0.4.0': {}
 
   '@replit/database@3.0.1': {}
 

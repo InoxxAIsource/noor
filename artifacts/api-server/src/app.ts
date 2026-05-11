@@ -64,7 +64,6 @@ const aiLimiter = rateLimit({
     const token = req.headers.authorization?.replace("Bearer ", "") ?? "anon";
     return token.slice(0, 32);
   },
-  validate: { ipKeyGeneratorIpV6: false },
   message: { error: "Daily AI request limit reached." },
 });
 
