@@ -40,7 +40,7 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 
 - **@replit/database instead of PostgreSQL**: Key-value store, no migrations needed. `db.get()` returns `OkResult | ErrResult` — always unwrap with `result.ok ? result.value : null`.
 - **Contract-first API**: OpenAPI spec → Orval codegen → React Query hooks + Zod schemas. Never handwrite API fetch calls on the frontend.
-- **JWT in localStorage**: Token stored as `noor_token`. Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
+- **JWT in localStorage**: Token stored as `deen_token`. Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
 - **Seed on startup**: API server seeds all content (sessions, duas, names, hadiths) on first boot if DB is empty.
 - **AI rate limit**: 20 AI requests per user per day, tracked in `aiUsage:{userId}:{date}`.
 - **External Quran data**: Verses fetched from `api.qurancdn.com`, audio from `everyayah.com` (Alafasy). No server-side caching needed.
@@ -56,7 +56,7 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 - Names of Allah: All 99 names with Arabic, transliteration, meaning, daily rotation
 - Daily Content: Name of Allah + Hadith + Dua of the day (rotates daily by day-of-year)
 - Tasbih: Digital dhikr counter
-- AI Companion: Noor AI powered by Claude, 20 req/day limit, Islamic adab guidelines
+- AI Companion: DeenApp AI powered by Claude, 20 req/day limit, Islamic adab guidelines
 - Onboarding: 5-step wizard (madhab, city/GPS, goals, language, reminder time)
 
 ## Product — Part 2 (complete)
@@ -76,6 +76,7 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 - **Enhanced Names** (`/names`): A-Z letter index, category chips (Quranic/Prophet/Sahaba/Rare/Trending), detail modal, share
 - **Enhanced Tasbih** (`/tasbih`): SVG circular progress ring, 33 animated bead ring, vibration on completion, correct targets (34 for Allahu Akbar), session total
 - **Home Tools Grid**: 12-tile Islamic Tools grid on homepage linking to all tools
+- **Landing Page** (`/`): Public marketing page with Arabic ticker, hero, feature grid; auto-redirects logged-in users to `/home`
 
 ## New API routes (Part 2)
 
@@ -83,16 +84,21 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 - `GET /api/masjid/nearby?lat=&lng=` — Overpass proxy, returns sorted mosque list
 - `GET /api/masjid/favourite` + `POST /api/masjid/favourite` — per-user favourite masjid (auth required)
 - `GET /api/zakat/gold-price` — metals.live proxy, INR/gram conversion
+- `GET /api/prayer/hijri` — today's Hijri date (public, no auth required)
 
 ## Routes (all frontend pages)
 
 ```
-/ → /home         /login         /register        /onboarding
-/home             /prayer-times  /duas             /names
-/player/:id       /tasbih        /profile          /quran
-/quran/:number    /mood          /99-names         /qibla
+/                 /login           /register          /onboarding
+/home             /prayer-times    /duas              /names
+/player/:id       /tasbih          /profile           /quran
+/quran/:number    /mood            /99-names          /qibla
 /masjid-finder    /zakat-calculator  /islamic-calendar  /qurbani-guide
-/farz-guide       /sadqa-guide   /wudu-guide        /salah-guide
+/farz-guide       /sadqa-guide     /wudu-guide        /salah-guide
+/journal          /rooms           /room/:code        /growth
+/halaqah          /halaqah/:code   /halaqah/:code/admin
+/names/trending   /names/forbidden /gift/:token
+/subscribe        /download        /admin
 ```
 
 ## Design tokens
@@ -106,7 +112,20 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- **Always update `replit.md` and push to GitHub after every change or implementation.** This is a standing rule for every session.
+- GitHub repo: `https://github.com/InoxxAIsource/noor` (main branch)
+
+## Changelog
+
+### 2026-05-11 — Full Audit & DeenApp Rebrand
+- **Rebrand**: All "Noor"/"NOOR" UI references renamed to "DeenApp"/"DEENAPP" across 30+ files (frontend pages, SEO layer, AI system prompts, admin panel, seed data, share text)
+- **Token rename**: `noor_token` → `deen_token` in localStorage across all 16 files (AuthContext, 13 pages, SEO shared.ts)
+- **New route**: `GET /api/prayer/hijri` — was returning 404, now returns today's Hijri date (public endpoint)
+- **AI prompts**: All 4 Claude system prompts updated from "Noor" to "DeenApp"
+- **Landing page**: Public `/` route with hero, feature grid, Arabic bismillah ticker; login/register pages auto-redirect if already logged in + `← Home` back link
+- **Manifest + meta**: `index.html` title, OG tags, apple-mobile-web-app-title, `manifest.json` name/short_name all updated
+- **Room codes**: `NOOR-XXXX` → `DEEN-XXXX` format
+- **SEO files**: `shared.ts`, `landing.ts`, `comparison.ts`, `tools-seo.ts`, `prayer-times-seo.ts`, `quran-seo.ts`, `blog-seo.ts`, `duas-seo.ts` fully rebranded
 
 ## Gotchas
 
@@ -116,7 +135,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 - Never call services directly by port. Always use `localhost:80/<path>` through the shared proxy.
 - Seed data is written to @replit/database on first boot only (checks if DB is empty first).
 - Part 2 pages (Quran, Qibla, Masjid, Zakat, Calendar, guides) use direct `fetch()` calls to external APIs or `/api/...` — not generated hooks. Generated hooks only exist for Part 1 endpoints.
-- New API routes (namesOfAllah, masjid, zakat) are NOT yet in openapi.yaml — add them before running codegen.
+- New API routes (namesOfAllah, masjid, zakat, prayer/hijri) are NOT in openapi.yaml — add them before running codegen.
+- localStorage auth token key is `deen_token` (was `noor_token` — changed during rebrand).
 
 ## Pointers
 
