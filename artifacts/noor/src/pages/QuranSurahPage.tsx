@@ -203,14 +203,14 @@ const QuranSurahPage: React.FC = () => {
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <button
-              onClick={() => num > 1 && navigate(`/quran/${num - 1}`)}
+              onClick={() => num > 1 && navigate(`/quran/read/${num - 1}`)}
               disabled={num <= 1}
               style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#2a3830", cursor: num > 1 ? "pointer" : "default", fontSize: 12 }}
             >
               <ChevronLeft size={14} />
             </button>
             <button
-              onClick={() => num < 114 && navigate(`/quran/${num + 1}`)}
+              onClick={() => num < 114 && navigate(`/quran/read/${num + 1}`)}
               disabled={num >= 114}
               style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num < 114 ? "#34c97a" : "#2a3830", cursor: num < 114 ? "pointer" : "default", fontSize: 12 }}
             >
@@ -441,7 +441,7 @@ const QuranSurahPage: React.FC = () => {
               <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
                 {num > 1 && (
                   <button
-                    onClick={() => navigate(`/quran/${num - 1}`)}
+                    onClick={() => navigate(`/quran/read/${num - 1}`)}
                     style={{ padding: "10px 18px", background: "rgba(52,201,122,0.1)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
                   >
                     ← {SURAH_NAMES[num - 1] ?? `Surah ${num - 1}`}
@@ -449,7 +449,7 @@ const QuranSurahPage: React.FC = () => {
                 )}
                 {num < 114 && (
                   <button
-                    onClick={() => navigate(`/quran/${num + 1}`)}
+                    onClick={() => navigate(`/quran/read/${num + 1}`)}
                     style={{ padding: "10px 18px", background: "rgba(52,201,122,0.12)", border: "1px solid rgba(52,201,122,0.25)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "inherit", fontWeight: 600 }}
                   >
                     {SURAH_NAMES[num + 1] ?? `Surah ${num + 1}`} →

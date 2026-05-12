@@ -92,7 +92,7 @@ An AI-first Islamic lifestyle PWA. "Grow Spiritually Every Day." A premium compa
 /                 /login           /register          /onboarding
 /home             /prayer-times    /duas              /names
 /player/:id       /tasbih          /profile           /quran
-/quran/:number    /mood            /99-names          /qibla
+/quran/read/:number /mood           /99-names          /qibla
 /masjid-finder    /zakat-calculator  /islamic-calendar  /qurbani-guide
 /farz-guide       /sadqa-guide     /wudu-guide        /salah-guide
 /journal          /rooms           /room/:code        /growth
@@ -228,6 +228,25 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Admin reseed**: Added `POST /admin/names/reseed` endpoint to force-replace all names from seed data without restarting the server
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
+
+### 2026-05-12 — Quran reader route fix: /quran/read/:number
+- **Root cause**: `/quran/:number` was intercepted by the API server's SEO route for `/quran/:surahSlug` (slug-based SEO pages are registered on the API server at the `/quran` path prefix)
+- **Fix**: Moved reader route to `/quran/read/:number` — added `/quran/read` to Noor artifact.toml paths so the proxy routes it to the React SPA before the API server catches `/quran`
+- Updated: `App.tsx` route, `QuranPage.tsx` (2 navigate calls), `QuranSurahPage.tsx` (4 navigate calls for prev/next)
+- `/quran` (list page) still goes to API server's SEO listing page for public access; `/quran/read/:number` is the authenticated reader in the React SPA
+- **Typecheck**: Clean
+
+### 2026-05-12 — Quran reader: continuous Mushaf-style flow
+- **Root cause**: Each ayah was rendered as a separate `rounded-2xl border` card — 7 ayahs = 7 boxes instead of one flowing read
+- **Fix**: Rebuilt QuranSurahPage with two-section layout:
+  - **Top section**: All Arabic text flows as ONE continuous paragraph (RTL, Amiri 28px, lineHeight 2.4) — words are individually tappable for meaning; inline circular verse number markers (gold) embedded in the Arabic flow
+  - **Bottom section**: Numbered translations listed cleanly — ayah number badge, translation text, play/bookmark controls per row
+- **Tap verse marker**: Highlights all words of that ayah in emerald in the Arabic flow + highlights translation row
+- **Navigation**: Prev/Next surah buttons in header + end-of-surah footer with neighbour surah names
+- **Surah name map**: All 114 surah names hardcoded for instant display
+- **Word tooltip**: Tap any Arabic word → transliteration + translation bubble (preserved)
+- **Read tracking**: IntersectionObserver on translation rows marks ayahs read as you scroll
+- **Typecheck**: Clean
 
 ### 2026-05-12 — Push Notifications: prayer times, duas, hadith, streak
 - **web-push installed** on api-server; VAPID keys generated + stored as env vars (VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_EMAIL)

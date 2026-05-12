@@ -72,7 +72,7 @@ const router = createBrowserRouter(
         { path: "/rooms", element: <RoomsPage /> },
         { path: "/room/:code", element: <RoomPage /> },
         { path: "/quran", element: <QuranPage /> },
-        { path: "/quran/:number", element: <QuranSurahPage /> },
+        { path: "/quran/read/:number", element: <QuranSurahPage /> },
         { path: "/mood", element: <MoodPage /> },
         { path: "/99-names", element: <NamesOfAllahPage /> },
         { path: "/qibla", element: <QiblaPage /> },

@@ -151,7 +151,7 @@ const QuranPage: React.FC = () => {
         </div>
         {lastSurah && (
           <button
-            onClick={() => navigate(`/quran/${lastSurah}`)}
+            onClick={() => navigate(`/quran/read/${lastSurah}`)}
             className="w-full text-left flex items-center gap-2 bg-[var(--green)]/10 border border-[var(--green)]/30 rounded-xl px-4 py-2 text-sm text-[var(--green)]"
           >
             <span>↩ Continue reading: Surah {lastSurah}</span>
@@ -164,7 +164,7 @@ const QuranPage: React.FC = () => {
         {filtered.map((s) => (
           <button
             key={s.n}
-            onClick={() => navigate(`/quran/${s.n}`)}
+            onClick={() => navigate(`/quran/read/${s.n}`)}
             className="w-full flex items-center gap-4 px-4 py-4 hover:bg-[var(--surface)] transition-colors text-left"
           >
             <div className="w-10 h-10 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center flex-shrink-0">
