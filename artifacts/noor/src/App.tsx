@@ -44,6 +44,7 @@ import AdminPage from "@/pages/AdminPage";
 import SubscribePage from "@/pages/SubscribePage";
 import DownloadPage from "@/pages/DownloadPage";
 import MorningFlow from "@/pages/MorningFlow";
+import CompanionPage from "@/pages/CompanionPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -92,6 +93,7 @@ const router = createBrowserRouter(
         { path: "/names/forbidden", element: <ForbiddenNamesPage /> },
         { path: "/names/trending", element: <TrendingNamesPage /> },
         { path: "/morning", element: <MorningFlow /> },
+        { path: "/companion", element: <CompanionPage /> },
       ],
     },
     { path: "*", element: <NotFound /> },

@@ -1,5 +1,33 @@
 # MyTazki — Changelog
 
+### 2026-05-12 — AI Companion page + Bottom Nav + MoodPage redesign
+
+**New page: /companion — Full-screen AI Islamic Guide:**
+- Dedicated chat page replacing the floating button (☪️) in the nav
+- Greeting-first flow: AI opens with a personalised As-salamu alaykum
+- Quick prompts shown before first message (5 curated Islamic questions)
+- Auto-resizing textarea input, Enter to send, Shift+Enter for newline
+- Typing indicator with 3 animated bouncing dots
+- Daily limit display with graceful limit-reached state
+- Reset/new conversation button in header
+
+**BottomNav redesign:**
+- Old: Home, Salah, Quran, Duas, Profile
+- New: Home, Salah, Sessions (centre, raised green circle), Guide (AI companion), Profile
+- Sessions is now the primary CTA with a raised circular Play button
+- Guide (☪️) links to the new /companion full-screen chat page
+
+**MoodPage — full redesign with design tokens:**
+- Replaced all hard-coded `#001a00`, `#00a550`, `#ffd700` with CSS variables
+- Step progress indicator (3 animated pills at top)
+- Mood grid: 8 buttons using `var(--surface)` + hover state
+- Intensity step: cards with emoji, label, description — selection checkmark
+- Results cards using `var(--card)` / `var(--green)` CTA
+- Added floating animation to loading state spinner
+- Now includes BottomNav for consistent navigation
+
+---
+
 ### 2026-05-12 — Signup Redirect Loop Fix
 
 - `RegisterPage`: after successful register, immediately sets the user object in auth context via `setAuthUser(data.user)` before navigating — prevents the async `getMe()` race condition that caused the signup → onboarding → redirect loop
