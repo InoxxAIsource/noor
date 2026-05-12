@@ -229,6 +229,14 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Quran reader: Play All sequential playback fix
+- **Root cause**: `useCallback` + `new Audio()` per ayah caused two bugs: (1) stale closure in `onended` meant `playAyahAt` called wrong version after ayah 1-2; (2) iOS Safari autoplay policy blocks `new Audio().play()` for any audio not linked to original user gesture
+- **Fix**: Single persistent `Audio` element created once at mount — only `audio.src` + `audio.load()` + `audio.play()` called per ayah, maintaining iOS autoplay continuity
+- **Ref-based state**: `sequentialRef`, `currentAyahRef`, `numRef`, `playFnRef` — all mutable refs so the single `ended` listener always reads live values without stale closures
+- **Single listener**: `audio.addEventListener("ended", onEnded)` set once in a `[]` useEffect — reliably fires for every ayah in sequence
+- **Fallback**: If `play()` is rejected (page unfocused etc.), sequential mode skips to next ayah after 1s rather than stopping
+- **Typecheck**: Clean
+
 ### 2026-05-12 — Quran reader: per-ayah audio + visible Arabic/translation text
 - **Arabic text visible**: Switched from word-by-word rendering (which depended on Amiri font loading correctly) to verse-level `text_uthmani` per ayah — text is now `#f0ede8` on dark background, always visible
 - **Translation visible**: Removed the word-fetch dependency (`words=false` in API call), translation now cleanly strips HTML/footnote tags and renders in `#a8c8b0`
