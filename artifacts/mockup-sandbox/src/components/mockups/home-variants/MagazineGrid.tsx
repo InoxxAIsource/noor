@@ -67,7 +67,7 @@ export function MagazineGrid() {
       {/* Main content grid */}
       <div style={{ padding: "12px 12px 100px" }}>
 
-        {/* NEXT PRAYER — hero tile */}
+        {/* NEXT PRAYER, hero tile */}
         <div className="mag-card" style={{
           background: "#00a550",
           borderRadius: 16, padding: "18px 20px",
@@ -134,7 +134,7 @@ export function MagazineGrid() {
             <div>
               <p style={{ fontSize: 10, color: "#00a550", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Noor AI</p>
               <p style={{ fontSize: 12, color: "rgba(232,245,232,0.7)", lineHeight: 1.4 }}>
-                Ask me anything Islamic — duas, fiqh, stories…
+                Ask me anything Islamic, duas, fiqh, stories…
               </p>
             </div>
             <div style={{
@@ -147,7 +147,7 @@ export function MagazineGrid() {
           </div>
         </div>
 
-        {/* Prayer times — magazine list */}
+        {/* Prayer times, magazine list */}
         <div className="mag-card" style={{
           background: "#001400", border: "1px solid rgba(0,165,80,0.15)",
           borderRadius: 16, padding: "14px 16px", marginBottom: 10,
@@ -197,7 +197,7 @@ export function MagazineGrid() {
               <p style={{ fontSize: 13, color: "#e8f5e8", lineHeight: 1.6, fontStyle: "italic" }}>
                 "Make things easy, do not make them difficult. Give good news and do not drive people away."
               </p>
-              <p style={{ fontSize: 11, color: "#00a550", marginTop: 6 }}>— Bukhari & Muslim</p>
+              <p style={{ fontSize: 11, color: "#00a550", marginTop: 6 }}>- Bukhari & Muslim</p>
             </div>
           </div>
         </div>

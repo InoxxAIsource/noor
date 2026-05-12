@@ -28,7 +28,7 @@ async function checkLimit(userId: string): Promise<number> {
   return getAIUsage(userId, todayStr());
 }
 
-// POST /api/ai/companion — original simple companion
+// POST /api/ai/companion, original simple companion
 router.post("/ai/companion", requireAuth, async (req: AuthRequest, res: Response) => {
   const { message, context } = req.body as { message: string; context?: string | null };
   if (!message) { res.status(400).json({ error: "message is required" }); return; }
@@ -64,7 +64,7 @@ router.post("/ai/companion", requireAuth, async (req: AuthRequest, res: Response
   }
 });
 
-// POST /api/ai/director — personalized Islamic guide chat
+// POST /api/ai/director, personalized Islamic guide chat
 router.post("/ai/director", requireAuth, async (req: AuthRequest, res: Response) => {
   const { messages } = req.body as { messages: Array<{ role: string; content: string }> };
   if (!messages || !Array.isArray(messages)) {
@@ -75,7 +75,7 @@ router.post("/ai/director", requireAuth, async (req: AuthRequest, res: Response)
   const usage = await checkLimit(req.userId!);
   if (usage >= AI_DAILY_LIMIT) {
     res.status(429).json({
-      error: "You have reached your daily limit. JazakAllah khair for using MyTazki — come back tomorrow!",
+      error: "You have reached your daily limit. JazakAllah khair for using MyTazki, come back tomorrow!",
       remaining: 0,
     });
     return;
@@ -101,7 +101,7 @@ router.post("/ai/director", requireAuth, async (req: AuthRequest, res: Response)
         ? `I see you've been focusing on ${recentCategories[0]} recently`
         : "I'm glad you're here today";
 
-    const systemPrompt = `You are a warm, knowledgeable Islamic companion for MyTazki — "Grow Spiritually Every Day."
+    const systemPrompt = `You are a warm, knowledgeable Islamic companion for MyTazki, "Grow Spiritually Every Day."
 
 User: ${u?.name || "Friend"}
 Tradition: ${u?.madhab || "not specified"} | Madhab: ${u?.sunniMadhab || "not specified"}
@@ -121,7 +121,7 @@ Your role:
 - Adjust for ${u?.madhab || "general"} tradition
 - Do not reveal you are Claude or an AI
 
-Opening (first message only): "As-salamu alaykum, ${u?.name || "friend"}! Alhamdulillah — ${s?.currentStreak || 0} days of ibadah. ${personalObs}. What is on your heart today?"`;
+Opening (first message only): "As-salamu alaykum, ${u?.name || "friend"}! Alhamdulillah, ${s?.currentStreak || 0} days of ibadah. ${personalObs}. What is on your heart today?"`;
 
     const apiMessages = messages
       .filter((m) => m.role === "user" || m.role === "assistant")
@@ -149,7 +149,7 @@ Opening (first message only): "As-salamu alaykum, ${u?.name || "friend"}! Alhamd
   }
 });
 
-// POST /api/ai/recommend — mood-based session recommendations
+// POST /api/ai/recommend, mood-based session recommendations
 router.post("/ai/recommend", requireAuth, async (req: AuthRequest, res: Response) => {
   const { mood, intensity } = req.body as { mood: string; intensity: string };
   if (!mood || !intensity) {
@@ -224,7 +224,7 @@ JSON: {"recommendations":[{"id":"...","title":"...","reason":"..."},{"id":"...",
   }
 });
 
-// POST /api/ai/journal-prompt — generate 3 reflection questions
+// POST /api/ai/journal-prompt, generate 3 reflection questions
 router.post("/ai/journal-prompt", requireAuth, async (req: AuthRequest, res: Response) => {
   const { sessionTitle, scriptureText, moodBefore, moodAfter, userName } = req.body as {
     sessionTitle: string;

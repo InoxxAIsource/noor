@@ -1,7 +1,7 @@
 {
-  "name": "MyTazki — Islamic Growth App",
+  "name": "MyTazki, Islamic Growth App",
   "short_name": "MyTazki",
-  "description": "AI-powered Islamic companion for daily spiritual growth — Quran, Azkar, Duas, prayer times, and guided sessions.",
+  "description": "AI-powered Islamic companion for daily spiritual growth, Quran, Azkar, Duas, prayer times, and guided sessions.",
   "start_url": "/home",
   "display": "standalone",
   "orientation": "portrait",

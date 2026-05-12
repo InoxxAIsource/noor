@@ -232,7 +232,7 @@ export function ImmersiveDark() {
           }}>
             <p style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Hadith</p>
             <p style={{ fontSize: 11, color: "#a0c8a0", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>
-              "The best of people are those most beneficial to others." — Prophet ﷺ
+              "The best of people are those most beneficial to others.", Prophet ﷺ
             </p>
           </div>
         </div>

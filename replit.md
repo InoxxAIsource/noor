@@ -229,6 +229,14 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Em dash removal (site-wide)
+- **Scope**: All user-facing content across 30+ files — SEO pages, seed data (duas, sessions, hadiths, names), manifest.json, index.html, AI routes, mockup components
+- **Replacement**: ` — ` replaced with `, ` throughout; standalone `—` replaced with `-`
+- **Preserved**: Developer-only code comments in routes (// GET /api/...) and app.ts left unchanged
+- **admin.ts logic**: `split("—")` updated to `split("-")` to match new seed data format
+- **Count**: 1,153 em dashes removed across all content files
+- **Typecheck**: Clean across all packages
+
 ### 2026-05-12 — Homepage SEO/GEO Transformation (14-step authority overhaul)
 - **H1 fixed**: "AI Islamic Companion for Daily Muslim Growth" — single semantic H1, replaces "Grow Spiritually Every Day"
 - **6 H2 sections added**: Quran Reflections, Daily Azkar & Duas, AI-Powered Growth, Islamic Wellness, Featured Journeys, Start Your Journey — each with crawlable paragraph copy
