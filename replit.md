@@ -117,6 +117,23 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — Masjid Finder rebuilt + Baby Names expanded to 1000
+
+#### Masjid Finder — critical bug fix + interactive map
+- **Root cause**: Overpass API query used `"religion"="muslim"` (incorrect tag) — all mosques tagged as `"religion"="islam"` in OpenStreetMap, returning 0 results every time
+- **Fix**: Query changed to `"religion"="islam"` + upgraded from `node` to `nwr` (node/way/relation) + `out center tags` to capture mosque buildings and complexes, not just nodes
+- **Coordinates**: Updated element extraction to use `el.lat ?? el.center?.lat` for ways/relations (which have `el.center.lat` not `el.lat`)
+- **Interactive Leaflet map**: Replaced static OSM iframe with full `leaflet` interactive map (already installed: `leaflet`, `@types/leaflet`) — shows user position (green dot), mosque markers (🕌 gold pin), popups with name/distance/directions on click, `flyTo` animation on list item click
+- **UI rebuilt**: Filter chips (All/Sunni/Shia/Jama Masjid), favourite star persisted to localStorage + API, nearest marker opens popup automatically, Google Maps fallback link, refresh button, empty-state links
+- **Typecheck**: Clean across both packages
+
+#### Baby Names expanded 500 → 1000
+- **500 new names added**: Boys rank 251–500 (250 names) + Girls rank 251–500 (250 names)
+- **Origins**: Arabic, Persian, Turkish, Urdu, Malay — all authentic Islamic names with full field data (Arabic script, Urdu, meaning, origin, Quran reference where applicable, Prophet connection)
+- **Notable additions**: Hamzah, Uthman, Salman, Bilal, Junayd, Rayyan, Anas, Maaz, Owais (boys); Zahra, Laila, Isra, Taqwa, Kausar, Malaak, Sidra, Haneen, Yara (girls)
+- **Reseed applied**: `POST /api/admin/names/reseed` — confirmed 1000 names live in DB
+- **Typecheck**: Clean
+
 ### 2026-05-12 — SEO improvements (Lighthouse: page blocked from indexing)
 - **Root cause**: Lighthouse ran on the Replit dev/`.replit.app` URL — Replit intentionally adds `X-Robots-Tag: noindex` to dev domains; `deenapp.app` custom domain has no such header
 - **Sitemap domain fixed**: `noorapp.com` → `deenapp.app` in `sitemap.ts` BASE URL and Sitemap directive in `robots.txt`

@@ -3,7 +3,7 @@ import type { Response } from "express";
 import { requireAuth, type AuthRequest } from "../middleware/auth.js";
 import { getUser, setUser, getMasjidCache, setMasjidCache } from "../lib/db.js";
 
-const MASJID_CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
+const MASJID_CACHE_TTL = 7 * 24 * 60 * 60 * 1000;
 
 const router = Router();
 
@@ -23,19 +23,26 @@ router.get("/masjid/nearby", async (req, res) => {
       res.json(cached.mosques);
       return;
     }
-  } catch { /* ignore cache miss */ }
+  } catch { }
 
   try {
-    const query = `[out:json];node["amenity"="place_of_worship"]["religion"="muslim"](around:5000,${lat},${lng});out;`;
+    const query = `[out:json][timeout:25];nwr["amenity"="place_of_worship"]["religion"="islam"](around:5000,${lat},${lng});out center tags;`;
     const resp = await fetch("https://overpass-api.de/api/interpreter", {
       method: "POST",
       headers: { "Content-Type": "text/plain" },
       body: query,
     });
     if (!resp.ok) throw new Error("Overpass failed");
-    const data = (await resp.json()) as {
-      elements: Array<{ id: number; lat: number; lon: number; tags?: { name?: string; "name:en"?: string } }>;
+
+    type OsmElement = {
+      id: number;
+      type: string;
+      lat?: number;
+      lon?: number;
+      center?: { lat: number; lon: number };
+      tags?: { name?: string; "name:en"?: string; "name:ar"?: string };
     };
+    const data = (await resp.json()) as { elements: OsmElement[] };
 
     const toRad = (d: number) => (d * Math.PI) / 180;
     const haversine = (lat1: number, lng1: number, lat2: number, lng2: number) => {
@@ -49,16 +56,23 @@ router.get("/masjid/nearby", async (req, res) => {
     };
 
     const mosques = data.elements
-      .map((el) => ({
-        name: el.tags?.["name:en"] || el.tags?.name || "Masjid",
-        lat: el.lat,
-        lng: el.lon,
-        distance: Math.round(haversine(lat, lng, el.lat, el.lon) * 10) / 10,
-        distanceKm: Math.round(haversine(lat, lng, el.lat, el.lon) * 10) / 10,
-        mapsUrl: `https://maps.google.com/maps?daddr=${el.lat},${el.lon}`,
-      }))
+      .map((el) => {
+        const elLat = el.lat ?? el.center?.lat ?? 0;
+        const elLon = el.lon ?? el.center?.lon ?? 0;
+        if (!elLat || !elLon) return null;
+        const dist = Math.round(haversine(lat, lng, elLat, elLon) * 10) / 10;
+        return {
+          name: el.tags?.["name:en"] || el.tags?.name || el.tags?.["name:ar"] || "Masjid",
+          lat: elLat,
+          lng: elLon,
+          distance: dist,
+          distanceKm: dist,
+          mapsUrl: `https://maps.google.com/maps?daddr=${elLat},${elLon}`,
+        };
+      })
+      .filter((m): m is NonNullable<typeof m> => m !== null)
       .sort((a, b) => a.distance - b.distance)
-      .slice(0, 20);
+      .slice(0, 25);
 
     await setMasjidCache(cacheKey, { mosques, cachedAt: Date.now() }).catch(() => {});
     res.json(mosques);
