@@ -91,6 +91,40 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
 
   urls.push(url("/best-muslim-prayer-app-india", "0.6"));
 
+  // Cluster 1 — Emotional / Anxiety + Peace
+  [
+    "/dua-for-anxiety", "/quran-verses-about-stress", "/how-islam-brings-peace",
+    "/tahajjud-for-anxiety", "/islamic-routine-for-peace", "/dua-for-overthinking",
+    "/quran-for-depression", "/how-to-connect-with-allah", "/surah-for-peace", "/dua-for-hardship",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Cluster 2 — Salah Consistency
+  [
+    "/how-to-stop-missing-salah", "/how-to-focus-in-salah", "/how-to-wake-up-for-fajr",
+    "/why-salah-is-important", "/salah-benefits", "/how-to-make-salah-habit",
+    "/missed-prayers-qada", "/dua-before-salah",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Cluster 3 — Quran Reflections
+  [
+    "/surah-rahman-reflection", "/surah-mulk-reflection", "/surah-fatiha-reflection",
+    "/surah-duha-reflection", "/surah-kahf-reflection", "/surah-yusuf-reflection",
+    "/ayatul-kursi-reflection", "/quran-about-anxiety",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Cluster 4 — Islamic Habits
+  [
+    "/daily-muslim-routine", "/islamic-habit-tracker", "/muslim-productivity-habits",
+    "/morning-routine-muslim", "/islamic-night-routine", "/dhikr-daily-habit",
+    "/quran-daily-habit", "/islamic-self-improvement",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Cluster 5 — AI Islamic Search
+  [
+    "/ai-islamic-assistant", "/ai-quran-explainer", "/ask-islam-ai",
+    "/islamic-ai-companion", "/quran-ai-reflection", "/ai-fatwa-guide",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}
@@ -127,28 +161,36 @@ Sitemap: https://mytazki.com/sitemap.xml
 
 router.get("/seo.css", (_req: Request, res: Response) => {
   const css = `
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
 *, *::before, *::after { box-sizing: border-box; }
-body { background: #001a00; color: #e8f5e8; font-family: Georgia, serif; margin: 0; line-height: 1.6; }
-h1 { font-family: Cinzel, serif; color: #ffd700; font-size: 2rem; line-height: 1.3; margin: 24px 0 12px; }
-h2 { color: #00a550; font-family: Cinzel, serif; font-size: 1.3rem; margin: 28px 0 10px; }
-h3 { color: #e8f5e8; font-size: 1.1rem; margin: 16px 0 8px; }
+body { background: #0d1411; color: #eaf4ee; font-family: Inter, DM Sans, system-ui, sans-serif; margin: 0; line-height: 1.6; }
+h1 { font-family: DM Sans, Inter, sans-serif; color: #eaf4ee; font-size: 2rem; font-weight: 800; line-height: 1.25; margin: 24px 0 14px; letter-spacing: -0.02em; }
+h2 { color: #34c97a; font-family: DM Sans, Inter, sans-serif; font-size: 1.25rem; font-weight: 700; margin: 28px 0 10px; }
+h3 { color: #eaf4ee; font-size: 1.05rem; font-weight: 600; margin: 16px 0 8px; }
 p { margin: 0 0 12px; }
-a { color: #00a550; }
-a:hover { color: #00d066; }
+a { color: #34c97a; }
+a:hover { color: #5cd68f; }
 img { max-width: 100%; height: auto; }
 table { border-collapse: collapse; }
 th, td { padding: 8px 12px; }
-.arabic { font-family: Amiri, serif; direction: rtl; text-align: right; color: #ffd700; font-size: 1.4em; line-height: 2; }
-.transliteration { color: #00a550; font-style: italic; }
-.cta-box { background: rgba(0, 165, 80, 0.1); border: 1px solid rgba(0, 165, 80, 0.3); border-radius: 10px; padding: 24px; margin: 28px 0; text-align: center; }
-.cta-btn { background: #00a550; color: #001a00; padding: 12px 28px; border-radius: 8px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 1rem; transition: background 0.2s; }
-.cta-btn:hover { background: #00c060; }
-.faq-item { margin: 12px 0; padding: 14px; background: rgba(0, 165, 80, 0.05); border-radius: 8px; border-left: 3px solid rgba(0, 165, 80, 0.3); }
-.card { background: #002800; border: 1px solid rgba(0, 165, 80, 0.2); border-radius: 10px; padding: 16px; margin: 8px 0; }
+.arabic { font-family: Amiri, serif; direction: rtl; text-align: right; color: #b8946a; font-size: 1.5em; line-height: 2.1; }
+.transliteration { color: #34c97a; font-style: italic; }
+.ai-summary { background: rgba(52,201,122,0.07); border-left: 4px solid #34c97a; border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 20px 0; font-size: 15px; line-height: 1.7; color: #eaf4ee; }
+.cta-box { background: rgba(52,201,122,0.08); border: 1px solid rgba(52,201,122,0.25); border-radius: 14px; padding: 28px 24px; margin: 32px 0; text-align: center; }
+.cta-btn { background: #34c97a; color: #0d1411; padding: 13px 30px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 1rem; transition: background 0.2s; font-family: DM Sans, Inter, sans-serif; }
+.cta-btn:hover { background: #5cd68f; }
+.faq-item { margin: 12px 0; padding: 16px; background: rgba(52,201,122,0.04); border-radius: 10px; border-left: 3px solid rgba(52,201,122,0.3); }
+.faq-item h3, .faq-item p { color: #a0c8a0; }
+.faq-item h3 { color: #eaf4ee; margin: 0 0 8px; font-size: 1rem; }
+.card { background: #1c2d21; border: 1px solid rgba(52,201,122,0.15); border-radius: 12px; padding: 16px; margin: 8px 0; }
+nav.breadcrumb { font-size: 13px; color: #6a9878; margin-bottom: 20px; font-family: Inter, sans-serif; }
+nav.breadcrumb a { color: #6a9878; text-decoration: none; }
+nav.breadcrumb a:hover { color: #34c97a; }
 @media (max-width: 600px) {
-  h1 { font-size: 1.5rem; }
+  h1 { font-size: 1.6rem; }
   h2 { font-size: 1.1rem; }
-  .arabic { font-size: 1.2em; }
+  .arabic { font-size: 1.3em; }
+  .cta-btn { padding: 12px 24px; font-size: 0.95rem; }
 }
 `;
 

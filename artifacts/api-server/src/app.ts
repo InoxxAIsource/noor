@@ -15,6 +15,11 @@ import toolsSeoRouter from "./seo/tools-seo.js";
 import blogRouter from "./seo/blog-seo.js";
 import comparisonRouter from "./seo/comparison.js";
 import sitemapRouter from "./seo/sitemap.js";
+import emotionalRouter from "./seo/emotional-seo.js";
+import salahClusterRouter from "./seo/salah-seo.js";
+import reflectionRouter from "./seo/reflection-seo.js";
+import habitsRouter from "./seo/habits-seo.js";
+import aiClusterRouter from "./seo/ai-seo.js";
 
 const app: Express = express();
 
@@ -67,6 +72,7 @@ const aiLimiter = rateLimit({
   message: { error: "Daily AI request limit reached." },
 });
 
+// SEO routers — registered before API routes
 app.use(sitemapRouter);
 app.use(landingRouter);
 app.use(prayerTimesRouter);
@@ -76,6 +82,13 @@ app.use(quranSeoRouter);
 app.use(toolsSeoRouter);
 app.use(blogRouter);
 app.use(comparisonRouter);
+
+// SEO content clusters
+app.use(emotionalRouter);
+app.use(salahClusterRouter);
+app.use(reflectionRouter);
+app.use(habitsRouter);
+app.use(aiClusterRouter);
 
 app.use("/api/ai", aiLimiter);
 app.use("/api", globalLimiter, router);

@@ -1,51 +1,92 @@
 kind = "api"
-previewPath = "/api"
-title = "API Server"
-version = "1.0.0"
-id = "3B4_FFSkEVBkAeYMFRJ2e"
+  previewPath = "/api"
+  title = "API Server"
+  version = "1.0.0"
+  id = "3B4_FFSkEVBkAeYMFRJ2e"
 
-[[services]]
-localPort = 8080
-name = "API Server"
-paths = [
-  "/api",
-  "/sitemap.xml",
-  "/robots.txt",
-  "/seo.css",
-  "/landing",
-  "/download",
-  "/prayer-times",
-  "/namaz-times",
-  "/names",
-  "/duas",
-  "/quran",
-  "/blog",
-  "/ramadan",
-  "/qibla-direction",
-  "/zakat-calculator",
-  "/masjid-finder",
-  "/islamic-calendar",
-  "/best-muslim-prayer-app-india",
-]
+  [[services]]
+  localPort = 8080
+  name = "API Server"
+  paths = [
+    "/api",
+    "/sitemap.xml",
+    "/robots.txt",
+    "/seo.css",
+    "/landing",
+    "/download",
+    "/prayer-times",
+    "/namaz-times",
+    "/names",
+    "/duas",
+    "/quran",
+    "/blog",
+    "/ramadan",
+    "/qibla-direction",
+    "/zakat-calculator",
+    "/masjid-finder",
+    "/islamic-calendar",
+    "/best-muslim-prayer-app-india",
+    "/dua-for-anxiety",
+    "/quran-verses-about-stress",
+    "/how-islam-brings-peace",
+    "/tahajjud-for-anxiety",
+    "/islamic-routine-for-peace",
+    "/dua-for-overthinking",
+    "/quran-for-depression",
+    "/how-to-connect-with-allah",
+    "/surah-for-peace",
+    "/dua-for-hardship",
+    "/how-to-stop-missing-salah",
+    "/how-to-focus-in-salah",
+    "/how-to-wake-up-for-fajr",
+    "/why-salah-is-important",
+    "/salah-benefits",
+    "/how-to-make-salah-habit",
+    "/missed-prayers-qada",
+    "/dua-before-salah",
+    "/surah-rahman-reflection",
+    "/surah-mulk-reflection",
+    "/surah-fatiha-reflection",
+    "/surah-duha-reflection",
+    "/surah-kahf-reflection",
+    "/surah-yusuf-reflection",
+    "/ayatul-kursi-reflection",
+    "/quran-about-anxiety",
+    "/daily-muslim-routine",
+    "/islamic-habit-tracker",
+    "/muslim-productivity-habits",
+    "/morning-routine-muslim",
+    "/islamic-night-routine",
+    "/dhikr-daily-habit",
+    "/quran-daily-habit",
+    "/islamic-self-improvement",
+    "/ai-islamic-assistant",
+    "/ai-quran-explainer",
+    "/ask-islam-ai",
+    "/islamic-ai-companion",
+    "/quran-ai-reflection",
+    "/ai-fatwa-guide",
+  ]
 
-[services.development]
-run = "pnpm --filter @workspace/api-server run dev"
+  [services.development]
+  run = "pnpm --filter @workspace/api-server run dev"
 
-[services.production]
+  [services.production]
 
-[services.production.build]
-args = ["pnpm", "--filter", "@workspace/api-server", "run", "build"]
+  [services.production.build]
+  args = ["pnpm", "--filter", "@workspace/api-server", "run", "build"]
 
-[services.production.build.env]
-NODE_ENV = "production"
+  [services.production.build.env]
+  NODE_ENV = "production"
 
-[services.production.run]
-# we don't run through pnpm to make startup faster in production
-args = ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
+  [services.production.run]
+  # we don't run through pnpm to make startup faster in production
+  args = ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
 
-[services.production.run.env]
-PORT = "8080"
-NODE_ENV = "production"
+  [services.production.run.env]
+  PORT = "8080"
+  NODE_ENV = "production"
 
-[services.production.health.startup]
-path = "/api/healthz"
+  [services.production.health.startup]
+  path = "/api/healthz"
+  
