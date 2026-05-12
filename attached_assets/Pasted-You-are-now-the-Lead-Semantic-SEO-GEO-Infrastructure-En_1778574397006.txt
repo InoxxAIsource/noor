@@ -1,0 +1,322 @@
+You are now the Lead Semantic SEO + GEO Infrastructure Engineer for MyTazki.com.
+
+IMPORTANT:
+We already completed Phase 1:
+- 40 SEO landing pages
+- 5 content clusters
+- GEO optimized structures
+- schema implementation
+- sitemap integration
+- routing integration
+- AI summary boxes
+- metadata setup
+
+Your job now is to build Phase 2:
+THE SEMANTIC AUTHORITY + INTERNAL LINKING ENGINE.
+
+========================================
+PRIMARY OBJECTIVE
+========================================
+
+Transform MyTazki from:
+“a collection of SEO pages”
+
+into:
+“a deeply connected AI-retrievable Islamic semantic knowledge graph.”
+
+We want:
+- stronger topical authority
+- better crawl depth
+- stronger Google rankings
+- AI retrieval optimization
+- higher session duration
+- deeper engagement funnels
+- conversion from SEO traffic into app users
+
+========================================
+PHASE 2 GOALS
+========================================
+
+Build:
+1. semantic internal linking engine
+2. cluster hub pages
+3. guided journey pages
+4. contextual related-content system
+5. AI-search enhancement blocks
+6. semantic breadcrumb architecture
+7. dynamic recommendation system
+8. topical authority reinforcement
+9. conversion funnel paths
+10. scalable cluster expansion system
+
+========================================
+STEP 1 — BUILD HUB PAGES
+========================================
+
+Create master hub pages for each cluster.
+
+Required hubs:
+
+/mental-wellness
+/salah
+/quran-reflections
+/islamic-habits
+/ai-islamic-tools
+
+Each hub page must include:
+- premium hero section
+- category introduction
+- AI summary
+- featured articles
+- grouped article cards
+- “Most Read” section
+- “Start Here” section
+- related journeys
+- FAQ section
+- schema markup
+- breadcrumb support
+- GEO conversational sections
+
+Each hub should internally link to ALL child pages.
+
+========================================
+STEP 2 — SEMANTIC INTERNAL LINK ENGINE
+========================================
+
+Create a reusable semantic linking system.
+
+Every article page should dynamically generate:
+- related emotional articles
+- related routines
+- related Quran reflections
+- related duas
+- related AI tools
+- next-step journey pages
+
+Example:
+Page:
+/dua-for-anxiety
+
+Should automatically suggest:
+- /quran-for-depression
+- /tahajjud-for-anxiety
+- /how-to-connect-with-allah
+- /morning-azkar-routine
+- /7-day-inner-peace-journey
+
+IMPORTANT:
+Links must be semantically relevant.
+Avoid random article linking.
+
+========================================
+STEP 3 — GUIDED JOURNEY PAGES
+========================================
+
+Build premium “journey” landing pages.
+
+Examples:
+/7-day-inner-peace-journey
+/reconnect-with-allah-journey
+/7-day-salah-reset
+/morning-barakah-routine
+/tahajjud-transformation-journey
+
+These pages should:
+- feel emotional
+- feel guided
+- connect SEO traffic into habit systems
+- include progress structure
+- include daily breakdowns
+- include soft premium CTAs
+
+These are RETENTION PAGES, not blog posts.
+
+========================================
+STEP 4 — GEO / AI SEARCH ENHANCEMENT
+========================================
+
+Enhance all pages for:
+- ChatGPT retrieval
+- Perplexity citations
+- Google AI Overviews
+- voice search
+- conversational search
+
+Add reusable components:
+
+1. Quick AI Summary Block
+2. “People Also Ask” section
+3. Conversational Queries section
+4. “What Muslims Ask” section
+5. Speakable answer formatting
+6. FAQ accordion
+7. Short answer snippets
+
+Example queries:
+- Can Islam help anxiety?
+- Which dua calms the heart?
+- How do I reconnect with Allah?
+- What surah gives peace?
+
+========================================
+STEP 5 — CONVERSION FLOW SYSTEM
+========================================
+
+Build SEO → App conversion paths.
+
+Every page should include:
+- emotional CTA
+- guided journey CTA
+- session CTA
+- streak CTA
+- app install CTA
+
+CTA tone:
+- calm
+- soft
+- emotionally supportive
+- premium
+
+GOOD:
+“Start your guided spiritual journey with MyTazki”
+
+BAD:
+“BUY PREMIUM NOW”
+
+========================================
+STEP 6 — DYNAMIC CONTENT COMPONENTS
+========================================
+
+Create reusable UI components:
+
+1. RelatedArticles
+2. RelatedDuas
+3. RelatedReflections
+4. GuidedJourneyCard
+5. EmotionalCTA
+6. QuickAnswerBox
+7. FAQAccordion
+8. AIInsightBox
+9. Breadcrumbs
+10. NextStepRecommendations
+
+Components must:
+- match MyTazki branding
+- feel premium
+- minimal
+- calm
+- responsive
+- optimized for SEO rendering
+
+========================================
+STEP 7 — TOPICAL AUTHORITY EXPANSION
+========================================
+
+Generate the NEXT 100 semantic pages.
+
+Expand existing clusters ONLY.
+
+NEW THEMES:
+
+Mental Wellness:
+- overthinking
+- burnout
+- loneliness
+- heartbreak
+- grief
+- patience
+- emotional healing
+
+Salah:
+- concentration
+- tahajjud
+- consistency
+- prayer motivation
+
+Quran:
+- hope
+- mercy
+- healing
+- gratitude
+- patience
+
+Habits:
+- discipline
+- gratitude
+- sleep
+- focus
+- routines
+
+AI:
+- AI tafsir
+- AI Islamic coach
+- AI Quran explanation
+- AI habit assistant
+
+========================================
+STEP 8 — SEMANTIC BREADCRUMB SYSTEM
+========================================
+
+Create:
+Home →
+Cluster →
+Subtopic →
+Article
+
+Example:
+Home → Mental Wellness → Anxiety → Dua for Anxiety
+
+Must support:
+- schema markup
+- crawl hierarchy
+- GEO understanding
+
+========================================
+STEP 9 — PERFORMANCE + INDEXING
+========================================
+
+Ensure:
+- clean semantic HTML
+- fast page rendering
+- SSR compatibility
+- metadata uniqueness
+- canonical consistency
+- no duplicate content
+- optimized heading structure
+- sitemap auto-expansion
+- crawl-friendly linking
+
+========================================
+STEP 10 — FINAL OBJECTIVE
+========================================
+
+Turn MyTazki into:
+- the strongest Islamic semantic authority site
+- an AI-search optimized Islamic ecosystem
+- a GEO-first content platform
+- a deeply interconnected Islamic knowledge graph
+
+Focus on:
+- semantic depth
+- emotional journeys
+- retention architecture
+- AI retrieval optimization
+- premium user experience
+
+Do NOT:
+- create random disconnected blog spam
+- keyword stuff
+- use generic AI content tone
+- break current routing or architecture
+
+Preserve:
+- existing pages
+- existing branding
+- current infrastructure
+
+Enhance:
+- semantic connectivity
+- topical authority
+- GEO readiness
+- SEO depth
+- user retention flow
