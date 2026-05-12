@@ -229,6 +229,15 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Quran reader: per-ayah audio + visible Arabic/translation text
+- **Arabic text visible**: Switched from word-by-word rendering (which depended on Amiri font loading correctly) to verse-level `text_uthmani` per ayah — text is now `#f0ede8` on dark background, always visible
+- **Translation visible**: Removed the word-fetch dependency (`words=false` in API call), translation now cleanly strips HTML/footnote tags and renders in `#a8c8b0`
+- **Per-ayah audio**: Each ayah has its own Play button using `everyayah.com/data/Alafasy_128kbps/SSSAAA.mp3` (individual recordings, not a full surah file)
+- **Sequential "Play All" mode**: Top-right button plays from ayah 1 through the end with a 4-second gap between each ayah (like everyayah.com flow) — marks each ayah as read as it plays; tap "Stop" to cancel
+- **Layout per ayah**: Arabic text (large, RTL, full width) + verse number badge on right; English translation + Play/Bookmark controls below — clean card-per-verse layout
+- **Audio cleanup**: Stops playback on surah navigate or component unmount; gap timer cleared properly
+- **Typecheck**: Clean
+
 ### 2026-05-12 — Quran reader route fix: /quran/read/:number
 - **Root cause**: `/quran/:number` was intercepted by the API server's SEO route for `/quran/:surahSlug` (slug-based SEO pages are registered on the API server at the `/quran` path prefix)
 - **Fix**: Moved reader route to `/quran/read/:number` — added `/quran/read` to Noor artifact.toml paths so the proxy routes it to the React SPA before the API server catches `/quran`

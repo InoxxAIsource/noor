@@ -1,30 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, Play, Pause, Bookmark, ChevronRight } from "lucide-react";
-
-interface Word {
-  id: number;
-  position: number;
-  char_type_name: string;
-  text_uthmani: string;
-  translation?: { text: string };
-  transliteration?: { text: string };
-}
+import { ChevronLeft, ChevronRight, Play, Pause, Bookmark, SkipForward } from "lucide-react";
 
 interface Verse {
   id: number;
   verse_number: number;
+  verse_key: string;
   text_uthmani: string;
   translations: Array<{ text: string }>;
-  words?: Word[];
-}
-
-interface WordTooltip {
-  wordId: number;
-  translation: string;
-  transliteration: string;
-  x: number;
-  y: number;
 }
 
 const SURAH_NAMES: Record<number, string> = {
@@ -54,6 +37,8 @@ const SURAH_NAMES: Record<number, string> = {
 };
 
 const pad = (n: number, len: number) => String(n).padStart(len, "0");
+const ayahAudioUrl = (surah: number, ayah: number) =>
+  `https://everyayah.com/data/Alafasy_128kbps/${pad(surah, 3)}${pad(ayah, 3)}.mp3`;
 
 const QuranSurahPage: React.FC = () => {
   const { number } = useParams<{ number: string }>();
@@ -63,41 +48,39 @@ const QuranSurahPage: React.FC = () => {
   const [verses, setVerses] = useState<Verse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
   const [playingAyah, setPlayingAyah] = useState<number | null>(null);
+  const [isSequential, setIsSequential] = useState(false);
   const [bookmarks, setBookmarks] = useState<Set<number>>(() => {
-    try {
-      const saved = localStorage.getItem(`bookmarks:${num}`);
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch { return new Set(); }
+    try { return new Set(JSON.parse(localStorage.getItem(`bookmarks:${num}`) ?? "[]")); }
+    catch { return new Set(); }
   });
   const [ayahsRead, setAyahsRead] = useState<Set<number>>(() => {
-    try {
-      const saved = localStorage.getItem(`ayahsRead:${num}`);
-      return new Set(saved ? JSON.parse(saved) : []);
-    } catch { return new Set(); }
+    try { return new Set(JSON.parse(localStorage.getItem(`ayahsRead:${num}`) ?? "[]")); }
+    catch { return new Set(); }
   });
-  const [tooltip, setTooltip] = useState<WordTooltip | null>(null);
-  const [activeAyah, setActiveAyah] = useState<number | null>(null);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const gapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const versesRef = useRef<Verse[]>([]);
+  versesRef.current = verses;
 
   useEffect(() => {
     localStorage.setItem("lastSurah", String(num));
     setLoading(true);
     setError(false);
+    setPlayingAyah(null);
+    setIsSequential(false);
     fetch(
-      `https://api.qurancdn.com/api/qdc/verses/by_chapter/${num}?words=true&translation_fields=text&per_page=300&translations=131`
+      `https://api.qurancdn.com/api/qdc/verses/by_chapter/${num}?words=false&per_page=300&translations=131`
     )
-      .then((r) => r.json())
-      .then((data) => {
-        setVerses(data.verses ?? []);
-        setLoading(false);
-      })
+      .then(r => r.json())
+      .then(data => { setVerses(data.verses ?? []); setLoading(false); })
       .catch(() => { setError(true); setLoading(false); });
   }, [num]);
 
-  const markAyahRead = useCallback((ayahNum: number) => {
-    setAyahsRead((prev) => {
+  const markRead = useCallback((ayahNum: number) => {
+    setAyahsRead(prev => {
       if (prev.has(ayahNum)) return prev;
       const next = new Set(prev);
       next.add(ayahNum);
@@ -107,81 +90,73 @@ const QuranSurahPage: React.FC = () => {
     });
   }, [num]);
 
-  useEffect(() => {
-    if (verses.length === 0) return;
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const ayahNum = parseInt((entry.target as HTMLElement).dataset["ayah"] ?? "0", 10);
-            if (ayahNum) markAyahRead(ayahNum);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    document.querySelectorAll("[data-ayah]").forEach((el) => {
-      observerRef.current?.observe(el);
-    });
-    return () => observerRef.current?.disconnect();
-  }, [verses, markAyahRead]);
+  const stopAll = useCallback(() => {
+    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.onended = null; audioRef.current = null; }
+    setPlayingAyah(null);
+    setIsSequential(false);
+  }, []);
 
-  const playAyah = (ayahNum: number) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    if (playingAyah === ayahNum) {
-      setPlayingAyah(null);
-      return;
-    }
-    const url = `https://everyayah.com/data/Alafasy_128kbps/${pad(num, 3)}${pad(ayahNum, 3)}.mp3`;
+  const playAyahAt = useCallback((ayahNum: number, sequential: boolean) => {
+    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.onended = null; audioRef.current = null; }
+
+    const url = ayahAudioUrl(num, ayahNum);
     const audio = new Audio(url);
     audioRef.current = audio;
-    audio.play().catch(() => {});
-    audio.onended = () => setPlayingAyah(null);
     setPlayingAyah(ayahNum);
+    setIsSequential(sequential);
+    markRead(ayahNum);
+
+    audio.play().catch(() => { setPlayingAyah(null); });
+
+    audio.onended = () => {
+      if (!sequential) {
+        setPlayingAyah(null);
+        setIsSequential(false);
+        return;
+      }
+      const allVerses = versesRef.current;
+      const nextAyah = ayahNum + 1;
+      if (nextAyah > allVerses.length) {
+        setPlayingAyah(null);
+        setIsSequential(false);
+        return;
+      }
+      gapTimerRef.current = setTimeout(() => {
+        playAyahAt(nextAyah, true);
+      }, 4000);
+    };
+  }, [num, markRead]);
+
+  useEffect(() => () => stopAll(), [stopAll]);
+
+  const handlePlayButton = (ayahNum: number) => {
+    if (playingAyah === ayahNum) { stopAll(); return; }
+    playAyahAt(ayahNum, false);
+  };
+
+  const handlePlayAll = (fromAyah: number) => {
+    if (isSequential && playingAyah !== null) { stopAll(); return; }
+    playAyahAt(fromAyah, true);
   };
 
   const toggleBookmark = (ayahNum: number) => {
-    setBookmarks((prev) => {
+    setBookmarks(prev => {
       const next = new Set(prev);
-      if (next.has(ayahNum)) next.delete(ayahNum);
-      else next.add(ayahNum);
+      next.has(ayahNum) ? next.delete(ayahNum) : next.add(ayahNum);
       localStorage.setItem(`bookmarks:${num}`, JSON.stringify([...next]));
       return next;
     });
   };
 
-  const handleWordTap = (e: React.MouseEvent, word: Word) => {
-    e.stopPropagation();
-    if (!word.translation?.text && !word.transliteration?.text) return;
-    if (tooltip?.wordId === word.id) {
-      setTooltip(null);
-      return;
-    }
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
-    setTooltip({
-      wordId: word.id,
-      translation: word.translation?.text ?? "",
-      transliteration: word.transliteration?.text ?? "",
-      x: rect.left + rect.width / 2,
-      y: rect.top,
-    });
-  };
-
-  const progressPct = verses.length > 0
-    ? Math.round((ayahsRead.size / verses.length) * 100)
-    : 0;
-
+  const progressPct = verses.length > 0 ? Math.round((ayahsRead.size / verses.length) * 100) : 0;
   const surahName = SURAH_NAMES[num] ?? `Surah ${num}`;
 
   return (
-    <div
-      style={{ minHeight: "100vh", background: "#0d1411", color: "#eaf4ee", paddingBottom: 80, display: "flex", flexDirection: "column" }}
-      onClick={() => { setTooltip(null); setActiveAyah(null); }}
-    >
-      {/* ── Sticky header ── */}
+    <div style={{ minHeight: "100vh", background: "#0d1411", paddingBottom: 80 }}>
+
+      {/* Sticky header */}
       <div style={{
         position: "sticky", top: 0, zIndex: 20,
         background: "rgba(13,20,17,0.97)", backdropFilter: "blur(12px)",
@@ -189,37 +164,27 @@ const QuranSurahPage: React.FC = () => {
         padding: "14px 16px 10px",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-          <button
-            onClick={() => navigate("/quran")}
-            style={{ background: "transparent", border: "none", color: "#6a9878", cursor: "pointer", padding: 4, display: "flex" }}
-          >
+          <button onClick={() => navigate("/quran")}
+            style={{ background: "transparent", border: "none", color: "#6a9878", cursor: "pointer", padding: 4, display: "flex" }}>
             <ChevronLeft size={22} />
           </button>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 17, fontWeight: 700, color: "#eaf4ee" }}>{surahName}</div>
-            <div style={{ fontSize: 11, color: "#6a9878", marginTop: 1 }}>
+            <div style={{ fontSize: 17, fontWeight: 700, color: "#eaf4ee", fontFamily: "DM Sans, Inter, sans-serif" }}>{surahName}</div>
+            <div style={{ fontSize: 11, color: "#6a9878", marginTop: 1, fontFamily: "Inter, sans-serif" }}>
               Surah {num} · {verses.length} ayahs · {ayahsRead.size} read
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <button
-              onClick={() => num > 1 && navigate(`/quran/read/${num - 1}`)}
-              disabled={num <= 1}
-              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#2a3830", cursor: num > 1 ? "pointer" : "default", fontSize: 12 }}
-            >
+            <button onClick={() => { stopAll(); navigate(`/quran/read/${num - 1}`); }} disabled={num <= 1}
+              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#2a3830", cursor: num > 1 ? "pointer" : "default" }}>
               <ChevronLeft size={14} />
             </button>
-            <button
-              onClick={() => num < 114 && navigate(`/quran/read/${num + 1}`)}
-              disabled={num >= 114}
-              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num < 114 ? "#34c97a" : "#2a3830", cursor: num < 114 ? "pointer" : "default", fontSize: 12 }}
-            >
+            <button onClick={() => { stopAll(); navigate(`/quran/read/${num + 1}`); }} disabled={num >= 114}
+              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num < 114 ? "#34c97a" : "#2a3830", cursor: num < 114 ? "pointer" : "default" }}>
               <ChevronRight size={14} />
             </button>
           </div>
         </div>
-
-        {/* Progress bar */}
         {verses.length > 0 && (
           <div style={{ height: 3, background: "#1c2d21", borderRadius: 99, overflow: "hidden" }}>
             <div style={{ height: "100%", width: `${progressPct}%`, background: "#34c97a", borderRadius: 99, transition: "width 0.4s" }} />
@@ -227,239 +192,180 @@ const QuranSurahPage: React.FC = () => {
         )}
       </div>
 
-      {/* ── Word tooltip ── */}
-      {tooltip && (
-        <div
-          style={{
-            position: "fixed", zIndex: 50,
-            left: Math.min(Math.max(tooltip.x - 110, 8), (typeof window !== "undefined" ? window.innerWidth : 400) - 228),
-            top: Math.max(tooltip.y - 92, 8),
-            background: "#1c2d21", border: "1px solid rgba(52,201,122,0.35)",
-            borderRadius: 12, padding: "10px 14px", maxWidth: 220, textAlign: "center",
-            pointerEvents: "none", boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-          }}
-        >
-          {tooltip.transliteration && (
-            <div style={{ color: "#34c97a", fontSize: 11, fontStyle: "italic", marginBottom: 4 }}>{tooltip.transliteration}</div>
-          )}
-          {tooltip.translation && (
-            <div style={{ color: "#eaf4ee", fontSize: 13, fontWeight: 600 }}>{tooltip.translation}</div>
-          )}
-          <div style={{ position: "absolute", bottom: -6, left: "50%", transform: "translateX(-50%) rotate(45deg)", width: 11, height: 11, background: "#1c2d21", borderRight: "1px solid rgba(52,201,122,0.35)", borderBottom: "1px solid rgba(52,201,122,0.35)" }} />
+      {loading && (
+        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878" }}>
+          <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif", fontSize: 36, color: "#b8946a", marginBottom: 16 }}>بِسْمِ ٱللَّهِ</div>
+          <div style={{ fontSize: 14, fontFamily: "Inter, sans-serif" }}>Loading {surahName}...</div>
         </div>
       )}
 
-      {/* ── Content ── */}
-      <div style={{ flex: 1, overflowY: "auto" }}>
+      {error && (
+        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878", fontSize: 14 }}>
+          Could not load surah. Check your connection and try again.
+        </div>
+      )}
 
-        {loading && (
-          <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878" }}>
-            <div style={{ fontFamily: "Amiri, serif", fontSize: 36, color: "#b8946a", marginBottom: 16 }}>بِسْمِ ٱللَّهِ</div>
-            <div style={{ fontSize: 14 }}>Loading {surahName}…</div>
-          </div>
-        )}
-
-        {error && (
-          <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878", fontSize: 14 }}>
-            Could not load surah. Check your connection and try again.
-          </div>
-        )}
-
-        {!loading && !error && (
-          <>
-            {/* Bismillah */}
-            {num !== 9 && (
-              <div style={{ textAlign: "center", padding: "28px 20px 8px" }}>
-                <div style={{ fontFamily: "Amiri, serif", fontSize: 30, color: "#b8946a", lineHeight: 1.8 }} dir="rtl">
-                  بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-                </div>
-                <div style={{ width: 60, height: 1, background: "rgba(184,148,106,0.3)", margin: "14px auto 0" }} />
+      {!loading && !error && (
+        <>
+          {/* Bismillah */}
+          {num !== 9 && (
+            <div style={{ textAlign: "center", padding: "28px 20px 16px" }}>
+              <div style={{
+                fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif",
+                fontSize: 28,
+                color: "#b8946a",
+                lineHeight: 2,
+                direction: "rtl",
+              }}>
+                بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
               </div>
-            )}
-
-            {/* ── Flowing Arabic block ── */}
-            <div style={{ padding: "20px 20px 8px", direction: "rtl" }}>
-              <p
-                style={{
-                  fontFamily: "Amiri, serif",
-                  fontSize: 28,
-                  lineHeight: 2.4,
-                  color: "#eaf4ee",
-                  textAlign: "right",
-                  wordSpacing: 4,
-                  margin: 0,
-                }}
-                dir="rtl"
-                lang="ar"
-              >
-                {verses.map((v) => {
-                  const words = v.words?.filter((w) => w.char_type_name === "word") ?? [];
-                  const hasWords = words.length > 0;
-                  return (
-                    <span key={v.id}>
-                      {hasWords
-                        ? words.map((word) => (
-                            <span
-                              key={word.id}
-                              onClick={(e) => handleWordTap(e, word)}
-                              style={{
-                                cursor: word.translation?.text ? "pointer" : "default",
-                                padding: "0 2px",
-                                borderRadius: 4,
-                                background: tooltip?.wordId === word.id ? "rgba(52,201,122,0.2)" : "transparent",
-                                color: activeAyah === v.verse_number ? "#34c97a" : "#eaf4ee",
-                                transition: "color 0.2s",
-                              }}
-                              title={word.translation?.text}
-                            >
-                              {word.text_uthmani}
-                            </span>
-                          ))
-                        : <span style={{ color: activeAyah === v.verse_number ? "#34c97a" : "#eaf4ee" }}>{v.text_uthmani}</span>
-                      }
-                      {/* Inline verse number marker */}
-                      <span
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          background: ayahsRead.has(v.verse_number) ? "rgba(52,201,122,0.25)" : "rgba(184,148,106,0.15)",
-                          border: `1px solid ${ayahsRead.has(v.verse_number) ? "rgba(52,201,122,0.5)" : "rgba(184,148,106,0.4)"}`,
-                          fontSize: 11,
-                          fontFamily: "system-ui, sans-serif",
-                          color: ayahsRead.has(v.verse_number) ? "#34c97a" : "#b8946a",
-                          margin: "0 6px",
-                          verticalAlign: "middle",
-                          cursor: "pointer",
-                          flexShrink: 0,
-                          direction: "ltr",
-                        }}
-                        onClick={(e) => { e.stopPropagation(); setActiveAyah(activeAyah === v.verse_number ? null : v.verse_number); }}
-                        data-ayah={v.verse_number}
-                      >
-                        {v.verse_number}
-                      </span>
-                    </span>
-                  );
-                })}
-              </p>
+              <div style={{ width: 60, height: 1, background: "rgba(184,148,106,0.3)", margin: "12px auto 0" }} />
             </div>
+          )}
 
-            {/* ── Translations section ── */}
-            <div style={{ margin: "24px 0 0" }}>
-              <div style={{ height: 1, background: "rgba(52,201,122,0.1)", margin: "0 20px 24px" }} />
+          {/* Play All / Stop button */}
+          <div style={{ padding: "0 20px 16px", display: "flex", justifyContent: "flex-end" }}>
+            <button
+              onClick={() => handlePlayAll(playingAyah && isSequential ? playingAyah : 1)}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "8px 14px", borderRadius: 20,
+                background: isSequential ? "rgba(184,148,106,0.15)" : "rgba(52,201,122,0.12)",
+                border: `1px solid ${isSequential ? "rgba(184,148,106,0.4)" : "rgba(52,201,122,0.3)"}`,
+                color: isSequential ? "#b8946a" : "#34c97a",
+                fontSize: 12, fontWeight: 600, cursor: "pointer",
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              {isSequential ? <Pause size={13} /> : <SkipForward size={13} />}
+              {isSequential ? "Stop" : "Play All"}
+            </button>
+          </div>
 
-              {verses.map((v) => {
-                const translation = v.translations?.[0]?.text?.replace(/<[^>]+>/g, "") ?? "";
-                const isActive = activeAyah === v.verse_number;
-                const isBookmarked = bookmarks.has(v.verse_number);
-                const isPlaying = playingAyah === v.verse_number;
-                const isRead = ayahsRead.has(v.verse_number);
+          {/* Ayah list */}
+          <div>
+            {verses.map((v) => {
+              const translation = v.translations?.[0]?.text?.replace(/<[^>]+>/g, "").replace(/\[\d+\]/g, "").trim() ?? "";
+              const isPlaying = playingAyah === v.verse_number;
+              const isBookmarked = bookmarks.has(v.verse_number);
+              const isRead = ayahsRead.has(v.verse_number);
 
-                return (
-                  <div
-                    key={v.id}
-                    data-ayah={v.verse_number}
-                    style={{
-                      padding: "14px 20px",
-                      borderBottom: "0.5px solid rgba(52,201,122,0.06)",
-                      background: isActive ? "rgba(52,201,122,0.04)" : "transparent",
-                      transition: "background 0.2s",
-                    }}
-                    onClick={(e) => { e.stopPropagation(); setActiveAyah(isActive ? null : v.verse_number); }}
-                  >
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                      {/* Ayah number badge */}
-                      <div style={{
-                        width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        background: isRead ? "rgba(52,201,122,0.2)" : "rgba(184,148,106,0.1)",
-                        border: `1px solid ${isRead ? "rgba(52,201,122,0.4)" : "rgba(184,148,106,0.3)"}`,
-                        fontSize: 11, fontWeight: 700,
-                        color: isRead ? "#34c97a" : "#b8946a",
-                        marginTop: 2,
-                      }}>
-                        {v.verse_number}
-                      </div>
-
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        {/* Translation text */}
-                        {translation && (
-                          <p style={{
-                            fontSize: 14, lineHeight: 1.75,
-                            color: isActive ? "#eaf4ee" : "#a8c8b0",
-                            margin: 0,
-                            transition: "color 0.2s",
-                          }}>
-                            {translation}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Controls */}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 }}>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); playAyah(v.verse_number); }}
-                          style={{
-                            width: 30, height: 30, borderRadius: "50%", border: "none", cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            background: isPlaying ? "#34c97a" : "rgba(52,201,122,0.1)",
-                            color: isPlaying ? "#fff" : "#6a9878",
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          {isPlaying ? <Pause size={13} /> : <Play size={13} />}
-                        </button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); toggleBookmark(v.verse_number); }}
-                          style={{
-                            width: 30, height: 30, borderRadius: "50%", border: "none", cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            background: isBookmarked ? "rgba(184,148,106,0.15)" : "rgba(52,201,122,0.08)",
-                            color: isBookmarked ? "#b8946a" : "#6a9878",
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          <Bookmark size={13} style={{ fill: isBookmarked ? "#b8946a" : "transparent" }} />
-                        </button>
-                      </div>
+              return (
+                <div key={v.id} data-ayah={v.verse_number}
+                  style={{
+                    padding: "20px 20px",
+                    borderBottom: "0.5px solid rgba(52,201,122,0.08)",
+                    background: isPlaying ? "rgba(52,201,122,0.05)" : "transparent",
+                    transition: "background 0.3s",
+                  }}
+                >
+                  {/* Arabic text */}
+                  <div style={{ marginBottom: 14, display: "flex", alignItems: "flex-start", justifyContent: "flex-end", gap: 10 }}>
+                    {/* Verse number badge */}
+                    <div style={{
+                      width: 30, height: 30, borderRadius: "50%", flexShrink: 0, marginTop: 4,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      background: isRead ? "rgba(52,201,122,0.2)" : "rgba(184,148,106,0.12)",
+                      border: `1px solid ${isRead ? "rgba(52,201,122,0.5)" : "rgba(184,148,106,0.35)"}`,
+                      fontSize: 11, fontWeight: 700,
+                      color: isRead ? "#34c97a" : "#b8946a",
+                      fontFamily: "Inter, sans-serif",
+                    }}>
+                      {v.verse_number}
+                    </div>
+                    {/* Arabic */}
+                    <div
+                      dir="rtl"
+                      lang="ar"
+                      style={{
+                        flex: 1,
+                        fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif",
+                        fontSize: 26,
+                        lineHeight: 2.2,
+                        color: isPlaying ? "#34c97a" : "#f0ede8",
+                        textAlign: "right",
+                        transition: "color 0.3s",
+                        wordSpacing: 6,
+                      }}
+                    >
+                      {v.text_uthmani}
                     </div>
                   </div>
-                );
-              })}
-            </div>
 
-            {/* ── End of Surah footer ── */}
-            <div style={{ textAlign: "center", padding: "32px 20px 20px", color: "#6a9878" }}>
-              <div style={{ fontFamily: "Amiri, serif", fontSize: 20, color: "#b8946a", marginBottom: 8 }}>
-                ۝ صَدَقَ ٱللَّهُ ٱلْعَظِيمُ
-              </div>
-              <div style={{ fontSize: 12, marginBottom: 24 }}>End of {surahName}</div>
-              <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-                {num > 1 && (
-                  <button
-                    onClick={() => navigate(`/quran/read/${num - 1}`)}
-                    style={{ padding: "10px 18px", background: "rgba(52,201,122,0.1)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
-                  >
-                    ← {SURAH_NAMES[num - 1] ?? `Surah ${num - 1}`}
-                  </button>
-                )}
-                {num < 114 && (
-                  <button
-                    onClick={() => navigate(`/quran/read/${num + 1}`)}
-                    style={{ padding: "10px 18px", background: "rgba(52,201,122,0.12)", border: "1px solid rgba(52,201,122,0.25)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "inherit", fontWeight: 600 }}
-                  >
-                    {SURAH_NAMES[num + 1] ?? `Surah ${num + 1}`} →
-                  </button>
-                )}
-              </div>
+                  {/* Translation + controls row */}
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    {/* Translation */}
+                    <div style={{ flex: 1 }}>
+                      {translation ? (
+                        <p style={{
+                          margin: 0,
+                          fontSize: 13,
+                          lineHeight: 1.7,
+                          color: "#a8c8b0",
+                          fontFamily: "Inter, sans-serif",
+                        }}>
+                          {translation}
+                        </p>
+                      ) : null}
+                    </div>
+                    {/* Controls */}
+                    <div style={{ display: "flex", gap: 6, flexShrink: 0, alignItems: "center" }}>
+                      <button
+                        onClick={() => handlePlayButton(v.verse_number)}
+                        title={isPlaying ? "Pause" : "Play this ayah"}
+                        style={{
+                          width: 32, height: 32, borderRadius: "50%", border: "none", cursor: "pointer",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          background: isPlaying ? "#34c97a" : "rgba(52,201,122,0.12)",
+                          color: isPlaying ? "#fff" : "#6a9878",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+                      </button>
+                      <button
+                        onClick={() => toggleBookmark(v.verse_number)}
+                        title={isBookmarked ? "Remove bookmark" : "Bookmark"}
+                        style={{
+                          width: 32, height: 32, borderRadius: "50%", border: "none", cursor: "pointer",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          background: isBookmarked ? "rgba(184,148,106,0.15)" : "rgba(52,201,122,0.08)",
+                          color: isBookmarked ? "#b8946a" : "#6a9878",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <Bookmark size={13} style={{ fill: isBookmarked ? "#b8946a" : "transparent" }} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* End of Surah */}
+          <div style={{ textAlign: "center", padding: "32px 20px 20px", color: "#6a9878" }}>
+            <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', serif", fontSize: 20, color: "#b8946a", marginBottom: 8 }}>
+              صَدَقَ ٱللَّهُ ٱلْعَظِيمُ
             </div>
-          </>
-        )}
-      </div>
+            <div style={{ fontSize: 12, marginBottom: 24, fontFamily: "Inter, sans-serif" }}>End of {surahName}</div>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+              {num > 1 && (
+                <button onClick={() => { stopAll(); navigate(`/quran/read/${num - 1}`); }}
+                  style={{ padding: "10px 18px", background: "rgba(52,201,122,0.1)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>
+                  &larr; {SURAH_NAMES[num - 1] ?? `Surah ${num - 1}`}
+                </button>
+              )}
+              {num < 114 && (
+                <button onClick={() => { stopAll(); navigate(`/quran/read/${num + 1}`); }}
+                  style={{ padding: "10px 18px", background: "rgba(52,201,122,0.12)", border: "1px solid rgba(52,201,122,0.25)", borderRadius: 12, color: "#34c97a", fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif", fontWeight: 600 }}>
+                  {SURAH_NAMES[num + 1] ?? `Surah ${num + 1}`} &rarr;
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
