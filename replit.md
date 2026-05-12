@@ -4,11 +4,11 @@ An AI-first Islamic lifestyle PWA. "Grow Spiritually Every Day." A premium compa
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080, proxied at `/api`)
-- `pnpm --filter @workspace/noor run dev` — run the frontend (proxied at `/`)
+- `pnpm --filter @workspace/api-server run dev` — API server (port 8080, proxied at `/api`)
+- `pnpm --filter @workspace/noor run dev` — frontend (proxied at `/`)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- Required env: `JWT_SECRET` — JWT signing secret
+- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks + Zod schemas from OpenAPI spec
+- Required env: `JWT_SECRET`, `SESSION_SECRET`, `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_EMAIL`
 
 ## Stack
 
@@ -16,8 +16,9 @@ An AI-first Islamic lifestyle PWA. "Grow Spiritually Every Day." A premium compa
 - Frontend: React + Vite (artifact `noor` at `/`)
 - API: Express 5 (artifact `api-server` at `/api`)
 - DB: `@replit/database` (key-value store, NOT PostgreSQL)
-- Auth: JWT (jsonwebtoken) + bcryptjs
+- Auth: JWT (jsonwebtoken) + bcryptjs; token key: `tazki_token` in localStorage
 - AI: Anthropic Claude via Replit AI Integrations proxy
+- Push: `web-push` with VAPID keys
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
@@ -29,341 +30,77 @@ An AI-first Islamic lifestyle PWA. "Grow Spiritually Every Day." A premium compa
 - `lib/api-zod/src/generated/api.ts` — generated Zod schemas
 - `artifacts/api-server/src/lib/db.ts` — all @replit/database helpers
 - `artifacts/api-server/src/lib/jwt.ts` — JWT sign/verify
-- `artifacts/api-server/src/middleware/auth.ts` — requireAuth middleware
+- `artifacts/api-server/src/middleware/auth.ts` — requireAuth + optionalAuth middleware
 - `artifacts/api-server/src/routes/` — all Express route handlers
 - `artifacts/api-server/src/seed/` — seed data (sessions, duas, names, Names of Allah, hadiths)
 - `artifacts/noor/src/contexts/AuthContext.tsx` — JWT auth context + useAuth hook
 - `artifacts/noor/src/pages/` — all frontend pages
 - `artifacts/noor/src/components/` — BottomNav, ProtectedRoute, shared components
+- `artifacts/noor/src/hooks/useNotifications.ts` — push notification hook
 
 ## Architecture decisions
 
-- **@replit/database instead of PostgreSQL**: Key-value store, no migrations needed. `db.get()` returns `OkResult | ErrResult` — always unwrap with `result.ok ? result.value : null`.
+- **@replit/database**: Key-value store, no migrations. `db.get()` returns `OkResult | ErrResult` — always unwrap with `result.ok ? result.value : null`.
 - **Contract-first API**: OpenAPI spec → Orval codegen → React Query hooks + Zod schemas. Never handwrite API fetch calls on the frontend.
-- **JWT in localStorage**: Token stored as `tazki_token` (migrates from legacy `deen_token` automatically). Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
-- **Seed on startup**: API server seeds all content (sessions, duas, names, hadiths) on first boot if DB is empty.
+- **JWT in localStorage**: `tazki_token` (auto-migrates from legacy `deen_token`). Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it on every request.
+- **Seed on startup**: API server seeds all content on first boot if DB is empty.
 - **AI rate limit**: 20 AI requests per user per day, tracked in `aiUsage:{userId}:{date}`.
-- **External Quran data**: Verses fetched from `api.qurancdn.com`, audio from `everyayah.com` (Alafasy). No server-side caching needed.
-- **External APIs**: Overpass API (mosque finder), metals.live (gold price), aladhan.com (Hijri dates + prayer times).
+- **Quran data**: Arabic + translation from `api.alquran.cloud`; audio from `everyayah.com` (Alafasy, per-ayah SSSAAA.mp3 format).
+- **External APIs**: Overpass API (mosque finder), metals.live (gold price), aladhan.com (Hijri + prayer times).
+- **Push notifications**: VAPID keys in env vars; prayer scheduler runs every 60s; per-user subscriptions at `push:{userId}`.
+- **Quran reader audio**: Single persistent `Audio` element, src swapped per ayah — required for iOS Safari autoplay continuity.
 
-## Product — Part 1 (complete)
+## Product (complete)
 
-- Prayer Times: Live prayer times via aladhan.com API, salah logging with khushoo rating
-- Streak Tracker: Daily streaks, weekly goals, progress rings
-- Sessions: 25 guided audio sessions across AZKAR, QURAN, DHIKR, SLEEP, DUA60, SALAH categories
-- Duas Library: curated duas with Arabic, transliteration, meaning, category filtering, favorites
-- Baby Names: 40 Islamic names with Arabic, meaning, origin, prophet connection, gender filter
-- Names of Allah: All 99 names with Arabic, transliteration, meaning, daily rotation
-- Daily Content: Name of Allah + Hadith + Dua of the day (rotates daily by day-of-year)
-- Tasbih: Digital dhikr counter
-- AI Companion: MyTazki AI powered by Claude, 20 req/day limit, Islamic adab guidelines
-- Onboarding: 5-step wizard (madhab, city/GPS, goals, language, reminder time)
+**Part 1:** Prayer Times, Streak Tracker, 35 Sessions (7 categories), Duas Library (110 duas), Baby Names (1000), 99 Names of Allah, Daily Content, Tasbih, AI Companion, Onboarding
 
-## Product — Part 2 (complete)
+**Part 2:** Quran Reader (`/quran/read/:number`), 99 Names (`/99-names`), Qibla Compass, Masjid Finder (Leaflet map + GPS), Zakat Calculator, Islamic Calendar, Qurbani Guide, Farz Guide, Sadqa Guide, Wudu Guide, Salah Guide, Enhanced Duas/Names/Tasbih, Landing Page
 
-- **Quran Reader** (`/quran`, `/quran/:number`): All 114 surahs, verse-by-verse with Arabic + English translation, ayah audio playback (Alafasy), bookmarks, continue reading
-- **99 Names of Allah** (`/99-names`): Full list with daily featured name, search, detail modal
-- **Qibla Compass** (`/qibla`): Mathematical bearing from GPS + SVG animated compass, distance to Kaaba
-- **Masjid Finder** (`/masjid-finder`): Overpass API query, OSM iframe map, distance sort, save favourite
-- **Zakat Calculator** (`/zakat-calculator`): Gold/silver/cash/debt inputs, live gold price (metals.live), nisab check, 2.5% calculation
-- **Islamic Calendar** (`/islamic-calendar`): Hijri date via aladhan.com, Gregorian grid view, all major Islamic events
-- **Qurbani Guide** (`/qurbani-guide`): Accordion sections + duas with Arabic, countdown to Eid ul Adha
-- **Farz Guide** (`/farz-guide`): 8 accordion sections (Five Pillars, Salah, Wudu/Ghusl, 40 Sunnahs, Janazah, Aqiqah, Nikah, Halal/Haram) with keyword search
-- **Sadqa Guide** (`/sadqa-guide`): Sadqa Jariyah, Nafilah, Fitrana calculator, daily suggestion widget
-- **Wudu Guide** (`/wudu-guide`): 3 tabs (Wudu 11 steps / Ghusl / Tayammum), Read + Audio (step-by-step) modes, Arabic duas per step
-- **Salah Guide** (`/salah-guide`): 5 prayers selector, full rakaat walkthrough with Arabic text, Read + Audio guide modes
-- **Enhanced Duas** (`/duas`): 8 mood/emotion chips filter, detail modal, WhatsApp share
-- **Enhanced Names** (`/names`): A-Z letter index, category chips (Quranic/Prophet/Sahaba/Rare/Trending), detail modal, share
-- **Enhanced Tasbih** (`/tasbih`): SVG circular progress ring, 33 animated bead ring, vibration on completion, correct targets (34 for Allahu Akbar), session total
-- **Home Tools Grid**: 12-tile Islamic Tools grid on homepage linking to all tools
-- **Landing Page** (`/`): Public marketing page with Arabic ticker, hero, feature grid; auto-redirects logged-in users to `/home`
+**Part 3:** Push Notifications, Dashboard Bell/Search/Menu panels, Homepage SEO/GEO overhaul, Entity/trust pages (12), GEO landing pages (6), Start-here funnels (5)
 
-## New API routes (Part 2)
+## API routes
 
-- `GET /api/names-of-allah` — all 99 Names from DB
-- `GET /api/masjid/nearby?lat=&lng=` — Overpass proxy, returns sorted mosque list
-- `GET /api/masjid/favourite` + `POST /api/masjid/favourite` — per-user favourite masjid (auth required)
-- `GET /api/zakat/gold-price` — metals.live proxy, INR/gram conversion
-- `GET /api/prayer/hijri` — today's Hijri date (public, no auth required)
+```
+GET  /api/sessions              GET  /api/sessions/:id
+GET  /api/duas                  POST /api/duas/:id/favorite
+GET  /api/names                 GET  /api/names-of-allah
+GET  /api/prayer/times          GET  /api/prayer/hijri
+GET  /api/streak                POST /api/streak/checkin
+GET  /api/masjid/nearby         GET|POST /api/masjid/favourite
+GET  /api/zakat/gold-price
+POST /api/notifications/subscribe    DELETE /api/notifications/subscribe
+GET  /api/notifications/status       PATCH  /api/notifications/preferences
+POST /api/notifications/test         GET    /api/notifications/vapid-public-key
+POST /api/admin/duas/reseed     POST /api/admin/names/reseed
+POST /api/admin/sessions/patch-audio
+```
 
 ## Routes (all frontend pages)
 
 ```
-/                 /login           /register          /onboarding
-/home             /prayer-times    /duas              /names
-/player/:id       /tasbih          /profile           /quran
-/quran/read/:number /mood           /99-names          /qibla
-/masjid-finder    /zakat-calculator  /islamic-calendar  /qurbani-guide
-/farz-guide       /sadqa-guide     /wudu-guide        /salah-guide
-/journal          /rooms           /room/:code        /growth
-/halaqah          /halaqah/:code   /halaqah/:code/admin
-/names/trending   /names/forbidden /gift/:token
-/subscribe        /download        /admin
+/                   /login            /register         /onboarding
+/home               /prayer-times     /duas             /names
+/player/:id         /tasbih           /profile          /quran
+/quran/read/:number /mood             /99-names         /qibla
+/masjid-finder      /zakat-calculator /islamic-calendar /qurbani-guide
+/farz-guide         /sadqa-guide      /wudu-guide       /salah-guide
+/journal            /rooms            /room/:code       /growth
+/halaqah            /halaqah/:code    /halaqah/:code/admin
+/names/trending     /names/forbidden  /gift/:token
+/subscribe          /download         /admin
 ```
 
 ## Design tokens
 
 ```css
---bg: #001a00  --surface: #002800  --card: #003800
---green: #00a550  --gold: #ffd700  --text: #e8f5e8
---muted: #4a7a4a  --border: rgba(0,165,80,0.18)
+--bg: #0d1411   --surface: #152019   --card: #1c2d21   --faint: #2a3830
+--green: #34c97a   --gold: #b8946a   --text: #eaf4ee   --muted: #6a9878
+--border: rgba(52,201,122,0.18)
 ```
-Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav)
+Fonts: DM Sans (headings) | Inter (body/nav) | Amiri (Arabic, always `dir="rtl"`)
 
 ## User preferences
 
-- **Always update `replit.md` and push to GitHub after every change or implementation.** This is a standing rule for every session.
+- **Always update `replit.md` and push to GitHub after every change.** Standing rule every session.
+- **Changelog lives in `CHANGELOG.md`** — keep replit.md lean.
 - GitHub repo: `https://github.com/InoxxAIsource/noor` (main branch)
-
-## Changelog
-
-### 2026-05-12 — Full rebrand DeenApp → MyTazki
-- **Brand name**: All UI, SEO, AI prompts, manifest, meta tags, room codes updated from DeenApp → MyTazki / MYTAZKI
-- **Domain**: `deenapp.app` → `mytazki.com` across all canonical URLs, og:url, sitemap, JSON-LD, SEO pages, robots.txt
-- **Auth token**: `deen_token` → `tazki_token` in localStorage; AuthContext migrates old token automatically on first load
-- **Room codes**: `DEEN-XXXX` → `TAZKI-XXXX` format
-- **New color palette** (premium redesign): `--bg:#0d1411` · `--surface:#152019` · `--card:#1c2d21` · `--green:#34c97a` · `--gold:#b8946a` · `--text:#eaf4ee` · `--muted:#6a9878` · `--faint:#2a3830`
-- **Typography**: DM Sans added as primary font (bold, modern) alongside Inter — replaces Cinzel for headings
-- **Logo**: `DeenAppLogo.tsx` rewritten — clean crescent+star icon mark on dark bg, "My**Tazki**" wordmark in Inter 800, emerald "My" prefix
-- **Favicon**: Updated SVG crescent+star in emerald (#34c97a) on dark charcoal background
-- **Manifest**: Updated PWA name/short_name/description/theme_color (#34c97a)
-- **Landing page**: Full Headspace-inspired premium redesign — rotating Quranic Arabic verses, "Grow Spiritually Every Day." hero, feature grid, session preview, AI companion demo, Quranic bottom CTA
-- **SEO shared.ts**: All templates updated — nav, footer, CTA block, breadcrumbs, appRedirectBar reads both tazki_token and deen_token
-- **All SEO pages**: landing.ts, comparison.ts, blog-seo.ts, duas-seo.ts, names-seo.ts, quran-seo.ts, prayer-times-seo.ts, tools-seo.ts, sitemap.ts all rebranded
-- **index.html**: Full MyTazki SEO rebrand — title, meta description, OG tags, JSON-LD, canonical URL, keywords, Google Fonts (DM Sans + Inter + Amiri)
-- **Typecheck**: Clean across all packages
-
-### 2026-05-12 — Masjid Finder full-screen map + real GPS location
-- **Full-screen map**: `MasjidFinderPage` rebuilt with `position:fixed;inset:0` layout — map fills entire viewport, header floats as an overlay, bottom sheet slides up with mosque list
-- **Real GPS location**: Added `enableHighAccuracy:true, timeout:15000, maximumAge:0` to `getCurrentPosition` — now requests true GPS fix, not coarse IP-based position
-- **Error handling**: Specific messages for permission denied (code 1), position unavailable (code 2), timeout (code 3) with "Try Again" button
-- **"Locate Me" button**: Persistent button in header to re-request GPS at any time; "Centre on me" FAB (Navigation icon) re-centres map on user position
-- **Bottom sheet**: Mosque list in a draggable-feel bottom panel (opens automatically when mosques load, tap handle to toggle), mosque markers show NEAREST badge
-- **Map init**: Map loads immediately on mount (world view) then flies to user location once GPS resolves — no blank waiting state
-- **Typecheck**: Clean
-
-### 2026-05-12 — Masjid Finder rebuilt + Baby Names expanded to 1000
-
-#### Masjid Finder — critical bug fix + interactive map
-- **Root cause**: Overpass API query used `"religion"="muslim"` (incorrect tag) — all mosques tagged as `"religion"="islam"` in OpenStreetMap, returning 0 results every time
-- **Fix**: Query changed to `"religion"="islam"` + upgraded from `node` to `nwr` (node/way/relation) + `out center tags` to capture mosque buildings and complexes, not just nodes
-- **Coordinates**: Updated element extraction to use `el.lat ?? el.center?.lat` for ways/relations (which have `el.center.lat` not `el.lat`)
-- **Interactive Leaflet map**: Replaced static OSM iframe with full `leaflet` interactive map (already installed: `leaflet`, `@types/leaflet`) — shows user position (green dot), mosque markers (🕌 gold pin), popups with name/distance/directions on click, `flyTo` animation on list item click
-- **UI rebuilt**: Filter chips (All/Sunni/Shia/Jama Masjid), favourite star persisted to localStorage + API, nearest marker opens popup automatically, Google Maps fallback link, refresh button, empty-state links
-- **Typecheck**: Clean across both packages
-
-#### Baby Names expanded 500 → 1000
-- **500 new names added**: Boys rank 251–500 (250 names) + Girls rank 251–500 (250 names)
-- **Origins**: Arabic, Persian, Turkish, Urdu, Malay — all authentic Islamic names with full field data (Arabic script, Urdu, meaning, origin, Quran reference where applicable, Prophet connection)
-- **Notable additions**: Hamzah, Uthman, Salman, Bilal, Junayd, Rayyan, Anas, Maaz, Owais (boys); Zahra, Laila, Isra, Taqwa, Kausar, Malaak, Sidra, Haneen, Yara (girls)
-- **Reseed applied**: `POST /api/admin/names/reseed` — confirmed 1000 names live in DB
-- **Typecheck**: Clean
-
-### 2026-05-12 — SEO improvements (Lighthouse: page blocked from indexing)
-- **Root cause**: Lighthouse ran on the Replit dev/`.replit.app` URL — Replit intentionally adds `X-Robots-Tag: noindex` to dev domains; `deenapp.app` custom domain has no such header
-- **Sitemap domain fixed**: `noorapp.com` → `deenapp.app` in `sitemap.ts` BASE URL and Sitemap directive in `robots.txt`
-- **Canonical tag added**: `<link rel="canonical" href="https://deenapp.app/">` in `index.html`
-- **og:url + og:image added**: full Open Graph set now complete with `https://deenapp.app/og-image.png`
-- **JSON-LD structured data**: `MobileApplication` schema + `Organization` schema injected into `index.html`
-- **Keywords meta tag added**: targets key queries (Islamic prayer app, salah times, namaz times, Quran reader, etc.)
-- **`lang` + `dir` attributes**: `<html lang="en" dir="ltr">` now explicit
-- **robots meta expanded**: `max-snippet:-1, max-image-preview:large` added for richer Google results
-- **Sitemap link in `<head>`**: `<link rel="sitemap">` tag added
-- **Typecheck**: Clean across all packages
-
-### 2026-05-12 — DeenApp rebrand: new logo + favicon (removed Noor/نور)
-- **Logo**: Created `DeenAppLogo.tsx` reusable component — dark green rounded-square icon with gold crescent moon + 5-pointed star, gradient "DEENAPP" wordmark in Cinzel, gold drop-shadow glow
-- **Favicon**: Replaced red dot (`#FF3C00`) in `public/favicon.svg` with the crescent+star icon on dark green background — visible in browser tab and bookmark bar
-- **Noor removed**: Replaced Arabic `نور` headings in LoginPage, RegisterPage, GiftPage with the new `DeenAppLogo` component
-- **An-Nur (Surah 24)**: Left `النور` in QuranPage intact — it is the name of a Quran chapter, not app branding
-
-### 2026-05-12 — Islamic Tools grid restored on HomePage
-- **Root cause**: The 12-tile Islamic Tools grid was missing from the HomePage — Masjid Finder, Qibla, Zakat, Calendar, and all other tools were unreachable from home
-- **Fix**: Added 3-column tools grid (Section 11) between Quick Tasbih and Healing Sessions, covering all 12 tools: Quran, Qibla, Masjid Finder, Zakat, Calendar, 99 Names, Farz Guide, Wudu Guide, Salah Guide, Sadqa, Qurbani, Baby Names
-- **Typecheck**: Clean
-
-### 2026-05-12 — Duas library expanded (26 → 110 across all 20 categories)
-- **Root cause**: Only 26 duas in DB; categories Food, Anxiety, Grief, Work, Study, Marriage, Children had zero entries
-- **Fix**: Rewrote `seed/duas.ts` with 110 authentic duas from Quran and Hadith covering all 20 UI categories
-- **Coverage**: ~5-6 duas per category: Morning, Evening, Protection, Forgiveness, Salah, Daily Life, Sleep, Travel, Hardship, Gratitude, Family, Quran, Food, Anxiety, Grief, Work, Study, Marriage, Children
-- **Admin endpoint**: `POST /api/admin/duas/reseed` — force-replaces all duas from seed without restarting
-- **Typecheck**: Clean across all packages
-
-### 2026-05-12 — HEALING category + 10 new sessions + player enhancements
-- **10 new HEALING sessions** added: Healing Through Sujood, Dua for Overthinking, Surah Ad-Duha Reflection, Trusting Allah in Hard Times, Slowing Down in Salah, Sleep with Ayatul Kursi, Letting Go with Tawakkul, Tahajjud Companion, Rizq Anxiety Session, Finding Peace After Isha
-- **Session total: 35** (was 25) across 7 categories: AZKAR, QURAN, DHIKR, SLEEP, DUA60, SALAH, HEALING
-- **All 35 sessions have Alafasy audio** — patch-audio endpoint extended to cover all new titles
-- **Admin endpoint**: `POST /api/admin/sessions/add-healing` — non-destructive append (duplicate-safe by title)
-- **Player enhancements**: Arabic text glow pulse (`arabicPulse` keyframe), play button breathing animation while playing (`breathe` keyframe), smoother progress bar with CSS transitions, fade-in-up entrance for scripture block, ambient gold radial backdrop behind Arabic
-- **Homepage healing section**: `Sparkles` icon, Ayat 26:80 in Amiri as header, 2 featured HEALING session cards with dark emerald gradient + gold border, tappable to player
-- **Design preserved**: same emerald/gold palette, card radius, spacing, typography — feels like natural evolution not redesign
-
-### 2026-05-11 — Session audio wired up (everyayah.com + Islamic Network CDN)
-- **All 25 sessions** now have `audioUrl` populated — no more "Audio coming soon"
-- **Source**: Sheikh Alafasy recitations from `everyayah.com` (per-ayah) and `cdn.islamic.network` (full surahs)
-- **Mapping**: QURAN sessions → full surah MP3; AZKAR/DHIKR/SLEEP/DUA60/SALAH → referenced Quran verse
-- **Admin endpoint**: `POST /api/admin/sessions/patch-audio` re-applies all mappings without reseeding
-- **Both CDNs verified**: HTTP 200 on both `everyayah.com` and `cdn.islamic.network`
-
-### 2026-05-11 — Session card loading fix
-- **Root cause**: HomePage had hardcoded fallback session cards (`morning-azkar`, `evening-azkar`, etc.) shown while API data loaded. Clicking them sent the player to `/player/morning-azkar` which returned 404.
-- **Fix 1 — HomePage**: Replaced fallback hardcoded sessions with animated skeleton placeholders while sessions load from API. Real session IDs are only used once the API data arrives.
-- **Fix 2 — PlayerPage**: Split the `isLoading || !session` guard into two separate states — proper spinner while loading, clear "Session not found" error screen with back button when 404.
-- **Fix 3 — PlayerPage**: Added `retry: false` to `useGetSession` so React Query doesn't retry 404s 3× (which caused the apparent hang).
-
-### 2026-05-11 — Home, Player, Mood, Growth, Zakat, Masjid overhaul (Prompt 7)
-- **P1 — Home screen**: Fetches sessions from `/api/sessions?limit=4` (live API, no longer hardcoded); fetches prayer times + hijri from backend API; Muharram (month 1) + default hijri banner added alongside Ramadan; prayer card tappable → `/prayer-times`; BottomNav added; paddingBottom: 80
-- **P4 — Player**: 30-second progress autosave interval added (saves `durationListened` while playing); `POST /api/streak/checkin` called on session complete
-- **P5 — Mood engine**: Intensity selection now shows a "Find my dua →" button before triggering the API (two-step: select intensity → confirm → load); loading state full-screen with animated crescent; results use inline design tokens
-- **P6 — Growth**: Already complete from prior session; no changes needed
-- **P7 — Zakat**: API response renamed `pricePerGramINR` → `pricePerGram`, added `nisab` field; `GoldPriceCache` interface updated in `db.ts`; frontend reads new field names; nisab threshold from API used in calculation
-- **P8 — Masjid**: API now returns `mapsUrl` + `distanceKm` per mosque alongside existing `distance`
-- **Typecheck**: All clean (both `@workspace/api-server` and `@workspace/noor`)
-- **API tests**: Sessions 25+, Names 500, Duas public, Prayer times, Hijri, Gold price — all ✅
-
-### 2026-05-11 — Public Routes, 500 Names, Manifest PWA Enhancements
-- **Names expanded**: Seed file rebuilt from 40 → 500 Islamic names (250 boys + 250 girls); fully seeded into DB via `POST /admin/names/reseed` endpoint (now live)
-- **Public routes**: Removed `requireAuth` from `GET /api/duas` and `GET /api/prayer/times`; both are now fully public. Auth is optional — `isFavorite` still populated when token present
-- **optionalAuth middleware**: Added `optionalAuth` function in `artifacts/api-server/src/middleware/auth.ts` for routes that benefit from auth but don't require it
-- **Admin reseed**: Added `POST /admin/names/reseed` endpoint to force-replace all names from seed data without restarting the server
-- **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
-- **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
-
-### 2026-05-12 — Quran reader: Play All sequential playback fix
-- **Root cause**: `useCallback` + `new Audio()` per ayah caused two bugs: (1) stale closure in `onended` meant `playAyahAt` called wrong version after ayah 1-2; (2) iOS Safari autoplay policy blocks `new Audio().play()` for any audio not linked to original user gesture
-- **Fix**: Single persistent `Audio` element created once at mount — only `audio.src` + `audio.load()` + `audio.play()` called per ayah, maintaining iOS autoplay continuity
-- **Ref-based state**: `sequentialRef`, `currentAyahRef`, `numRef`, `playFnRef` — all mutable refs so the single `ended` listener always reads live values without stale closures
-- **Single listener**: `audio.addEventListener("ended", onEnded)` set once in a `[]` useEffect — reliably fires for every ayah in sequence
-- **Fallback**: If `play()` is rejected (page unfocused etc.), sequential mode skips to next ayah after 1s rather than stopping
-- **Typecheck**: Clean
-
-### 2026-05-12 — Quran reader: per-ayah audio + visible Arabic/translation text
-- **Arabic text visible**: Switched from word-by-word rendering (which depended on Amiri font loading correctly) to verse-level `text_uthmani` per ayah — text is now `#f0ede8` on dark background, always visible
-- **Translation visible**: Removed the word-fetch dependency (`words=false` in API call), translation now cleanly strips HTML/footnote tags and renders in `#a8c8b0`
-- **Per-ayah audio**: Each ayah has its own Play button using `everyayah.com/data/Alafasy_128kbps/SSSAAA.mp3` (individual recordings, not a full surah file)
-- **Sequential "Play All" mode**: Top-right button plays from ayah 1 through the end with a 4-second gap between each ayah (like everyayah.com flow) — marks each ayah as read as it plays; tap "Stop" to cancel
-- **Layout per ayah**: Arabic text (large, RTL, full width) + verse number badge on right; English translation + Play/Bookmark controls below — clean card-per-verse layout
-- **Audio cleanup**: Stops playback on surah navigate or component unmount; gap timer cleared properly
-- **Typecheck**: Clean
-
-### 2026-05-12 — Quran reader route fix: /quran/read/:number
-- **Root cause**: `/quran/:number` was intercepted by the API server's SEO route for `/quran/:surahSlug` (slug-based SEO pages are registered on the API server at the `/quran` path prefix)
-- **Fix**: Moved reader route to `/quran/read/:number` — added `/quran/read` to Noor artifact.toml paths so the proxy routes it to the React SPA before the API server catches `/quran`
-- Updated: `App.tsx` route, `QuranPage.tsx` (2 navigate calls), `QuranSurahPage.tsx` (4 navigate calls for prev/next)
-- `/quran` (list page) still goes to API server's SEO listing page for public access; `/quran/read/:number` is the authenticated reader in the React SPA
-- **Typecheck**: Clean
-
-### 2026-05-12 — Quran reader: continuous Mushaf-style flow
-- **Root cause**: Each ayah was rendered as a separate `rounded-2xl border` card — 7 ayahs = 7 boxes instead of one flowing read
-- **Fix**: Rebuilt QuranSurahPage with two-section layout:
-  - **Top section**: All Arabic text flows as ONE continuous paragraph (RTL, Amiri 28px, lineHeight 2.4) — words are individually tappable for meaning; inline circular verse number markers (gold) embedded in the Arabic flow
-  - **Bottom section**: Numbered translations listed cleanly — ayah number badge, translation text, play/bookmark controls per row
-- **Tap verse marker**: Highlights all words of that ayah in emerald in the Arabic flow + highlights translation row
-- **Navigation**: Prev/Next surah buttons in header + end-of-surah footer with neighbour surah names
-- **Surah name map**: All 114 surah names hardcoded for instant display
-- **Word tooltip**: Tap any Arabic word → transliteration + translation bubble (preserved)
-- **Read tracking**: IntersectionObserver on translation rows marks ayahs read as you scroll
-- **Typecheck**: Clean
-
-### 2026-05-12 — Push Notifications: prayer times, duas, hadith, streak
-- **web-push installed** on api-server; VAPID keys generated + stored as env vars (VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_EMAIL)
-- **DB helpers**: `push:{userId}` key stores `PushSubscriptionRecord` (endpoint, keys, city, madhab, 4 preference flags)
-- **Notifications route** (`/api/notifications/`):
-  - `POST /subscribe` (auth) — save subscription, send welcome push
-  - `DELETE /subscribe` (auth) — unsubscribe
-  - `GET /status` (auth) — returns subscribed state + preferences
-  - `PATCH /preferences` (auth) — toggle prayer/dua/hadith/streak independently
-  - `POST /test` (auth) — send a test push to your device
-  - `GET /vapid-public-key` (public) — returns VAPID public key to frontend
-- **Prayer scheduler** (`runNotificationScheduler`): setInterval 60s — fetches aladhan.com prayer times per city/madhab, sends push 5 min before each prayer; sends daily dua reminders at 06:00/12:30/18:00, hadith at 08:00, streak reminder at 21:00; `sentToday` Set prevents duplicates; city cache avoids hammering aladhan.com
-- **Service worker updated**: typed notification categories (prayer/dua/hadith/streak/welcome/test), each with distinct vibrate pattern, requireInteraction, actions; "dismiss" action skips navigation
-- **`useNotifications` hook**: permission request, PushManager subscribe, save to API, expose `subscribed`/`prefs`/`subscribe`/`unsubscribe`/`updatePrefs`/`sendTest`
-- **Bell panel redesigned**: shows live prayer countdown, streak, Name of Allah, hadith; lower section has push enable button (if not subscribed), 4 toggle chips (Prayer/Dua/Hadith/Streak), Send Test + Turn Off buttons
-- **Typecheck**: Clean across both packages
-
-### 2026-05-12 — Dashboard header tabs: Bell, Search, Menu implemented
-- **Bell (🔔) — Notifications panel**: dropdown shows next prayer + countdown, streak status, today's Name of Allah (tappable to /99-names), daily Azkar reminder (tappable to /duas), today's Hadith; dismisses on backdrop tap
-- **Search (🔍) — Full-screen overlay**: autofocused input, live search across sessions (client-side from /api/sessions?limit=100), duas (from /api/duas filtered), and names (from /api/names); Quick Access shortcuts shown when empty (8 common routes); results grouped by category; "Cancel" button closes
-- **Menu (☰) — Slide-in drawer**: right-side drawer (78% width) with 5 sections: Daily Practice, Islamic Tools, Guides, Growth, Account; 24 app routes; hover highlight; user greeting; backdrop tap to dismiss
-- All three panels mutually exclusive (opening one closes others); state variables: showNotifications, showSearch, showMenu, searchQuery, searchResults, allSessions
-- **Typecheck**: Clean
-
-### 2026-05-12 — Em dash removal (site-wide)
-- **Scope**: All user-facing content across 30+ files — SEO pages, seed data (duas, sessions, hadiths, names), manifest.json, index.html, AI routes, mockup components
-- **Replacement**: ` — ` replaced with `, ` throughout; standalone `—` replaced with `-`
-- **Preserved**: Developer-only code comments in routes (// GET /api/...) and app.ts left unchanged
-- **admin.ts logic**: `split("—")` updated to `split("-")` to match new seed data format
-- **Count**: 1,153 em dashes removed across all content files
-- **Typecheck**: Clean across all packages
-
-### 2026-05-12 — Homepage SEO/GEO Transformation (14-step authority overhaul)
-- **H1 fixed**: "AI Islamic Companion for Daily Muslim Growth" — single semantic H1, replaces "Grow Spiritually Every Day"
-- **6 H2 sections added**: Quran Reflections, Daily Azkar & Duas, AI-Powered Growth, Islamic Wellness, Featured Journeys, Start Your Journey — each with crawlable paragraph copy
-- **Internal link engine**: Homepage now distributes authority to /mental-wellness, /salah, /quran-reflections, /islamic-habits, /ai-islamic-tools, /duas, /start-here, /about, /ai-ethics, /editorial-guidelines, /content-verification + 20+ emotional sub-pages
-- **Emotional entry points**: 4 cards (Find Peace in Islam, Reconnect With Allah, Start Praying Again, Build Islamic Habits) linking to funnel pages near hero
-- **Authority hub grid**: 6 semantic hub cards (Mental Wellness, Salah, Quran Reflections, Islamic Habits, AI Tools, Guided Journeys) with descriptions and crawlable links
-- **Guided journeys section**: 4 journey preview cards (7-Day Inner Peace, Reconnect journey, Salah Reset, Tahajjud Transformation) with direct links
-- **AI Companion section**: Expanded copy optimised for "AI Islamic Companion", "AI Muslim growth", "AI Quran reflection" with updated chat demo showing reconnection use case
-- **Trust & Entity block**: 6 trust signal cards linking to /about, /mission, /ai-ethics, /editorial-guidelines, /content-verification, /islamic-guidance-policy
-- **FAQ accordion (5 Q&A)**: What is MyTazki / How does AI work / Can Islam help anxiety / Islamic habits / Is it free — interactive accordion with FAQ schema
-- **SEO footer expanded**: 6 column semantic footer — Wellness, Quran, Journeys, Salah & Habits, Company/Trust, Quick Tools — 36+ crawlable internal links
-- **JSON-LD schema**: Organization, WebSite (with SearchAction), FAQPage, BreadcrumbList — all injected via dangerouslySetInnerHTML
-- **Nav links**: Wellness, Quran, Duas, About — crawlable `<a href>` tags (visible on desktop ≥640px)
-- **All CTAs use `<a href>`** for crawlability (not navigate-only buttons) — Googlebot can follow all links
-- **Typecheck**: Clean
-
-### 2026-05-12 — SEO Phase 3: Entity Authority + Distribution System
-- **12 Entity & Trust pages**: /about, /mission, /our-philosophy, /how-mytazki-works, /contributors, /authors, /editorial-guidelines, /ai-ethics, /trust-and-safety, /islamic-guidance-policy, /content-verification, /how-ai-content-is-reviewed
-- **6 GEO landing pages**: /best-islamic-app-for-anxiety, /best-muslim-habit-app, /ai-islamic-companion, /ai-quran-reflection, /islamic-self-improvement-app, /muslim-wellness-app
-- **5 Start-Here funnel pages**: /start-here, /reconnect-with-allah, /find-peace-in-islam, /build-islamic-habits, /start-praying-again
-- **E-E-A-T signals**: `eeatBar()` component on all pages — author credit, reviewed-by, updated date, Verified Content badge
-- **Schema markup**: Organization, AboutPage, Person, FAQPage, BreadcrumbList JSON-LD on all entity pages
-- **GEO/AI citation blocks**: `quickAnswerBox()` on every page — structured for ChatGPT/Perplexity/Google AI Overviews retrieval
-- **Branded entity language**: "MyTazki AI Islamic Companion", "MyTazki spiritual growth platform" woven throughout all pages
-- **Content relationship graph**: Related articles grid with hub→cluster→expansion internal linking on every page
-- **Comparison tables**: MyTazki vs generic apps on all GEO landing pages
-- **Trust signals**: Islamic guidance policy, content verification 6-step process, correction inbox, editorial review cycle
-- **Sitemap updated**: 23 new Phase 3 URLs — entity pages at 0.8, GEO pages at 0.9, funnels at 0.95
-- **artifact.toml updated**: All 23 Phase 3 paths added to proxy routing
-- **Total crawlable URL count**: ~155+ pages
-- **Typecheck**: Clean across all packages
-
-### 2026-05-12 — SEO Phase 2: Semantic Authority + Internal Linking Engine
-- **52 new SEO pages** across 5 thematic expansions + hub + journey pages
-- **5 Hub pages** (priority 1.0): `/mental-wellness`, `/salah`, `/quran-reflections`, `/islamic-habits`, `/ai-islamic-tools` — pillar pages linking to all cluster pages
-- **5 Journey pages** (priority 0.95): `/7-day-inner-peace-journey`, `/reconnect-with-allah-journey`, `/7-day-salah-reset`, `/morning-barakah-routine`, `/tahajjud-transformation-journey`
-- **13 Wellness expansion pages**: dua-for-loneliness, dua-for-grief, dua-for-sadness, dua-for-healing, emotional-healing-in-islam, islamic-mental-health, islamic-cure-for-burnout, quran-verses-about-patience, quran-verses-about-hope, quran-for-hopelessness, how-to-stop-overthinking-islam, islamic-healing-from-heartbreak, islamic-self-care
-- **7 Salah expansion pages**: tahajjud-prayer-guide, how-to-pray-tahajjud, fajr-prayer-tips, khushu-in-salah, salah-and-mental-health, salah-motivation, night-prayer-benefits
-- **9 Quran expansion pages**: quran-verses-about-mercy, quran-verses-about-healing, quran-verses-about-gratitude, quran-on-patience, surah-baqarah-reflection, surah-inshirah-reflection, quran-for-forgiveness, best-surahs-for-morning, quran-daily-reading-guide
-- **7 Habits expansion pages**: islamic-discipline, gratitude-in-islam, islamic-sleep-routine, islamic-time-management, 30-day-islamic-challenge, evening-azkar-routine, halal-productivity
-- **6 AI expansion pages**: ai-tafsir, ai-islamic-coach, ai-dua-generator, best-islamic-ai-apps, ai-for-muslims, chatgpt-for-islamic-questions
-- **Reusable components**: `seo-components.ts` — feature grids, step cards, FAQ accordions, CTA boxes, comparison tables
-- **Sitemap updated**: All 52 Phase 2 URLs added with correct priorities
-- **artifact.toml updated**: All 52 Phase 2 paths added to proxy routing so Google can crawl them
-- **trust proxy fix**: `app.set("trust proxy", 1)` — fixes rate limiter ERR_ERL_UNEXPECTED_X_FORWARDED_FOR, prevents Googlebot from being misidentified
-- **Total SEO URL count**: ~130+ crawlable pages across all clusters, hubs, journeys, city pages, surah pages, dua pages, name pages
-
-### 2026-05-11 — Full Audit & DeenApp Rebrand
-- **Rebrand**: All "Noor"/"NOOR" UI references renamed to "DeenApp"/"DEENAPP" across 30+ files (frontend pages, SEO layer, AI system prompts, admin panel, seed data, share text)
-- **Token rename**: `noor_token` → `deen_token` in localStorage across all 16 files (AuthContext, 13 pages, SEO shared.ts)
-- **New route**: `GET /api/prayer/hijri` — was returning 404, now returns today's Hijri date (public endpoint)
-- **AI prompts**: All 4 Claude system prompts updated from "Noor" to "DeenApp"
-- **Landing page**: Public `/` route with hero, feature grid, Arabic bismillah ticker; login/register pages auto-redirect if already logged in + `← Home` back link
-- **Manifest + meta**: `index.html` title, OG tags, apple-mobile-web-app-title, `manifest.json` name/short_name all updated
-- **Room codes**: `NOOR-XXXX` → `DEEN-XXXX` format
-- **SEO files**: `shared.ts`, `landing.ts`, `comparison.ts`, `tools-seo.ts`, `prayer-times-seo.ts`, `quran-seo.ts`, `blog-seo.ts`, `duas-seo.ts` fully rebranded
-
-## Gotchas
-
-- `@replit/database` v3: `db.get()` / `db.list()` return `{ ok, value }` — use the `dbGet`/`dbList` wrappers in `db.ts`, never call `db.get()` directly in routes.
-- `useGetSession(id, options)` — first param is string ID, not an object.
-- All generated query hooks require `queryKey` in options if you pass a custom `query` option — use the exported `getGet*QueryKey()` helpers.
-- Never call services directly by port. Always use `localhost:80/<path>` through the shared proxy.
-- Seed data is written to @replit/database on first boot only (checks if DB is empty first).
-- Part 2 pages (Quran, Qibla, Masjid, Zakat, Calendar, guides) use direct `fetch()` calls to external APIs or `/api/...` — not generated hooks. Generated hooks only exist for Part 1 endpoints.
-- New API routes (namesOfAllah, masjid, zakat, prayer/hijri) are NOT in openapi.yaml — add them before running codegen.
-- localStorage auth token key is `deen_token` (was `noor_token` — changed during rebrand).
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
