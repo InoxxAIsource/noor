@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { MapPin, Navigation, Star, ExternalLink, RefreshCw, AlertCircle } from "lucide-react";
+import { MapPin, Navigation, Star, ExternalLink, RefreshCw, AlertCircle, ChevronUp, ChevronDown, Locate } from "lucide-react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -23,9 +23,11 @@ const MasjidFinderPage: React.FC = () => {
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [mosques, setMosques] = useState<Masjid[]>([]);
   const [loading, setLoading] = useState(false);
+  const [locating, setLocating] = useState(false);
   const [locError, setLocError] = useState("");
   const [filter, setFilter] = useState("All");
   const [selectedMasjid, setSelectedMasjid] = useState<Masjid | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [favourite, setFavourite] = useState<Masjid | null>(() => {
     try { return JSON.parse(localStorage.getItem("favMasjid") ?? "null"); } catch { return null; }
   });
@@ -33,6 +35,7 @@ const MasjidFinderPage: React.FC = () => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<L.Marker[]>([]);
+  const userMarkerRef = useRef<L.Marker | null>(null);
 
   const FILTERS = ["All", "Sunni", "Shia", "Jama Masjid"];
   const filterKeywords: Record<string, string[]> = {
@@ -47,18 +50,15 @@ const MasjidFinderPage: React.FC = () => {
         filterKeywords[filter]?.some(kw => m.name.toLowerCase().includes(kw))
       );
 
-  const initMap = useCallback((lat: number, lng: number, list: Masjid[]) => {
+  const initMap = useCallback((lat: number, lng: number) => {
     if (!mapContainerRef.current) return;
-    if (mapRef.current) {
-      mapRef.current.remove();
-      mapRef.current = null;
-    }
+    if (mapRef.current) return; // already initialised
 
     const map = L.map(mapContainerRef.current, {
       center: [lat, lng],
-      zoom: 14,
+      zoom: 15,
       zoomControl: true,
-      scrollWheelZoom: false,
+      scrollWheelZoom: true,
     });
     mapRef.current = map;
 
@@ -67,85 +67,152 @@ const MasjidFinderPage: React.FC = () => {
       maxZoom: 19,
     }).addTo(map);
 
+    // User location marker
     const userIcon = L.divIcon({
-      html: `<div style="width:14px;height:14px;background:#00a550;border:3px solid white;border-radius:50%;box-shadow:0 0 0 3px rgba(0,165,80,0.3)"></div>`,
-      iconSize: [14, 14],
-      iconAnchor: [7, 7],
+      html: `<div style="width:18px;height:18px;background:#00a550;border:3px solid white;border-radius:50%;box-shadow:0 0 0 6px rgba(0,165,80,0.25)"></div>`,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
       className: "",
     });
-    L.marker([lat, lng], { icon: userIcon })
+    const uMarker = L.marker([lat, lng], { icon: userIcon })
       .addTo(map)
-      .bindPopup("<b style='color:#001a00'>You are here</b>", { maxWidth: 160 });
+      .bindPopup("<b style='color:#001a00;font-size:13px'>📍 You are here</b>", { maxWidth: 160 });
+    userMarkerRef.current = uMarker;
+  }, []);
 
+  const updateMosqueMarkers = useCallback((lat: number, lng: number, list: Masjid[]) => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    // Update user marker
+    if (userMarkerRef.current) {
+      userMarkerRef.current.setLatLng([lat, lng]);
+    }
+
+    // Remove old markers
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
 
     list.forEach((mosque, i) => {
       const mosqueIcon = L.divIcon({
-        html: `<div style="width:32px;height:32px;background:#ffd700;border:2px solid #003800;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.4)"><span style="transform:rotate(45deg);font-size:14px">🕌</span></div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -34],
+        html: `<div style="position:relative;width:36px;height:36px">
+          <div style="width:36px;height:36px;background:#ffd700;border:2.5px solid #003800;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.5);font-size:18px">🕌</div>
+          ${i === 0 ? '<div style="position:absolute;-bottom:4px;left:50%;transform:translateX(-50%);background:#00a550;color:white;font-size:9px;padding:1px 4px;border-radius:3px;white-space:nowrap;font-weight:700">NEAREST</div>' : ""}
+        </div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -20],
         className: "",
       });
 
       const marker = L.marker([mosque.lat, mosque.lng], { icon: mosqueIcon })
         .addTo(map)
         .bindPopup(`
-          <div style="font-family:system-ui;min-width:160px">
-            <b style="color:#001a00;font-size:13px">${mosque.name}</b><br>
-            <span style="color:#4a7a4a;font-size:12px">${mosque.distance} km away</span><br>
+          <div style="font-family:system-ui;min-width:180px;padding:2px 0">
+            <b style="color:#001a00;font-size:13px;display:block;margin-bottom:4px">${mosque.name}</b>
+            <span style="color:#4a7a4a;font-size:12px">📏 ${mosque.distance} km away</span><br>
             <a href="${mosque.mapsUrl || `https://maps.google.com/maps?daddr=${mosque.lat},${mosque.lng}`}" target="_blank" rel="noreferrer"
-               style="color:#00a550;font-size:12px;text-decoration:none;font-weight:600">
-              📍 Get Directions
+               style="display:inline-block;margin-top:6px;color:white;background:#00a550;font-size:11px;padding:4px 10px;border-radius:8px;text-decoration:none;font-weight:600">
+              🧭 Get Directions
             </a>
           </div>
-        `, { maxWidth: 200 });
+        `, { maxWidth: 220 });
 
-      marker.on("click", () => setSelectedMasjid(mosque));
+      marker.on("click", () => {
+        setSelectedMasjid(mosque);
+        setSheetOpen(true);
+      });
       markersRef.current.push(marker);
 
       if (i === 0) {
-        setTimeout(() => marker.openPopup(), 500);
+        setTimeout(() => marker.openPopup(), 600);
       }
     });
 
+    // Fit bounds to show user + mosques
     if (list.length > 0) {
       const bounds = L.latLngBounds([[lat, lng], ...list.map(m => [m.lat, m.lng] as [number, number])]);
-      map.fitBounds(bounds, { padding: [40, 40] });
+      map.fitBounds(bounds, { padding: [60, 60], maxZoom: 15 });
+    } else {
+      map.setView([lat, lng], 15);
     }
   }, []);
 
   const fetchMosques = useCallback((lat: number, lng: number) => {
     setLoading(true);
-    fetch(`/api/masjid/nearby?lat=${lat}&lng=${lng}`)
+    fetch(`/api/masjid/nearby?lat=${lat}&lng=${lng}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("deen_token") ?? ""}` },
+    })
       .then(r => r.json())
       .then((data: Masjid[]) => {
         setMosques(data);
         setLoading(false);
-        initMap(lat, lng, data);
+        if (data.length > 0) setSheetOpen(true);
+        updateMosqueMarkers(lat, lng, data);
       })
       .catch(() => setLoading(false));
-  }, [initMap]);
+  }, [updateMosqueMarkers]);
 
-  useEffect(() => {
-    setLoading(true);
+  const requestLocation = useCallback(() => {
+    setLocating(true);
+    setLocError("");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const c = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         setCoords(c);
-        fetchMosques(c.lat, c.lng);
+        setLocating(false);
+        // Init map if not already done
+        if (!mapRef.current) {
+          setTimeout(() => {
+            initMap(c.lat, c.lng);
+            setTimeout(() => fetchMosques(c.lat, c.lng), 200);
+          }, 100);
+        } else {
+          mapRef.current.setView([c.lat, c.lng], 15);
+          if (userMarkerRef.current) userMarkerRef.current.setLatLng([c.lat, c.lng]);
+          fetchMosques(c.lat, c.lng);
+        }
       },
-      () => {
-        setLocError("Location permission denied. Please allow location access and try again.");
-        setLoading(false);
-      }
+      (err) => {
+        setLocating(false);
+        if (err.code === 1) {
+          setLocError("Location access denied. Please allow location in your browser settings, then tap 'Try Again'.");
+        } else if (err.code === 2) {
+          setLocError("Location unavailable. Please check your GPS or internet connection.");
+        } else {
+          setLocError("Location request timed out. Please tap 'Try Again'.");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
+  }, [initMap, fetchMosques]);
+
+  // On mount: init map centred on world, then request location
+  useEffect(() => {
+    // Init map immediately so it renders
+    setTimeout(() => {
+      if (mapContainerRef.current && !mapRef.current) {
+        const map = L.map(mapContainerRef.current, {
+          center: [20, 0],
+          zoom: 2,
+          zoomControl: true,
+          scrollWheelZoom: true,
+        });
+        mapRef.current = map;
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+      }
+      requestLocation();
+    }, 100);
+
     return () => {
       mapRef.current?.remove();
       mapRef.current = null;
     };
-  }, [fetchMosques]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const saveFavourite = (m: Masjid) => {
     setFavourite(m);
@@ -160,45 +227,81 @@ const MasjidFinderPage: React.FC = () => {
     }).catch(() => {});
   };
 
-  const scrollToMasjid = (m: Masjid) => {
+  const flyToMasjid = (m: Masjid) => {
     setSelectedMasjid(m);
     if (mapRef.current) {
-      mapRef.current.flyTo([m.lat, m.lng], 16, { duration: 1 });
+      mapRef.current.flyTo([m.lat, m.lng], 17, { duration: 1.2 });
       const idx = mosques.indexOf(m);
-      if (markersRef.current[idx]) markersRef.current[idx].openPopup();
+      if (markersRef.current[idx]) {
+        setTimeout(() => markersRef.current[idx].openPopup(), 1300);
+      }
     }
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 flex flex-col">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-[var(--bg)]/95 backdrop-blur-md pt-6 pb-3 px-4 border-b border-[var(--border)]">
-        <div className="flex items-center justify-between mb-1">
-          <h1 className="font-cinzel text-2xl text-[var(--gold)]">🕌 Masjid Finder</h1>
-          {coords && (
+    <div style={{ position: "fixed", inset: 0, display: "flex", flexDirection: "column", background: "#001a00" }}>
+      {/* Top overlay header */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, zIndex: 1000,
+        background: "linear-gradient(to bottom, rgba(0,26,0,0.95) 60%, transparent)",
+        padding: "16px 16px 24px",
+        pointerEvents: "none",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", pointerEvents: "auto" }}>
+          <div>
+            <h1 style={{ fontFamily: "Cinzel, serif", fontSize: 20, color: "#ffd700", margin: 0, lineHeight: 1.2 }}>
+              🕌 Masjid Finder
+            </h1>
+            <p style={{ color: "#4a7a4a", fontSize: 12, margin: "2px 0 0" }}>
+              {loading ? "Searching for mosques…" :
+               locating ? "Getting your location…" :
+               mosques.length > 0 ? `${mosques.length} mosques found nearby` :
+               coords ? "No mosques found within 5km" :
+               "Tap locate to find nearby mosques"}
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {coords && (
+              <button
+                onClick={() => fetchMosques(coords.lat, coords.lng)}
+                disabled={loading}
+                style={{
+                  background: "rgba(0,56,0,0.9)", border: "1px solid rgba(0,165,80,0.3)",
+                  borderRadius: 10, padding: "8px 10px", color: "#4a7a4a", cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 4, fontSize: 12,
+                }}
+              >
+                <RefreshCw size={13} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
+                Refresh
+              </button>
+            )}
             <button
-              onClick={() => fetchMosques(coords.lat, coords.lng)}
-              disabled={loading}
-              className="flex items-center gap-1.5 text-xs text-[var(--muted)] hover:text-[var(--green)] transition-colors"
+              onClick={requestLocation}
+              disabled={locating}
+              style={{
+                background: locating ? "rgba(0,165,80,0.3)" : "#00a550",
+                border: "none", borderRadius: 10, padding: "8px 12px",
+                color: "white", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600,
+              }}
             >
-              <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
-              Refresh
+              <Locate size={13} />
+              {locating ? "Locating…" : "Locate Me"}
             </button>
-          )}
+          </div>
         </div>
-        <p className="text-[var(--muted)] text-xs">
-          {mosques.length > 0 ? `${mosques.length} real mosques found nearby` : "Real mosques from OpenStreetMap"}
-        </p>
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-1 scrollbar-hide">
+
+        {/* Filter chips */}
+        <div style={{ display: "flex", gap: 8, marginTop: 10, overflowX: "auto", pointerEvents: "auto" }}>
           {FILTERS.map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap border transition-colors flex-shrink-0 ${
-                filter === f
-                  ? "bg-[var(--green)] text-white border-[var(--green)]"
-                  : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--green)]/50"
-              }`}
+              style={{
+                padding: "5px 12px", borderRadius: 20, fontSize: 11, whiteSpace: "nowrap", flexShrink: 0,
+                border: filter === f ? "1px solid #00a550" : "1px solid rgba(0,165,80,0.25)",
+                background: filter === f ? "#00a550" : "rgba(0,40,0,0.8)",
+                color: filter === f ? "white" : "#4a7a4a", cursor: "pointer",
+              }}
             >
               {f}
             </button>
@@ -206,154 +309,177 @@ const MasjidFinderPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        {/* Error state */}
-        {locError && (
-          <div className="mx-4 mt-6 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 text-center">
-            <AlertCircle size={36} className="mx-auto mb-3 text-[var(--muted)]" />
-            <p className="text-[var(--muted)] text-sm">{locError}</p>
-          </div>
-        )}
+      {/* Location error overlay */}
+      {locError && (
+        <div style={{
+          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+          zIndex: 1100, background: "rgba(0,26,0,0.97)", border: "1px solid rgba(0,165,80,0.3)",
+          borderRadius: 16, padding: "24px 20px", maxWidth: 300, textAlign: "center",
+        }}>
+          <AlertCircle size={36} style={{ color: "#ffd700", marginBottom: 12 }} />
+          <p style={{ color: "#e8f5e8", fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>{locError}</p>
+          <button
+            onClick={requestLocation}
+            style={{
+              background: "#00a550", border: "none", borderRadius: 10, padding: "10px 24px",
+              color: "white", fontWeight: 700, fontSize: 13, cursor: "pointer",
+            }}
+          >
+            Try Again
+          </button>
+        </div>
+      )}
 
-        {/* Loading */}
-        {loading && (
-          <div className="text-center py-10 text-[var(--muted)]">
-            <div className="w-8 h-8 border-2 border-[var(--green)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm">Finding real masjids nearby…</p>
-          </div>
-        )}
+      {/* Loading spinner overlay */}
+      {(loading || locating) && (
+        <div style={{
+          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+          zIndex: 999, display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+        }}>
+          <div style={{
+            width: 40, height: 40, borderRadius: "50%", border: "3px solid rgba(0,165,80,0.3)",
+            borderTop: "3px solid #00a550", animation: "spin 0.8s linear infinite",
+          }} />
+          <p style={{ color: "#e8f5e8", fontSize: 12, background: "rgba(0,26,0,0.8)", padding: "4px 12px", borderRadius: 8 }}>
+            {locating ? "Getting your GPS location…" : "Finding mosques…"}
+          </p>
+        </div>
+      )}
 
-        {/* Favourite banner */}
-        {favourite && (
-          <div className="mx-4 mt-4 bg-[var(--green)]/10 border-2 border-[var(--gold)]/40 rounded-2xl p-4">
-            <p className="text-xs text-[var(--gold)] font-cinzel uppercase tracking-wider mb-2">⭐ Your Favourite Masjid</p>
-            <p className="font-semibold text-[var(--text)]">{favourite.name}</p>
-            <div className="flex items-center gap-3 mt-2">
-              <span className="text-xs text-[var(--muted)]">{favourite.distance} km away</span>
+      {/* Full-screen Leaflet map */}
+      <div ref={mapContainerRef} style={{ flex: 1, width: "100%", zIndex: 0 }} />
+
+      {/* Locate Me FAB (bottom right, above sheet) */}
+      {coords && (
+        <button
+          onClick={() => {
+            if (mapRef.current && coords) {
+              mapRef.current.flyTo([coords.lat, coords.lng], 15, { duration: 1 });
+            }
+          }}
+          style={{
+            position: "absolute", right: 16, bottom: sheetOpen ? 320 : 96, zIndex: 1001,
+            width: 44, height: 44, borderRadius: "50%", background: "#001a00",
+            border: "2px solid rgba(0,165,80,0.5)", color: "#00a550",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.5)", cursor: "pointer", transition: "bottom 0.3s",
+          }}
+          title="Centre on my location"
+        >
+          <Navigation size={18} />
+        </button>
+      )}
+
+      {/* Bottom sheet mosque list */}
+      {mosques.length > 0 && (
+        <div style={{
+          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1002,
+          background: "rgba(0,26,0,0.97)", borderTop: "1px solid rgba(0,165,80,0.25)",
+          borderRadius: "20px 20px 0 0",
+          transform: sheetOpen ? "translateY(0)" : "translateY(calc(100% - 56px))",
+          transition: "transform 0.3s ease",
+          maxHeight: "55vh",
+          display: "flex", flexDirection: "column",
+          paddingBottom: 80,
+        }}>
+          {/* Sheet handle */}
+          <button
+            onClick={() => setSheetOpen(p => !p)}
+            style={{
+              width: "100%", padding: "12px 16px", display: "flex", alignItems: "center",
+              justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", flexShrink: 0,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(0,165,80,0.4)" }} />
+              <span style={{ color: "#ffd700", fontSize: 13, fontWeight: 700 }}>
+                {filteredMosques.length} mosque{filteredMosques.length !== 1 ? "s" : ""}
+                {filter !== "All" ? ` (${filter})` : " nearby"}
+              </span>
+            </div>
+            {sheetOpen ? <ChevronDown size={16} color="#4a7a4a" /> : <ChevronUp size={16} color="#4a7a4a" />}
+          </button>
+
+          {/* Scrollable list */}
+          <div style={{ overflowY: "auto", flex: 1, padding: "0 12px" }}>
+            {/* Google Maps link */}
+            {coords && (
               <a
-                href={favourite.mapsUrl || `https://maps.google.com/maps?daddr=${favourite.lat},${favourite.lng}`}
+                href={`https://www.google.com/maps/search/mosque/@${coords.lat},${coords.lng},15z`}
                 target="_blank"
                 rel="noreferrer"
-                className="ml-auto flex items-center gap-1 text-xs text-[var(--green)] hover:underline font-semibold"
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                  width: "100%", padding: "8px 0", marginBottom: 8,
+                  color: "#4a7a4a", fontSize: 12, textDecoration: "none",
+                  borderBottom: "1px solid rgba(0,165,80,0.15)",
+                }}
               >
-                Get Directions <ExternalLink size={11} />
+                <ExternalLink size={12} /> Open in Google Maps
               </a>
-            </div>
-          </div>
-        )}
-
-        {/* Interactive Leaflet Map */}
-        {!locError && (
-          <div className="mx-4 mt-4 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--surface)]" style={{ height: 280 }}>
-            {loading && !coords ? (
-              <div className="w-full h-full flex items-center justify-center text-[var(--muted)]">
-                <MapPin size={28} className="mr-2" />
-                <span className="text-sm">Waiting for location…</span>
-              </div>
-            ) : (
-              <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-            )}
-          </div>
-        )}
-
-        {/* Google Maps link for full search */}
-        {coords && (
-          <div className="mx-4 mt-2">
-            <a
-              href={`https://www.google.com/maps/search/mosque/@${coords.lat},${coords.lng},15z`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--muted)] hover:text-[var(--green)] hover:border-[var(--green)]/50 transition-colors"
-            >
-              <ExternalLink size={13} />
-              Open full search in Google Maps
-            </a>
-          </div>
-        )}
-
-        {/* Mosque list */}
-        {mosques.length > 0 && (
-          <div className="px-4 mt-5 pb-4 space-y-3">
-            <h2 className="font-semibold text-[var(--muted)] text-xs uppercase tracking-wider">
-              {filteredMosques.length} mosque{filteredMosques.length !== 1 ? "s" : ""}
-              {filter === "All" ? " within 5km" : ` matching "${filter}"`}
-            </h2>
-
-            {filteredMosques.length === 0 && (
-              <p className="text-center text-[var(--muted)] py-6 text-sm">
-                No {filter} mosques found nearby. Try "All".
-              </p>
             )}
 
             {filteredMosques.map((m, i) => (
               <div
                 key={i}
-                onClick={() => scrollToMasjid(m)}
-                className={`bg-[var(--surface)] border rounded-2xl p-4 cursor-pointer transition-all ${
-                  selectedMasjid?.name === m.name
-                    ? "border-[var(--green)] shadow-[0_0_12px_rgba(0,165,80,0.15)]"
-                    : "border-[var(--border)] hover:border-[var(--green)]/40"
-                }`}
+                onClick={() => flyToMasjid(m)}
+                style={{
+                  background: selectedMasjid?.name === m.name ? "rgba(0,165,80,0.12)" : "rgba(0,40,0,0.6)",
+                  border: selectedMasjid?.name === m.name ? "1px solid #00a550" : "1px solid rgba(0,165,80,0.15)",
+                  borderRadius: 14, padding: "12px", marginBottom: 8, cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 12,
+                  transition: "background 0.2s, border-color 0.2s",
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[var(--green)]/15 flex items-center justify-center flex-shrink-0 text-xl">
-                    🕌
+                <div style={{
+                  width: 42, height: 42, borderRadius: "50%", background: "rgba(0,165,80,0.15)",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0,
+                }}>🕌</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: "#e8f5e8", lineHeight: 1.3 }}>{m.name}</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3 }}>
+                    <span style={{ fontSize: 11, color: "#4a7a4a" }}>📏 {m.distance} km</span>
+                    {i === 0 && <span style={{ fontSize: 10, color: "#ffd700", fontWeight: 700 }}>NEAREST</span>}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-[var(--text)] text-sm leading-snug">{m.name}</p>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs text-[var(--muted)]">
-                        <MapPin size={10} className="inline mr-0.5" />{m.distance} km
-                      </span>
-                      {i === 0 && (
-                        <span className="text-xs text-[var(--gold)] font-medium">Nearest</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex gap-1.5">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); saveFavourite(m); }}
-                      className={`p-2 rounded-full transition-colors ${
-                        favourite?.name === m.name
-                          ? "text-[var(--gold)] bg-[var(--gold)]/10"
-                          : "text-[var(--muted)] hover:text-[var(--gold)]"
-                      }`}
-                      title="Save as favourite"
-                    >
-                      <Star size={15} className={favourite?.name === m.name ? "fill-[var(--gold)]" : ""} />
-                    </button>
-                    <a
-                      href={m.mapsUrl || `https://maps.google.com/maps?daddr=${m.lat},${m.lng}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="p-2 rounded-full text-[var(--muted)] hover:text-[var(--green)] transition-colors"
-                      title="Get directions in Google Maps"
-                    >
-                      <Navigation size={15} />
-                    </a>
-                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 4 }}>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); saveFavourite(m); }}
+                    style={{
+                      width: 32, height: 32, borderRadius: "50%", border: "none",
+                      background: favourite?.name === m.name ? "rgba(255,215,0,0.15)" : "transparent",
+                      color: favourite?.name === m.name ? "#ffd700" : "#4a7a4a",
+                      cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                    title="Save as favourite"
+                  >
+                    <Star size={14} style={{ fill: favourite?.name === m.name ? "#ffd700" : "none" }} />
+                  </button>
+                  <a
+                    href={m.mapsUrl || `https://maps.google.com/maps?daddr=${m.lat},${m.lng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      width: 32, height: 32, borderRadius: "50%", border: "none",
+                      background: "transparent", color: "#4a7a4a",
+                      display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none",
+                    }}
+                    title="Get directions"
+                  >
+                    <Navigation size={14} />
+                  </a>
                 </div>
               </div>
             ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {!loading && !locError && mosques.length === 0 && coords && (
-          <div className="text-center py-12 text-[var(--muted)] px-4">
-            <MapPin size={36} className="mx-auto mb-3 opacity-40" />
-            <p className="text-sm">No mosques found within 5km.</p>
-            <a
-              href={`https://www.google.com/maps/search/mosque/@${coords.lat},${coords.lng},14z`}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 mt-3 text-[var(--green)] text-sm hover:underline"
-            >
-              Search on Google Maps <ExternalLink size={13} />
-            </a>
-          </div>
-        )}
-      </div>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .leaflet-container { background: #001a00 !important; }
+      `}</style>
     </div>
   );
 };

@@ -117,6 +117,15 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — Masjid Finder full-screen map + real GPS location
+- **Full-screen map**: `MasjidFinderPage` rebuilt with `position:fixed;inset:0` layout — map fills entire viewport, header floats as an overlay, bottom sheet slides up with mosque list
+- **Real GPS location**: Added `enableHighAccuracy:true, timeout:15000, maximumAge:0` to `getCurrentPosition` — now requests true GPS fix, not coarse IP-based position
+- **Error handling**: Specific messages for permission denied (code 1), position unavailable (code 2), timeout (code 3) with "Try Again" button
+- **"Locate Me" button**: Persistent button in header to re-request GPS at any time; "Centre on me" FAB (Navigation icon) re-centres map on user position
+- **Bottom sheet**: Mosque list in a draggable-feel bottom panel (opens automatically when mosques load, tap handle to toggle), mosque markers show NEAREST badge
+- **Map init**: Map loads immediately on mount (world view) then flies to user location once GPS resolves — no blank waiting state
+- **Typecheck**: Clean
+
 ### 2026-05-12 — Masjid Finder rebuilt + Baby Names expanded to 1000
 
 #### Masjid Finder — critical bug fix + interactive map
