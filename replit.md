@@ -117,6 +117,12 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — DeenApp rebrand: new logo + favicon (removed Noor/نور)
+- **Logo**: Created `DeenAppLogo.tsx` reusable component — dark green rounded-square icon with gold crescent moon + 5-pointed star, gradient "DEENAPP" wordmark in Cinzel, gold drop-shadow glow
+- **Favicon**: Replaced red dot (`#FF3C00`) in `public/favicon.svg` with the crescent+star icon on dark green background — visible in browser tab and bookmark bar
+- **Noor removed**: Replaced Arabic `نور` headings in LoginPage, RegisterPage, GiftPage with the new `DeenAppLogo` component
+- **An-Nur (Surah 24)**: Left `النور` in QuranPage intact — it is the name of a Quran chapter, not app branding
+
 ### 2026-05-12 — Islamic Tools grid restored on HomePage
 - **Root cause**: The 12-tile Islamic Tools grid was missing from the HomePage — Masjid Finder, Qibla, Zakat, Calendar, and all other tools were unreachable from home
 - **Fix**: Added 3-column tools grid (Section 11) between Quick Tasbih and Healing Sessions, covering all 12 tools: Quran, Qibla, Masjid Finder, Zakat, Calendar, 99 Names, Farz Guide, Wudu Guide, Salah Guide, Sadqa, Qurbani, Baby Names

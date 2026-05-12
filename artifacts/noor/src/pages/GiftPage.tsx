@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import DeenAppLogo from "@/components/DeenAppLogo";
 
 interface GiftData {
   senderName: string;
@@ -62,9 +63,7 @@ const GiftPage: React.FC = () => {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] flex flex-col items-center justify-center p-6">
       {/* DeenApp Logo */}
       <div className="text-center mb-8">
-        <p className="font-amiri text-4xl text-[var(--gold)] mb-1" dir="rtl">نور</p>
-        <p className="font-cinzel text-xs text-[var(--green)] tracking-widest">DEENAPP</p>
-        <p className="text-[10px] text-[var(--muted)] mt-1">Remember Allah. Every day.</p>
+        <DeenAppLogo size={64} showText={true} showTagline={true} />
       </div>
 
       <div className="w-full max-w-sm space-y-6">

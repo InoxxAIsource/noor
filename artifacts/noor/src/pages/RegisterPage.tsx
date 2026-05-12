@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useRegister } from "@workspace/api-client-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import DeenAppLogo from "@/components/DeenAppLogo";
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -48,9 +49,7 @@ const RegisterPage: React.FC = () => {
       </div>
 
       <div className="text-center mb-12">
-        <h1 className="font-amiri text-6xl text-[var(--gold)] mb-2">نور</h1>
-        <h2 className="font-cinzel text-2xl tracking-widest text-[var(--green)]">DEENAPP</h2>
-        <p className="text-[var(--muted)] text-sm mt-2">Remember Allah. Every day.</p>
+        <DeenAppLogo size={80} showText={true} showTagline={true} />
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
