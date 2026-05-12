@@ -71,12 +71,44 @@ const QuranSurahPage: React.FC = () => {
     setError(false);
     setPlayingAyah(null);
     setIsSequential(false);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+
     fetch(
-      `https://api.qurancdn.com/api/qdc/verses/by_chapter/${num}?words=false&per_page=300&translations=131`
+      `https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,en.asad`,
+      { signal: controller.signal }
     )
-      .then(r => r.json())
-      .then(data => { setVerses(data.verses ?? []); setLoading(false); })
-      .catch(() => { setError(true); setLoading(false); });
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(data => {
+        clearTimeout(timer);
+        const editions: Array<{ edition: { identifier: string }; ayahs: Array<{ numberInSurah: number; text: string }> }> = data.data ?? [];
+        const arabicEd = editions.find(e => e.edition.identifier === "quran-uthmani");
+        const transEd  = editions.find(e => e.edition.identifier === "en.asad");
+        const mapped: Verse[] = (arabicEd?.ayahs ?? []).map((a, i) => ({
+          id: a.numberInSurah,
+          verse_number: a.numberInSurah,
+          verse_key: `${num}:${a.numberInSurah}`,
+          text_uthmani: a.text,
+          translations: [{ text: transEd?.ayahs[i]?.text ?? "" }],
+        }));
+        setVerses(mapped);
+        setLoading(false);
+      })
+      .catch(err => {
+        clearTimeout(timer);
+        if (err.name === "AbortError") {
+          setError(true);
+        } else {
+          setError(true);
+        }
+        setLoading(false);
+      });
+
+    return () => { clearTimeout(timer); controller.abort(); };
   }, [num]);
 
   const markRead = useCallback((ayahNum: number) => {
