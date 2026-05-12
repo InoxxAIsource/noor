@@ -229,6 +229,22 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Homepage SEO/GEO Transformation (14-step authority overhaul)
+- **H1 fixed**: "AI Islamic Companion for Daily Muslim Growth" — single semantic H1, replaces "Grow Spiritually Every Day"
+- **6 H2 sections added**: Quran Reflections, Daily Azkar & Duas, AI-Powered Growth, Islamic Wellness, Featured Journeys, Start Your Journey — each with crawlable paragraph copy
+- **Internal link engine**: Homepage now distributes authority to /mental-wellness, /salah, /quran-reflections, /islamic-habits, /ai-islamic-tools, /duas, /start-here, /about, /ai-ethics, /editorial-guidelines, /content-verification + 20+ emotional sub-pages
+- **Emotional entry points**: 4 cards (Find Peace in Islam, Reconnect With Allah, Start Praying Again, Build Islamic Habits) linking to funnel pages near hero
+- **Authority hub grid**: 6 semantic hub cards (Mental Wellness, Salah, Quran Reflections, Islamic Habits, AI Tools, Guided Journeys) with descriptions and crawlable links
+- **Guided journeys section**: 4 journey preview cards (7-Day Inner Peace, Reconnect journey, Salah Reset, Tahajjud Transformation) with direct links
+- **AI Companion section**: Expanded copy optimised for "AI Islamic Companion", "AI Muslim growth", "AI Quran reflection" with updated chat demo showing reconnection use case
+- **Trust & Entity block**: 6 trust signal cards linking to /about, /mission, /ai-ethics, /editorial-guidelines, /content-verification, /islamic-guidance-policy
+- **FAQ accordion (5 Q&A)**: What is MyTazki / How does AI work / Can Islam help anxiety / Islamic habits / Is it free — interactive accordion with FAQ schema
+- **SEO footer expanded**: 6 column semantic footer — Wellness, Quran, Journeys, Salah & Habits, Company/Trust, Quick Tools — 36+ crawlable internal links
+- **JSON-LD schema**: Organization, WebSite (with SearchAction), FAQPage, BreadcrumbList — all injected via dangerouslySetInnerHTML
+- **Nav links**: Wellness, Quran, Duas, About — crawlable `<a href>` tags (visible on desktop ≥640px)
+- **All CTAs use `<a href>`** for crawlability (not navigate-only buttons) — Googlebot can follow all links
+- **Typecheck**: Clean
+
 ### 2026-05-12 — SEO Phase 3: Entity Authority + Distribution System
 - **12 Entity & Trust pages**: /about, /mission, /our-philosophy, /how-mytazki-works, /contributors, /authors, /editorial-guidelines, /ai-ethics, /trust-and-safety, /islamic-guidance-policy, /content-verification, /how-ai-content-is-reviewed
 - **6 GEO landing pages**: /best-islamic-app-for-anxiety, /best-muslim-habit-app, /ai-islamic-companion, /ai-quran-reflection, /islamic-self-improvement-app, /muslim-wellness-app

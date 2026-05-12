@@ -1,0 +1,340 @@
+You are now the Lead Homepage SEO + GEO Architecture Engineer for MyTazki.com.
+
+IMPORTANT:
+The current homepage is visually branded but semantically weak for:
+- SEO
+- GEO
+- AI search retrieval
+- topical authority
+- internal authority distribution
+
+Critical issues identified:
+- weak or missing H1
+- poor H2 semantic structure
+- weak internal linking
+- low crawlable semantic content
+- insufficient authority distribution
+- weak homepage funneling
+- weak AI-search optimization
+
+Your task:
+Transform the homepage into:
+- the central semantic authority hub
+- the main internal linking distribution engine
+- the primary GEO landing page
+- the emotional onboarding gateway
+- the AI-search optimized brand entity page
+
+WITHOUT destroying the premium calm design.
+
+========================================
+PRIMARY OBJECTIVE
+========================================
+
+Redesign the homepage structure for:
+- Google SEO
+- Google AI Overviews
+- ChatGPT retrieval
+- Perplexity citations
+- semantic topical authority
+- internal linking depth
+- emotional onboarding
+- retention funnels
+- subscription readiness
+
+Preserve:
+- calm premium UX
+- MyTazki branding
+- emotional warmth
+- minimal modern design
+
+========================================
+STEP 1 — FIX H1 STRUCTURE
+========================================
+
+Implement ONE clear semantic H1.
+
+Recommended H1:
+“AI Islamic Companion for Daily Muslim Growth”
+
+Alternative supporting copy:
+“Guided Quran reflections, Azkar, Duas, and AI-powered spiritual journeys for modern Muslims.”
+
+Ensure:
+- only one H1 exists
+- semantic hierarchy is valid
+- no duplicated H1s
+
+========================================
+STEP 2 — ADD STRONG H2 SEMANTIC SECTIONS
+========================================
+
+Create proper crawlable homepage sections.
+
+Required H2 sections:
+
+1.
+“Guided Quran Reflections for Modern Muslims”
+
+2.
+“Daily Azkar, Duas & Spiritual Routines”
+
+3.
+“AI-Powered Islamic Growth Journeys”
+
+4.
+“Find Peace Through Guided Islamic Wellness”
+
+5.
+“Build Better Islamic Habits Every Day”
+
+6.
+“Start Your Spiritual Journey With MyTazki”
+
+Each section should contain:
+- semantic paragraph copy
+- internal links
+- emotional clarity
+- AI-search-friendly wording
+
+========================================
+STEP 3 — HOMEPAGE INTERNAL LINK ENGINE
+========================================
+
+Homepage must distribute authority to ALL major silos.
+
+Required homepage links:
+
+/mental-wellness
+/salah
+/quran-reflections
+/islamic-habits
+/ai-islamic-tools
+/duas
+/azkar
+/start-here
+/pricing
+
+Also link to top-performing emotional pages:
+- /dua-for-anxiety
+- /how-to-connect-with-allah
+- /find-peace-in-islam
+- /start-praying-again
+- /tahajjud-for-anxiety
+
+Ensure links are:
+- contextual
+- crawlable
+- semantically grouped
+
+Avoid random link spam.
+
+========================================
+STEP 4 — EMOTIONAL ENTRY POINTS
+========================================
+
+Create an emotional onboarding section near the top.
+
+Cards should guide users into:
+- anxiety help
+- reconnecting spiritually
+- prayer consistency
+- Islamic routines
+- guided peace journeys
+
+Example cards:
+- Find Peace in Islam
+- Reconnect With Allah
+- Start Praying Again
+- Build Islamic Habits
+
+Each card links into funnel pages.
+
+========================================
+STEP 5 — MAIN AUTHORITY HUB GRID
+========================================
+
+Create a semantic hub section linking to:
+- Mental Wellness
+- Salah
+- Quran Reflections
+- Islamic Habits
+- AI Companion
+- Guided Journeys
+
+Each hub card should include:
+- title
+- short description
+- internal links
+- emotional relevance
+
+========================================
+STEP 6 — FEATURED JOURNEYS SECTION
+========================================
+
+Add guided journey previews:
+- 7-Day Inner Peace Journey
+- Reconnect With Allah Journey
+- Salah Reset
+- Tahajjud Journey
+
+These should:
+- improve retention
+- deepen session paths
+- prepare subscription funneling
+
+========================================
+STEP 7 — AI COMPANION DIFFERENTIATOR
+========================================
+
+Create a dedicated AI section explaining:
+- personalized Islamic growth
+- AI-powered reflections
+- emotional wellness guidance
+- daily spiritual support
+
+Optimize this section for:
+- “AI Islamic Companion”
+- “AI Muslim growth”
+- “AI Quran reflection”
+
+========================================
+STEP 8 — ADD TRUST + ENTITY BLOCK
+========================================
+
+Add homepage trust signals:
+- About MyTazki
+- Editorial standards
+- AI ethics
+- Contributor system
+- Islamic guidance policy
+
+Internally link to:
+- /about
+- /ai-ethics
+- /editorial-guidelines
+- /content-verification
+
+This strengthens:
+- E-E-A-T
+- GEO trust
+- AI understanding
+
+========================================
+STEP 9 — FAQ + GEO OPTIMIZATION
+========================================
+
+Add a homepage FAQ section.
+
+Questions:
+- What is MyTazki?
+- How does the AI Islamic companion work?
+- Can Islam help anxiety?
+- How can I build Islamic habits?
+- Is MyTazki free to use?
+
+Add:
+- FAQ schema
+- speakable formatting
+- concise AI-answer blocks
+
+========================================
+STEP 10 — FOOTER SEO EXPANSION
+========================================
+
+Upgrade footer into a semantic authority footer.
+
+Group links by:
+- emotional wellness
+- Quran reflections
+- guided journeys
+- Islamic habits
+- AI tools
+- trust pages
+- company/entity pages
+
+Ensure:
+- crawlable structure
+- semantic grouping
+- SEO-safe architecture
+
+========================================
+STEP 11 — GEO / AI SEARCH ENHANCEMENT
+========================================
+
+Add:
+- concise summary blocks
+- semantic definitions
+- conversational wording
+- AI-friendly short answers
+- “People Also Ask” style sections
+
+Optimize homepage for:
+- ChatGPT retrieval
+- Perplexity citations
+- Google AI Overviews
+- voice search
+
+========================================
+STEP 12 — PERFORMANCE + UX
+========================================
+
+Preserve:
+- fast loading
+- calm spacing
+- premium typography
+- elegant mobile layout
+- emotional readability
+
+Do NOT:
+- overcrowd the homepage
+- destroy visual simplicity
+- create SEO spam blocks
+- keyword stuff
+
+SEO improvements must feel:
+- natural
+- premium
+- emotionally intelligent
+
+========================================
+STEP 13 — STRUCTURED DATA
+========================================
+
+Implement:
+- Organization schema
+- WebSite schema
+- FAQ schema
+- Breadcrumb schema
+- Speakable schema
+
+Ensure:
+- clean JSON-LD
+- no duplicates
+- valid structured data
+
+========================================
+STEP 14 — FINAL OBJECTIVE
+========================================
+
+Transform the homepage into:
+- the main semantic authority node
+- the primary AI-search landing page
+- the central internal linking hub
+- the emotional onboarding gateway
+- the strongest GEO page on the site
+
+The homepage should:
+- rank
+- distribute authority
+- guide users emotionally
+- increase crawl depth
+- improve AI retrieval
+- strengthen branded entity recognition
+- support future subscription conversion
+
+Preserve:
+- calm premium identity
+- emotional warmth
+- modern minimal UX
+- MyTazki brand positioning
