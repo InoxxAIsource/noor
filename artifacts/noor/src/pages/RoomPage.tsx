@@ -216,7 +216,7 @@ const RoomPage: React.FC = () => {
       {/* Intentions feed */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         <p className="text-xs text-[var(--muted)] text-center">
-          🤲 Share your intentions — the community will pray for you
+          🤲 Share your intentions, the community will pray for you
         </p>
 
         {intentions.length === 0 ? (

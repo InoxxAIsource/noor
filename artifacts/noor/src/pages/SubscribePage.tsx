@@ -110,7 +110,7 @@ export default function SubscribePage() {
         </p>
         <div style={{ background: "rgba(0,165,80,0.1)", border: "1px solid rgba(0,165,80,0.3)", borderRadius: 8, padding: "10px 20px", display: "inline-block", marginTop: 16 }}>
           <p style={{ color: "#00a550", margin: 0, fontSize: 14, fontWeight: "bold" }}>
-            🌙 Beta — All features free until launch. Paid plans coming soon.
+            🌙 Beta, All features free until launch. Paid plans coming soon.
           </p>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default function SubscribePage() {
               />
               {err && <p style={{ color: "#ff6666", fontSize: 13, margin: 0 }}>{err}</p>}
               <button type="submit" disabled={loading} style={{ background: "#00a550", color: "#001a00", border: "none", borderRadius: 8, padding: "12px 0", fontSize: 15, fontWeight: "bold", cursor: "pointer" }}>
-                {loading ? "Joining…" : "Join Waitlist — Free"}
+                {loading ? "Joining…" : "Join Waitlist, Free"}
               </button>
             </form>
           )}
@@ -195,7 +195,7 @@ export default function SubscribePage() {
       <div style={{ maxWidth: 600, margin: "32px auto 0", padding: "0 16px" }}>
         <h2 style={{ color: "#00a550", fontFamily: "Cinzel,serif", fontSize: "1rem", marginBottom: 16 }}>Frequently Asked Questions</h2>
         {[
-          ["When is Premium launching?", "We're in open beta. All features are free for now. Premium paid plans are launching in late 2026 — joiners today get early access."],
+          ["When is Premium launching?", "We're in open beta. All features are free for now. Premium paid plans are launching in late 2026, joiners today get early access."],
           ["Will my free features stay free?", "Yes. Prayer times, Quran, basic duas, Qibla, and Masjid Finder are free forever, always."],
           ["Is my data private?", "Yes. Your salah logs, journal, and streak data are private to your account. We never sell your data."],
           ["Is there a family plan?", "Halaqah plan supports group rooms. A family plan is on our roadmap."],

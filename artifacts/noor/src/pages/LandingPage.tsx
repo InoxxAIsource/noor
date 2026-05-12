@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const VERSES = [
-  { arabic: "اذْكُرُوا اللَّهَ ذِكْرًا كَثِيرًا", translation: "Remember Allah with much remembrance — Quran 33:41" },
-  { arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا", translation: "And whoever fears Allah — He will make a way out for him — Quran 65:2" },
-  { arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", translation: "Verily, in the remembrance of Allah hearts find rest — Quran 13:28" },
+  { arabic: "اذْكُرُوا اللَّهَ ذِكْرًا كَثِيرًا", translation: "Remember Allah with much remembrance, Quran 33:41" },
+  { arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا", translation: "And whoever fears Allah, He will make a way out for him, Quran 65:2" },
+  { arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", translation: "Verily, in the remembrance of Allah hearts find rest, Quran 13:28" },
 ];
 
 const SESSIONS = [
@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does the AI Islamic companion work?",
-    a: "MyTazki AI is powered by Claude and trained with Islamic adab guidelines. Ask anything about Quran, Sunnah, fiqh, or spiritual struggles — and receive grounded, compassionate guidance 24/7.",
+    a: "MyTazki AI is powered by Claude and trained with Islamic adab guidelines. Ask anything about Quran, Sunnah, fiqh, or spiritual struggles, and receive grounded, compassionate guidance 24/7.",
   },
   {
     q: "Can Islam help with anxiety?",
@@ -34,7 +34,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is MyTazki free to use?",
-    a: "Yes — MyTazki is free forever. Core features including Quran reader, prayer times, Azkar sessions, duas library, and AI companion are fully accessible at no cost.",
+    a: "Yes, MyTazki is free forever. Core features including Quran reader, prayer times, Azkar sessions, duas library, and AI companion are fully accessible at no cost.",
   },
 ];
 
@@ -54,7 +54,7 @@ const SCHEMA = {
       "@type": "WebSite",
       "@id": "https://mytazki.com/#website",
       url: "https://mytazki.com",
-      name: "MyTazki — AI Islamic Companion",
+      name: "MyTazki, AI Islamic Companion",
       description: "Grow spiritually every day with guided Quran reflections, Azkar, Duas, and AI-powered Islamic growth journeys.",
       publisher: { "@id": "https://mytazki.com/#organization" },
       potentialAction: {
@@ -243,7 +243,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* PRIMARY H1 — semantic SEO anchor */}
+        {/* PRIMARY H1, semantic SEO anchor */}
         <h1 style={{
           fontFamily: "DM Sans, Inter, sans-serif",
           fontSize: "clamp(34px, 8vw, 60px)",
@@ -274,17 +274,17 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 4 — EMOTIONAL ENTRY POINTS ── */}
+      {/* ── STEP 4, EMOTIONAL ENTRY POINTS ── */}
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Where are you today?</EyebrowLabel>
         <SectionH2>Find Peace Through Guided Islamic Wellness</SectionH2>
         <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.7 }}>
-          Wherever you are on your journey — struggling with anxiety, missing salah, or wanting to reconnect — MyTazki meets you there with compassion and guidance rooted in Quran and Sunnah.
+          Wherever you are on your journey, struggling with anxiety, missing salah, or wanting to reconnect, MyTazki meets you there with compassion and guidance rooted in Quran and Sunnah.
         </p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
           <EntryCard emoji="🌿" title="Find Peace in Islam" subtitle="Calm anxiety through Quran & Dhikr" href="/find-peace-in-islam" />
           <EntryCard emoji="🤲" title="Reconnect With Allah" subtitle="Gentle 7-step return guide" href="/reconnect-with-allah" />
-          <EntryCard emoji="🕌" title="Start Praying Again" subtitle="No guilt — just a fresh start" href="/start-praying-again" />
+          <EntryCard emoji="🕌" title="Start Praying Again" subtitle="No guilt, just a fresh start" href="/start-praying-again" />
           <EntryCard emoji="📿" title="Build Islamic Habits" subtitle="Small daily actions, big spiritual growth" href="/build-islamic-habits" />
         </div>
         <p style={{ textAlign: "center", marginTop: 28, fontSize: 13, color: "#4a6858" }}>
@@ -294,12 +294,12 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 5 — AUTHORITY HUB GRID ── */}
+      {/* ── STEP 5, AUTHORITY HUB GRID ── */}
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Explore All Topics</EyebrowLabel>
         <SectionH2>Build Better Islamic Habits Every Day</SectionH2>
         <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.7 }}>
-          MyTazki is structured as a complete Islamic growth system — covering mental wellness, salah consistency, daily Quran engagement, and AI-powered spiritual coaching.
+          MyTazki is structured as a complete Islamic growth system, covering mental wellness, salah consistency, daily Quran engagement, and AI-powered spiritual coaching.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 14 }}>
           <HubCard icon="🧠" title="Mental Wellness" desc="Duas for anxiety, healing sessions, Quran for the overwhelmed mind." href="/mental-wellness" />
@@ -313,7 +313,7 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 2a — H2: Quran Reflections ── */}
+      {/* ── STEP 2a, H2: Quran Reflections ── */}
       <section style={{ background: "rgba(21,32,25,0.5)", borderTop: `1px solid ${s.borderSoft}`, borderBottom: `1px solid ${s.borderSoft}`, padding: "64px 24px" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <EyebrowLabel>Quran</EyebrowLabel>
@@ -349,12 +349,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── STEP 2b — H2: Daily Azkar ── */}
+      {/* ── STEP 2b, H2: Daily Azkar ── */}
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Daily practice</EyebrowLabel>
         <SectionH2>Daily Azkar, Duas &amp; Spiritual Routines</SectionH2>
         <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.75, maxWidth: 520, margin: "0 auto 36px" }}>
-          Build a consistent morning and evening spiritual routine with 110+ authentic duas from Quran and Hadith, 35+ guided audio Azkar sessions, and a digital Tasbih counter — all offline-ready.
+          Build a consistent morning and evening spiritual routine with 110+ authentic duas from Quran and Hadith, 35+ guided audio Azkar sessions, and a digital Tasbih counter, all offline-ready.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
           {[
@@ -378,7 +378,7 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 7 — AI COMPANION DIFFERENTIATOR ── */}
+      {/* ── STEP 7, AI COMPANION DIFFERENTIATOR ── */}
       <section style={{ maxWidth: 640, margin: "0 auto", padding: "64px 24px", textAlign: "center" }}>
         <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(52,201,122,0.1)", border: `1px solid rgba(52,201,122,0.2)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", fontSize: 28 }}>
           ✦
@@ -386,10 +386,10 @@ export default function LandingPage() {
         <EyebrowLabel>AI Islamic Companion</EyebrowLabel>
         <SectionH2>AI-Powered Islamic Growth Journeys</SectionH2>
         <p style={{ fontSize: 15, color: "#4a6858", lineHeight: 1.8, marginBottom: 20, maxWidth: 500, margin: "0 auto 20px" }}>
-          MyTazki AI is the first Islamic companion built with Claude AI and guided by Quranic adab. It provides personalised Islamic growth coaching, emotional wellness support, Quran reflection prompts, and answers grounded in authentic Islamic scholarship — not opinions.
+          MyTazki AI is the first Islamic companion built with Claude AI and guided by Quranic adab. It provides personalised Islamic growth coaching, emotional wellness support, Quran reflection prompts, and answers grounded in authentic Islamic scholarship, not opinions.
         </p>
         <p style={{ fontSize: 14, color: "#4a6858", lineHeight: 1.7, marginBottom: 32 }}>
-          Unlike generic AI chatbots, MyTazki AI understands Islamic context, observes limits (no fatwa), and guides you with compassion — optimised for <em>Muslim growth</em>, not just answers.
+          Unlike generic AI chatbots, MyTazki AI understands Islamic context, observes limits (no fatwa), and guides you with compassion, optimised for <em>Muslim growth</em>, not just answers.
         </p>
         {/* Chat demo */}
         <div style={{ background: "rgba(21,32,25,0.8)", border: `1px solid rgba(52,201,122,0.12)`, borderRadius: 16, padding: "20px 24px", textAlign: "left", marginBottom: 28 }}>
@@ -401,7 +401,7 @@ export default function LandingPage() {
           </div>
           <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
             <div style={{ background: "rgba(52,201,122,0.1)", borderRadius: "12px 0 12px 12px", padding: "10px 14px", fontSize: 13, color: s.green, maxWidth: "80%", lineHeight: 1.65 }}>
-              That feeling is itself a sign of iman — the heart recognising its distance from its Creator. Begin with two rakaat of voluntary prayer, recite Surah Ad-Duha (93), and say: <em>"Rabbi inni limas-sani ad-durru wa-anta arhamur-rahimeen."</em>
+              That feeling is itself a sign of iman, the heart recognising its distance from its Creator. Begin with two rakaat of voluntary prayer, recite Surah Ad-Duha (93), and say: <em>"Rabbi inni limas-sani ad-durru wa-anta arhamur-rahimeen."</em>
             </div>
             <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(52,201,122,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>✦</div>
           </div>
@@ -415,17 +415,17 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 6 — FEATURED JOURNEYS ── */}
+      {/* ── STEP 6, FEATURED JOURNEYS ── */}
       <section style={{ background: "rgba(21,32,25,0.5)", borderTop: `1px solid ${s.borderSoft}`, borderBottom: `1px solid ${s.borderSoft}`, padding: "64px 24px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <EyebrowLabel>Guided Journeys</EyebrowLabel>
           <SectionH2>Start Your Spiritual Journey With MyTazki</SectionH2>
           <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.7, maxWidth: 500, margin: "0 auto 36px" }}>
-            Structured multi-day Islamic journeys that guide you step by step — no overwhelm, no guilt. Just consistent, compassionate spiritual growth.
+            Structured multi-day Islamic journeys that guide you step by step, no overwhelm, no guilt. Just consistent, compassionate spiritual growth.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <JourneyCard title="7-Day Inner Peace Journey" days="7 days" desc="Rebuild calm and reconnect with Allah through daily Azkar, Quran, and reflection." href="/7-day-inner-peace-journey" />
-            <JourneyCard title="Reconnect With Allah Journey" days="Guided path" desc="A compassionate return — step by step, with no judgement and full Quranic support." href="/reconnect-with-allah-journey" />
+            <JourneyCard title="Reconnect With Allah Journey" days="Guided path" desc="A compassionate return, step by step, with no judgement and full Quranic support." href="/reconnect-with-allah-journey" />
             <JourneyCard title="7-Day Salah Reset" days="7 days" desc="Rebuild your prayer habit from scratch with gentle daily goals and khushoo tips." href="/7-day-salah-reset" />
             <JourneyCard title="Tahajjud Transformation" days="30 nights" desc="Establish the night prayer habit with gradual rakaat goals and spiritual milestones." href="/tahajjud-transformation-journey" />
           </div>
@@ -435,12 +435,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── STEP 2c — H2: Islamic Wellness ── */}
+      {/* ── STEP 2c, H2: Islamic Wellness ── */}
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Emotional wellness</EyebrowLabel>
         <SectionH2>Find Peace Through Guided Islamic Wellness</SectionH2>
         <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.75, maxWidth: 520, margin: "0 auto 36px" }}>
-          Islam provides a complete framework for emotional healing — not as a substitute for professional help, but as a spiritual foundation. MyTazki makes that framework accessible, personal, and daily.
+          Islam provides a complete framework for emotional healing, not as a substitute for professional help, but as a spiritual foundation. MyTazki makes that framework accessible, personal, and daily.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
           {[
@@ -464,12 +464,12 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 8 — TRUST + ENTITY BLOCK ── */}
+      {/* ── STEP 8, TRUST + ENTITY BLOCK ── */}
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Trust &amp; transparency</EyebrowLabel>
         <SectionH2>Islamic Guidance You Can Trust</SectionH2>
         <p style={{ textAlign: "center", color: "#4a6858", fontSize: 14, marginBottom: 36, lineHeight: 1.75, maxWidth: 520, margin: "0 auto 36px" }}>
-          Every dua, reflection, and AI response on MyTazki is grounded in authenticated Islamic sources — Quran, Hadith, and classical scholarship. We are transparent about what AI can and cannot do in an Islamic context.
+          Every dua, reflection, and AI response on MyTazki is grounded in authenticated Islamic sources, Quran, Hadith, and classical scholarship. We are transparent about what AI can and cannot do in an Islamic context.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
           {[
@@ -477,7 +477,7 @@ export default function LandingPage() {
             { label: "Editorial Standards", sub: "How we verify content", href: "/editorial-guidelines", icon: "📋" },
             { label: "AI Ethics", sub: "Our limits & principles", href: "/ai-ethics", icon: "⚖️" },
             { label: "Content Verification", sub: "6-step review process", href: "/content-verification", icon: "✅" },
-            { label: "Islamic Guidance Policy", sub: "Scholars vs AI — clearly stated", href: "/islamic-guidance-policy", icon: "📜" },
+            { label: "Islamic Guidance Policy", sub: "Scholars vs AI, clearly stated", href: "/islamic-guidance-policy", icon: "📜" },
             { label: "Our Mission", sub: "Why we built MyTazki", href: "/mission", icon: "🎯" },
           ].map(card => (
             <a key={card.label} href={card.href} style={{ textDecoration: "none", display: "block" }}>
@@ -493,7 +493,7 @@ export default function LandingPage() {
 
       <Divider />
 
-      {/* ── STEP 9 — FAQ + GEO ── */}
+      {/* ── STEP 9, FAQ + GEO ── */}
       <section style={{ maxWidth: 680, margin: "0 auto", padding: "64px 24px" }}>
         <EyebrowLabel>Common questions</EyebrowLabel>
         <SectionH2>People Also Ask</SectionH2>
@@ -528,13 +528,13 @@ export default function LandingPage() {
           وَاذْكُرُوا اللَّهَ كَثِيرًا
         </div>
         <p style={{ fontSize: 13, color: "#4a6858", marginBottom: 36 }}>
-          "And remember Allah often" — Quran 62:10
+          "And remember Allah often", Quran 62:10
         </p>
         <h2 style={{ fontFamily: "DM Sans, Inter, sans-serif", fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 700, color: s.text, marginBottom: 12, letterSpacing: "-0.02em" }}>
           Begin your growth journey today.
         </h2>
         <p style={{ color: "#4a6858", fontSize: 14, marginBottom: 36 }}>
-          Join thousands of Muslims building better spiritual habits with MyTazki — the AI Islamic companion built for daily growth.
+          Join thousands of Muslims building better spiritual habits with MyTazki, the AI Islamic companion built for daily growth.
         </p>
         <button onClick={() => void navigate("/register")} style={{ background: s.green, border: "none", color: s.bg, borderRadius: 14, padding: "16px 48px", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", boxShadow: "0 0 40px rgba(52,201,122,0.2)" }}>
           Start Your Journey →
@@ -542,7 +542,7 @@ export default function LandingPage() {
         <p style={{ fontSize: 12, color: s.faint, marginTop: 16 }}>Free forever · No ads · No subscription required</p>
       </section>
 
-      {/* ── STEP 10 — SEO FOOTER ── */}
+      {/* ── STEP 10, SEO FOOTER ── */}
       <footer style={{ borderTop: `1px solid ${s.borderSoft}`, padding: "48px 24px 32px", maxWidth: 900, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 32, marginBottom: 40 }}>
 

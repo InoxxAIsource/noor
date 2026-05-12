@@ -43,7 +43,7 @@ export function guidedJourneyCard(j: JourneyLink): string {
 export function guidedJourneysBlock(journeys: JourneyLink[], heading = "Guided Spiritual Journeys"): string {
   return `<section style="margin:40px 0">
   <h2 style="margin-bottom:4px">${esc(heading)}</h2>
-  <p style="color:#6a9878;font-size:14px;margin-bottom:18px;font-family:Inter,sans-serif">Structured paths to help you grow — one day at a time.</p>
+  <p style="color:#6a9878;font-size:14px;margin-bottom:18px;font-family:Inter,sans-serif">Structured paths to help you grow, one day at a time.</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
     ${journeys.map(guidedJourneyCard).join("")}
   </div>
@@ -158,7 +158,7 @@ export function mostReadSection(articles: ArticleLink[]): string {
 
 export function startHereBox(steps: Array<{ label: string; href: string }>): string {
   return `<div style="background:linear-gradient(135deg,rgba(52,201,122,0.08),rgba(184,148,106,0.05));border:1px solid rgba(52,201,122,0.18);border-radius:14px;padding:24px;margin:32px 0">
-  <h3 style="color:#34c97a;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 16px">Start Here — Recommended Path</h3>
+  <h3 style="color:#34c97a;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 16px">Start Here, Recommended Path</h3>
   <ol style="margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px">
     ${steps.map((s, i) => `<li style="display:flex;align-items:center;gap:12px">
       <span style="background:#34c97a;color:#0d1411;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">${i + 1}</span>

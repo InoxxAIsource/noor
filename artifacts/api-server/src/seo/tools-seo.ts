@@ -21,14 +21,14 @@ router.get("/zakat-calculator", (_req: Request, res: Response) => {
 
   const faqs = [
     { q: "What is Nisab for Zakat in India 2026?", a: "Nisab is the minimum amount of wealth one must have before Zakat becomes obligatory. It equals the value of 87.48 grams of gold or 612.36 grams of silver. At current gold prices in India (~₹6,500/gram), Nisab is approximately ₹5.7 lakh." },
-    { q: "How much Zakat do I pay on gold in India?", a: "You pay 2.5% of the current market value of your gold if the total value of your assets exceeds Nisab. For example, if you have 100 grams of gold at ₹6,500/gram = ₹6,50,000 — Zakat = ₹16,250." },
+    { q: "How much Zakat do I pay on gold in India?", a: "You pay 2.5% of the current market value of your gold if the total value of your assets exceeds Nisab. For example, if you have 100 grams of gold at ₹6,500/gram = ₹6,50,000, Zakat = ₹16,250." },
     { q: "Is Zakat obligatory on savings accounts?", a: "Yes, if your total net wealth (savings + gold + business assets minus debts) exceeds Nisab for one full lunar year (Hawl)." },
-    { q: "When is Zakat due?", a: "Zakat is due annually (every Islamic lunar year — Hawl). Most Muslims pay during Ramadan for extra rewards." },
+    { q: "When is Zakat due?", a: "Zakat is due annually (every Islamic lunar year, Hawl). Most Muslims pay during Ramadan for extra rewards." },
     { q: "What is the Zakat rate?", a: "The Zakat rate is 2.5% (1/40th) of your total net zakatable wealth above Nisab." },
   ];
 
   const head = seoHead({
-    title: "Zakat Calculator India 2026 — Calculate Zakat in INR",
+    title: "Zakat Calculator India 2026, Calculate Zakat in INR",
     description: "Free Zakat calculator for India 2026. Calculate your Zakat on gold, silver, cash with live gold prices in INR. Know your Nisab and Zakat amount instantly.",
     canonical: "/zakat-calculator",
     schema: [howToSchema, faqSchema(faqs)],
@@ -36,7 +36,7 @@ router.get("/zakat-calculator", (_req: Request, res: Response) => {
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Zakat Calculator" }])}
-<h1>Zakat Calculator India 2026 — Calculate in INR</h1>
+<h1>Zakat Calculator India 2026, Calculate in INR</h1>
 <p style="color:#4a7a4a">Calculate your annual Zakat on gold, silver, cash, and business assets. Live gold price fetched in INR.</p>
 
 <div class="card" style="margin:24px 0">
@@ -82,7 +82,7 @@ router.get("/masjid-finder", (_req: Request, res: Response) => {
   ];
 
   const head = seoHead({
-    title: "Masjid Near Me — Find Mosque in India & Pakistan",
+    title: "Masjid Near Me, Find Mosque in India & Pakistan",
     description: "Find the nearest mosque to you in India, Pakistan, UK, USA and worldwide. GPS-based mosque finder with navigation, distance, and favourite masjid saving.",
     canonical: "/masjid-finder",
     schema: faqSchema(faqs),
@@ -90,7 +90,7 @@ router.get("/masjid-finder", (_req: Request, res: Response) => {
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Masjid Finder" }])}
-<h1>Masjid Near Me — Find Mosque in India &amp; Pakistan</h1>
+<h1>Masjid Near Me, Find Mosque in India &amp; Pakistan</h1>
 <p style="color:#4a7a4a">Find the nearest mosque to your current location with GPS. Navigation, distance, and filter by type.</p>
 
 <div class="cta-box" style="margin:24px 0">
@@ -122,11 +122,11 @@ router.get("/qibla-direction", (_req: Request, res: Response) => {
     { q: "What is the Qibla direction from India?", a: "The Qibla direction from most of India (Delhi) is approximately 292° northwest. It varies slightly by city." },
     { q: "How do I find Qibla direction at home?", a: "Open MyTazki and tap Qibla Compass. It uses your GPS and device compass to show the exact Qibla direction with an animated compass needle." },
     { q: "What is the Qibla direction from Pakistan?", a: "The Qibla direction from Pakistan (Karachi) is approximately 274° west. From Lahore it is approximately 271° west." },
-    { q: "Can I find Qibla without internet?", a: "Yes, MyTazki calculates Qibla using mathematical bearing from your GPS coordinates — no internet needed for the calculation." },
+    { q: "Can I find Qibla without internet?", a: "Yes, MyTazki calculates Qibla using mathematical bearing from your GPS coordinates, no internet needed for the calculation." },
   ];
 
   const head = seoHead({
-    title: "Qibla Direction from India — Find Qibla Compass Online",
+    title: "Qibla Direction from India, Find Qibla Compass Online",
     description: "Find Qibla direction from any city in India, Pakistan, UK, USA. Live GPS compass showing exact bearing to Makkah. Also shows distance to Kaaba.",
     canonical: "/qibla-direction",
     schema: faqSchema(faqs),
@@ -134,7 +134,7 @@ router.get("/qibla-direction", (_req: Request, res: Response) => {
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Qibla Direction" }])}
-<h1>Qibla Direction from India — Find Qibla Compass Online</h1>
+<h1>Qibla Direction from India, Find Qibla Compass Online</h1>
 <p style="color:#4a7a4a">Find the exact direction of Qibla (Kaaba, Makkah) from your current location using GPS and a live animated compass.</p>
 
 <div class="cta-box" style="margin:24px 0">
@@ -184,7 +184,7 @@ router.get("/ramadan", (_req: Request, res: Response) => {
   ];
 
   const head = seoHead({
-    title: "Ramadan 2026 India — Start Date, Sehri Iftar Timetable, Duas",
+    title: "Ramadan 2026 India, Start Date, Sehri Iftar Timetable, Duas",
     description: "Ramadan 2026 India start date: February 18. Complete sehri and iftar timetable for Delhi, duas for Ramadan, Laylatul Qadr guide, and Eid date.",
     canonical: "/ramadan",
     schema: [
@@ -195,7 +195,7 @@ router.get("/ramadan", (_req: Request, res: Response) => {
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Ramadan 2026" }])}
-<h1>Ramadan 2026 — Start Date, Schedule &amp; Duas</h1>
+<h1>Ramadan 2026, Start Date, Schedule &amp; Duas</h1>
 
 <div class="card" style="margin:24px 0;text-align:center;border-color:rgba(255,215,0,0.3)">
   <p style="color:#4a7a4a;font-size:12px;margin:0 0 4px;text-transform:uppercase">Ramadan 2026 Start Date (India)</p>
@@ -203,7 +203,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Ramadan 2026" }])}
   <p style="color:#4a7a4a;font-size:13px;margin:0">Subject to moon sighting • Eid ul Fitr: March 19/20, 2026</p>
 </div>
 
-<h2>Sehri &amp; Iftar Timetable — Delhi 2026</h2>
+<h2>Sehri &amp; Iftar Timetable, Delhi 2026</h2>
 <div style="overflow-x:auto;margin:16px 0">
   <table style="width:100%;border-collapse:collapse;font-size:14px">
     <tr style="border-bottom:1px solid rgba(0,165,80,0.3)">
@@ -268,15 +268,15 @@ router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
   ];
 
   const head = seoHead({
-    title: "Islamic Calendar 2026 India — Hijri Calendar & Islamic Events",
-    description: "Islamic calendar 2026 for India with all major Islamic events — Ramadan, Eid ul Fitr, Eid ul Adha, Ashura, Laylatul Qadr dates in Gregorian and Hijri.",
+    title: "Islamic Calendar 2026 India, Hijri Calendar & Islamic Events",
+    description: "Islamic calendar 2026 for India with all major Islamic events, Ramadan, Eid ul Fitr, Eid ul Adha, Ashura, Laylatul Qadr dates in Gregorian and Hijri.",
     canonical: "/islamic-calendar/2026",
     schema: { "@context": "https://schema.org", "@type": "Article", "headline": "Islamic Calendar 2026 India", "description": "Complete Islamic calendar 2026 with Hijri dates and all major Islamic events.", "author": { "@type": "Organization", "name": "MyTazki" } },
   });
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Islamic Calendar 2026" }])}
-<h1>Islamic Calendar 2026 India — Hijri Calendar &amp; Events</h1>
+<h1>Islamic Calendar 2026 India, Hijri Calendar &amp; Events</h1>
 <p style="color:#4a7a4a">Major Islamic dates and events for the year 2026 (1447–1448 AH) in India.</p>
 
 <div style="overflow-x:auto;margin:24px 0">

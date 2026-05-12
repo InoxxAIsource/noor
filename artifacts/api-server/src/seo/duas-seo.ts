@@ -22,16 +22,16 @@ function slugify(s: string): string {
 }
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  Morning: "Morning azkar and duas — Recite these supplications every morning for protection and blessings.",
-  Evening: "Evening azkar and duas — Recite these supplications every evening for protection.",
-  Forgiveness: "Duas for forgiveness and repentance — Seek Allah's mercy with these authentic supplications.",
+  Morning: "Morning azkar and duas, Recite these supplications every morning for protection and blessings.",
+  Evening: "Evening azkar and duas, Recite these supplications every evening for protection.",
+  Forgiveness: "Duas for forgiveness and repentance, Seek Allah's mercy with these authentic supplications.",
   Protection: "Duas for protection from evil, harm, and adversity.",
-  "Daily Life": "Duas for everyday activities — eating, drinking, traveling, and more.",
-  Sleep: "Duas before sleeping and upon waking — for peaceful sleep and morning blessings.",
-  Travel: "Duas for travel and journeys — seek Allah's protection on your travels.",
+  "Daily Life": "Duas for everyday activities, eating, drinking, traveling, and more.",
+  Sleep: "Duas before sleeping and upon waking, for peaceful sleep and morning blessings.",
+  Travel: "Duas for travel and journeys, seek Allah's protection on your travels.",
   Hardship: "Duas for hardship, anxiety, stress, and difficult times.",
   Gratitude: "Duas of gratitude and thankfulness to Allah.",
-  Salah: "Duas related to prayer — before, during, and after Salah.",
+  Salah: "Duas related to prayer, before, during, and after Salah.",
   Quran: "Duas for reciting the Quran and seeking knowledge.",
   Family: "Duas for family, parents, spouse, and children.",
 };
@@ -41,18 +41,18 @@ router.get("/duas", async (_req: Request, res: Response) => {
   const categories = [...new Set(rawDuas.map(d => d.category))].sort();
 
   const head = seoHead({
-    title: "Islamic Duas — Arabic, Transliteration & Meaning",
+    title: "Islamic Duas, Arabic, Transliteration & Meaning",
     description: "Collection of 200+ authentic Islamic duas with Arabic text, transliteration, English meaning and source. Morning, evening, travel, protection duas and more.",
     canonical: "/duas",
     schema: faqSchema([
       { q: "What is a dua in Islam?", a: "A dua (supplication) is a direct personal prayer to Allah. Unlike salah, dua can be made at any time in any language." },
       { q: "What is the most powerful dua?", a: "Sayyid al-Istighfar (the master supplication for forgiveness) is considered one of the most powerful duas." },
-      { q: "What is the morning dua?", a: "The morning dua includes Alhamdu lillahil-ladhi ahyana ba'da ma amatana — All praise is for Allah who gave us life after having taken it from us." },
+      { q: "What is the morning dua?", a: "The morning dua includes Alhamdu lillahil-ladhi ahyana ba'da ma amatana, All praise is for Allah who gave us life after having taken it from us." },
     ]),
   });
 
   const body = `
-<h1>Islamic Duas — Arabic &amp; Meaning</h1>
+<h1>Islamic Duas, Arabic &amp; Meaning</h1>
 <p style="color:#4a7a4a">Authentic supplications from the Quran and Sunnah with Arabic, transliteration, and meaning.</p>
 
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
@@ -96,7 +96,7 @@ router.get("/duas/:slug", async (req: Request, res: Response) => {
     const desc = CATEGORY_DESCRIPTIONS[category] || `${category} duas from the Quran and Sunnah.`;
 
     const head = seoHead({
-      title: `${category} Duas — Arabic, Transliteration & Meaning`,
+      title: `${category} Duas, Arabic, Transliteration & Meaning`,
       description: desc,
       canonical: `/duas/${slug}`,
       schema: [
@@ -110,7 +110,7 @@ router.get("/duas/:slug", async (req: Request, res: Response) => {
 
     const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Duas", item: "/duas" }, { name: `${category} Duas` }])}
-<h1>${esc(category)} Duas — Arabic &amp; Meaning</h1>
+<h1>${esc(category)} Duas, Arabic &amp; Meaning</h1>
 <p style="color:#4a7a4a">${esc(desc)}</p>
 
 ${dues.map(d => `
@@ -147,11 +147,11 @@ ${ctaBlock()}
   ];
 
   const head = seoHead({
-    title: `${dua.title} — Arabic, Meaning and When to Say It`,
+    title: `${dua.title}, Arabic, Meaning and When to Say It`,
     description: `${dua.title}: "${dua.meaningEnglish.substring(0, 100)}..." Arabic text, transliteration and English meaning. Source: ${dua.source}.`,
     canonical: `/duas/${slug}`,
     schema: [
-      { "@context": "https://schema.org", "@type": "Article", "headline": `${dua.title} — Arabic and Meaning`, "description": dua.meaningEnglish, "author": { "@type": "Organization", "name": "MyTazki" }, "publisher": { "@type": "Organization", "name": "MyTazki" } },
+      { "@context": "https://schema.org", "@type": "Article", "headline": `${dua.title}, Arabic and Meaning`, "description": dua.meaningEnglish, "author": { "@type": "Organization", "name": "MyTazki" }, "publisher": { "@type": "Organization", "name": "MyTazki" } },
       faqSchema(faqs),
       breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Duas", item: "/duas" }, { name: `${dua.category}`, item: `/duas/${slugify(dua.category)}` }, { name: dua.title }]),
     ],
@@ -164,7 +164,7 @@ ${breadcrumb([
     { name: dua.category, item: `/duas/${slugify(dua.category)}` },
     { name: dua.title },
   ])}
-<h1>${esc(dua.title)} — Arabic, Meaning and When to Say It</h1>
+<h1>${esc(dua.title)}, Arabic, Meaning and When to Say It</h1>
 
 <div class="card" style="margin:24px 0;text-align:center;padding:24px">
   <p class="arabic" style="font-size:1.8rem;line-height:2.2;margin:0 0 16px">${dua.arabic}</p>

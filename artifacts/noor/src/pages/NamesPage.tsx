@@ -58,7 +58,7 @@ function generateNameCardPNG(n: Name): void {
 
   ctx.fillStyle = "#00a550";
   ctx.font = "14px system-ui, sans-serif";
-  ctx.fillText("MyTazki — mytazki.com", 320, 370);
+  ctx.fillText("MyTazki, mytazki.com", 320, 370);
 
   ctx.fillStyle = "#4a7a4a";
   ctx.font = "12px system-ui, sans-serif";

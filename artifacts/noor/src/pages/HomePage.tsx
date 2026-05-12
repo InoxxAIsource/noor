@@ -299,7 +299,7 @@ export default function HomePage() {
               {nameOfAllah.arabic}
             </div>
             <div style={{ fontSize: 11, color: "#c8e8c8", lineHeight: 1.4 }}>
-              {nameOfAllah.nameEnglish} — {nameOfAllah.meaningEnglish}
+              {nameOfAllah.nameEnglish}, {nameOfAllah.meaningEnglish}
             </div>
           </div>
 
@@ -315,7 +315,7 @@ export default function HomePage() {
               "{hadith.textEnglish.slice(0, 100)}{hadith.textEnglish.length > 100 ? "…" : ""}"
             </div>
             <div style={{ fontSize: 10, color: "#4a7a4a", marginTop: 4 }}>
-              — {hadith.source}
+             , {hadith.source}
             </div>
           </div>
 

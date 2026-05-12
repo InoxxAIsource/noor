@@ -30,7 +30,7 @@ router.get("/names", async (_req: Request, res: Response) => {
   const categories = ["Quranic", "Prophet", "Sahaba", "Trending", "Boy", "Girl"];
 
   const head = seoHead({
-    title: "Islamic Baby Names 2025 — Arabic, Meaning & Origin",
+    title: "Islamic Baby Names 2025, Arabic, Meaning & Origin",
     description: "Browse 1000+ Muslim baby names with Arabic, meaning, origin and Quran reference. Filter by boy, girl, Quranic, prophet names and more.",
     canonical: "/names",
     schema: [
@@ -43,7 +43,7 @@ router.get("/names", async (_req: Request, res: Response) => {
   });
 
   const body = `
-<h1>Islamic Baby Names — Arabic Meaning &amp; Origin</h1>
+<h1>Islamic Baby Names, Arabic Meaning &amp; Origin</h1>
 <p style="color:#4a7a4a">Explore 40+ authentic Muslim names with Arabic script, meaning, origin, and Quran reference.</p>
 
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin:20px 0">
@@ -89,7 +89,7 @@ async function genderPage(gender: "boy" | "girl", res: Response): Promise<void> 
   const label = gender === "boy" ? "Boy" : "Girl";
 
   const head = seoHead({
-    title: `Muslim ${label} Names A-Z — Arabic Meaning & Origin`,
+    title: `Muslim ${label} Names A-Z, Arabic Meaning & Origin`,
     description: `Complete list of Muslim ${label.toLowerCase()} names with Arabic, meaning, and Quran reference. Updated 2025.`,
     canonical: `/names/${gender}`,
     schema: faqSchema([
@@ -99,7 +99,7 @@ async function genderPage(gender: "boy" | "girl", res: Response): Promise<void> 
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `${label} Names` }])}
-<h1>Muslim ${esc(label)} Names — Arabic Meaning &amp; Origin 2025</h1>
+<h1>Muslim ${esc(label)} Names, Arabic Meaning &amp; Origin 2025</h1>
 <p style="color:#4a7a4a">${names.length}+ authentic Muslim ${label.toLowerCase()} names with Arabic script and meaning.</p>
 
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
@@ -132,9 +132,9 @@ router.get("/names/boy/letter/:letter", async (req: Request, res: Response) => {
 
   const head = seoHead({
     title: `Muslim Boy Names Starting with ${letter}`,
-    description: `Muslim boy names starting with ${letter} — Arabic meaning, origin, and Quran reference.`,
+    description: `Muslim boy names starting with ${letter}, Arabic meaning, origin, and Quran reference.`,
     canonical: `/names/boy/letter/${letter.toLowerCase()}`,
-    schema: breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `Boy Names — ${letter}` }]),
+    schema: breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `Boy Names, ${letter}` }]),
   });
 
   const body = `
@@ -164,9 +164,9 @@ router.get("/names/girl/letter/:letter", async (req: Request, res: Response) => 
 
   const head = seoHead({
     title: `Muslim Girl Names Starting with ${letter}`,
-    description: `Muslim girl names starting with ${letter} — Arabic meaning, origin, and Quran reference.`,
+    description: `Muslim girl names starting with ${letter}, Arabic meaning, origin, and Quran reference.`,
     canonical: `/names/girl/letter/${letter.toLowerCase()}`,
-    schema: breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `Girl Names — ${letter}` }]),
+    schema: breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `Girl Names, ${letter}` }]),
   });
 
   const body = `
@@ -233,7 +233,7 @@ router.get("/names/forbidden", async (_req, res) =>
   categoryPage("forbidden", "Forbidden Names in Islam", "Names that are not allowed in Islam according to scholars, with explanations.", n => !!n.isForbidden, res));
 
 router.get("/names/trending", async (_req, res) =>
-  categoryPage("trending", "Trending Muslim Names 2025 — India & Pakistan", "The most popular Muslim baby names in India and Pakistan in 2025.", n => !!n.trending2025, res));
+  categoryPage("trending", "Trending Muslim Names 2025, India & Pakistan", "The most popular Muslim baby names in India and Pakistan in 2025.", n => !!n.trending2025, res));
 
 router.get("/names/:slug", async (req: Request, res: Response) => {
   const slug = String(req.params["slug"] ?? "");
@@ -257,7 +257,7 @@ router.get("/names/:slug", async (req: Request, res: Response) => {
     .slice(0, 3);
 
   const head = seoHead({
-    title: `${name.nameEnglish} Name Meaning in Islam — Arabic, Origin, Quran`,
+    title: `${name.nameEnglish} Name Meaning in Islam, Arabic, Origin, Quran`,
     description: `${name.nameEnglish} (${name.nameArabic}) means "${name.meaningEnglish}" in Arabic. ${name.quranReference ? `Mentioned in Quran ${name.quranReference}.` : ""} ${name.prophetConnection || ""}`,
     canonical: `/names/${slug}`,
     schema: [
@@ -277,7 +277,7 @@ ${breadcrumb([
     { name: `${name.gender === "boy" ? "Boy" : "Girl"} Names`, item: `/names/${name.gender}` },
     { name: name.nameEnglish },
   ])}
-<h1>${esc(name.nameEnglish)} — Name Meaning in Islam</h1>
+<h1>${esc(name.nameEnglish)}, Name Meaning in Islam</h1>
 
 <div class="card" style="margin:24px 0;text-align:center">
   <p class="arabic" style="font-size:3rem;margin:0 0 8px">${name.nameArabic}</p>
@@ -311,7 +311,7 @@ ${ctaBlock()}
 ${similar.length > 0 ? `
 <h2>Similar Names</h2>
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0">
-  ${similar.map(n => `<a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:8px 16px;border-radius:8px;text-decoration:none">${esc(n.nameEnglish)} — ${esc(n.meaningEnglish)}</a>`).join("")}
+  ${similar.map(n => `<a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:8px 16px;border-radius:8px;text-decoration:none">${esc(n.nameEnglish)}, ${esc(n.meaningEnglish)}</a>`).join("")}
 </div>` : ""}
 
 ${faqHtml(faqs)}

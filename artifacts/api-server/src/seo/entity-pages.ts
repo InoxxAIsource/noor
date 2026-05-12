@@ -46,45 +46,45 @@ function eeatBar(author: string, role: string, reviewed: string, updated: string
 
 router.get("/about", (_req: Request, res: Response) => {
   const faqs = [
-    { q: "What does 'MyTazki' mean?", a: "Tazki comes from 'Tazkiyah' — the Islamic concept of purifying and growing the soul. MyTazki is your personal spiritual companion for that inner journey, built for the modern Muslim." },
+    { q: "What does 'MyTazki' mean?", a: "Tazki comes from 'Tazkiyah', the Islamic concept of purifying and growing the soul. MyTazki is your personal spiritual companion for that inner journey, built for the modern Muslim." },
     { q: "Is MyTazki affiliated with any religious institution?", a: "No. MyTazki is an independent platform. Our content is grounded in authentic Quran and Hadith sources and reviewed by our Islamic content team for accuracy." },
-    { q: "How does AI fit into an Islamic app?", a: "We use AI as a tool, not a religious authority. AI helps personalize your experience — suggesting duas, reflecting on Quran verses, tracking habits. Final guidance always traces back to Islamic sources." },
-    { q: "Is MyTazki free?", a: "Yes — the core experience is completely free. Prayer times, Quran, Azkar, Duas, and habit tracking are all free, with no account required to explore." },
-    { q: "Who is MyTazki for?", a: "Any Muslim who wants to grow spiritually — whether you are consistent in your practice or just reconnecting after a long time. MyTazki meets you where you are, without judgment." },
+    { q: "How does AI fit into an Islamic app?", a: "We use AI as a tool, not a religious authority. AI helps personalize your experience, suggesting duas, reflecting on Quran verses, tracking habits. Final guidance always traces back to Islamic sources." },
+    { q: "Is MyTazki free?", a: "Yes, the core experience is completely free. Prayer times, Quran, Azkar, Duas, and habit tracking are all free, with no account required to explore." },
+    { q: "Who is MyTazki for?", a: "Any Muslim who wants to grow spiritually, whether you are consistent in your practice or just reconnecting after a long time. MyTazki meets you where you are, without judgment." },
   ];
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "About MyTazki — AI Islamic Companion",
+    "name": "About MyTazki, AI Islamic Companion",
     "url": "https://mytazki.com/about",
-    "description": "Learn about MyTazki — an AI-powered Islamic growth platform helping Muslims pray, reflect, and grow spiritually every day.",
+    "description": "Learn about MyTazki, an AI-powered Islamic growth platform helping Muslims pray, reflect, and grow spiritually every day.",
     "publisher": ORG_SCHEMA,
   };
   const bc = [{ name: "Home", item: "/" }, { name: "About MyTazki" }];
   const html = page(
-    seoHead({ title: "About MyTazki", description: "MyTazki is an AI-powered Islamic growth companion — helping modern Muslims build prayer habits, explore Quran, find duas, and grow spiritually every day. Learn our mission.", canonical: "/about", schema: [webPageSchema, breadcrumbSchema(bc), faqSchema(faqs)] }),
+    seoHead({ title: "About MyTazki", description: "MyTazki is an AI-powered Islamic growth companion, helping modern Muslims build prayer habits, explore Quran, find duas, and grow spiritually every day. Learn our mission.", canonical: "/about", schema: [webPageSchema, breadcrumbSchema(bc), faqSchema(faqs)] }),
     `${breadcrumb(bc)}
 ${eeatBar("MyTazki Editorial Team", "Islamic Content", "May 2026", "May 2026")}
 
 <header style="padding:40px 0 32px;text-align:center;border-bottom:1px solid rgba(52,201,122,0.1);margin-bottom:40px">
   <p style="font-family:Amiri,serif;direction:rtl;color:#b8946a;font-size:2rem;margin:0 0 8px;line-height:1.8">وَمَن يُزَكِّيهَا قَدْ أَفْلَحَ</p>
-  <p style="color:#4a6858;font-size:13px;font-style:italic;margin:0 0 28px;font-family:Inter,sans-serif">And he who purifies it has truly succeeded. — Quran 91:9</p>
+  <p style="color:#4a6858;font-size:13px;font-style:italic;margin:0 0 28px;font-family:Inter,sans-serif">And he who purifies it has truly succeeded., Quran 91:9</p>
   <h1 style="font-family:DM Sans,Inter,sans-serif;font-size:2.4rem;font-weight:800;color:#eaf4ee;line-height:1.2;margin:0 0 16px">We built MyTazki because<br>spiritual growth deserves better tools.</h1>
-  <p style="color:#6a9878;font-size:1rem;line-height:1.75;max-width:640px;margin:0 auto;font-family:Inter,sans-serif">The modern Muslim navigates prayer times, Quran recitation, daily duas, and spiritual habits — often alone, on a phone, between the noise of everyday life. MyTazki exists to make that easier, more meaningful, and more consistent.</p>
+  <p style="color:#6a9878;font-size:1rem;line-height:1.75;max-width:640px;margin:0 auto;font-family:Inter,sans-serif">The modern Muslim navigates prayer times, Quran recitation, daily duas, and spiritual habits, often alone, on a phone, between the noise of everyday life. MyTazki exists to make that easier, more meaningful, and more consistent.</p>
 </header>
 
-${quickAnswerBox("What is MyTazki?", "MyTazki is an AI-powered Islamic spiritual growth platform. It combines prayer times, Quran reflection, guided Azkar, curated Duas, Islamic habit tracking, and an AI Islamic companion into one calm, premium experience — designed for Muslims who want to grow every day.")}
+${quickAnswerBox("What is MyTazki?", "MyTazki is an AI-powered Islamic spiritual growth platform. It combines prayer times, Quran reflection, guided Azkar, curated Duas, Islamic habit tracking, and an AI Islamic companion into one calm, premium experience, designed for Muslims who want to grow every day.")}
 
 <section style="margin:40px 0">
   <h2>Why MyTazki Exists</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">Most Islamic apps treat spirituality as a checklist. Prayer logged. Done. But real spiritual growth is quieter than that — it lives in the moments between salah, in a dua you reach for when your heart is heavy, in a Quran verse that catches you off guard at 2am.</p>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin-top:12px">We built MyTazki to honour those moments. To be present when you feel anxious and want a dua that actually speaks to your situation. To walk with you through a 7-day journey back to Fajr. To reflect Quran back at you in a way that feels personal — not performative.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">Most Islamic apps treat spirituality as a checklist. Prayer logged. Done. But real spiritual growth is quieter than that, it lives in the moments between salah, in a dua you reach for when your heart is heavy, in a Quran verse that catches you off guard at 2am.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin-top:12px">We built MyTazki to honour those moments. To be present when you feel anxious and want a dua that actually speaks to your situation. To walk with you through a 7-day journey back to Fajr. To reflect Quran back at you in a way that feels personal, not performative.</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:28px 0">
     ${[
       { icon: "🕌", title: "Prayer & Salah", desc: "Live prayer times, salah guides, khushoo tips" },
       { icon: "📖", title: "Quran Reflection", desc: "114 surahs, verse audio, reflective commentary" },
       { icon: "🤲", title: "Duas & Azkar", desc: "110+ authentic duas across all life situations" },
-      { icon: "🤖", title: "AI Companion", desc: "Islamically guided AI — Claude-powered, adab-first" },
+      { icon: "🤖", title: "AI Companion", desc: "Islamically guided AI, Claude-powered, adab-first" },
       { icon: "🌙", title: "Habit Building", desc: "Streaks, growth tracking, guided journeys" },
       { icon: "🧘", title: "Emotional Wellness", desc: "Islamic healing for anxiety, grief, overthinking" },
     ].map(c => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.12);border-radius:12px;padding:18px 16px">
@@ -97,13 +97,13 @@ ${quickAnswerBox("What is MyTazki?", "MyTazki is an AI-powered Islamic spiritual
 
 <section style="margin:40px 0;padding:32px;background:linear-gradient(135deg,#152019,#0d1411);border:1px solid rgba(184,148,106,0.2);border-radius:16px">
   <h2 style="margin:0 0 14px">The MyTazki Philosophy</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">We believe the best Islamic technology is invisible — it gets out of the way and lets you connect with Allah. We design for calm, not dopamine. For depth, not volume. For consistency, not performance.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">We believe the best Islamic technology is invisible, it gets out of the way and lets you connect with Allah. We design for calm, not dopamine. For depth, not volume. For consistency, not performance.</p>
   <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin-top:12px">Every feature we build passes a simple test: <em style="color:#b8946a">does this help a Muslim get closer to Allah?</em> If not, it doesn't ship.</p>
 </section>
 
 <section style="margin:40px 0">
   <h2>How We Use AI Responsibly</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">AI is a powerful tool. In the wrong hands, it can mislead. In Islamic contexts, that responsibility is especially serious. Here is exactly what our AI does — and doesn't — do:</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">AI is a powerful tool. In the wrong hands, it can mislead. In Islamic contexts, that responsibility is especially serious. Here is exactly what our AI does, and doesn't, do:</p>
   <div style="margin:20px 0;display:flex;flex-direction:column;gap:10px">
     ${[
       ["✅ AI does", "Suggest contextually relevant duas and Quran verses"],
@@ -122,7 +122,7 @@ ${quickAnswerBox("What is MyTazki?", "MyTazki is an AI-powered Islamic spiritual
 </section>
 
 ${faqHtml(faqs)}
-${emotionalCTA({ title: "Begin Your Spiritual Journey", subtitle: "Free prayer times, Quran, Azkar, Duas, and AI Islamic companion — all in one place.", href: "/download", btnText: "Download MyTazki Free →" })}
+${emotionalCTA({ title: "Begin Your Spiritual Journey", subtitle: "Free prayer times, Quran, Azkar, Duas, and AI Islamic companion, all in one place.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["what is mytazki", "mytazki app review", "best islamic app", "ai muslim app", "islamic growth app", "mytazki vs other apps"])}
 `
   );
@@ -134,25 +134,25 @@ router.get("/mission", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Our Mission" }];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "MyTazki Mission", "url": "https://mytazki.com/mission", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Our Mission — MyTazki", description: "MyTazki's mission: to make Islamic spiritual growth accessible to every Muslim, every day — through technology that honours faith, depth, and the human soul.", canonical: "/mission", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Our Mission, MyTazki", description: "MyTazki's mission: to make Islamic spiritual growth accessible to every Muslim, every day, through technology that honours faith, depth, and the human soul.", canonical: "/mission", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Our Mission</h1>
 ${eeatBar("MyTazki Editorial Team", "Platform Strategy", "May 2026", "May 2026")}
 
-${quickAnswerBox("What is MyTazki's mission?", "To make daily Islamic spiritual growth feel as natural as breathing — accessible, personal, and deeply rooted in authentic Islamic tradition, powered by responsible AI.")}
+${quickAnswerBox("What is MyTazki's mission?", "To make daily Islamic spiritual growth feel as natural as breathing, accessible, personal, and deeply rooted in authentic Islamic tradition, powered by responsible AI.")}
 
 <section style="margin:32px 0">
-  <p style="font-size:1.15rem;color:#eaf4ee;line-height:1.9;font-family:Inter,sans-serif;font-weight:500">We believe every Muslim deserves a companion that helps them grow — not just a prayer alarm and a Quran PDF.</p>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin-top:16px">The global Muslim population is young, mobile-first, and spiritually hungry — yet the tools available often feel like they were built in 2005. We are changing that.</p>
+  <p style="font-size:1.15rem;color:#eaf4ee;line-height:1.9;font-family:Inter,sans-serif;font-weight:500">We believe every Muslim deserves a companion that helps them grow, not just a prayer alarm and a Quran PDF.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin-top:16px">The global Muslim population is young, mobile-first, and spiritually hungry, yet the tools available often feel like they were built in 2005. We are changing that.</p>
 </section>
 
 <section style="margin:40px 0">
   <h2>Three Core Commitments</h2>
   <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px">
     ${[
-      { n: "01", title: "Authenticity first", body: "Every dua, verse, and hadith on MyTazki is sourced from verified Islamic texts. Our AI surfaces knowledge — it never invents it. Scholarship leads; technology follows." },
+      { n: "01", title: "Authenticity first", body: "Every dua, verse, and hadith on MyTazki is sourced from verified Islamic texts. Our AI surfaces knowledge, it never invents it. Scholarship leads; technology follows." },
       { n: "02", title: "Emotional intelligence", body: "Spiritual growth is not a performance metric. We design for the Muslim who is tired, struggling, or just getting back on their feet. MyTazki meets people with compassion, not a scorecard." },
-      { n: "03", title: "Radical accessibility", body: "Core features are and will always be free. Prayer times, Quran, 110+ Duas, Azkar, Tasbih — no account, no paywall. We build for every Muslim, not just the ones with subscriptions." },
+      { n: "03", title: "Radical accessibility", body: "Core features are and will always be free. Prayer times, Quran, 110+ Duas, Azkar, Tasbih, no account, no paywall. We build for every Muslim, not just the ones with subscriptions." },
     ].map(c => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.12);border-radius:14px;padding:22px 20px;display:flex;gap:18px">
       <span style="font-family:DM Sans,sans-serif;font-size:2rem;font-weight:800;color:rgba(52,201,122,0.18);flex-shrink:0">${esc(c.n)}</span>
       <div>
@@ -165,7 +165,7 @@ ${quickAnswerBox("What is MyTazki's mission?", "To make daily Islamic spiritual 
 
 <section style="margin:40px 0;padding:28px;background:rgba(52,201,122,0.05);border-radius:14px;border-left:4px solid #34c97a">
   <p style="font-family:Amiri,serif;direction:rtl;color:#b8946a;font-size:1.8rem;text-align:right;margin:0 0 8px;line-height:1.8">وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ</p>
-  <p style="color:#4a6858;font-size:13px;font-style:italic;font-family:Inter,sans-serif;margin:0 0 16px">And who is better in speech than one who calls to Allah — Quran 41:33</p>
+  <p style="color:#4a6858;font-size:13px;font-style:italic;font-family:Inter,sans-serif;margin:0 0 16px">And who is better in speech than one who calls to Allah, Quran 41:33</p>
   <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin:0">This ayah is the compass behind every decision we make at MyTazki. Technology is our method. Calling to Allah is our purpose.</p>
 </section>
 
@@ -185,22 +185,22 @@ router.get("/our-philosophy", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Our Philosophy" }];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "MyTazki Philosophy", "url": "https://mytazki.com/our-philosophy", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Our Philosophy — Design for the Soul", description: "MyTazki's design philosophy: calm over noise, depth over volume, spiritual warmth over corporate efficiency. Built for the modern Muslim soul.", canonical: "/our-philosophy", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Our Philosophy, Design for the Soul", description: "MyTazki's design philosophy: calm over noise, depth over volume, spiritual warmth over corporate efficiency. Built for the modern Muslim soul.", canonical: "/our-philosophy", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
-<h1>Our Philosophy — Design for the Soul</h1>
+<h1>Our Philosophy, Design for the Soul</h1>
 ${eeatBar("MyTazki Design & Content Team", "Product Philosophy", "May 2026", "May 2026")}
 
-<p style="font-size:1.1rem;color:#eaf4ee;line-height:1.85;font-family:Inter,sans-serif;margin:24px 0">Great Islamic technology is not about features. It is about creating space — space where a Muslim can breathe, remember Allah, and come back to themselves.</p>
+<p style="font-size:1.1rem;color:#eaf4ee;line-height:1.85;font-family:Inter,sans-serif;margin:24px 0">Great Islamic technology is not about features. It is about creating space, space where a Muslim can breathe, remember Allah, and come back to themselves.</p>
 
 <section style="margin:40px 0">
   <h2>Five Principles We Design By</h2>
   <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
     ${[
-      { title: "Calm over noise", body: "Every notification, animation, and colour decision is made in favour of calm. We do not gamify spirituality. We do not use red dots to trigger anxiety. MyTazki should feel like a breath — not an alert." },
+      { title: "Calm over noise", body: "Every notification, animation, and colour decision is made in favour of calm. We do not gamify spirituality. We do not use red dots to trigger anxiety. MyTazki should feel like a breath, not an alert." },
       { title: "Depth over volume", body: "110 duas, carefully chosen. 35 guided sessions, personally written. 99 Names of Allah, with reflection. We prefer ten things that matter over a thousand that don't." },
-      { title: "Soul before metrics", body: "We do not track 'engagement'. We track growth. The questions we ask: Did this person pray today? Did they feel supported? Did they come back because they found value — not because an algorithm trapped them?" },
-      { title: "Islamic knowledge, not Islamic aesthetics", body: "Many apps use Islamic branding superficially — Arabic calligraphy, crescent icons, generic inspiration quotes. We build from the substance: Quran, Sunnah, authentic scholarship, lived Islamic experience." },
-      { title: "Technology serves the human", body: "AI on MyTazki is a tool. It listens, suggests, reflects — but it never prescribes. The user's spiritual authority is their own. The scholar's authority is theirs. AI helps connect the two." },
+      { title: "Soul before metrics", body: "We do not track 'engagement'. We track growth. The questions we ask: Did this person pray today? Did they feel supported? Did they come back because they found value, not because an algorithm trapped them?" },
+      { title: "Islamic knowledge, not Islamic aesthetics", body: "Many apps use Islamic branding superficially, Arabic calligraphy, crescent icons, generic inspiration quotes. We build from the substance: Quran, Sunnah, authentic scholarship, lived Islamic experience." },
+      { title: "Technology serves the human", body: "AI on MyTazki is a tool. It listens, suggests, reflects, but it never prescribes. The user's spiritual authority is their own. The scholar's authority is theirs. AI helps connect the two." },
     ].map((p, i) => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.1);border-radius:14px;padding:22px 20px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
         <span style="background:rgba(52,201,122,0.12);color:#34c97a;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">${i + 1}</span>
@@ -228,12 +228,12 @@ router.get("/how-mytazki-works", (_req: Request, res: Response) => {
   ];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "How MyTazki Works", "url": "https://mytazki.com/how-mytazki-works", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "How MyTazki Works — AI Islamic Growth Platform", description: "Discover how MyTazki combines AI, authentic Islamic content, and habit design to help Muslims grow spiritually every day.", canonical: "/how-mytazki-works", schema: [schema, breadcrumbSchema(bc), faqSchema(faqs)] }),
+    seoHead({ title: "How MyTazki Works, AI Islamic Growth Platform", description: "Discover how MyTazki combines AI, authentic Islamic content, and habit design to help Muslims grow spiritually every day.", canonical: "/how-mytazki-works", schema: [schema, breadcrumbSchema(bc), faqSchema(faqs)] }),
     `${breadcrumb(bc)}
 <h1>How MyTazki Works</h1>
 ${eeatBar("MyTazki Product Team", "Platform Guide", "May 2026", "May 2026")}
 
-${quickAnswerBox("How does MyTazki work?", "MyTazki combines four layers: authentic Islamic content (Quran, Duas, Azkar), live data (prayer times, Hijri calendar), AI-powered personalization (guided reflections, companion chat), and habit design (streaks, journeys, check-ins) — all in one free app.")}
+${quickAnswerBox("How does MyTazki work?", "MyTazki combines four layers: authentic Islamic content (Quran, Duas, Azkar), live data (prayer times, Hijri calendar), AI-powered personalization (guided reflections, companion chat), and habit design (streaks, journeys, check-ins), all in one free app.")}
 
 <section style="margin:36px 0">
   <h2>The Four Layers of MyTazki</h2>
@@ -287,14 +287,14 @@ router.get("/editorial-guidelines", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Editorial Guidelines" }];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "MyTazki Editorial Guidelines", "url": "https://mytazki.com/editorial-guidelines", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Editorial Guidelines — MyTazki Islamic Content Standards", description: "How MyTazki ensures all Islamic content — duas, Quran references, hadiths — meets standards of authenticity, clarity, and spiritual integrity.", canonical: "/editorial-guidelines", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Editorial Guidelines, MyTazki Islamic Content Standards", description: "How MyTazki ensures all Islamic content, duas, Quran references, hadiths, meets standards of authenticity, clarity, and spiritual integrity.", canonical: "/editorial-guidelines", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Editorial Guidelines</h1>
 ${eeatBar("MyTazki Editorial Team", "Content Standards", "May 2026", "May 2026")}
 
 <div class="ai-summary">
   <strong style="color:#34c97a;display:block;margin-bottom:6px">Our Content Commitment</strong>
-  <p style="margin:0;color:#eaf4ee;font-size:15px;line-height:1.75;font-family:Inter,sans-serif">All Islamic content on MyTazki — duas, Quran verses, hadiths, Names of Allah, Islamic guidance — is sourced from verified Islamic texts and reviewed by our editorial team before publication. We prioritise authenticity over volume.</p>
+  <p style="margin:0;color:#eaf4ee;font-size:15px;line-height:1.75;font-family:Inter,sans-serif">All Islamic content on MyTazki, duas, Quran verses, hadiths, Names of Allah, Islamic guidance, is sourced from verified Islamic texts and reviewed by our editorial team before publication. We prioritise authenticity over volume.</p>
 </div>
 
 <section style="margin:36px 0">
@@ -304,7 +304,7 @@ ${eeatBar("MyTazki Editorial Team", "Content Standards", "May 2026", "May 2026")
       { title: "Quran references", body: "All Quran verses use the Hafs 'an Asim recitation as standard. Translations are sourced from established English-language Quran translations (Sahih International, Pickthall). Arabic text is verified character by character." },
       { title: "Hadith references", body: "We cite hadith collections (Bukhari, Muslim, Tirmidhi, Abu Dawud) with grade where available. We do not publish weak (da'if) hadith without noting their status." },
       { title: "Duas", body: "Duas come from the Quran, authenticated Sunnah (Hisnul Muslim / Fortress of the Muslim), and established scholarly collections. We do not include fabricated or unverified supplications." },
-      { title: "AI-generated content", body: "Any content drafted with AI assistance is reviewed by our editorial team before going live. AI is used for structure and language — Islamic substance comes from verified sources only." },
+      { title: "AI-generated content", body: "Any content drafted with AI assistance is reviewed by our editorial team before going live. AI is used for structure and language, Islamic substance comes from verified sources only." },
     ].map(s => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.1);border-radius:12px;padding:18px 20px">
       <strong style="color:#34c97a;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;font-family:Inter,sans-serif;display:block;margin-bottom:6px">${esc(s.title)}</strong>
       <p style="color:#a0c8a0;font-size:14px;line-height:1.75;margin:0;font-family:Inter,sans-serif">${esc(s.body)}</p>
@@ -316,7 +316,7 @@ ${eeatBar("MyTazki Editorial Team", "Content Standards", "May 2026", "May 2026")
   <h2>What We Never Publish</h2>
   <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px">
     ${[
-      "Religious rulings (fatwas) — these must come from qualified scholars",
+      "Religious rulings (fatwas), these must come from qualified scholars",
       "Content that contradicts established Islamic consensus (ijma)",
       "Sectarian content that promotes division between Muslims",
       "Unverified hadiths presented as authentic",
@@ -330,7 +330,7 @@ ${eeatBar("MyTazki Editorial Team", "Content Standards", "May 2026", "May 2026")
 
 <section style="margin:36px 0">
   <h2>Update & Review Cycle</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">Core content (Duas, Quran text, Names of Allah) is reviewed bi-annually. Hadith grading is checked against current scholarship consensus. If you spot an error in any Islamic content on MyTazki, email us at <strong style="color:#34c97a">content@mytazki.com</strong> — we take corrections seriously and respond within 48 hours.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">Core content (Duas, Quran text, Names of Allah) is reviewed bi-annually. Hadith grading is checked against current scholarship consensus. If you spot an error in any Islamic content on MyTazki, email us at <strong style="color:#34c97a">content@mytazki.com</strong>, we take corrections seriously and respond within 48 hours.</p>
 </section>
 
 ${relatedArticlesGrid([
@@ -355,25 +355,25 @@ router.get("/ai-ethics", (_req: Request, res: Response) => {
   ];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "MyTazki AI Ethics", "url": "https://mytazki.com/ai-ethics", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "AI Ethics — How MyTazki Uses AI Responsibly", description: "MyTazki's AI ethics framework: how we use Claude AI responsibly in an Islamic context, what boundaries we enforce, and how we ensure Islamic authenticity.", canonical: "/ai-ethics", schema: [schema, breadcrumbSchema(bc), faqSchema(faqs)] }),
+    seoHead({ title: "AI Ethics, How MyTazki Uses AI Responsibly", description: "MyTazki's AI ethics framework: how we use Claude AI responsibly in an Islamic context, what boundaries we enforce, and how we ensure Islamic authenticity.", canonical: "/ai-ethics", schema: [schema, breadcrumbSchema(bc), faqSchema(faqs)] }),
     `${breadcrumb(bc)}
-<h1>AI Ethics — How We Use AI in an Islamic Context</h1>
+<h1>AI Ethics, How We Use AI in an Islamic Context</h1>
 ${eeatBar("MyTazki AI & Editorial Team", "AI Ethics Policy", "May 2026", "May 2026")}
 
-${quickAnswerBox("How does MyTazki use AI ethically?", "MyTazki uses Claude AI with strict Islamic adab constraints — it assists with reflection, duas, and guidance but never issues fatwas, contradicts Islamic scholarship, or acts as a religious authority. Islamic sources always lead; AI follows.")}
+${quickAnswerBox("How does MyTazki use AI ethically?", "MyTazki uses Claude AI with strict Islamic adab constraints, it assists with reflection, duas, and guidance but never issues fatwas, contradicts Islamic scholarship, or acts as a religious authority. Islamic sources always lead; AI follows.")}
 
 <section style="margin:36px 0">
   <h2>Our AI Philosophy in One Sentence</h2>
-  <p style="font-size:1.2rem;color:#b8946a;font-family:Amiri,serif;font-style:italic;line-height:1.8;border-left:4px solid rgba(184,148,106,0.4);padding:16px 20px;background:rgba(184,148,106,0.05);border-radius:0 12px 12px 0">AI is a mirror, not a minbar. It reflects Islamic wisdom back to you — it does not stand on the pulpit and preach.</p>
+  <p style="font-size:1.2rem;color:#b8946a;font-family:Amiri,serif;font-style:italic;line-height:1.8;border-left:4px solid rgba(184,148,106,0.4);padding:16px 20px;background:rgba(184,148,106,0.05);border-radius:0 12px 12px 0">AI is a mirror, not a minbar. It reflects Islamic wisdom back to you, it does not stand on the pulpit and preach.</p>
 </section>
 
 <section style="margin:36px 0">
   <h2>The Six AI Boundaries</h2>
   <div style="display:flex;flex-direction:column;gap:12px">
     ${[
-      { n: "1", title: "No fatwas, ever", body: "The AI is trained to redirect any fiqh (Islamic law) questions to qualified scholars. It will say: 'This requires a scholarly opinion — please consult a local Imam or trusted Islamic institution.'" },
+      { n: "1", title: "No fatwas, ever", body: "The AI is trained to redirect any fiqh (Islamic law) questions to qualified scholars. It will say: 'This requires a scholarly opinion, please consult a local Imam or trusted Islamic institution.'" },
       { n: "2", title: "Sources, always", body: "When citing Quranic verses or hadith, the AI references the source. It does not invent or paraphrase Islamic narrations." },
-      { n: "3", title: "Emotional support, not spiritual prescription", body: "The AI can support, validate, and listen. It does not prescribe specific acts of worship as solutions to spiritual problems — that is the work of human scholars and qualified counsellors." },
+      { n: "3", title: "Emotional support, not spiritual prescription", body: "The AI can support, validate, and listen. It does not prescribe specific acts of worship as solutions to spiritual problems, that is the work of human scholars and qualified counsellors." },
       { n: "4", title: "Adab in every response", body: "The AI is guided by Islamic etiquette (adab). It begins responses with bismillah where appropriate, maintains respectful tone, and honours Islamic sensitivities in all topics." },
       { n: "5", title: "Sectarian neutrality", body: "MyTazki serves Muslims of all schools of thought (madhabs). The AI does not take sides in scholarly differences of opinion. It notes where differences exist and encourages you to follow your own qualified scholar." },
       { n: "6", title: "Human review layer", body: "Our AI system guidelines are reviewed by our Islamic editorial team every quarter. Any patterns of problematic responses are flagged and corrected immediately." },
@@ -404,18 +404,18 @@ router.get("/trust-and-safety", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Trust & Safety" }];
   const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "MyTazki Trust and Safety", "url": "https://mytazki.com/trust-and-safety", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Trust & Safety — MyTazki", description: "How MyTazki keeps users safe: content moderation, AI limits, privacy commitments, and community standards for an Islamic platform.", canonical: "/trust-and-safety", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Trust & Safety, MyTazki", description: "How MyTazki keeps users safe: content moderation, AI limits, privacy commitments, and community standards for an Islamic platform.", canonical: "/trust-and-safety", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Trust & Safety</h1>
 ${eeatBar("MyTazki Trust Team", "Platform Safety", "May 2026", "May 2026")}
-<p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin:20px 0">MyTazki is an Islamic platform. That means trust is not a feature — it is the foundation. Here is exactly how we protect it.</p>
+<p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin:20px 0">MyTazki is an Islamic platform. That means trust is not a feature, it is the foundation. Here is exactly how we protect it.</p>
 
 <section style="margin:36px 0">
   <h2>Content Safety</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
     ${[
       { icon: "🔒", title: "Halal content policy", desc: "All content must align with Islamic values. Haram content, inappropriate material, or content disrespectful to Islam is zero-tolerated." },
-      { icon: "🤖", title: "AI guardrails", desc: "Our AI has hard-coded limits — it cannot discuss haram topics, issue fatwas, or go outside its role as a supportive spiritual companion." },
+      { icon: "🤖", title: "AI guardrails", desc: "Our AI has hard-coded limits, it cannot discuss haram topics, issue fatwas, or go outside its role as a supportive spiritual companion." },
       { icon: "📚", title: "Source verification", desc: "Islamic content is verified before publication. Unverified hadith are marked clearly. Fabricated hadith are never published." },
       { icon: "👥", title: "Community standards", desc: "Rooms and Halaqah features have clear community guidelines. Hate speech, sectarianism, or disrespect toward any Muslim group is not permitted." },
     ].map(c => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.1);border-radius:12px;padding:18px 16px">
@@ -428,12 +428,12 @@ ${eeatBar("MyTazki Trust Team", "Platform Safety", "May 2026", "May 2026")}
 
 <section style="margin:36px 0">
   <h2>Privacy & Data</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">We collect only what is necessary. Location is used only for prayer times and mosque finder — never for advertising. AI conversations are not stored permanently or used to train models. We do not sell user data.</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">We collect only what is necessary. Location is used only for prayer times and mosque finder, never for advertising. AI conversations are not stored permanently or used to train models. We do not sell user data.</p>
 </section>
 
 <section style="margin:36px 0">
   <h2>Report a Concern</h2>
-  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">If you see content on MyTazki that you believe is incorrect, harmful, or does not meet Islamic standards — please contact us immediately:</p>
+  <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif">If you see content on MyTazki that you believe is incorrect, harmful, or does not meet Islamic standards, please contact us immediately:</p>
   <div style="background:rgba(52,201,122,0.06);border:1px solid rgba(52,201,122,0.15);border-radius:12px;padding:20px;margin-top:14px">
     <p style="color:#eaf4ee;font-family:Inter,sans-serif;margin:0 0 8px"><strong>Email:</strong> <span style="color:#34c97a">trust@mytazki.com</span></p>
     <p style="color:#6a9878;font-size:14px;font-family:Inter,sans-serif;margin:0">We respond within 24 hours. Corrections to Islamic content are treated as the highest priority.</p>
@@ -452,26 +452,26 @@ ${relatedArticlesGrid([
 
 router.get("/islamic-guidance-policy", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Islamic Guidance Policy" }];
-  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Islamic Guidance Policy — MyTazki", "url": "https://mytazki.com/islamic-guidance-policy", "publisher": ORG_SCHEMA };
+  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Islamic Guidance Policy, MyTazki", "url": "https://mytazki.com/islamic-guidance-policy", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Islamic Guidance Policy — MyTazki", description: "How MyTazki handles Islamic guidance: what the platform provides, what it defers to scholars, and how we protect the integrity of Islamic knowledge.", canonical: "/islamic-guidance-policy", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Islamic Guidance Policy, MyTazki", description: "How MyTazki handles Islamic guidance: what the platform provides, what it defers to scholars, and how we protect the integrity of Islamic knowledge.", canonical: "/islamic-guidance-policy", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Islamic Guidance Policy</h1>
 ${eeatBar("MyTazki Editorial Team", "Islamic Content Policy", "May 2026", "May 2026")}
 
-${quickAnswerBox("Does MyTazki provide Islamic religious guidance?", "MyTazki provides Islamic educational content grounded in Quran and authentic Sunnah. It does not issue fatwas or religious rulings — those require qualified scholars. For personal fiqh questions, always consult a qualified Islamic scholar or institution.")}
+${quickAnswerBox("Does MyTazki provide Islamic religious guidance?", "MyTazki provides Islamic educational content grounded in Quran and authentic Sunnah. It does not issue fatwas or religious rulings, those require qualified scholars. For personal fiqh questions, always consult a qualified Islamic scholar or institution.")}
 
 <section style="margin:36px 0">
   <h2>What MyTazki Provides</h2>
   <div style="display:flex;flex-direction:column;gap:10px">
     ${[
       "Authentic duas from Quran and verified Sunnah (Hisnul Muslim)",
-      "Quran text and audio — Hafs 'an Asim recitation, English translations",
+      "Quran text and audio, Hafs 'an Asim recitation, English translations",
       "99 Names of Allah with Arabic, transliteration, and meaning",
-      "Islamic habit and character building — based on prophetic example",
+      "Islamic habit and character building, based on prophetic example",
       "General Islamic educational content on prayer, fasting, Zakat, Hajj",
-      "Emotional and spiritual support — grounded in Islamic framework",
-      "AI-assisted reflection — clearly labelled, editorially reviewed",
+      "Emotional and spiritual support, grounded in Islamic framework",
+      "AI-assisted reflection, clearly labelled, editorially reviewed",
     ].map(item => `<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:#1c2d21;border-radius:10px;font-family:Inter,sans-serif">
       <span style="color:#34c97a;flex-shrink:0">✓</span>
       <span style="color:#a0c8a0;font-size:14px;line-height:1.6">${esc(item)}</span>
@@ -485,7 +485,7 @@ ${quickAnswerBox("Does MyTazki provide Islamic religious guidance?", "MyTazki pr
     ${[
       "Fatwas or religious rulings on personal situations",
       "Guidance on complex fiqh questions (marriage, divorce, business, inheritance)",
-      "Medical or psychological advice — please consult qualified professionals",
+      "Medical or psychological advice, please consult qualified professionals",
       "Absolute answers on matters of scholarly difference (ikhtilaf)",
     ].map(item => `<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:rgba(184,148,106,0.05);border-left:3px solid rgba(184,148,106,0.3);border-radius:0 10px 10px 0;font-family:Inter,sans-serif">
       <span style="color:#b8946a;flex-shrink:0">✕</span>
@@ -509,9 +509,9 @@ ${relatedArticlesGrid([
 
 router.get("/content-verification", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "Content Verification" }];
-  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Content Verification — MyTazki", "url": "https://mytazki.com/content-verification", "publisher": ORG_SCHEMA };
+  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Content Verification, MyTazki", "url": "https://mytazki.com/content-verification", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Content Verification — MyTazki", description: "How MyTazki verifies Islamic content — our process for checking duas, hadiths, Quran references, and AI-assisted material before publication.", canonical: "/content-verification", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Content Verification, MyTazki", description: "How MyTazki verifies Islamic content, our process for checking duas, hadiths, Quran references, and AI-assisted material before publication.", canonical: "/content-verification", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Content Verification</h1>
 ${eeatBar("MyTazki Editorial Team", "Verification Process", "May 2026", "May 2026")}
@@ -521,7 +521,7 @@ ${eeatBar("MyTazki Editorial Team", "Verification Process", "May 2026", "May 202
   <h2>The Verification Process</h2>
   <div style="display:flex;flex-direction:column;gap:0">
     ${[
-      { step: "1", title: "Source identification", desc: "For each dua, verse, or hadith — we identify the original Islamic source (Quran chapter and verse, hadith collection and book number)." },
+      { step: "1", title: "Source identification", desc: "For each dua, verse, or hadith, we identify the original Islamic source (Quran chapter and verse, hadith collection and book number)." },
       { step: "2", title: "Text verification", desc: "Arabic text is cross-referenced against verified digital Islamic texts. We use established Quran APIs and hadith databases for primary sources." },
       { step: "3", title: "Translation review", desc: "English translations are compared across at least two established translators. Meaning is checked for accuracy and clarity." },
       { step: "4", title: "Hadith grading", desc: "For hadith, we check the grading (sahih, hasan, da'if) from established hadith scholars. Weak hadith are marked or excluded." },
@@ -553,21 +553,21 @@ ${relatedArticlesGrid([
 
 router.get("/how-ai-content-is-reviewed", (_req: Request, res: Response) => {
   const bc = [{ name: "Home", item: "/" }, { name: "About", item: "/about" }, { name: "AI Content Review" }];
-  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "How AI Content is Reviewed — MyTazki", "url": "https://mytazki.com/how-ai-content-is-reviewed", "publisher": ORG_SCHEMA };
+  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "How AI Content is Reviewed, MyTazki", "url": "https://mytazki.com/how-ai-content-is-reviewed", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "How AI Content is Reviewed — MyTazki", description: "Our process for reviewing AI-assisted Islamic content on MyTazki — editorial oversight, Islamic authenticity checks, and transparency about AI's role.", canonical: "/how-ai-content-is-reviewed", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "How AI Content is Reviewed, MyTazki", description: "Our process for reviewing AI-assisted Islamic content on MyTazki, editorial oversight, Islamic authenticity checks, and transparency about AI's role.", canonical: "/how-ai-content-is-reviewed", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>How AI Content is Reviewed</h1>
 ${eeatBar("MyTazki AI & Editorial Team", "AI Review Process", "May 2026", "May 2026")}
 
-${quickAnswerBox("Is MyTazki's content written by AI?", "Some content on MyTazki is AI-assisted (drafted with Claude, then reviewed). Core Islamic content — duas, Quran text, hadiths, Names of Allah — comes from verified Islamic sources, not AI generation. AI is never the final authority on Islamic content.")}
+${quickAnswerBox("Is MyTazki's content written by AI?", "Some content on MyTazki is AI-assisted (drafted with Claude, then reviewed). Core Islamic content, duas, Quran text, hadiths, Names of Allah, comes from verified Islamic sources, not AI generation. AI is never the final authority on Islamic content.")}
 
 <section style="margin:36px 0">
   <h2>Two Types of Content on MyTazki</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0">
     <div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.15);border-radius:12px;padding:20px">
       <strong style="color:#34c97a;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:10px">Source-first content</strong>
-      <p style="color:#a0c8a0;font-size:14px;line-height:1.7;margin:0 0 10px;font-family:Inter,sans-serif">Drawn directly from Islamic sources. AI may help format or translate — not create.</p>
+      <p style="color:#a0c8a0;font-size:14px;line-height:1.7;margin:0 0 10px;font-family:Inter,sans-serif">Drawn directly from Islamic sources. AI may help format or translate, not create.</p>
       <ul style="color:#6a9878;font-size:13px;font-family:Inter,sans-serif;margin:0;padding-left:16px">
         <li>All 110+ duas</li><li>Quran text &amp; translations</li><li>99 Names of Allah</li><li>Hadith references</li>
       </ul>
@@ -587,13 +587,13 @@ ${quickAnswerBox("Is MyTazki's content written by AI?", "Some content on MyTazki
   <p style="color:#6a9878;font-size:14px;font-family:Inter,sans-serif;margin:0 0 16px">Every AI-assisted piece of content is checked against this list before publication:</p>
   <div style="display:flex;flex-direction:column;gap:8px">
     ${[
-      "No fabricated Quranic quotes — all verses verified by reference",
-      "No fabricated hadith — all hadith checked by source and grade",
-      "No fatwa-style language — AI does not issue religious rulings",
+      "No fabricated Quranic quotes, all verses verified by reference",
+      "No fabricated hadith, all hadith checked by source and grade",
+      "No fatwa-style language, AI does not issue religious rulings",
       "No contradictions with mainstream Islamic scholarship",
-      "Balanced tone — does not favour any particular madhab",
-      "Emotional safety — does not prescribe acts of worship as 'cures'",
-      "Source transparency — citations are present where Islamic sources are used",
+      "Balanced tone, does not favour any particular madhab",
+      "Emotional safety, does not prescribe acts of worship as 'cures'",
+      "Source transparency, citations are present where Islamic sources are used",
     ].map(item => `<div style="display:flex;gap:10px;padding:10px 14px;background:#1c2d21;border-radius:8px;font-family:Inter,sans-serif;align-items:flex-start">
       <span style="color:#34c97a;flex-shrink:0;margin-top:1px">☑</span>
       <span style="color:#a0c8a0;font-size:14px;line-height:1.6">${esc(item)}</span>
@@ -621,7 +621,7 @@ router.get("/contributors", (_req: Request, res: Response) => {
     "publisher": ORG_SCHEMA,
   };
   const html = page(
-    seoHead({ title: "Contributors — MyTazki Islamic Content Team", description: "Meet the Islamic content team behind MyTazki — editorial reviewers, Islamic educators, and content contributors who ensure authenticity and depth.", canonical: "/contributors", schema: [schema, breadcrumbSchema(bc)] }),
+    seoHead({ title: "Contributors, MyTazki Islamic Content Team", description: "Meet the Islamic content team behind MyTazki, editorial reviewers, Islamic educators, and content contributors who ensure authenticity and depth.", canonical: "/contributors", schema: [schema, breadcrumbSchema(bc)] }),
     `${breadcrumb(bc)}
 <h1>Contributors</h1>
 ${eeatBar("MyTazki Editorial Team", "Team Page", "May 2026", "May 2026")}
@@ -632,9 +632,9 @@ ${eeatBar("MyTazki Editorial Team", "Team Page", "May 2026", "May 2026")}
   <h2>Content & Editorial Team</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0">
     ${[
-      { name: "Islamic Content Editorial Team", role: "Dua, Hadith & Quran Verification", expertise: ["Quran text accuracy", "Hadith grading", "Arabic transliteration"], desc: "Our editorial team reviews all Islamic content before publication — duas, Quran verses, hadith references, and Names of Allah. Source accuracy and authenticity are the first filter." },
+      { name: "Islamic Content Editorial Team", role: "Dua, Hadith & Quran Verification", expertise: ["Quran text accuracy", "Hadith grading", "Arabic transliteration"], desc: "Our editorial team reviews all Islamic content before publication, duas, Quran verses, hadith references, and Names of Allah. Source accuracy and authenticity are the first filter." },
       { name: "AI Content Review Board", role: "AI-Assisted Content Oversight", expertise: ["AI output review", "Islamic accuracy checks", "Source verification"], desc: "Reviews all AI-assisted content against our Islamic guidance policy. Ensures no fatwa-style content, no fabricated Islamic narrations, and no contradictions with mainstream scholarship." },
-      { name: "Product & Engineering Team", role: "Platform Development", expertise: ["Islamic UX design", "Responsible AI implementation", "Privacy engineering"], desc: "Builds MyTazki with Islamic values embedded at the product level — calm design, privacy-first, zero dark patterns, and features that genuinely serve spiritual growth." },
+      { name: "Product & Engineering Team", role: "Platform Development", expertise: ["Islamic UX design", "Responsible AI implementation", "Privacy engineering"], desc: "Builds MyTazki with Islamic values embedded at the product level, calm design, privacy-first, zero dark patterns, and features that genuinely serve spiritual growth." },
     ].map(c => `<div style="background:#1c2d21;border:1px solid rgba(52,201,122,0.12);border-radius:14px;padding:22px 20px">
       <div style="width:44px;height:44px;background:rgba(52,201,122,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px">🌙</div>
       <strong style="color:#eaf4ee;font-size:16px;font-family:DM Sans,Inter,sans-serif;display:block;margin-bottom:4px">${esc(c.name)}</strong>
@@ -649,7 +649,7 @@ ${eeatBar("MyTazki Editorial Team", "Team Page", "May 2026", "May 2026")}
 
 <section style="margin:36px 0;padding:24px;background:rgba(52,201,122,0.04);border-radius:14px">
   <h2 style="margin:0 0 12px">Contribute to MyTazki</h2>
-  <p style="color:#a0c8a0;font-size:14px;line-height:1.8;font-family:Inter,sans-serif;margin:0 0 16px">Are you an Islamic scholar, educator, or content creator? If you would like to contribute to MyTazki's content — writing, reviewing, or advising — we would love to hear from you.</p>
+  <p style="color:#a0c8a0;font-size:14px;line-height:1.8;font-family:Inter,sans-serif;margin:0 0 16px">Are you an Islamic scholar, educator, or content creator? If you would like to contribute to MyTazki's content, writing, reviewing, or advising, we would love to hear from you.</p>
   <a href="mailto:editorial@mytazki.com" style="background:#34c97a;color:#0d1411;padding:10px 22px;border-radius:8px;font-weight:700;text-decoration:none;font-size:14px;font-family:DM Sans,Inter,sans-serif;display:inline-block">Get in Touch →</a>
 </section>
 
@@ -674,9 +674,9 @@ router.get("/authors", (_req: Request, res: Response) => {
     "worksFor": { "@type": "Organization", "name": "MyTazki" },
     "url": `https://mytazki.com${url}`,
   });
-  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Authors — MyTazki", "url": "https://mytazki.com/authors", "publisher": ORG_SCHEMA };
+  const schema = { "@context": "https://schema.org", "@type": "WebPage", "name": "Authors, MyTazki", "url": "https://mytazki.com/authors", "publisher": ORG_SCHEMA };
   const html = page(
-    seoHead({ title: "Authors & Islamic Content Experts — MyTazki", description: "Meet the authors and Islamic content experts who write, verify, and review content on MyTazki — duas, Quran reflections, spiritual guides, and Islamic habits.", canonical: "/authors", schema: [schema, breadcrumbSchema(bc), authorSchema("MyTazki Editorial Team", "Islamic Content Editor", "/authors")] }),
+    seoHead({ title: "Authors & Islamic Content Experts, MyTazki", description: "Meet the authors and Islamic content experts who write, verify, and review content on MyTazki, duas, Quran reflections, spiritual guides, and Islamic habits.", canonical: "/authors", schema: [schema, breadcrumbSchema(bc), authorSchema("MyTazki Editorial Team", "Islamic Content Editor", "/authors")] }),
     `${breadcrumb(bc)}
 <h1>Authors & Content Experts</h1>
 ${eeatBar("MyTazki Editorial Team", "Author Profiles", "May 2026", "May 2026")}

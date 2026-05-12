@@ -81,7 +81,7 @@ const HalaqahPage: React.FC = () => {
               <p className="text-6xl mb-4">🕌</p>
               <h2 className="font-cinzel text-2xl text-[var(--gold)] mb-2">Pray Together</h2>
               <p className="text-[var(--muted)] text-sm max-w-xs mx-auto">
-                Join a Halaqah to pray with your family, friends, or community — and hold each other accountable.
+                Join a Halaqah to pray with your family, friends, or community, and hold each other accountable.
               </p>
             </div>
 

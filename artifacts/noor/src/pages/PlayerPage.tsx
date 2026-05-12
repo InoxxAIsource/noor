@@ -365,7 +365,7 @@ const PlayerPage: React.FC = () => {
                 <p className="text-sm italic text-[var(--green)] mb-2" style={{ transition: "opacity 0.4s ease" }}>{String(s!["scriptureText"])}</p>
               )}
               {!!(s?.["scriptureRef"]) && (
-                <p className="text-xs text-[var(--muted)]">— {String(s!["scriptureRef"])}</p>
+                <p className="text-xs text-[var(--muted)]">- {String(s!["scriptureRef"])}</p>
               )}
             </div>
           </div>
@@ -491,7 +491,7 @@ const PlayerPage: React.FC = () => {
                     )}
                     {!!(s?.["scriptureRef"]) && (
                       <p style={{ fontSize: 11, color: "#4a7a4a", letterSpacing: "0.04em" }}>
-                        — {String(s!["scriptureRef"])}
+                       , {String(s!["scriptureRef"])}
                       </p>
                     )}
                   </div>
@@ -501,7 +501,7 @@ const PlayerPage: React.FC = () => {
               <div className="text-center">
                 <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 mb-6">
                   <BookOpen size={32} className="text-[var(--muted)] mx-auto mb-3" />
-                  <p className="text-[var(--muted)] text-sm mb-1">Audio coming soon — read along below</p>
+                  <p className="text-[var(--muted)] text-sm mb-1">Audio coming soon, read along below</p>
                   <p className="text-xs text-[var(--muted)]/60">Engage with the Arabic text above</p>
                 </div>
                 <button

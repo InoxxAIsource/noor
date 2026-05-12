@@ -32,7 +32,7 @@ const SECTIONS = [
   },
   {
     title: "Animals Accepted",
-    content: `• Goat or sheep — 1 share (for 1 person)\n• Cow or buffalo — 7 shares (for up to 7 people)\n• Camel — 7 shares (for up to 7 people)\n\nAll animals must be healthy, without any apparent defect.`,
+    content: `• Goat or sheep, 1 share (for 1 person)\n• Cow or buffalo, 7 shares (for up to 7 people)\n• Camel, 7 shares (for up to 7 people)\n\nAll animals must be healthy, without any apparent defect.`,
   },
   {
     title: "Minimum Age Requirements",
@@ -40,7 +40,7 @@ const SECTIONS = [
   },
   {
     title: "Days of Qurbani",
-    content: `Qurbani must be performed on:\n• 10th Dhul Hijjah (Eid day) — after Eid prayer\n• 11th Dhul Hijjah\n• 12th Dhul Hijjah (last day)\n\nIt is best to perform on the 10th after the Eid prayer. It is not valid before the Eid prayer.`,
+    content: `Qurbani must be performed on:\n• 10th Dhul Hijjah (Eid day), after Eid prayer\n• 11th Dhul Hijjah\n• 12th Dhul Hijjah (last day)\n\nIt is best to perform on the 10th after the Eid prayer. It is not valid before the Eid prayer.`,
   },
   {
     title: "Meat Distribution",
@@ -56,7 +56,7 @@ const SECTIONS = [
   },
   {
     title: "Online Qurbani Services",
-    content: `• Islamic Relief — islamicrelief.org.uk/qurbani\n• Human Appeal — humanappeal.org.uk/qurbani\n• Muslim Aid — muslimaid.org/qurbani\n• Penny Appeal — pennyappeal.org/qurbani`,
+    content: `• Islamic Relief, islamicrelief.org.uk/qurbani\n• Human Appeal, humanappeal.org.uk/qurbani\n• Muslim Aid, muslimaid.org/qurbani\n• Penny Appeal, pennyappeal.org/qurbani`,
   },
 ];
 

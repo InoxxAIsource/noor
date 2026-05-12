@@ -96,7 +96,7 @@ const HalaqahAdminPage: React.FC = () => {
       <div className="p-4 flex items-center gap-3 border-b border-[var(--border)]">
         <button onClick={() => navigate(`/halaqah/${code}`)} className="text-[var(--muted)]"><ChevronLeft size={24} /></button>
         <div>
-          <h1 className="font-cinzel text-lg text-[var(--gold)]">Admin — {group.name}</h1>
+          <h1 className="font-cinzel text-lg text-[var(--gold)]">Admin, {group.name}</h1>
           <p className="text-xs text-[var(--muted)]">Code: {code}</p>
         </div>
       </div>

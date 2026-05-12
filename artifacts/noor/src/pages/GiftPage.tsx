@@ -49,7 +49,7 @@ const GiftPage: React.FC = () => {
         <h2 className="font-cinzel text-[var(--gold)] text-xl mb-2">Gift not found</h2>
         <p className="text-[var(--muted)] text-sm mb-6">{error || "This gift may have expired."}</p>
         <Link to="/register" className="bg-[var(--green)] text-white px-6 py-3 rounded-xl font-semibold">
-          Join MyTazki — Free
+          Join MyTazki, Free
         </Link>
       </div>
     );
@@ -93,12 +93,12 @@ const GiftPage: React.FC = () => {
 
         {/* CTA */}
         <div className="text-center space-y-3">
-          <p className="text-sm text-[var(--muted)]">Listen to this dua — free on MyTazki</p>
+          <p className="text-sm text-[var(--muted)]">Listen to this dua, free on MyTazki</p>
           <Link
             to="/register"
             className="block w-full bg-[var(--green)] text-white py-4 rounded-2xl font-cinzel text-lg text-center shadow-[0_0_20px_rgba(0,165,80,0.3)] hover:bg-[var(--green)]/90 transition-colors"
           >
-            Listen to this Dua — Free
+            Listen to this Dua, Free
           </Link>
           <Link
             to="/login"

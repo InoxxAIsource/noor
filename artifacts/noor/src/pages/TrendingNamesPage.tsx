@@ -38,7 +38,7 @@ function generateNameCardPNG(n: Name): void {
   ctx.fillRect(0, 340, 640, 60);
   ctx.fillStyle = "#00a550";
   ctx.font = "14px system-ui";
-  ctx.fillText("MyTazki — mytazki.com", 320, 378);
+  ctx.fillText("MyTazki, mytazki.com", 320, 378);
   const link = document.createElement("a");
   link.download = `${n.nameEnglish.toLowerCase()}-name-card.png`;
   link.href = canvas.toDataURL("image/png");

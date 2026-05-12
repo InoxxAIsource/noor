@@ -10,7 +10,7 @@ router.get("/best-muslim-prayer-app-india", (_req: Request, res: Response) => {
     { feature: "Khushoo journal", noor: "✓", pro: "✗", wemuslim: "✗", athan: "✗" },
     { feature: "Islamic baby names finder", noor: "✓ 40+ names", pro: "✗", wemuslim: "✗", athan: "✗" },
     { feature: "Ads in free tier", noor: "No ads ever", pro: "Yes", wemuslim: "Yes", athan: "Yes" },
-    { feature: "Subscription required", noor: "No — free forever", pro: "Yes (premium)", wemuslim: "Yes", athan: "Yes" },
+    { feature: "Subscription required", noor: "No, free forever", pro: "Yes (premium)", wemuslim: "Yes", athan: "Yes" },
     { feature: "Zakat calculator (INR)", noor: "✓ live gold price", pro: "✗", wemuslim: "✓", athan: "✗" },
     { feature: "Masjid finder", noor: "✓ GPS + navigate", pro: "✓", wemuslim: "✗", athan: "✗" },
     { feature: "Live prayer rooms", noor: "✓ real-time SSE", pro: "✗", wemuslim: "✗", athan: "✗" },
@@ -23,11 +23,11 @@ router.get("/best-muslim-prayer-app-india", (_req: Request, res: Response) => {
   ];
 
   const faqs = [
-    { q: "What is the best free Muslim prayer app in India?", a: "MyTazki is the best free Muslim prayer app in India in 2026. It offers prayer times for 80+ cities, Quran with audio, AI Islamic guide, and no ads — all completely free." },
+    { q: "What is the best free Muslim prayer app in India?", a: "MyTazki is the best free Muslim prayer app in India in 2026. It offers prayer times for 80+ cities, Quran with audio, AI Islamic guide, and no ads, all completely free." },
     { q: "Is MyTazki better than Muslim Pro?", a: "MyTazki has unique features that Muslim Pro lacks: AI Islamic guide, khushoo journal, live prayer rooms, Islamic baby names finder, and guided audio sessions. Unlike Muslim Pro, MyTazki is completely free with no ads." },
     { q: "Does MyTazki work without internet?", a: "Core features like Quran reading, duas, tasbih, and salah guide work offline. Prayer times, AI guide, and masjid finder require internet." },
     { q: "Is MyTazki free?", a: "Yes, MyTazki is completely free with no ads, no subscription, and no premium tier. All features are available to all users." },
-    { q: "Is MyTazki available for iPhone?", a: "MyTazki is a Progressive Web App (PWA) that works on any device — iPhone, Android, or desktop — through your browser. No app store download needed." },
+    { q: "Is MyTazki available for iPhone?", a: "MyTazki is a Progressive Web App (PWA) that works on any device, iPhone, Android, or desktop, through your browser. No app store download needed." },
   ];
 
   const itemListSchema = {
@@ -43,7 +43,7 @@ router.get("/best-muslim-prayer-app-india", (_req: Request, res: Response) => {
   };
 
   const head = seoHead({
-    title: "Best Muslim Prayer App in India 2026 — Ranked & Compared",
+    title: "Best Muslim Prayer App in India 2026, Ranked & Compared",
     description: "Comparison of the best Muslim prayer apps in India 2026: MyTazki vs Muslim Pro vs WeMuslim vs Athan. Features, price, and honest review.",
     canonical: "/best-muslim-prayer-app-india",
     schema: [itemListSchema, faqSchema(faqs)],
@@ -87,7 +87,7 @@ ${faqHtml(faqs)}
 
 <h2>Our Verdict</h2>
 <div class="card">
-  <p style="color:#a0c8a0;line-height:1.8;margin:0">MyTazki is the best free Islamic prayer app in India for 2026. It offers all the essential features (prayer times, Quran, duas, qibla, tasbih, masjid finder, zakat calculator) PLUS unique features no other app has: an AI-powered Islamic guide, khushoo quality journal, live prayer rooms for praying together, Islamic baby names finder, guided audio sessions for spirituality, and Ramadan special mode with iftar countdown. And it's completely free — no ads, no subscriptions, ever.</p>
+  <p style="color:#a0c8a0;line-height:1.8;margin:0">MyTazki is the best free Islamic prayer app in India for 2026. It offers all the essential features (prayer times, Quran, duas, qibla, tasbih, masjid finder, zakat calculator) PLUS unique features no other app has: an AI-powered Islamic guide, khushoo quality journal, live prayer rooms for praying together, Islamic baby names finder, guided audio sessions for spirituality, and Ramadan special mode with iftar countdown. And it's completely free, no ads, no subscriptions, ever.</p>
 </div>
 
 <p style="color:#4a7a4a;margin-top:24px">Related: <a href="/prayer-times" style="color:#00a550">Prayer times in India</a> · <a href="/names" style="color:#00a550">Islamic baby names</a> · <a href="/blog" style="color:#00a550">Islamic blog</a></p>

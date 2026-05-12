@@ -50,7 +50,7 @@ export default function DownloadPage() {
           Download MyTazki
         </h1>
         <p style={{ color: "#4a7a4a", fontSize: "1.05rem", maxWidth: 420, margin: "0 auto 28px", lineHeight: 1.6 }}>
-          Your personal Islamic companion. Remember Allah — every day. Available as a PWA (Progressive Web App) now.
+          Your personal Islamic companion. Remember Allah, every day. Available as a PWA (Progressive Web App) now.
         </p>
 
         {/* PWA Install */}

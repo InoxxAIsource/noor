@@ -20,7 +20,7 @@ function NotificationButton() {
   if (status === "granted") {
     return (
       <div className="flex items-center gap-2 text-[var(--green)] text-sm font-medium py-2">
-        <span className="text-lg">✅</span> Notifications enabled — JazakAllah khair!
+        <span className="text-lg">✅</span> Notifications enabled, JazakAllah khair!
       </div>
     );
   }

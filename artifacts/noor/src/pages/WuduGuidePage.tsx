@@ -76,10 +76,10 @@ const GHUSL_STEPS = [
   { step: 1, title: "Niyyah", instruction: "Make intention for ghusl (ritual purification).", arabic: "نَوَيْتُ الْغُسْلَ لِرَفْعِ الْجَنَابَةِ", transliteration: "Nawaytul ghusla li raf'il janabah" },
   { step: 2, title: "Wash Hands (3×)", instruction: "Wash both hands to the wrists three times.", arabic: "بِسْمِ اللَّهِ", transliteration: "Bismillah" },
   { step: 3, title: "Remove Impurity", instruction: "Wash away any visible impurity from the body.", arabic: "", transliteration: "" },
-  { step: 4, title: "Perform Wudu", instruction: "Perform complete wudu as normal (except washing the feet — do at the end).", arabic: "", transliteration: "" },
-  { step: 5, title: "Pour Water — Head", instruction: "Pour water over the head three times, ensuring it reaches the roots of hair.", arabic: "", transliteration: "" },
-  { step: 6, title: "Pour Water — Right Side", instruction: "Pour water over the right side of the body three times.", arabic: "", transliteration: "" },
-  { step: 7, title: "Pour Water — Left Side", instruction: "Pour water over the left side of the body three times.", arabic: "", transliteration: "" },
+  { step: 4, title: "Perform Wudu", instruction: "Perform complete wudu as normal (except washing the feet, do at the end).", arabic: "", transliteration: "" },
+  { step: 5, title: "Pour Water, Head", instruction: "Pour water over the head three times, ensuring it reaches the roots of hair.", arabic: "", transliteration: "" },
+  { step: 6, title: "Pour Water, Right Side", instruction: "Pour water over the right side of the body three times.", arabic: "", transliteration: "" },
+  { step: 7, title: "Pour Water, Left Side", instruction: "Pour water over the left side of the body three times.", arabic: "", transliteration: "" },
   { step: 8, title: "Wash Feet", instruction: "Move to a clean area and wash both feet.", arabic: "", transliteration: "" },
 ];
 

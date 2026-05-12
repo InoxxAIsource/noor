@@ -64,13 +64,13 @@ router.get("/ai-islamic-assistant", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/ai-islamic-assistant", date: "2026-04-01",
-    title: "AI Islamic Assistant — Ask Islamic Questions, Get Quran-Based Answers",
+    title: "AI Islamic Assistant, Ask Islamic Questions, Get Quran-Based Answers",
     desc: "MyTazki's AI Islamic Assistant answers your Islamic questions based on Quran and Sunnah. Free, available 24/7, grounded in authentic Islamic knowledge.",
-    h1: "AI Islamic Assistant — Islamic Knowledge, Always Available",
+    h1: "AI Islamic Assistant, Islamic Knowledge, Always Available",
     aiSummary: "MyTazki's AI Islamic Assistant is an AI guide trained to answer Islamic questions grounded in Quran and Sunnah. You can ask about prayer, fiqh, duas, Quran meaning, Islamic history, halal/haram, and spiritual struggles. It's available 24/7, free for 20 questions per day, and follows Islamic adab in every response.",
-    intro: "For centuries, Muslims relied on scholars for answers to their Islamic questions. Today, access to Islamic knowledge is unequal — not everyone lives near a qualified scholar, not everyone can read classical Arabic texts, not everyone knows which questions to ask. MyTazki's AI Islamic Assistant changes that: qualified Islamic guidance, grounded in the Quran and Sunnah, available to anyone, anywhere, at any time.",
+    intro: "For centuries, Muslims relied on scholars for answers to their Islamic questions. Today, access to Islamic knowledge is unequal, not everyone lives near a qualified scholar, not everyone can read classical Arabic texts, not everyone knows which questions to ask. MyTazki's AI Islamic Assistant changes that: qualified Islamic guidance, grounded in the Quran and Sunnah, available to anyone, anywhere, at any time.",
     mainHtml: `<h2>How MyTazki AI Approaches Islamic Questions</h2>
-<p style="color:#a0c8a0;line-height:1.8">MyTazki AI is powered by Claude (Anthropic) with a specialized Islamic system prompt that grounds every response in the Quran and Sunnah, maintains proper Islamic adab, avoids fatwas beyond its competence, references authentic hadith, and always recommends consulting local scholars for significant fiqh questions. It is a knowledge companion — not a mufti.</p>
+<p style="color:#a0c8a0;line-height:1.8">MyTazki AI is powered by Claude (Anthropic) with a specialized Islamic system prompt that grounds every response in the Quran and Sunnah, maintains proper Islamic adab, avoids fatwas beyond its competence, references authentic hadith, and always recommends consulting local scholars for significant fiqh questions. It is a knowledge companion, not a mufti.</p>
 <h2>What Makes MyTazki AI Different</h2>
 <p style="color:#a0c8a0;line-height:1.8">Unlike generic AI assistants (ChatGPT, Gemini) that give generic Islamic answers, MyTazki AI: maintains Islamic adab throughout, declines inappropriate questions with explanation, cites Quranic verses and hadith for its answers, takes spiritual state (anxiety, grief, doubt) into account, and is designed specifically for the Muslim experience.</p>`,
     capabilities: [
@@ -90,7 +90,7 @@ router.get("/ai-islamic-assistant", (_req, res) => {
       "What are the conditions for Zakat?",
     ],
     faqs: [
-      { q: "Is the MyTazki AI a real mufti?", a: "No. MyTazki AI is an AI knowledge companion — not a qualified mufti or Islamic scholar. For significant fiqh rulings (affecting major life decisions), consult a qualified local scholar or darul ifta. MyTazki AI provides educational Islamic knowledge, not official fatwas." },
+      { q: "Is the MyTazki AI a real mufti?", a: "No. MyTazki AI is an AI knowledge companion, not a qualified mufti or Islamic scholar. For significant fiqh rulings (affecting major life decisions), consult a qualified local scholar or darul ifta. MyTazki AI provides educational Islamic knowledge, not official fatwas." },
       { q: "How many questions can I ask the Islamic AI per day?", a: "MyTazki AI allows 20 questions per day for free users. The AI is powered by Anthropic's Claude, specialized with Islamic knowledge guidelines." },
       { q: "Is MyTazki AI safe for children to use?", a: "Yes. MyTazki AI is designed with Islamic adab guidelines that filter inappropriate content and maintain a spiritually appropriate tone for all ages." },
       { q: "What languages does MyTazki AI understand?", a: "MyTazki AI understands English, Urdu, Arabic, and other major languages. Responses are typically in the same language you ask in." },
@@ -115,13 +115,13 @@ router.get("/ai-quran-explainer", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/ai-quran-explainer", date: "2026-04-03",
-    title: "AI Quran Explainer — Understand Any Verse with AI Help",
-    desc: "Get AI-powered explanations of any Quran verse. Ask about meaning, context, tafsir, Arabic words, and how to apply the verse in your life — free with MyTazki.",
-    h1: "AI Quran Explainer — Understanding the Quran Has Never Been Easier",
-    aiSummary: "MyTazki's AI Quran Explainer helps you understand any verse of the Quran — its Arabic meaning, historical context (asbab al-nuzool), classical tafsir summary, and personal application. Unlike static translations, you can ask follow-up questions: 'What does this word mean in Arabic?' or 'How does this apply to modern life?' It's an interactive Quran study companion.",
-    intro: "The Quran was revealed to be understood — not just recited. Yet for millions of Muslims who don't read classical Arabic or have access to scholars, the Quran remains linguistically inaccessible. MyTazki's AI Quran Explainer changes this: ask about any verse, in any language, and receive an explanation grounded in authentic Islamic scholarship.",
+    title: "AI Quran Explainer, Understand Any Verse with AI Help",
+    desc: "Get AI-powered explanations of any Quran verse. Ask about meaning, context, tafsir, Arabic words, and how to apply the verse in your life, free with MyTazki.",
+    h1: "AI Quran Explainer, Understanding the Quran Has Never Been Easier",
+    aiSummary: "MyTazki's AI Quran Explainer helps you understand any verse of the Quran, its Arabic meaning, historical context (asbab al-nuzool), classical tafsir summary, and personal application. Unlike static translations, you can ask follow-up questions: 'What does this word mean in Arabic?' or 'How does this apply to modern life?' It's an interactive Quran study companion.",
+    intro: "The Quran was revealed to be understood, not just recited. Yet for millions of Muslims who don't read classical Arabic or have access to scholars, the Quran remains linguistically inaccessible. MyTazki's AI Quran Explainer changes this: ask about any verse, in any language, and receive an explanation grounded in authentic Islamic scholarship.",
     mainHtml: `<h2>How AI Makes Quran Understanding Accessible</h2>
-<p style="color:#a0c8a0;line-height:1.8">Classical tafsir (Quran interpretation) is a deep scholarly tradition — Ibn Kathir's Tafsir alone runs to thousands of pages. Most Muslims don't have the time or Arabic proficiency to access these resources directly. MyTazki AI distills this knowledge into conversational explanations while maintaining scholarly integrity — making what was once available only to Arabic scholars accessible to every Muslim.</p>
+<p style="color:#a0c8a0;line-height:1.8">Classical tafsir (Quran interpretation) is a deep scholarly tradition, Ibn Kathir's Tafsir alone runs to thousands of pages. Most Muslims don't have the time or Arabic proficiency to access these resources directly. MyTazki AI distills this knowledge into conversational explanations while maintaining scholarly integrity, making what was once available only to Arabic scholars accessible to every Muslim.</p>
 <h2>The Limits of AI Quran Explanation</h2>
 <p style="color:#a0c8a0;line-height:1.8">Intellectual honesty matters: AI explanations are educational summaries, not authoritative tafsir. For complex theological questions, matters of aqeedah, or fiqh rulings derived from Quranic verses, consult qualified scholars. MyTazki AI acknowledges its limitations and refers users to scholars when appropriate.</p>`,
     capabilities: [
@@ -165,11 +165,11 @@ router.get("/ask-islam-ai", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/ask-islam-ai", date: "2026-04-05",
-    title: "Ask Islamic Questions Online — AI-Powered Islamic Q&A",
-    desc: "Ask any Islamic question online and get answers grounded in Quran and Sunnah. MyTazki's AI answers fiqh, duas, Quran, hadith, and spiritual questions — free.",
-    h1: "Ask Islamic Questions Online — Get Answers from MyTazki AI",
-    aiSummary: "You can ask Islamic questions online through MyTazki's AI — covering prayer, fiqh basics, duas, Quran meanings, Islamic history, halal/haram rulings, and spiritual guidance. It's free (20 questions/day), available 24/7, responses grounded in Quran and Sunnah. For major fatwa-level questions, always consult a qualified local scholar.",
-    intro: "Once, getting answers to Islamic questions required finding a scholar. Now, most Muslims have immediate access to information — but much of it is unvetted, contradictory, or simply wrong. MyTazki's AI is trained specifically to answer Islamic questions from Quran and Sunnah, with transparency about what it knows and what requires a scholar.",
+    title: "Ask Islamic Questions Online, AI-Powered Islamic Q&A",
+    desc: "Ask any Islamic question online and get answers grounded in Quran and Sunnah. MyTazki's AI answers fiqh, duas, Quran, hadith, and spiritual questions, free.",
+    h1: "Ask Islamic Questions Online, Get Answers from MyTazki AI",
+    aiSummary: "You can ask Islamic questions online through MyTazki's AI, covering prayer, fiqh basics, duas, Quran meanings, Islamic history, halal/haram rulings, and spiritual guidance. It's free (20 questions/day), available 24/7, responses grounded in Quran and Sunnah. For major fatwa-level questions, always consult a qualified local scholar.",
+    intro: "Once, getting answers to Islamic questions required finding a scholar. Now, most Muslims have immediate access to information, but much of it is unvetted, contradictory, or simply wrong. MyTazki's AI is trained specifically to answer Islamic questions from Quran and Sunnah, with transparency about what it knows and what requires a scholar.",
     mainHtml: `<h2>Types of Islamic Questions MyTazki AI Can Answer</h2>
 <p style="color:#a0c8a0;line-height:1.8"><strong style="color:#eaf4ee">Quran Questions:</strong> Meaning of verses, why surahs were revealed, themes of specific surahs. <strong style="color:#eaf4ee">Prayer Questions:</strong> How to pray, Sunnah prayers, makeup prayers, conditions of salah. <strong style="color:#eaf4ee">Dua Questions:</strong> Which duas for which situations, authenticity, how to make dua. <strong style="color:#eaf4ee">Fiqh Basics:</strong> Common rulings on halal/haram, purification, zakat basics. <strong style="color:#eaf4ee">Spiritual Questions:</strong> How to strengthen iman, dealing with spiritual distance, Islamic perspectives on mental health.</p>
 <h2>What MyTazki AI Will NOT Answer</h2>
@@ -191,7 +191,7 @@ router.get("/ask-islam-ai", (_req, res) => {
       "What should I say when someone dies in Islam?",
     ],
     faqs: [
-      { q: "Is it permissible to ask an AI for Islamic rulings?", a: "Using AI as an educational tool to understand Islamic knowledge is permissible — similar to reading an Islamic book. However, acting on AI responses for significant personal religious decisions without scholarly verification is not recommended. Use MyTazki AI for learning and understanding, consult scholars for personal fatwa." },
+      { q: "Is it permissible to ask an AI for Islamic rulings?", a: "Using AI as an educational tool to understand Islamic knowledge is permissible, similar to reading an Islamic book. However, acting on AI responses for significant personal religious decisions without scholarly verification is not recommended. Use MyTazki AI for learning and understanding, consult scholars for personal fatwa." },
       { q: "Where can I ask Islamic questions for free?", a: "MyTazki AI allows 20 free questions daily. For official Islamic rulings: IslamQA.info (Sheikh Munajjid's team), your local mosque imam, or regional darul ifta (house of Islamic rulings) are the authoritative sources." },
       { q: "Can I trust AI for Islamic information?", a: "For educational questions about well-known Islamic facts (prayer times, Quran verses, common duas), AI is reasonably reliable. For nuanced fiqh questions or personal religious decisions, always verify with qualified scholars. MyTazki AI is transparent about its limitations and will tell you when to consult a scholar." },
     ],
@@ -215,13 +215,13 @@ router.get("/islamic-ai-companion", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/islamic-ai-companion", date: "2026-04-07",
-    title: "Islamic AI Companion — MyTazki's Spiritual Growth AI",
-    desc: "MyTazki is an Islamic AI companion app for daily spiritual growth — Quran, Azkar, Duas, prayer tracking, and an AI guide grounded in Islamic values.",
-    h1: "Islamic AI Companion — Grow Spiritually Every Day with MyTazki",
+    title: "Islamic AI Companion, MyTazki's Spiritual Growth AI",
+    desc: "MyTazki is an Islamic AI companion app for daily spiritual growth, Quran, Azkar, Duas, prayer tracking, and an AI guide grounded in Islamic values.",
+    h1: "Islamic AI Companion, Grow Spiritually Every Day with MyTazki",
     aiSummary: "MyTazki is an Islamic AI companion app that combines: guided Quran reflections, Azkar sessions, Duas library, prayer time tracking, spiritual streak tracking, and an AI assistant grounded in Quran and Sunnah. Unlike generic Muslim apps, MyTazki is AI-first: every feature is designed around helping Muslims grow spiritually through personalized, intelligent guidance.",
-    intro: "The concept of an Islamic 'companion' (rafiq) in the spiritual journey is well-established in Islamic tradition. Scholars throughout history have emphasized the importance of righteous companionship for spiritual growth. MyTazki is the digital manifestation of this concept — a companion that accompanies you through every moment of your day with Islamic wisdom.",
+    intro: "The concept of an Islamic 'companion' (rafiq) in the spiritual journey is well-established in Islamic tradition. Scholars throughout history have emphasized the importance of righteous companionship for spiritual growth. MyTazki is the digital manifestation of this concept, a companion that accompanies you through every moment of your day with Islamic wisdom.",
     mainHtml: `<h2>Why MyTazki is Different from Other Muslim Apps</h2>
-<p style="color:#a0c8a0;line-height:1.8">Most Muslim apps are content libraries: they deliver prayer times, Quran text, and dua collections. MyTazki goes further: it understands your spiritual state, guides you through personalized growth journeys, tracks your habits, provides AI-powered Islamic answers, and adapts to where you are in your spiritual journey — beginner, returning, or advanced.</p>
+<p style="color:#a0c8a0;line-height:1.8">Most Muslim apps are content libraries: they deliver prayer times, Quran text, and dua collections. MyTazki goes further: it understands your spiritual state, guides you through personalized growth journeys, tracks your habits, provides AI-powered Islamic answers, and adapts to where you are in your spiritual journey, beginner, returning, or advanced.</p>
 <h2>The AI-First Approach to Islamic Growth</h2>
 <p style="color:#a0c8a0;line-height:1.8">Traditional Islamic growth happened through: teachers (scholars), companions (righteous friends), and texts (books). AI makes all three accessible: it teaches Islamic knowledge on demand, provides companionship through guided sessions, and synthesizes centuries of Islamic texts into conversational answers. MyTazki uses AI to democratize access to Islamic spiritual guidance.</p>`,
     capabilities: [
@@ -240,9 +240,9 @@ router.get("/islamic-ai-companion", (_req, res) => {
       "Islamic self improvement app",
     ],
     faqs: [
-      { q: "What is an Islamic AI companion?", a: "An Islamic AI companion is an application that combines AI technology with Islamic knowledge to provide personalized spiritual guidance. MyTazki uses Claude AI to answer Islamic questions, while also offering prayer tracking, guided sessions, Quran reader, and growth tracking — a complete Islamic lifestyle companion." },
-      { q: "Is MyTazki free?", a: "Yes. MyTazki is completely free with no ads. Core features — prayer times, Quran reader, Duas library, Tasbih, AI guide (20 questions/day), and growth tracker — are all free forever." },
-      { q: "How is MyTazki different from Calm or Headspace for Muslims?", a: "Calm and Headspace provide secular mindfulness. MyTazki provides Islamic spiritual growth — grounded in the Quran and Sunnah. The sessions are Islamic: Azkar, Quran reflections, dua-guided meditations. The AI is Islamic-specific. The tracking is salah and Islamic habit focused. It is the 'Calm for Muslims' — but authentically Islamic, not Islamic-themed secular content." },
+      { q: "What is an Islamic AI companion?", a: "An Islamic AI companion is an application that combines AI technology with Islamic knowledge to provide personalized spiritual guidance. MyTazki uses Claude AI to answer Islamic questions, while also offering prayer tracking, guided sessions, Quran reader, and growth tracking, a complete Islamic lifestyle companion." },
+      { q: "Is MyTazki free?", a: "Yes. MyTazki is completely free with no ads. Core features, prayer times, Quran reader, Duas library, Tasbih, AI guide (20 questions/day), and growth tracker, are all free forever." },
+      { q: "How is MyTazki different from Calm or Headspace for Muslims?", a: "Calm and Headspace provide secular mindfulness. MyTazki provides Islamic spiritual growth, grounded in the Quran and Sunnah. The sessions are Islamic: Azkar, Quran reflections, dua-guided meditations. The AI is Islamic-specific. The tracking is salah and Islamic habit focused. It is the 'Calm for Muslims', but authentically Islamic, not Islamic-themed secular content." },
     ],
     internalLinks: [
       { href: "/sessions", label: "Guided Sessions" },
@@ -264,11 +264,11 @@ router.get("/quran-ai-reflection", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/quran-ai-reflection", date: "2026-04-09",
-    title: "AI-Powered Quran Reflection — Deepen Your Quran Understanding",
+    title: "AI-Powered Quran Reflection, Deepen Your Quran Understanding",
     desc: "Use AI to deepen your Quran reflection practice. How MyTazki's AI generates personalized Quran reflections, guided questions, and practical applications for any verse.",
-    h1: "AI-Powered Quran Reflection — More Depth, More Insight",
-    aiSummary: "MyTazki AI enhances Quran reflection by generating guided reflection questions for any verse, explaining classical tafsir in plain language, suggesting personal application steps, connecting verses to your current life situation, and providing Arabic word-by-word breakdowns. This transforms passive reading into active, transformative reflection — the tadabbur that the Quran commands.",
-    intro: "The Quran commands us to reflect (tadabbur): 'Do they not ponder the Quran, or are there locks upon their hearts?' (47:24). Reflection is not just reading — it is asking, connecting, personalizing. AI makes this interactive: instead of reading passively, you can ask 'What does this verse mean for me today?' and receive a personalized reflection prompt.",
+    h1: "AI-Powered Quran Reflection, More Depth, More Insight",
+    aiSummary: "MyTazki AI enhances Quran reflection by generating guided reflection questions for any verse, explaining classical tafsir in plain language, suggesting personal application steps, connecting verses to your current life situation, and providing Arabic word-by-word breakdowns. This transforms passive reading into active, transformative reflection, the tadabbur that the Quran commands.",
+    intro: "The Quran commands us to reflect (tadabbur): 'Do they not ponder the Quran, or are there locks upon their hearts?' (47:24). Reflection is not just reading, it is asking, connecting, personalizing. AI makes this interactive: instead of reading passively, you can ask 'What does this verse mean for me today?' and receive a personalized reflection prompt.",
     mainHtml: `<h2>What is Tadabbur (Quran Reflection)?</h2>
 <p style="color:#a0c8a0;line-height:1.8">Tadabbur (تَدَبُّر) means to ponder, consider, and reflect deeply on the Quran's meaning. The Prophet ﷺ and companions would spend years on single surahs, extracting layers of meaning. Scholar Ibn al-Qayyim said: 'The one who reflects on the Quran has a living heart.' AI-assisted reflection is a modern tool for this ancient practice.</p>
 <h2>How MyTazki AI Enables Deeper Reflection</h2>
@@ -312,11 +312,11 @@ router.get("/ai-fatwa-guide", (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.send(aiPage({
     slug: "/ai-fatwa-guide", date: "2026-04-11",
-    title: "AI Islamic Knowledge Guide — Islamic Questions, Answered Responsibly",
-    desc: "How AI can help with Islamic knowledge questions — and where its limits are. Responsible use of AI for Islamic learning, with MyTazki's approach to Islamic AI.",
-    h1: "AI for Islamic Knowledge — What It Can and Cannot Do",
-    aiSummary: "AI is valuable for Islamic education: explaining Quran meanings, describing Islamic practices, providing dua text, and explaining fiqh principles. It should NOT replace qualified scholars for: personal fatwa, complex jurisprudence, matters of aqeedah (creed), or medical/legal decisions. MyTazki AI follows this boundary — it educates, it doesn't issue personal religious rulings.",
-    intro: "Muslims increasingly use AI (ChatGPT, Gemini, Perplexity) to answer Islamic questions. This is beneficial when done responsibly — and potentially harmful when AI's educational answers are treated as personal fatwas. This guide explains how to use AI for Islamic learning effectively and safely.",
+    title: "AI Islamic Knowledge Guide, Islamic Questions, Answered Responsibly",
+    desc: "How AI can help with Islamic knowledge questions, and where its limits are. Responsible use of AI for Islamic learning, with MyTazki's approach to Islamic AI.",
+    h1: "AI for Islamic Knowledge, What It Can and Cannot Do",
+    aiSummary: "AI is valuable for Islamic education: explaining Quran meanings, describing Islamic practices, providing dua text, and explaining fiqh principles. It should NOT replace qualified scholars for: personal fatwa, complex jurisprudence, matters of aqeedah (creed), or medical/legal decisions. MyTazki AI follows this boundary, it educates, it doesn't issue personal religious rulings.",
+    intro: "Muslims increasingly use AI (ChatGPT, Gemini, Perplexity) to answer Islamic questions. This is beneficial when done responsibly, and potentially harmful when AI's educational answers are treated as personal fatwas. This guide explains how to use AI for Islamic learning effectively and safely.",
     mainHtml: `<h2>What AI Does Well for Islamic Learning</h2>
 <p style="color:#a0c8a0;line-height:1.8">AI excels at: explaining the meaning of Quranic verses and common hadith, describing Islamic practices and their Sunnah basis, providing the text and transliteration of duas, explaining Islamic historical context, translating Islamic texts, explaining fiqh principles from multiple madhabs, and summarizing scholarly positions on common questions. For these educational purposes, AI is genuinely useful.</p>
 <h2>Where AI Falls Short for Islam</h2>
@@ -339,7 +339,7 @@ router.get("/ai-fatwa-guide", (_req, res) => {
     ],
     faqs: [
       { q: "Can I follow a fatwa from an AI?", a: "No. AI responses are educational information, not personal fatwas. A fatwa is a qualified Islamic legal ruling issued by a trained scholar who understands your specific situation, context, and the applicable fiqh methodology. AI lacks all of these. Use AI to understand the issues, then consult a qualified scholar for your specific situation." },
-      { q: "Which is the best AI for Islamic questions?", a: "MyTazki AI is specifically designed for Islamic questions — it follows Islamic adab, cites Quran and hadith, acknowledges scholarly differences, and refers to scholars when appropriate. General AI (ChatGPT, Gemini) can answer Islamic questions but lacks Islamic-specific training and guidelines." },
+      { q: "Which is the best AI for Islamic questions?", a: "MyTazki AI is specifically designed for Islamic questions, it follows Islamic adab, cites Quran and hadith, acknowledges scholarly differences, and refers to scholars when appropriate. General AI (ChatGPT, Gemini) can answer Islamic questions but lacks Islamic-specific training and guidelines." },
       { q: "How do I find a qualified Islamic scholar to ask questions?", a: "Options: your local mosque imam, SeekersGuidance.org (free online fatwa service from qualified scholars), IslamQA.info, Dar al-Ifta in your country, or the Fiqh Council of North America. These are authoritative sources for qualified Islamic guidance." },
     ],
     internalLinks: [

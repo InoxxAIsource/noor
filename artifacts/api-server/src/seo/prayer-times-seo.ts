@@ -23,12 +23,12 @@ router.get("/prayer-times", (_req: Request, res: Response) => {
 
 ${ctaBlock()}
 
-<h2>India — Prayer Times by City</h2>
+<h2>India, Prayer Times by City</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:16px 0">
   ${INDIA_CITIES.map(city => `<a href="/prayer-times/${city.toLowerCase().replace(/\s+/g, "-")}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:14px;display:block">${esc(city)}</a>`).join("")}
 </div>
 
-<h2>Pakistan — Namaz Times by City</h2>
+<h2>Pakistan, Namaz Times by City</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:16px 0">
   ${PAKISTAN_CITIES.map(city => `<a href="/namaz-times/${city.toLowerCase().replace(/\s+/g, "-").replace("-pk", "")}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:14px;display:block">${esc(city.replace("-PK", ""))}</a>`).join("")}
 </div>
@@ -93,7 +93,7 @@ async function cityPageHandler(city: string, isNamaz: boolean, res: Response): P
   const nearbyCity = ALL_CITIES.find(c => c !== displayCity.replace(" Pk", "")) || "Delhi";
 
   const head = seoHead({
-    title: `${isNamaz ? "Namaz" : "Prayer"} Times in ${apiCity} Today — ${dateStr}`,
+    title: `${isNamaz ? "Namaz" : "Prayer"} Times in ${apiCity} Today, ${dateStr}`,
     description: `Accurate Fajr, Dhuhr, Asr, Maghrib, Isha ${isNamaz ? "namaz" : "prayer"} times in ${apiCity} for ${dateStr}. Live times from aladhan.com.`,
     canonical,
     schema: schemas,
@@ -105,8 +105,8 @@ ${breadcrumb([
     { name: "Prayer Times", item: "/prayer-times" },
     { name: apiCity },
   ])}
-<h1>${isNamaz ? "Namaz" : "Prayer"} Times in ${esc(apiCity)} Today — ${esc(dateStr)}</h1>
-<p style="color:#4a7a4a;margin-bottom:24px">Live ${isNamaz ? "namaz" : "salah"} times for ${esc(apiCity)} — <strong>${esc(isoDate)}</strong></p>
+<h1>${isNamaz ? "Namaz" : "Prayer"} Times in ${esc(apiCity)} Today, ${esc(dateStr)}</h1>
+<p style="color:#4a7a4a;margin-bottom:24px">Live ${isNamaz ? "namaz" : "salah"} times for ${esc(apiCity)}, <strong>${esc(isoDate)}</strong></p>
 
 ${times.length > 0 ? `
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:24px 0">

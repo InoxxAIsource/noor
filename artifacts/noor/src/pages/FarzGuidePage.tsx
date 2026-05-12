@@ -6,25 +6,25 @@ const SECTIONS = [
   {
     title: "The Five Pillars of Islam",
     content: [
-      { heading: "1. Shahadah — Declaration of Faith", body: "Bearing witness that there is no god but Allah and that Muhammad ﷺ is His messenger. This is the foundation of all Islamic practice." },
-      { heading: "2. Salah — Prayer", body: "Five daily prayers are obligatory: Fajr (dawn), Dhuhr (midday), Asr (afternoon), Maghrib (sunset), and Isha (night). Each salah has a specific number of rak'at." },
-      { heading: "3. Zakat — Charity", body: "2.5% of savings above nisab (87.48g of gold) must be given to eligible recipients annually. It purifies wealth and helps those in need." },
-      { heading: "4. Sawm — Fasting", body: "Fasting during the month of Ramadan from Fajr to Maghrib — abstaining from food, drink, and intimate relations. It develops taqwa (God-consciousness)." },
-      { heading: "5. Hajj — Pilgrimage", body: "Once in a lifetime, every Muslim who is physically and financially able must perform Hajj to Makkah during the month of Dhul Hijjah." },
+      { heading: "1. Shahadah, Declaration of Faith", body: "Bearing witness that there is no god but Allah and that Muhammad ﷺ is His messenger. This is the foundation of all Islamic practice." },
+      { heading: "2. Salah, Prayer", body: "Five daily prayers are obligatory: Fajr (dawn), Dhuhr (midday), Asr (afternoon), Maghrib (sunset), and Isha (night). Each salah has a specific number of rak'at." },
+      { heading: "3. Zakat, Charity", body: "2.5% of savings above nisab (87.48g of gold) must be given to eligible recipients annually. It purifies wealth and helps those in need." },
+      { heading: "4. Sawm, Fasting", body: "Fasting during the month of Ramadan from Fajr to Maghrib, abstaining from food, drink, and intimate relations. It develops taqwa (God-consciousness)." },
+      { heading: "5. Hajj, Pilgrimage", body: "Once in a lifetime, every Muslim who is physically and financially able must perform Hajj to Makkah during the month of Dhul Hijjah." },
     ],
   },
   {
     title: "Farz (Obligatory Acts) of Salah",
     content: [
       { heading: "7 Conditions (Shuroot)", body: "1. Islam\n2. Sanity\n3. Puberty\n4. Cleanliness (purity from hadath)\n5. Purity of clothing and place\n6. Covering awrah\n7. Facing Qibla" },
-      { heading: "7 Pillars Within Salah", body: "1. Niyyah (intention)\n2. Takbir al-Ihram (opening Allahu Akbar)\n3. Qiyam (standing)\n4. Qira'at (recitation of Quran)\n5. Ruku' (bowing)\n6. Sujud (prostration — 2 per rak'at)\n7. Qa'dah Akhirah (final sitting)" },
+      { heading: "7 Pillars Within Salah", body: "1. Niyyah (intention)\n2. Takbir al-Ihram (opening Allahu Akbar)\n3. Qiyam (standing)\n4. Qira'at (recitation of Quran)\n5. Ruku' (bowing)\n6. Sujud (prostration, 2 per rak'at)\n7. Qa'dah Akhirah (final sitting)" },
     ],
   },
   {
     title: "Farz of Wudu, Ghusl & Tayammum",
     content: [
       { heading: "Farz of Wudu (4 acts)", body: "1. Washing the face once\n2. Washing both arms up to and including the elbows\n3. Wiping 1/4 of the head\n4. Washing both feet up to and including the ankles" },
-      { heading: "Farz of Ghusl (3 acts)", body: "1. Rinsing the mouth thoroughly\n2. Sniffing water into the nostrils\n3. Washing the entire body — no part should remain dry" },
+      { heading: "Farz of Ghusl (3 acts)", body: "1. Rinsing the mouth thoroughly\n2. Sniffing water into the nostrils\n3. Washing the entire body, no part should remain dry" },
       { heading: "Farz of Tayammum (3 acts)", body: "1. Niyyah\n2. Wiping the face with clean earth/dust\n3. Wiping both arms up to and including the elbows" },
     ],
   },
@@ -41,7 +41,7 @@ const SECTIONS = [
   {
     title: "Janazah (Funeral) Guide",
     content: [
-      { heading: "Ghusl of the Deceased", body: "Wash the body an odd number of times (minimum 3). Use water with sidr (lote tree leaves). Shroud in white cloth (kafan) — 3 pieces for men, 5 for women." },
+      { heading: "Ghusl of the Deceased", body: "Wash the body an odd number of times (minimum 3). Use water with sidr (lote tree leaves). Shroud in white cloth (kafan), 3 pieces for men, 5 for women." },
       { heading: "Salat ul Janazah", body: "4 takbeers, no ruku or sujud:\n1st: Surah Fatiha\n2nd: Salawat on the Prophet\n3rd & 4th: Dua for the deceased\nEnd with salam on both sides" },
       { heading: "Burial", body: "Bury facing Qibla. Say: 'Bismillah wa 'ala millati rasulillah'. No elaborate grave structures. Men lower the body. Women do not attend the grave." },
     ],
@@ -56,16 +56,16 @@ const SECTIONS = [
   {
     title: "Nikah Guide",
     content: [
-      { heading: "Pillars of Nikah", body: "1. Proposal (Ijab) and acceptance (Qabul)\n2. Two Muslim male witnesses\n3. Wali (guardian) for the bride\n4. Mahr (dowry) — must be agreed upon" },
-      { heading: "Sunnah Acts", body: "Khutbah before nikah • Announce the marriage • Walima (wedding feast) within 7 days — 1 day is sunnah" },
+      { heading: "Pillars of Nikah", body: "1. Proposal (Ijab) and acceptance (Qabul)\n2. Two Muslim male witnesses\n3. Wali (guardian) for the bride\n4. Mahr (dowry), must be agreed upon" },
+      { heading: "Sunnah Acts", body: "Khutbah before nikah • Announce the marriage • Walima (wedding feast) within 7 days, 1 day is sunnah" },
     ],
   },
   {
     title: "Halal & Haram Reference",
     content: [
-      { heading: "Foods — Halal", body: "All vegetables and fruits • Fish (with or without scales) • Meat of animals slaughtered with Bismillah • Dairy products • Eggs from halal birds" },
-      { heading: "Foods — Haram", body: "Pork and pork products • Alcohol and intoxicants • Blood • Dead animals (not slaughtered) • Animals slaughtered for other than Allah • Carnivorous animals and birds of prey" },
-      { heading: "Business — Halal vs Haram", body: "Haram: Riba (interest) • Gambling • Fraud • Bribery • Selling forbidden goods\nHalal: Trade • Hiring services • Partnerships with fair terms" },
+      { heading: "Foods, Halal", body: "All vegetables and fruits • Fish (with or without scales) • Meat of animals slaughtered with Bismillah • Dairy products • Eggs from halal birds" },
+      { heading: "Foods, Haram", body: "Pork and pork products • Alcohol and intoxicants • Blood • Dead animals (not slaughtered) • Animals slaughtered for other than Allah • Carnivorous animals and birds of prey" },
+      { heading: "Business, Halal vs Haram", body: "Haram: Riba (interest) • Gambling • Fraud • Bribery • Selling forbidden goods\nHalal: Trade • Hiring services • Partnerships with fair terms" },
     ],
   },
 ];

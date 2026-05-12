@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const DAILY_SADQA = [
-  "Smile at someone — the Prophet ﷺ said a smile is sadqa",
+  "Smile at someone, the Prophet ﷺ said a smile is sadqa",
   "Remove something harmful from the path of others",
   "Say a kind word to a family member",
   "Help someone carry their load",
@@ -43,7 +43,7 @@ const SadqaGuidePage: React.FC = () => {
         </div>
 
         <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 space-y-3">
-          <h2 className="font-cinzel text-lg text-[var(--gold)]">2. Sadqa Jariyah — Ongoing Reward</h2>
+          <h2 className="font-cinzel text-lg text-[var(--gold)]">2. Sadqa Jariyah, Ongoing Reward</h2>
           <p className="text-sm text-[var(--muted)] leading-relaxed mb-3">The Prophet ﷺ said: <em className="text-[var(--text)]">"When a person dies, all their deeds end except three: ongoing sadqa, beneficial knowledge, or a righteous child who prays for them."</em> (Muslim)</p>
           {[
             { emoji: "💧", title: "Build or fund a well", desc: "Every sip of water gives you ongoing reward" },
@@ -90,7 +90,7 @@ const SadqaGuidePage: React.FC = () => {
         <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 space-y-3">
           <h2 className="font-cinzel text-lg text-[var(--gold)]">4. Non-Financial Sadqa</h2>
           <p className="text-sm text-[var(--text)] italic mb-3">"Your smile for your brother is sadqa. Commanding good and forbidding evil is sadqa. Your guiding a man in a land of no guide is sadqa. Your helping a man with bad eyesight is sadqa. Removing a stone, thorn or bone from the road is sadqa. Your pouring water from your bucket into a brother's bucket is sadqa."</p>
-          <p className="text-xs text-[var(--muted)] text-right">— Tirmidhi</p>
+          <p className="text-xs text-[var(--muted)] text-right">- Tirmidhi</p>
         </div>
       </div>
     </div>

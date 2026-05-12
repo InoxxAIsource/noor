@@ -109,7 +109,7 @@ const QiblaPage: React.FC = () => {
               <div className="font-cinzel text-5xl text-[var(--gold)]">{Math.round(bearing)}°</div>
               <div className="text-xl text-[var(--green)]">{bearingToCardinal(bearing)}</div>
               {deviceHeading === null && (
-                <p className="text-xs text-[var(--muted)] italic">Compass sensor unavailable — showing static bearing</p>
+                <p className="text-xs text-[var(--muted)] italic">Compass sensor unavailable, showing static bearing</p>
               )}
             </div>
 

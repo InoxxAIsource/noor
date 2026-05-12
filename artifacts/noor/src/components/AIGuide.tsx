@@ -155,7 +155,7 @@ const AIGuide: React.FC = () => {
               {remaining !== null && (
                 <p className="text-[10px] text-[var(--muted)] text-center mb-2">
                   {isLimitReached
-                    ? "Daily limit reached — come back tomorrow"
+                    ? "Daily limit reached, come back tomorrow"
                     : `${remaining} messages remaining today`}
                 </p>
               )}

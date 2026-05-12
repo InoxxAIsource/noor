@@ -12,7 +12,7 @@ export function seoHead({ title, description, canonical, schema }: SeoHeadOpts):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} | MyTazki — AI Islamic Companion</title>
+<title>${esc(title)} | MyTazki, AI Islamic Companion</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="https://mytazki.com${canonical}">
 <meta property="og:title" content="${esc(title)}">
@@ -58,14 +58,14 @@ export function footer(): string {
         ["/sitemap.xml", "Sitemap"],
       ].map(([href, label]) => `<a href="${href}" style="color:#4a6858;text-decoration:none;font-size:13px;font-family:Inter,sans-serif">${label}</a>`).join(" &nbsp;·&nbsp; ")}
     </div>
-    <p style="color:#2a3830;font-size:12px;margin:0;font-family:Inter,sans-serif">© 2026 MyTazki — AI Islamic Companion. Grow Spiritually Every Day.</p>
+    <p style="color:#2a3830;font-size:12px;margin:0;font-family:Inter,sans-serif">© 2026 MyTazki, AI Islamic Companion. Grow Spiritually Every Day.</p>
   </div>
 </footer>`;
 }
 
 export function ctaBlock(): string {
   return `<div class="cta-box">
-  <p style="color:#34c97a;font-family:DM Sans,Inter,sans-serif;font-size:1.1rem;margin:0 0 8px;font-weight:700">Grow Spiritually Every Day — Download MyTazki free</p>
+  <p style="color:#34c97a;font-family:DM Sans,Inter,sans-serif;font-size:1.1rem;margin:0 0 8px;font-weight:700">Grow Spiritually Every Day, Download MyTazki free</p>
   <p style="color:#4a6858;font-size:14px;margin:0 0 16px;font-family:Inter,sans-serif">Prayer times, Quran, Azkar, Duas, AI Islamic guide & spiritual growth tracker</p>
   <a href="/download" class="cta-btn">Download MyTazki →</a>
 </div>`;

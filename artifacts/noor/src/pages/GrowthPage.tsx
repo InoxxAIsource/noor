@@ -169,7 +169,7 @@ const GrowthPage: React.FC = () => {
     d.setDate(d.getDate() - i);
     const ds = d.toISOString().split("T")[0]!;
     const mins = minutesByDay[ds] || 0;
-    heatmapDays.push({ date: ds, minutes: mins, label: `${ds} — ${mins} min` });
+    heatmapDays.push({ date: ds, minutes: mins, label: `${ds}, ${mins} min` });
   }
 
   // Pad to full weeks at start

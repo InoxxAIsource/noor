@@ -74,7 +74,7 @@ const ProfilePage: React.FC = () => {
           <div>
             <h1 className="font-cinzel text-xl text-[var(--gold)]">{u?.["name"] as string}</h1>
             <p className="text-[var(--muted)] text-sm">{u?.["email"] as string}</p>
-            <p className="text-xs text-[var(--green)] mt-1">Beta — Free for now ✓</p>
+            <p className="text-xs text-[var(--green)] mt-1">Beta, Free for now ✓</p>
           </div>
         </div>
 
@@ -200,7 +200,7 @@ const ProfilePage: React.FC = () => {
           {/* Reminder time */}
           <div>
             <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">
-              Daily reminder — {fmt2(reminderHour)}
+              Daily reminder, {fmt2(reminderHour)}
             </label>
             <input
               type="range" min="4" max="23" value={reminderHour}
@@ -215,7 +215,7 @@ const ProfilePage: React.FC = () => {
           {/* Weekly goal */}
           <div>
             <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">
-              Weekly goal — {weeklyGoal} day{weeklyGoal !== 1 ? "s" : ""}
+              Weekly goal, {weeklyGoal} day{weeklyGoal !== 1 ? "s" : ""}
             </label>
             <input
               type="range" min="1" max="7" value={weeklyGoal}

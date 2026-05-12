@@ -7,7 +7,7 @@ router.get("/landing", (_req, res) => {
   const appSchema = {
     "@context": "https://schema.org",
     "@type": "MobileApplication",
-    "name": "MyTazki — Islamic Prayer App",
+    "name": "MyTazki, Islamic Prayer App",
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "iOS, Android, Web",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
@@ -18,9 +18,9 @@ router.get("/landing", (_req, res) => {
   const faqs = [
     { q: "Is MyTazki free to use?", a: "Yes, MyTazki is completely free with no ads. It includes prayer times, Quran, duas, AI guide, names finder, and more." },
     { q: "Does MyTazki work offline?", a: "Core features like Quran reading, duas, and tasbih work offline. Prayer times and AI features require internet." },
-    { q: "Is MyTazki available for Android and iOS?", a: "MyTazki is a Progressive Web App (PWA) that works on any device — Android, iOS, or desktop — through your browser." },
+    { q: "Is MyTazki available for Android and iOS?", a: "MyTazki is a Progressive Web App (PWA) that works on any device, Android, iOS, or desktop, through your browser." },
     { q: "How accurate are the prayer times?", a: "Prayer times are calculated using the aladhan.com API with your city location, supporting Hanafi, Shafi, Maliki, and Hanbali madhabs." },
-    { q: "What makes MyTazki different from Muslim Pro?", a: "MyTazki has unique features: AI Islamic guide, khushoo journal, live prayer rooms, baby names finder, and a completely ad-free experience — all free." },
+    { q: "What makes MyTazki different from Muslim Pro?", a: "MyTazki has unique features: AI Islamic guide, khushoo journal, live prayer rooms, baby names finder, and a completely ad-free experience, all free." },
   ];
 
   const features = [
@@ -33,7 +33,7 @@ router.get("/landing", (_req, res) => {
   ];
 
   const testimonials = [
-    { name: "Zaid A., Delhi", text: "Best Islamic app I've used. The AI guide answered my fiqh question in seconds. No ads, no subscriptions — just pure ibadah." },
+    { name: "Zaid A., Delhi", text: "Best Islamic app I've used. The AI guide answered my fiqh question in seconds. No ads, no subscriptions, just pure ibadah." },
     { name: "Fatima K., Karachi", text: "The daily streak feature keeps me consistent with my prayers. The Quran reader with audio is beautiful. JazakAllah khair." },
     { name: "Ibrahim M., Hyderabad", text: "I found a masjid near my office and saved it as favourite. The khushoo rating after each prayer is a great touch." },
   ];
@@ -49,7 +49,7 @@ router.get("/landing", (_req, res) => {
   ];
 
   const head = seoHead({
-    title: "MyTazki — Islamic Prayer App",
+    title: "MyTazki, Islamic Prayer App",
     description: "Free Muslim prayer app with Quran, prayer times for India & Pakistan, duas, AI Islamic guide, names finder, zakat calculator, masjid finder. No ads, ever.",
     canonical: "/landing",
     schema: [appSchema, faqSchema(faqs)],
@@ -59,7 +59,7 @@ router.get("/landing", (_req, res) => {
 <div style="text-align:center;padding:60px 20px 40px;background:linear-gradient(180deg,#002800 0%,#001a00 100%);margin:-24px -20px 40px;border-bottom:1px solid rgba(0,165,80,0.15)">
   <p style="font-family:Amiri,serif;font-size:2rem;color:#ffd700;direction:rtl;margin:0 0 8px">نور</p>
   <h1 style="margin:0 0 16px;font-size:2.5rem">Grow Spiritually Every Day.</h1>
-  <p style="color:#4a7a4a;font-size:1.1rem;max-width:500px;margin:0 auto 28px">The complete Islamic companion — prayer times, Quran, duas, AI guide, and more. Free forever.</p>
+  <p style="color:#4a7a4a;font-size:1.1rem;max-width:500px;margin:0 auto 28px">The complete Islamic companion, prayer times, Quran, duas, AI guide, and more. Free forever.</p>
   <a href="/download" class="cta-btn" style="font-size:1.1rem;padding:14px 36px">Download MyTazki Free →</a>
   <p style="color:#2a4a2a;font-size:12px;margin:16px 0 0">No ads · No subscription · Works on any device</p>
 </div>
@@ -91,7 +91,7 @@ router.get("/landing", (_req, res) => {
 
 <h2>What Muslims say about MyTazki</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0">
-  ${testimonials.map(t => `<div class="card"><p style="color:#a0c8a0;font-style:italic;margin:0 0 10px">"${esc(t.text)}"</p><p style="color:#00a550;font-size:13px;margin:0">— ${esc(t.name)}</p></div>`).join("")}
+  ${testimonials.map(t => `<div class="card"><p style="color:#a0c8a0;font-style:italic;margin:0 0 10px">"${esc(t.text)}"</p><p style="color:#00a550;font-size:13px;margin:0">- ${esc(t.name)}</p></div>`).join("")}
 </div>
 
 ${ctaBlock()}
@@ -119,8 +119,8 @@ ${faqHtml(faqs)}
 
 router.get("/download", (_req, res) => {
   const head = seoHead({
-    title: "Download MyTazki — Islamic Prayer App | Free PWA for Android & iOS",
-    description: "Download MyTazki Islamic prayer app. Free PWA — works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
+    title: "Download MyTazki, Islamic Prayer App | Free PWA for Android & iOS",
+    description: "Download MyTazki Islamic prayer app. Free PWA, works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
     canonical: "/download",
     schema: [],
   });
@@ -128,13 +128,13 @@ router.get("/download", (_req, res) => {
   const body = `
 <div style="text-align:center;padding:40px 20px 24px">
   <div style="font-size:4rem;margin-bottom:12px">🌙</div>
-  <h1>Download MyTazki — Islamic Prayer App</h1>
+  <h1>Download MyTazki, Islamic Prayer App</h1>
   <p style="color:#4a7a4a;font-size:1rem;max-width:420px;margin:0 auto 24px;line-height:1.6">
-    Your personal Islamic companion. Remember Allah — every day. Free forever, no ads.
+    Your personal Islamic companion. Remember Allah, every day. Free forever, no ads.
   </p>
 
   <div style="background:rgba(0,165,80,0.1);border:1px solid rgba(0,165,80,0.3);border-radius:10px;padding:14px 24px;display:inline-block;margin-bottom:28px">
-    <p style="color:#00a550;margin:0;font-size:14px;font-weight:bold">✅ Available now as a PWA — works on any device</p>
+    <p style="color:#00a550;margin:0;font-size:14px;font-weight:bold">✅ Available now as a PWA, works on any device</p>
   </div>
 
   <div>

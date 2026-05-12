@@ -91,54 +91,54 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
 
   urls.push(url("/best-muslim-prayer-app-india", "0.6"));
 
-  // Cluster 1 — Emotional / Anxiety + Peace
+  // Cluster 1, Emotional / Anxiety + Peace
   [
     "/dua-for-anxiety", "/quran-verses-about-stress", "/how-islam-brings-peace",
     "/tahajjud-for-anxiety", "/islamic-routine-for-peace", "/dua-for-overthinking",
     "/quran-for-depression", "/how-to-connect-with-allah", "/surah-for-peace", "/dua-for-hardship",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Cluster 2 — Salah Consistency
+  // Cluster 2, Salah Consistency
   [
     "/how-to-stop-missing-salah", "/how-to-focus-in-salah", "/how-to-wake-up-for-fajr",
     "/why-salah-is-important", "/salah-benefits", "/how-to-make-salah-habit",
     "/missed-prayers-qada", "/dua-before-salah",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Cluster 3 — Quran Reflections
+  // Cluster 3, Quran Reflections
   [
     "/surah-rahman-reflection", "/surah-mulk-reflection", "/surah-fatiha-reflection",
     "/surah-duha-reflection", "/surah-kahf-reflection", "/surah-yusuf-reflection",
     "/ayatul-kursi-reflection", "/quran-about-anxiety",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Cluster 4 — Islamic Habits
+  // Cluster 4, Islamic Habits
   [
     "/daily-muslim-routine", "/islamic-habit-tracker", "/muslim-productivity-habits",
     "/morning-routine-muslim", "/islamic-night-routine", "/dhikr-daily-habit",
     "/quran-daily-habit", "/islamic-self-improvement",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Cluster 5 — AI Islamic Search
+  // Cluster 5, AI Islamic Search
   [
     "/ai-islamic-assistant", "/ai-quran-explainer", "/ask-islam-ai",
     "/islamic-ai-companion", "/quran-ai-reflection", "/ai-fatwa-guide",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 2 — Hub pages
+  // Phase 2, Hub pages
   [
     "/mental-wellness", "/salah", "/quran-reflections",
     "/islamic-habits", "/ai-islamic-tools",
   ].forEach(p => urls.push(url(p, "1.0")));
 
-  // Phase 2 — Guided journey pages
+  // Phase 2, Guided journey pages
   [
     "/7-day-inner-peace-journey", "/reconnect-with-allah-journey",
     "/7-day-salah-reset", "/morning-barakah-routine",
     "/tahajjud-transformation-journey",
   ].forEach(p => urls.push(url(p, "0.95")));
 
-  // Phase 2 — Wellness expansion
+  // Phase 2, Wellness expansion
   [
     "/dua-for-loneliness", "/islamic-healing-from-heartbreak", "/dua-for-grief",
     "/quran-verses-about-patience", "/emotional-healing-in-islam",
@@ -147,14 +147,14 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/how-to-stop-overthinking-islam", "/quran-verses-about-hope", "/islamic-self-care",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 2 — Salah expansion
+  // Phase 2, Salah expansion
   [
     "/tahajjud-prayer-guide", "/how-to-pray-tahajjud", "/fajr-prayer-tips",
     "/khushu-in-salah", "/salah-and-mental-health", "/salah-motivation",
     "/night-prayer-benefits",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 2 — Quran expansion
+  // Phase 2, Quran expansion
   [
     "/quran-verses-about-mercy", "/quran-verses-about-healing",
     "/quran-verses-about-gratitude", "/quran-on-patience",
@@ -162,20 +162,20 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/quran-for-forgiveness", "/best-surahs-for-morning", "/quran-daily-reading-guide",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 2 — Habits expansion
+  // Phase 2, Habits expansion
   [
     "/islamic-discipline", "/gratitude-in-islam", "/islamic-sleep-routine",
     "/islamic-time-management", "/30-day-islamic-challenge",
     "/evening-azkar-routine", "/halal-productivity",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 2 — AI expansion
+  // Phase 2, AI expansion
   [
     "/ai-tafsir", "/ai-islamic-coach", "/ai-dua-generator",
     "/best-islamic-ai-apps", "/ai-for-muslims", "/chatgpt-for-islamic-questions",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 3 — Entity & trust pages
+  // Phase 3, Entity & trust pages
   [
     "/about", "/mission", "/our-philosophy", "/how-mytazki-works",
     "/contributors", "/authors", "/editorial-guidelines",
@@ -183,14 +183,14 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/content-verification", "/how-ai-content-is-reviewed",
   ].forEach(p => urls.push(url(p, "0.8")));
 
-  // Phase 3 — GEO landing pages
+  // Phase 3, GEO landing pages
   [
     "/best-islamic-app-for-anxiety", "/best-muslim-habit-app",
     "/ai-islamic-companion", "/ai-quran-reflection",
     "/islamic-self-improvement-app", "/muslim-wellness-app",
   ].forEach(p => urls.push(url(p, "0.9")));
 
-  // Phase 3 — Start Here funnels
+  // Phase 3, Start Here funnels
   [
     "/start-here", "/reconnect-with-allah", "/find-peace-in-islam",
     "/build-islamic-habits", "/start-praying-again",

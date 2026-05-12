@@ -34,7 +34,7 @@ const SURAHS: Surah[] = [
   { number: 112, name: "Al-Ikhlas", arabicName: "الْإِخْلَاص", slug: "surah-ikhlas", meaning: "Sincerity", verses: 4, place: "Makkah", benefits: "Worth one third of the Quran when recited. Affirms pure monotheism. Brief but comprehensive declaration of Allah's oneness.", firstAyah: "قُلْ هُوَ اللَّهُ أَحَدٌ", firstAyahTranslation: "Say: He is Allah, the One." },
   { number: 113, name: "Al-Falaq", arabicName: "الْفَلَق", slug: "surah-falaq", meaning: "The Dawn", verses: 5, place: "Makkah", benefits: "One of the Muawwidhatayn (two protective surahs). Recited 3 times morning and evening for protection from evil.", firstAyah: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ", firstAyahTranslation: "Say: I seek refuge in the Lord of daybreak." },
   { number: 114, name: "An-Nas", arabicName: "النَّاس", slug: "surah-nas", meaning: "Mankind", verses: 6, place: "Makkah", benefits: "One of the Muawwidhatayn. Protects from evil whispers of Shaytan. Recited 3 times morning and evening.", firstAyah: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ", firstAyahTranslation: "Say: I seek refuge in the Lord of mankind." },
-  { number: 2, name: "Ayatul Kursi", arabicName: "آيَة الْكُرْسِيّ", slug: "ayatul-kursi", meaning: "The Throne Verse (2:255)", verses: 1, place: "Madinah", benefits: "The greatest verse in the Quran. Recited after every prayer and before sleep for protection. Whoever recites it after obligatory prayer will be under Allah's protection until next prayer.", firstAyah: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", firstAyahTranslation: "Allah — there is no deity except Him, the Ever-Living, the Sustainer of existence." },
+  { number: 2, name: "Ayatul Kursi", arabicName: "آيَة الْكُرْسِيّ", slug: "ayatul-kursi", meaning: "The Throne Verse (2:255)", verses: 1, place: "Madinah", benefits: "The greatest verse in the Quran. Recited after every prayer and before sleep for protection. Whoever recites it after obligatory prayer will be under Allah's protection until next prayer.", firstAyah: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", firstAyahTranslation: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of existence." },
 ];
 
 function allSurahLinks(): string {
@@ -48,7 +48,7 @@ function allSurahLinks(): string {
 
 router.get("/quran", (_req: Request, res: Response) => {
   const head = seoHead({
-    title: "Quran — All 114 Surahs with Arabic & English Translation",
+    title: "Quran, All 114 Surahs with Arabic & English Translation",
     description: "Read the Holy Quran online with Arabic text, English translation, and audio recitation. All 114 surahs with meaning, benefits, and Tafsir.",
     canonical: "/quran",
     schema: faqSchema([
@@ -59,7 +59,7 @@ router.get("/quran", (_req: Request, res: Response) => {
   });
 
   const body = `
-<h1>The Holy Quran — Arabic Text &amp; English Translation</h1>
+<h1>The Holy Quran, Arabic Text &amp; English Translation</h1>
 <p style="color:#4a7a4a">Read the Quran online with Arabic text, transliteration, English meaning, and Alafasy audio recitation.</p>
 
 ${ctaBlock()}
@@ -90,7 +90,7 @@ ${ctaBlock()}
 <div style="margin-top:24px">
   <h2>Special Verses</h2>
   <a href="/quran/ayatul-kursi" style="background:#002800;border:2px solid rgba(255,215,0,0.3);border-radius:10px;padding:16px;text-decoration:none;display:block;max-width:400px">
-    <p style="color:#ffd700;font-family:Cinzel,serif;margin:0 0 4px">Ayatul Kursi — The Throne Verse</p>
+    <p style="color:#ffd700;font-family:Cinzel,serif;margin:0 0 4px">Ayatul Kursi, The Throne Verse</p>
     <p style="color:#4a7a4a;font-size:13px;margin:0">The greatest verse in the Quran · Quran 2:255</p>
   </a>
 </div>
@@ -137,11 +137,11 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
   const relatedSurahs = SURAHS.filter(s => s.slug !== surah!.slug && s.slug !== "ayatul-kursi").slice(0, 4);
 
   const head = seoHead({
-    title: `Surah ${surah.name} — Meaning, Translation & Benefits`,
-    description: `Surah ${surah.name} (${surah.arabicName || surah.name}) — ${surah.meaning}. ${surah.benefits.substring(0, 100)}`,
+    title: `Surah ${surah.name}, Meaning, Translation & Benefits`,
+    description: `Surah ${surah.name} (${surah.arabicName || surah.name}), ${surah.meaning}. ${surah.benefits.substring(0, 100)}`,
     canonical: `/quran/${slug}`,
     schema: [
-      { "@context": "https://schema.org", "@type": "Article", "headline": `Surah ${surah.name} — Meaning, Translation and Benefits`, "description": surah.benefits, "author": { "@type": "Organization", "name": "MyTazki" } },
+      { "@context": "https://schema.org", "@type": "Article", "headline": `Surah ${surah.name}, Meaning, Translation and Benefits`, "description": surah.benefits, "author": { "@type": "Organization", "name": "MyTazki" } },
       faqSchema(faqs),
       breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Quran", item: "/quran" }, { name: `Surah ${surah.name}` }]),
     ],
@@ -151,7 +151,7 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Quran", item: "/quran" }, { name: `Surah ${surah.name}` }])}
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-  <h1 style="margin:0">Surah ${esc(surah.name)} — Meaning, Translation &amp; Benefits</h1>
+  <h1 style="margin:0">Surah ${esc(surah.name)}, Meaning, Translation &amp; Benefits</h1>
   ${surah.arabicName ? `<p class="arabic" style="font-size:2rem;margin:0">${surah.arabicName}</p>` : ""}
 </div>
 
