@@ -7,7 +7,7 @@ router.get("/landing", (_req, res) => {
   const appSchema = {
     "@context": "https://schema.org",
     "@type": "MobileApplication",
-    "name": "DeenApp — Islamic Prayer App",
+    "name": "MyTazki — Islamic Prayer App",
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "iOS, Android, Web",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
@@ -16,11 +16,11 @@ router.get("/landing", (_req, res) => {
   };
 
   const faqs = [
-    { q: "Is DeenApp free to use?", a: "Yes, DeenApp is completely free with no ads. It includes prayer times, Quran, duas, AI guide, names finder, and more." },
-    { q: "Does DeenApp work offline?", a: "Core features like Quran reading, duas, and tasbih work offline. Prayer times and AI features require internet." },
-    { q: "Is DeenApp available for Android and iOS?", a: "DeenApp is a Progressive Web App (PWA) that works on any device — Android, iOS, or desktop — through your browser." },
+    { q: "Is MyTazki free to use?", a: "Yes, MyTazki is completely free with no ads. It includes prayer times, Quran, duas, AI guide, names finder, and more." },
+    { q: "Does MyTazki work offline?", a: "Core features like Quran reading, duas, and tasbih work offline. Prayer times and AI features require internet." },
+    { q: "Is MyTazki available for Android and iOS?", a: "MyTazki is a Progressive Web App (PWA) that works on any device — Android, iOS, or desktop — through your browser." },
     { q: "How accurate are the prayer times?", a: "Prayer times are calculated using the aladhan.com API with your city location, supporting Hanafi, Shafi, Maliki, and Hanbali madhabs." },
-    { q: "What makes DeenApp different from Muslim Pro?", a: "DeenApp has unique features: AI Islamic guide, khushoo journal, live prayer rooms, baby names finder, and a completely ad-free experience — all free." },
+    { q: "What makes MyTazki different from Muslim Pro?", a: "MyTazki has unique features: AI Islamic guide, khushoo journal, live prayer rooms, baby names finder, and a completely ad-free experience — all free." },
   ];
 
   const features = [
@@ -49,7 +49,7 @@ router.get("/landing", (_req, res) => {
   ];
 
   const head = seoHead({
-    title: "DeenApp — Islamic Prayer App",
+    title: "MyTazki — Islamic Prayer App",
     description: "Free Muslim prayer app with Quran, prayer times for India & Pakistan, duas, AI Islamic guide, names finder, zakat calculator, masjid finder. No ads, ever.",
     canonical: "/landing",
     schema: [appSchema, faqSchema(faqs)],
@@ -58,9 +58,9 @@ router.get("/landing", (_req, res) => {
   const body = `
 <div style="text-align:center;padding:60px 20px 40px;background:linear-gradient(180deg,#002800 0%,#001a00 100%);margin:-24px -20px 40px;border-bottom:1px solid rgba(0,165,80,0.15)">
   <p style="font-family:Amiri,serif;font-size:2rem;color:#ffd700;direction:rtl;margin:0 0 8px">نور</p>
-  <h1 style="margin:0 0 16px;font-size:2.5rem">Remember Allah. Every day.</h1>
+  <h1 style="margin:0 0 16px;font-size:2.5rem">Grow Spiritually Every Day.</h1>
   <p style="color:#4a7a4a;font-size:1.1rem;max-width:500px;margin:0 auto 28px">The complete Islamic companion — prayer times, Quran, duas, AI guide, and more. Free forever.</p>
-  <a href="/download" class="cta-btn" style="font-size:1.1rem;padding:14px 36px">Download DeenApp Free →</a>
+  <a href="/download" class="cta-btn" style="font-size:1.1rem;padding:14px 36px">Download MyTazki Free →</a>
   <p style="color:#2a4a2a;font-size:12px;margin:16px 0 0">No ads · No subscription · Works on any device</p>
 </div>
 
@@ -69,12 +69,12 @@ router.get("/landing", (_req, res) => {
   ${features.map(f => `<div class="card"><span style="font-size:2rem">${f.icon}</span><h3 style="margin:8px 0 4px;color:#ffd700;font-size:1rem;font-family:Cinzel,serif">${esc(f.title)}</h3><p style="color:#4a7a4a;font-size:14px;margin:0">${esc(f.desc)}</p></div>`).join("")}
 </div>
 
-<h2>How DeenApp compares</h2>
+<h2>How MyTazki compares</h2>
 <div style="overflow-x:auto;margin:16px 0">
   <table style="width:100%;border-collapse:collapse;font-size:14px">
     <tr style="border-bottom:1px solid rgba(0,165,80,0.2)">
       <th style="text-align:left;padding:10px 12px;color:#ffd700">Feature</th>
-      <th style="padding:10px 12px;color:#00a550">DeenApp</th>
+      <th style="padding:10px 12px;color:#00a550">MyTazki</th>
       <th style="padding:10px 12px;color:#4a7a4a">Muslim Pro</th>
       <th style="padding:10px 12px;color:#4a7a4a">WeMuslim</th>
       <th style="padding:10px 12px;color:#4a7a4a">Athan</th>
@@ -89,7 +89,7 @@ router.get("/landing", (_req, res) => {
   </table>
 </div>
 
-<h2>What Muslims say about DeenApp</h2>
+<h2>What Muslims say about MyTazki</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0">
   ${testimonials.map(t => `<div class="card"><p style="color:#a0c8a0;font-style:italic;margin:0 0 10px">"${esc(t.text)}"</p><p style="color:#00a550;font-size:13px;margin:0">— ${esc(t.name)}</p></div>`).join("")}
 </div>
@@ -97,7 +97,7 @@ router.get("/landing", (_req, res) => {
 ${ctaBlock()}
 ${faqHtml(faqs)}
 
-<h2>Explore DeenApp</h2>
+<h2>Explore MyTazki</h2>
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin:16px 0">
   ${[
     ["/prayer-times", "Prayer Times in India"],
@@ -119,8 +119,8 @@ ${faqHtml(faqs)}
 
 router.get("/download", (_req, res) => {
   const head = seoHead({
-    title: "Download DeenApp — Islamic Prayer App | Free PWA for Android & iOS",
-    description: "Download DeenApp Islamic prayer app. Free PWA — works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
+    title: "Download MyTazki — Islamic Prayer App | Free PWA for Android & iOS",
+    description: "Download MyTazki Islamic prayer app. Free PWA — works on Android, iOS, and desktop. Prayer times, Quran, AI guide, duas, and more. Install now.",
     canonical: "/download",
     schema: [],
   });
@@ -128,7 +128,7 @@ router.get("/download", (_req, res) => {
   const body = `
 <div style="text-align:center;padding:40px 20px 24px">
   <div style="font-size:4rem;margin-bottom:12px">🌙</div>
-  <h1>Download DeenApp — Islamic Prayer App</h1>
+  <h1>Download MyTazki — Islamic Prayer App</h1>
   <p style="color:#4a7a4a;font-size:1rem;max-width:420px;margin:0 auto 24px;line-height:1.6">
     Your personal Islamic companion. Remember Allah — every day. Free forever, no ads.
   </p>
@@ -138,7 +138,7 @@ router.get("/download", (_req, res) => {
   </div>
 
   <div>
-    <a href="/register" class="cta-btn" style="font-size:1.1rem;padding:16px 40px;display:inline-block">📲 Install DeenApp Free →</a>
+    <a href="/register" class="cta-btn" style="font-size:1.1rem;padding:16px 40px;display:inline-block">📲 Install MyTazki Free →</a>
   </div>
 </div>
 
@@ -150,7 +150,7 @@ router.get("/download", (_req, res) => {
     ["🧭","Qibla Compass","Accurate direction anywhere"],
     ["📿","Digital Tasbih","With vibration & progress ring"],
     ["🕌","Masjid Finder","Nearby mosques on map"],
-    ["🤖","DeenApp AI","Islamic companion (20 req/day free)"],
+    ["🤖","MyTazki AI","Islamic companion (20 req/day free)"],
     ["📊","Growth Tracker","Streaks, badges, journal"],
   ].map(([icon, title, desc]) => `
     <div class="card">
@@ -165,7 +165,7 @@ router.get("/download", (_req, res) => {
   <h2>How to Install</h2>
   <div class="card" style="margin-bottom:12px">
     <p style="color:#00a550;font-weight:bold;margin:0 0 6px">Android (Chrome)</p>
-    <p style="color:#a0c8a0;font-size:14px;margin:0">Tap the ⋮ menu → "Install DeenApp" → Install. The app appears on your home screen like a native app.</p>
+    <p style="color:#a0c8a0;font-size:14px;margin:0">Tap the ⋮ menu → "Install MyTazki" → Install. The app appears on your home screen like a native app.</p>
   </div>
   <div class="card">
     <p style="color:#00a550;font-weight:bold;margin:0 0 6px">iPhone / iPad (Safari)</p>

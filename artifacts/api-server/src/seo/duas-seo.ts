@@ -151,7 +151,7 @@ ${ctaBlock()}
     description: `${dua.title}: "${dua.meaningEnglish.substring(0, 100)}..." Arabic text, transliteration and English meaning. Source: ${dua.source}.`,
     canonical: `/duas/${slug}`,
     schema: [
-      { "@context": "https://schema.org", "@type": "Article", "headline": `${dua.title} — Arabic and Meaning`, "description": dua.meaningEnglish, "author": { "@type": "Organization", "name": "DeenApp" }, "publisher": { "@type": "Organization", "name": "DeenApp" } },
+      { "@context": "https://schema.org", "@type": "Article", "headline": `${dua.title} — Arabic and Meaning`, "description": dua.meaningEnglish, "author": { "@type": "Organization", "name": "MyTazki" }, "publisher": { "@type": "Organization", "name": "MyTazki" } },
       faqSchema(faqs),
       breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Duas", item: "/duas" }, { name: `${dua.category}`, item: `/duas/${slugify(dua.category)}` }, { name: dua.title }]),
     ],
@@ -190,7 +190,7 @@ ${related.length > 0 ? `
 </div>` : ""}
 
 ${faqHtml(faqs)}
-<p style="color:#4a7a4a;margin-top:16px">Listen to guided: <a href="/sessions" style="color:#00a550">Dhikr &amp; Dua sessions on DeenApp</a> · <a href="/duas/${slugify(dua.category)}" style="color:#00a550">More ${esc(dua.category)} duas</a></p>
+<p style="color:#4a7a4a;margin-top:16px">Listen to guided: <a href="/sessions" style="color:#00a550">Dhikr &amp; Dua sessions on MyTazki</a> · <a href="/duas/${slugify(dua.category)}" style="color:#00a550">More ${esc(dua.category)} duas</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");

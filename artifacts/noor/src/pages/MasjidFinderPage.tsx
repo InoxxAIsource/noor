@@ -141,7 +141,7 @@ const MasjidFinderPage: React.FC = () => {
   const fetchMosques = useCallback((lat: number, lng: number) => {
     setLoading(true);
     fetch(`/api/masjid/nearby?lat=${lat}&lng=${lng}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("deen_token") ?? ""}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("tazki_token") ?? ""}` },
     })
       .then(r => r.json())
       .then((data: Masjid[]) => {
@@ -221,7 +221,7 @@ const MasjidFinderPage: React.FC = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("deen_token") ?? ""}`,
+        Authorization: `Bearer ${localStorage.getItem("tazki_token") ?? ""}`,
       },
       body: JSON.stringify(m),
     }).catch(() => {});

@@ -51,7 +51,7 @@ export default function HomePage() {
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string }>({ name: "Fajr", time: "04:43" });
 
   const particleKeys = useRef(Array.from({ length: 8 }, (_, i) => i));
-  const token = typeof window !== "undefined" ? localStorage.getItem("deen_token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("tazki_token") : null;
   const u = user as Record<string, unknown> | null;
   const city = (u?.["city"] as string) || "Delhi";
   const isRamadan = hijri?.month?.number === 9;
@@ -187,7 +187,7 @@ export default function HomePage() {
         {/* Section 2: Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px 10px" }}>
           <div style={{ fontSize: 22, fontWeight: 600, color: "#00a550", letterSpacing: 4, fontFamily: "Cinzel, serif" }}>
-            DEENAPP
+            MYTAZKI
           </div>
           <div style={{ display: "flex", gap: 16, color: "#4a7a4a" }}>
             <span style={{ fontSize: 20, cursor: "pointer" }}>🔔</span>

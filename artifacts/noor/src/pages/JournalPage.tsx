@@ -22,7 +22,7 @@ const JournalPage: React.FC = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   useEffect(() => {
     fetch("/api/journal/me", { headers: { Authorization: `Bearer ${token}` } })

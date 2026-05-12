@@ -85,7 +85,7 @@ const PlayerPage: React.FC = () => {
   const soundRef = useRef<Howl | null>(null);
   const rainRef = useRef<Howl | null>(null);
   const seekInterval = useRef<NodeJS.Timeout | null>(null);
-  const token = typeof window !== "undefined" ? localStorage.getItem("deen_token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("tazki_token") : null;
 
   const s = session as Record<string, unknown> | undefined;
   const audioUrl = s?.["audioUrl"] as string | undefined;

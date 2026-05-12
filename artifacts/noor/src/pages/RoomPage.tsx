@@ -36,7 +36,7 @@ const RoomPage: React.FC = () => {
   const [joined, setJoined] = useState(false);
   const intentionsEndRef = useRef<HTMLDivElement>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   useEffect(() => {
     if (!code) return;

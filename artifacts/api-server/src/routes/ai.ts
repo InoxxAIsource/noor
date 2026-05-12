@@ -50,7 +50,7 @@ router.post("/ai/companion", requireAuth, async (req: AuthRequest, res: Response
     const response = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 512,
-      system: `You are a compassionate Islamic AI companion for DeenApp. Help Muslims with duas, Quran, fiqh, and daily spiritual practice with warmth and Islamic adab. Keep responses to 3-4 sentences. Do not reveal you are Claude.`,
+      system: `You are a compassionate Islamic AI companion for MyTazki. Help Muslims with duas, Quran, fiqh, and daily spiritual practice with warmth and Islamic adab. Keep responses to 3-4 sentences. Do not reveal you are Claude.`,
       messages,
     });
 
@@ -75,7 +75,7 @@ router.post("/ai/director", requireAuth, async (req: AuthRequest, res: Response)
   const usage = await checkLimit(req.userId!);
   if (usage >= AI_DAILY_LIMIT) {
     res.status(429).json({
-      error: "You have reached your daily limit. JazakAllah khair for using DeenApp — come back tomorrow!",
+      error: "You have reached your daily limit. JazakAllah khair for using MyTazki — come back tomorrow!",
       remaining: 0,
     });
     return;
@@ -101,7 +101,7 @@ router.post("/ai/director", requireAuth, async (req: AuthRequest, res: Response)
         ? `I see you've been focusing on ${recentCategories[0]} recently`
         : "I'm glad you're here today";
 
-    const systemPrompt = `You are a warm, knowledgeable Islamic companion for DeenApp — "Remember Allah. Every day."
+    const systemPrompt = `You are a warm, knowledgeable Islamic companion for MyTazki — "Grow Spiritually Every Day."
 
 User: ${u?.name || "Friend"}
 Tradition: ${u?.madhab || "not specified"} | Madhab: ${u?.sunniMadhab || "not specified"}
@@ -182,7 +182,7 @@ router.post("/ai/recommend", requireAuth, async (req: AuthRequest, res: Response
     const response = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 400,
-      system: "You are DeenApp's dua recommendation engine. Return ONLY valid JSON. No markdown. No explanation.",
+      system: "You are MyTazki's dua recommendation engine. Return ONLY valid JSON. No markdown. No explanation.",
       messages: [
         {
           role: "user",

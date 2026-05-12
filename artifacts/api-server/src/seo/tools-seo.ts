@@ -53,7 +53,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Zakat Calculator" }])}
 <div class="cta-box" style="margin:24px 0">
   <p style="color:#ffd700;font-family:Cinzel,serif;margin:0 0 8px">Use the Interactive Zakat Calculator</p>
   <p style="color:#4a7a4a;font-size:14px;margin:0 0 16px">Live gold price, automatic Nisab check, and detailed breakdown</p>
-  <a href="/download" class="cta-btn">Open Zakat Calculator in DeenApp →</a>
+  <a href="/download" class="cta-btn">Open Zakat Calculator in MyTazki →</a>
 </div>
 
 <h2>Nisab Values (India 2026)</h2>
@@ -75,10 +75,10 @@ ${faqHtml(faqs)}
 
 router.get("/masjid-finder", (_req: Request, res: Response) => {
   const faqs = [
-    { q: "How do I find a mosque near me?", a: "Open DeenApp and tap Masjid Finder. It uses your GPS location to find all mosques within 5km and shows distance and navigation." },
-    { q: "Does the DeenApp masjid finder show Shia mosques?", a: "Yes, DeenApp shows all types of mosques from OpenStreetMap. You can filter by All, Sunni, Shia, or Jama Masjid." },
+    { q: "How do I find a mosque near me?", a: "Open MyTazki and tap Masjid Finder. It uses your GPS location to find all mosques within 5km and shows distance and navigation." },
+    { q: "Does the MyTazki masjid finder show Shia mosques?", a: "Yes, MyTazki shows all types of mosques from OpenStreetMap. You can filter by All, Sunni, Shia, or Jama Masjid." },
     { q: "Can I save my favourite masjid?", a: "Yes, tap the star icon next to any mosque to save it as your favourite. It will appear at the top of the list." },
-    { q: "How accurate is the mosque finder?", a: "DeenApp uses the OpenStreetMap Overpass API which has over 500,000 mosques worldwide." },
+    { q: "How accurate is the mosque finder?", a: "MyTazki uses the OpenStreetMap Overpass API which has over 500,000 mosques worldwide." },
   ];
 
   const head = seoHead({
@@ -120,9 +120,9 @@ ${faqHtml(faqs)}
 router.get("/qibla-direction", (_req: Request, res: Response) => {
   const faqs = [
     { q: "What is the Qibla direction from India?", a: "The Qibla direction from most of India (Delhi) is approximately 292° northwest. It varies slightly by city." },
-    { q: "How do I find Qibla direction at home?", a: "Open DeenApp and tap Qibla Compass. It uses your GPS and device compass to show the exact Qibla direction with an animated compass needle." },
+    { q: "How do I find Qibla direction at home?", a: "Open MyTazki and tap Qibla Compass. It uses your GPS and device compass to show the exact Qibla direction with an animated compass needle." },
     { q: "What is the Qibla direction from Pakistan?", a: "The Qibla direction from Pakistan (Karachi) is approximately 274° west. From Lahore it is approximately 271° west." },
-    { q: "Can I find Qibla without internet?", a: "Yes, DeenApp calculates Qibla using mathematical bearing from your GPS coordinates — no internet needed for the calculation." },
+    { q: "Can I find Qibla without internet?", a: "Yes, MyTazki calculates Qibla using mathematical bearing from your GPS coordinates — no internet needed for the calculation." },
   ];
 
   const head = seoHead({
@@ -188,7 +188,7 @@ router.get("/ramadan", (_req: Request, res: Response) => {
     description: "Ramadan 2026 India start date: February 18. Complete sehri and iftar timetable for Delhi, duas for Ramadan, Laylatul Qadr guide, and Eid date.",
     canonical: "/ramadan",
     schema: [
-      { "@context": "https://schema.org", "@type": "Article", "headline": "Ramadan 2026 India Guide", "description": "Complete guide to Ramadan 2026 in India including start date, sehri-iftar times, and duas.", "author": { "@type": "Organization", "name": "DeenApp" } },
+      { "@context": "https://schema.org", "@type": "Article", "headline": "Ramadan 2026 India Guide", "description": "Complete guide to Ramadan 2026 in India including start date, sehri-iftar times, and duas.", "author": { "@type": "Organization", "name": "MyTazki" } },
       faqSchema(faqs),
     ],
   });
@@ -271,7 +271,7 @@ router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
     title: "Islamic Calendar 2026 India — Hijri Calendar & Islamic Events",
     description: "Islamic calendar 2026 for India with all major Islamic events — Ramadan, Eid ul Fitr, Eid ul Adha, Ashura, Laylatul Qadr dates in Gregorian and Hijri.",
     canonical: "/islamic-calendar/2026",
-    schema: { "@context": "https://schema.org", "@type": "Article", "headline": "Islamic Calendar 2026 India", "description": "Complete Islamic calendar 2026 with Hijri dates and all major Islamic events.", "author": { "@type": "Organization", "name": "DeenApp" } },
+    schema: { "@context": "https://schema.org", "@type": "Article", "headline": "Islamic Calendar 2026 India", "description": "Complete Islamic calendar 2026 with Hijri dates and all major Islamic events.", "author": { "@type": "Organization", "name": "MyTazki" } },
   });
 
   const body = `

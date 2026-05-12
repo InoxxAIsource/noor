@@ -117,7 +117,7 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
         meaning: `Chapter ${num}`,
         verses: 0,
         place: "Makkah",
-        benefits: `Surah ${num} of the Holy Quran. Open the DeenApp to read the full surah with Arabic text and audio.`,
+        benefits: `Surah ${num} of the Holy Quran. Open the MyTazki to read the full surah with Arabic text and audio.`,
         firstAyah: "",
         firstAyahTranslation: "",
       };
@@ -129,8 +129,8 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
 
   const faqs = [
     { q: `When should I read Surah ${surah.name}?`, a: surah.benefits },
-    { q: `How many verses are in Surah ${surah.name}?`, a: surah.verses > 0 ? `Surah ${surah.name} has ${surah.verses} verses and was revealed in ${surah.place}.` : `Open the DeenApp for complete details about Surah ${surah.name}.` },
-    { q: `What does Surah ${surah.name} mean?`, a: surah.meaning ? `"${surah.name}" means "${surah.meaning}" in Arabic.` : `Open the DeenApp for the meaning and translation of Surah ${surah.name}.` },
+    { q: `How many verses are in Surah ${surah.name}?`, a: surah.verses > 0 ? `Surah ${surah.name} has ${surah.verses} verses and was revealed in ${surah.place}.` : `Open the MyTazki for complete details about Surah ${surah.name}.` },
+    { q: `What does Surah ${surah.name} mean?`, a: surah.meaning ? `"${surah.name}" means "${surah.meaning}" in Arabic.` : `Open the MyTazki for the meaning and translation of Surah ${surah.name}.` },
     { q: `What are the benefits of Surah ${surah.name}?`, a: surah.benefits },
   ];
 
@@ -141,7 +141,7 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
     description: `Surah ${surah.name} (${surah.arabicName || surah.name}) — ${surah.meaning}. ${surah.benefits.substring(0, 100)}`,
     canonical: `/quran/${slug}`,
     schema: [
-      { "@context": "https://schema.org", "@type": "Article", "headline": `Surah ${surah.name} — Meaning, Translation and Benefits`, "description": surah.benefits, "author": { "@type": "Organization", "name": "DeenApp" } },
+      { "@context": "https://schema.org", "@type": "Article", "headline": `Surah ${surah.name} — Meaning, Translation and Benefits`, "description": surah.benefits, "author": { "@type": "Organization", "name": "MyTazki" } },
       faqSchema(faqs),
       breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Quran", item: "/quran" }, { name: `Surah ${surah.name}` }]),
     ],
@@ -188,7 +188,7 @@ ${relatedSurahs.length > 0 ? `
 
 ${faqHtml(faqs)}
 
-<p style="color:#4a7a4a">Read with audio: <a href="/download" style="color:#00a550">Download DeenApp</a> for audio recitation by Sheikh Alafasy · <a href="/duas" style="color:#00a550">Related Duas</a></p>
+<p style="color:#4a7a4a">Read with audio: <a href="/download" style="color:#00a550">Download MyTazki</a> for audio recitation by Sheikh Alafasy · <a href="/duas" style="color:#00a550">Related Duas</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");

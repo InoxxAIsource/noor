@@ -68,15 +68,15 @@
 
 /* LIGHT MODE */
 :root {
-  --bg:      #001a00;
-  --surface: #002800;
-  --card:    #003800;
-  --border:  rgba(0,165,80,0.18);
-  --green:   #00a550;
-  --gold:    #ffd700;
-  --text:    #e8f5e8;
-  --muted:   #4a7a4a;
-  --faint:   #2a4a2a;
+  --bg:      #0d1411;
+  --surface: #152019;
+  --card:    #1c2d21;
+  --border:  rgba(52,201,122,0.13);
+  --green:   #34c97a;
+  --gold:    #b8946a;
+  --text:    #eaf4ee;
+  --muted:   #6a9878;
+  --faint:   #2a3830;
   --danger:  #c04848;
 
   --button-outline: rgba(0,0,0, .10);
@@ -89,58 +89,58 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 120 100% 5%; /* #001a00 */
-  --foreground: 120 40% 94%; /* #e8f5e8 */
-  --card-hsl: 120 100% 11%; /* #003800 */
-  --card-foreground-hsl: 120 40% 94%;
-  --popover: 120 100% 11%;
-  --popover-foreground: 120 40% 94%;
-  --primary: 149 100% 32%; /* #00a550 */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 120 100% 8%; /* #002800 */
-  --secondary-foreground: 120 40% 94%;
-  --muted-hsl: 120 24% 38%; /* #4a7a4a */
-  --muted-foreground-hsl: 120 40% 80%;
-  --accent: 120 100% 8%;
-  --accent-foreground: 120 40% 94%;
+  --background: 145 22% 7%; /* #0d1411 */
+  --foreground: 145 20% 93%; /* #eaf4ee */
+  --card-hsl: 145 22% 14%; /* #1c2d21 */
+  --card-foreground-hsl: 145 20% 93%;
+  --popover: 145 22% 14%;
+  --popover-foreground: 145 20% 93%;
+  --primary: 148 57% 50%; /* #34c97a */
+  --primary-foreground: 145 22% 7%;
+  --secondary: 145 22% 10%; /* #152019 */
+  --secondary-foreground: 145 20% 93%;
+  --muted-hsl: 145 19% 50%; /* #6a9878 */
+  --muted-foreground-hsl: 145 20% 80%;
+  --accent: 145 22% 10%;
+  --accent-foreground: 145 20% 93%;
   --destructive: 0 49% 52%; /* #c04848 */
   --destructive-foreground: 0 0% 100%;
-  --border-hsl: 149 100% 32%; /* border is rgba so we fake it here or just use tailwind arbitrary */
-  --input-hsl: 149 100% 32%;
-  --ring: 149 100% 32%;
+  --border-hsl: 148 57% 50%;
+  --input-hsl: 148 57% 50%;
+  --ring: 148 57% 50%;
 
-  --app-font-sans: system-ui, sans-serif;
-  --app-font-serif: 'Cinzel', serif;
+  --app-font-sans: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --app-font-serif: 'DM Sans', 'Inter', system-ui, sans-serif;
   --app-font-mono: Menlo, monospace;
   --radius: .75rem; /* 12px */
 }
 
 .dark {
-  --background: 120 100% 5%;
-  --foreground: 120 40% 94%;
-  --card-hsl: 120 100% 11%;
-  --card-foreground-hsl: 120 40% 94%;
-  --popover: 120 100% 11%;
-  --popover-foreground: 120 40% 94%;
-  --primary: 149 100% 32%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 120 100% 8%;
-  --secondary-foreground: 120 40% 94%;
-  --muted-hsl: 120 24% 38%;
-  --muted-foreground-hsl: 120 40% 80%;
-  --accent: 120 100% 8%;
-  --accent-foreground: 120 40% 94%;
+  --background: 145 22% 7%;
+  --foreground: 145 20% 93%;
+  --card-hsl: 145 22% 14%;
+  --card-foreground-hsl: 145 20% 93%;
+  --popover: 145 22% 14%;
+  --popover-foreground: 145 20% 93%;
+  --primary: 148 57% 50%;
+  --primary-foreground: 145 22% 7%;
+  --secondary: 145 22% 10%;
+  --secondary-foreground: 145 20% 93%;
+  --muted-hsl: 145 19% 50%;
+  --muted-foreground-hsl: 145 20% 80%;
+  --accent: 145 22% 10%;
+  --accent-foreground: 145 20% 93%;
   --destructive: 0 49% 52%;
   --destructive-foreground: 0 0% 100%;
-  --border-hsl: 149 100% 32%;
-  --input-hsl: 149 100% 32%;
-  --ring: 149 100% 32%;
+  --border-hsl: 148 57% 50%;
+  --input-hsl: 148 57% 50%;
+  --ring: 148 57% 50%;
 }
 
 html, body, #root { 
   background: var(--bg); 
   color: var(--text); 
-  font-family: system-ui, sans-serif; 
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif; 
   margin: 0; 
   padding: 0; 
   min-height: 100vh; 

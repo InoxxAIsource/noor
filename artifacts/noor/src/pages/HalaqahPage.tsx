@@ -19,7 +19,7 @@ const HalaqahPage: React.FC = () => {
   const [preview, setPreview] = useState<HalaqahGroup | null>(null);
   const [createdCode, setCreatedCode] = useState("");
   const [error, setError] = useState("");
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   const lookupGroup = async () => {
     if (!code.trim()) return;

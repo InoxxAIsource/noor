@@ -26,7 +26,7 @@ const MoodPage: React.FC = () => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [error, setError] = useState("");
 
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   const handleMoodSelect = (m: string) => {
     setMood(m);

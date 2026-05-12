@@ -3,6 +3,8 @@ import { setAuthTokenGetter } from "@workspace/api-client-react";
 import { getMe } from "@workspace/api-client-react";
 import type { User } from "@workspace/api-client-react";
 
+const TOKEN_KEY = "tazki_token";
+
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
@@ -16,23 +18,31 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem("deen_token"));
+  // Support migration from old deen_token key
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token")
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setAuthTokenGetter(() => localStorage.getItem("deen_token"));
+    setAuthTokenGetter(() => localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token"));
   }, []);
 
   useEffect(() => {
     const validateToken = async () => {
-      const storedToken = localStorage.getItem("deen_token");
+      const storedToken = localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token");
       if (storedToken) {
         try {
           const userData = await getMe();
           setUser(userData);
           setToken(storedToken);
+          // Migrate old token key silently
+          if (!localStorage.getItem(TOKEN_KEY)) {
+            localStorage.setItem(TOKEN_KEY, storedToken);
+          }
         } catch (error) {
           console.error("Token validation failed:", error);
+          localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem("deen_token");
           setToken(null);
           setUser(null);
@@ -45,14 +55,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (newToken: string) => {
-    localStorage.setItem("deen_token", newToken);
+    localStorage.setItem(TOKEN_KEY, newToken);
+    localStorage.removeItem("deen_token");
     setToken(newToken);
-    // Ideally we'd fetch the user immediately, but usually login also redirects
-    // which triggers a remount or subsequent fetches can use the new token.
     getMe().then(setUser).catch(console.error);
   };
 
   const logout = () => {
+    localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem("deen_token");
     setToken(null);
     setUser(null);

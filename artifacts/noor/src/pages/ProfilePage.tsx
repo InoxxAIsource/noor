@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const ProfilePage: React.FC = () => {
   const { user, logout } = useAuth();
   const { data: streakData } = useGetMyStreak();
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   const u = user as Record<string, unknown> | null;
 

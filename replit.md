@@ -1,6 +1,6 @@
-# DeenApp — Islamic Prayer & Spirituality App
+# MyTazki — AI Islamic Companion
 
-A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal companion for daily salah, dhikr, duas, Quran reflection, and spiritual growth.
+An AI-first Islamic lifestyle PWA. "Grow Spiritually Every Day." A premium companion for guided Quran reflections, Azkar, Duas, prayer times, and personalized Islamic growth journeys for modern Muslims.
 
 ## Run & Operate
 
@@ -40,7 +40,7 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 
 - **@replit/database instead of PostgreSQL**: Key-value store, no migrations needed. `db.get()` returns `OkResult | ErrResult` — always unwrap with `result.ok ? result.value : null`.
 - **Contract-first API**: OpenAPI spec → Orval codegen → React Query hooks + Zod schemas. Never handwrite API fetch calls on the frontend.
-- **JWT in localStorage**: Token stored as `deen_token`. Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
+- **JWT in localStorage**: Token stored as `tazki_token` (migrates from legacy `deen_token` automatically). Custom fetch in `lib/api-client-react/src/custom-fetch.ts` reads it automatically on every request.
 - **Seed on startup**: API server seeds all content (sessions, duas, names, hadiths) on first boot if DB is empty.
 - **AI rate limit**: 20 AI requests per user per day, tracked in `aiUsage:{userId}:{date}`.
 - **External Quran data**: Verses fetched from `api.qurancdn.com`, audio from `everyayah.com` (Alafasy). No server-side caching needed.
@@ -56,7 +56,7 @@ A full-stack Islamic spirituality PWA. "Remember Allah. Every day." A personal c
 - Names of Allah: All 99 names with Arabic, transliteration, meaning, daily rotation
 - Daily Content: Name of Allah + Hadith + Dua of the day (rotates daily by day-of-year)
 - Tasbih: Digital dhikr counter
-- AI Companion: DeenApp AI powered by Claude, 20 req/day limit, Islamic adab guidelines
+- AI Companion: MyTazki AI powered by Claude, 20 req/day limit, Islamic adab guidelines
 - Onboarding: 5-step wizard (madhab, city/GPS, goals, language, reminder time)
 
 ## Product — Part 2 (complete)
@@ -116,6 +116,22 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - GitHub repo: `https://github.com/InoxxAIsource/noor` (main branch)
 
 ## Changelog
+
+### 2026-05-12 — Full rebrand DeenApp → MyTazki
+- **Brand name**: All UI, SEO, AI prompts, manifest, meta tags, room codes updated from DeenApp → MyTazki / MYTAZKI
+- **Domain**: `deenapp.app` → `mytazki.com` across all canonical URLs, og:url, sitemap, JSON-LD, SEO pages, robots.txt
+- **Auth token**: `deen_token` → `tazki_token` in localStorage; AuthContext migrates old token automatically on first load
+- **Room codes**: `DEEN-XXXX` → `TAZKI-XXXX` format
+- **New color palette** (premium redesign): `--bg:#0d1411` · `--surface:#152019` · `--card:#1c2d21` · `--green:#34c97a` · `--gold:#b8946a` · `--text:#eaf4ee` · `--muted:#6a9878` · `--faint:#2a3830`
+- **Typography**: DM Sans added as primary font (bold, modern) alongside Inter — replaces Cinzel for headings
+- **Logo**: `DeenAppLogo.tsx` rewritten — clean crescent+star icon mark on dark bg, "My**Tazki**" wordmark in Inter 800, emerald "My" prefix
+- **Favicon**: Updated SVG crescent+star in emerald (#34c97a) on dark charcoal background
+- **Manifest**: Updated PWA name/short_name/description/theme_color (#34c97a)
+- **Landing page**: Full Headspace-inspired premium redesign — rotating Quranic Arabic verses, "Grow Spiritually Every Day." hero, feature grid, session preview, AI companion demo, Quranic bottom CTA
+- **SEO shared.ts**: All templates updated — nav, footer, CTA block, breadcrumbs, appRedirectBar reads both tazki_token and deen_token
+- **All SEO pages**: landing.ts, comparison.ts, blog-seo.ts, duas-seo.ts, names-seo.ts, quran-seo.ts, prayer-times-seo.ts, tools-seo.ts, sitemap.ts all rebranded
+- **index.html**: Full MyTazki SEO rebrand — title, meta description, OG tags, JSON-LD, canonical URL, keywords, Google Fonts (DM Sans + Inter + Amiri)
+- **Typecheck**: Clean across all packages
 
 ### 2026-05-12 — Masjid Finder full-screen map + real GPS location
 - **Full-screen map**: `MasjidFinderPage` rebuilt with `position:fixed;inset:0` layout — map fills entire viewport, header floats as an overlay, bottom sheet slides up with mosque list

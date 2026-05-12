@@ -1,8 +1,11 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="40" fill="#001a00"/>
-  <circle cx="82" cy="95" r="60" fill="#ffd700"/>
-  <circle cx="108" cy="80" r="52" fill="#001a00"/>
-  <g transform="translate(130,42)">
-    <polygon points="0,-9 2.12,-2.93 8.56,-2.78 3.42,1.12 5.29,7.28 0,3.93 -5.29,7.28 -3.42,1.12 -8.56,-2.78 -2.12,-2.93" fill="#ffd700"/>
-  </g>
+  <rect width="180" height="180" rx="38" fill="#0d1411"/>
+  <rect width="180" height="180" rx="38" fill="none" stroke="rgba(52,201,122,0.15)" stroke-width="2"/>
+  <!-- Crescent moon -->
+  <circle cx="88" cy="92" r="52" fill="#34c97a" opacity="0.9"/>
+  <circle cx="112" cy="78" r="46" fill="#0d1411"/>
+  <!-- Star dot -->
+  <circle cx="130" cy="58" r="6" fill="#34c97a"/>
+  <!-- Subtle inner glow ring -->
+  <circle cx="88" cy="92" r="52" fill="none" stroke="rgba(52,201,122,0.1)" stroke-width="2"/>
 </svg>

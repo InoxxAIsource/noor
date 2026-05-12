@@ -39,7 +39,7 @@ const HalaqahAdminPage: React.FC = () => {
   const [selectedSession, setSelectedSession] = useState("");
   const [assigning, setAssigning] = useState(false);
   const [assigned, setAssigned] = useState(false);
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
   const u = user as Record<string, unknown> | null;
 
   useEffect(() => {

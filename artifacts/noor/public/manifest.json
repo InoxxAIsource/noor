@@ -1,12 +1,12 @@
 {
-  "name": "DeenApp — Islamic Prayer App",
-  "short_name": "DeenApp",
-  "description": "Your personal Islamic companion for prayer, dhikr, Quran, and spiritual growth. Remember Allah. Every day.",
+  "name": "MyTazki — Islamic Growth App",
+  "short_name": "MyTazki",
+  "description": "AI-powered Islamic companion for daily spiritual growth — Quran, Azkar, Duas, prayer times, and guided sessions.",
   "start_url": "/home",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#001a00",
-  "theme_color": "#00a550",
+  "background_color": "#0d1411",
+  "theme_color": "#34c97a",
   "categories": ["lifestyle", "health", "education"],
   "lang": "en",
   "dir": "ltr",
@@ -43,10 +43,10 @@
       "description": "Digital dhikr counter"
     },
     {
-      "name": "Duas",
-      "short_name": "Duas",
-      "url": "/duas",
-      "description": "Islamic supplications library"
+      "name": "Daily Sessions",
+      "short_name": "Sessions",
+      "url": "/sessions",
+      "description": "Guided Islamic growth sessions"
     }
   ],
   "screenshots": [],

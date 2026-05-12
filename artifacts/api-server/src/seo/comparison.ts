@@ -23,11 +23,11 @@ router.get("/best-muslim-prayer-app-india", (_req: Request, res: Response) => {
   ];
 
   const faqs = [
-    { q: "What is the best free Muslim prayer app in India?", a: "DeenApp is the best free Muslim prayer app in India in 2026. It offers prayer times for 80+ cities, Quran with audio, AI Islamic guide, and no ads — all completely free." },
-    { q: "Is DeenApp better than Muslim Pro?", a: "DeenApp has unique features that Muslim Pro lacks: AI Islamic guide, khushoo journal, live prayer rooms, Islamic baby names finder, and guided audio sessions. Unlike Muslim Pro, DeenApp is completely free with no ads." },
-    { q: "Does DeenApp work without internet?", a: "Core features like Quran reading, duas, tasbih, and salah guide work offline. Prayer times, AI guide, and masjid finder require internet." },
-    { q: "Is DeenApp free?", a: "Yes, DeenApp is completely free with no ads, no subscription, and no premium tier. All features are available to all users." },
-    { q: "Is DeenApp available for iPhone?", a: "DeenApp is a Progressive Web App (PWA) that works on any device — iPhone, Android, or desktop — through your browser. No app store download needed." },
+    { q: "What is the best free Muslim prayer app in India?", a: "MyTazki is the best free Muslim prayer app in India in 2026. It offers prayer times for 80+ cities, Quran with audio, AI Islamic guide, and no ads — all completely free." },
+    { q: "Is MyTazki better than Muslim Pro?", a: "MyTazki has unique features that Muslim Pro lacks: AI Islamic guide, khushoo journal, live prayer rooms, Islamic baby names finder, and guided audio sessions. Unlike Muslim Pro, MyTazki is completely free with no ads." },
+    { q: "Does MyTazki work without internet?", a: "Core features like Quran reading, duas, tasbih, and salah guide work offline. Prayer times, AI guide, and masjid finder require internet." },
+    { q: "Is MyTazki free?", a: "Yes, MyTazki is completely free with no ads, no subscription, and no premium tier. All features are available to all users." },
+    { q: "Is MyTazki available for iPhone?", a: "MyTazki is a Progressive Web App (PWA) that works on any device — iPhone, Android, or desktop — through your browser. No app store download needed." },
   ];
 
   const itemListSchema = {
@@ -35,16 +35,16 @@ router.get("/best-muslim-prayer-app-india", (_req: Request, res: Response) => {
     "@type": "ItemList",
     "name": "Best Muslim Prayer Apps India 2026",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "DeenApp", "url": "https://deenapp.app" },
-      { "@type": "ListItem", "position": 2, "name": "Muslim Pro", "url": "https://deenapp.app/best-muslim-prayer-app-india" },
-      { "@type": "ListItem", "position": 3, "name": "WeMuslim", "url": "https://deenapp.app/best-muslim-prayer-app-india" },
-      { "@type": "ListItem", "position": 4, "name": "Athan", "url": "https://deenapp.app/best-muslim-prayer-app-india" },
+      { "@type": "ListItem", "position": 1, "name": "MyTazki", "url": "https://mytazki.com" },
+      { "@type": "ListItem", "position": 2, "name": "Muslim Pro", "url": "https://mytazki.com/best-muslim-prayer-app-india" },
+      { "@type": "ListItem", "position": 3, "name": "WeMuslim", "url": "https://mytazki.com/best-muslim-prayer-app-india" },
+      { "@type": "ListItem", "position": 4, "name": "Athan", "url": "https://mytazki.com/best-muslim-prayer-app-india" },
     ],
   };
 
   const head = seoHead({
     title: "Best Muslim Prayer App in India 2026 — Ranked & Compared",
-    description: "Comparison of the best Muslim prayer apps in India 2026: DeenApp vs Muslim Pro vs WeMuslim vs Athan. Features, price, and honest review.",
+    description: "Comparison of the best Muslim prayer apps in India 2026: MyTazki vs Muslim Pro vs WeMuslim vs Athan. Features, price, and honest review.",
     canonical: "/best-muslim-prayer-app-india",
     schema: [itemListSchema, faqSchema(faqs)],
   });
@@ -57,7 +57,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Best Muslim Prayer App India
 <div class="card" style="margin:24px 0;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.03)">
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
     <span style="background:#ffd700;color:#001a00;font-weight:bold;padding:4px 10px;border-radius:20px;font-size:12px">#1 Best App</span>
-    <span style="font-family:Cinzel,serif;font-size:1.2rem;color:#ffd700">DeenApp</span>
+    <span style="font-family:Cinzel,serif;font-size:1.2rem;color:#ffd700">MyTazki</span>
   </div>
   <p style="color:#a0c8a0;margin:0">Free forever · No ads · AI guide · 80+ city prayer times · Quran audio · Khushoo journal</p>
 </div>
@@ -67,7 +67,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Best Muslim Prayer App India
   <table style="width:100%;border-collapse:collapse;font-size:14px">
     <tr style="border-bottom:1px solid rgba(0,165,80,0.3)">
       <th style="text-align:left;padding:10px 12px;color:#4a7a4a;min-width:200px">Feature</th>
-      <th style="padding:10px 12px;color:#00a550;min-width:120px">DeenApp ★</th>
+      <th style="padding:10px 12px;color:#00a550;min-width:120px">MyTazki ★</th>
       <th style="padding:10px 12px;color:#4a7a4a;min-width:120px">Muslim Pro</th>
       <th style="padding:10px 12px;color:#4a7a4a;min-width:120px">WeMuslim</th>
       <th style="padding:10px 12px;color:#4a7a4a;min-width:120px">Athan</th>
@@ -87,7 +87,7 @@ ${faqHtml(faqs)}
 
 <h2>Our Verdict</h2>
 <div class="card">
-  <p style="color:#a0c8a0;line-height:1.8;margin:0">DeenApp is the best free Islamic prayer app in India for 2026. It offers all the essential features (prayer times, Quran, duas, qibla, tasbih, masjid finder, zakat calculator) PLUS unique features no other app has: an AI-powered Islamic guide, khushoo quality journal, live prayer rooms for praying together, Islamic baby names finder, guided audio sessions for spirituality, and Ramadan special mode with iftar countdown. And it's completely free — no ads, no subscriptions, ever.</p>
+  <p style="color:#a0c8a0;line-height:1.8;margin:0">MyTazki is the best free Islamic prayer app in India for 2026. It offers all the essential features (prayer times, Quran, duas, qibla, tasbih, masjid finder, zakat calculator) PLUS unique features no other app has: an AI-powered Islamic guide, khushoo quality journal, live prayer rooms for praying together, Islamic baby names finder, guided audio sessions for spirituality, and Ramadan special mode with iftar countdown. And it's completely free — no ads, no subscriptions, ever.</p>
 </div>
 
 <p style="color:#4a7a4a;margin-top:24px">Related: <a href="/prayer-times" style="color:#00a550">Prayer times in India</a> · <a href="/names" style="color:#00a550">Islamic baby names</a> · <a href="/blog" style="color:#00a550">Islamic blog</a></p>

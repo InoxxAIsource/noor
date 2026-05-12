@@ -12,33 +12,36 @@ export function seoHead({ title, description, canonical, schema }: SeoHeadOpts):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} | DeenApp — Islamic Prayer App</title>
+<title>${esc(title)} | MyTazki — AI Islamic Companion</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="https://deenapp.app${canonical}">
+<link rel="canonical" href="https://mytazki.com${canonical}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="https://deenapp.app/og-image.jpg">
-<meta property="og:url" content="https://deenapp.app${canonical}">
+<meta property="og:image" content="https://mytazki.com/og-image.jpg">
+<meta property="og:url" content="https://mytazki.com${canonical}">
 <meta name="twitter:card" content="summary_large_image">
 ${schemas.map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}
 <link rel="stylesheet" href="/seo.css">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 </head>`;
 }
 
 export function nav(): string {
-  return `<nav style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#001a00;border-bottom:1px solid rgba(0,165,80,0.2);position:sticky;top:0;z-index:100">
-  <a href="/" style="font-family:Cinzel,serif;font-size:20px;color:#00a550;letter-spacing:3px;text-decoration:none">DEENAPP</a>
+  return `<nav style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#0d1411;border-bottom:1px solid rgba(52,201,122,0.1);position:sticky;top:0;z-index:100">
+  <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none">
+    <svg width="24" height="24" viewBox="0 0 180 180" fill="none"><rect width="180" height="180" rx="38" fill="#152019"/><circle cx="88" cy="92" r="52" fill="#34c97a" opacity="0.9"/><circle cx="112" cy="78" r="46" fill="#152019"/><circle cx="130" cy="58" r="6" fill="#34c97a"/></svg>
+    <span style="font-family:Inter,DM Sans,sans-serif;font-size:17px;font-weight:800;letter-spacing:-0.02em"><span style="color:#34c97a">My</span><span style="color:#eaf4ee">Tazki</span></span>
+  </a>
   <div style="display:flex;gap:12px;align-items:center">
-    <a href="/prayer-times" style="color:#4a7a4a;text-decoration:none;font-size:14px">Prayer Times</a>
-    <a href="/blog" style="color:#4a7a4a;text-decoration:none;font-size:14px">Blog</a>
-    <a href="/download" style="background:#00a550;color:#001a00;padding:8px 20px;border-radius:8px;font-weight:bold;text-decoration:none;font-size:14px">Download Free</a>
+    <a href="/prayer-times" style="color:#4a6858;text-decoration:none;font-size:14px;font-family:Inter,sans-serif">Prayer Times</a>
+    <a href="/blog" style="color:#4a6858;text-decoration:none;font-size:14px;font-family:Inter,sans-serif">Blog</a>
+    <a href="/download" style="background:#34c97a;color:#0d1411;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;font-size:14px;font-family:Inter,sans-serif">Download Free</a>
   </div>
 </nav>`;
 }
 
 export function footer(): string {
-  return `<footer style="background:#000f00;border-top:1px solid rgba(0,165,80,0.15);padding:32px 24px;margin-top:48px">
+  return `<footer style="background:#0a100d;border-top:1px solid rgba(52,201,122,0.08);padding:32px 24px;margin-top:48px">
   <div style="max-width:900px;margin:0 auto">
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px">
       ${[
@@ -53,18 +56,18 @@ export function footer(): string {
         ["/blog", "Blog"],
         ["/best-muslim-prayer-app-india", "Compare Apps"],
         ["/sitemap.xml", "Sitemap"],
-      ].map(([href, label]) => `<a href="${href}" style="color:#4a7a4a;text-decoration:none;font-size:13px">${label}</a>`).join(" &nbsp;·&nbsp; ")}
+      ].map(([href, label]) => `<a href="${href}" style="color:#4a6858;text-decoration:none;font-size:13px;font-family:Inter,sans-serif">${label}</a>`).join(" &nbsp;·&nbsp; ")}
     </div>
-    <p style="color:#2a4a2a;font-size:12px;margin:0">© 2026 DeenApp Islamic Prayer App. Remember Allah. Every day.</p>
+    <p style="color:#2a3830;font-size:12px;margin:0;font-family:Inter,sans-serif">© 2026 MyTazki — AI Islamic Companion. Grow Spiritually Every Day.</p>
   </div>
 </footer>`;
 }
 
 export function ctaBlock(): string {
   return `<div class="cta-box">
-  <p style="color:#ffd700;font-family:Cinzel,serif;font-size:1.1rem;margin:0 0 8px">Remember Allah every day — Download DeenApp free</p>
-  <p style="color:#4a7a4a;font-size:14px;margin:0 0 16px">Prayer times, Quran, duas, names, zakat calculator & AI Islamic guide</p>
-  <a href="/download" class="cta-btn">Download DeenApp →</a>
+  <p style="color:#34c97a;font-family:DM Sans,Inter,sans-serif;font-size:1.1rem;margin:0 0 8px;font-weight:700">Grow Spiritually Every Day — Download MyTazki free</p>
+  <p style="color:#4a6858;font-size:14px;margin:0 0 16px;font-family:Inter,sans-serif">Prayer times, Quran, Azkar, Duas, AI Islamic guide & spiritual growth tracker</p>
+  <a href="/download" class="cta-btn">Download MyTazki →</a>
 </div>`;
 }
 
@@ -72,11 +75,11 @@ export function appRedirectBar(): string {
   return `<script>
 (function(){
   try{
-    var t=localStorage.getItem('deen_token');
+    var t=localStorage.getItem('tazki_token')||localStorage.getItem('deen_token');
     if(t){
       var b=document.createElement('div');
-      b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#001a00;border-top:2px solid #00a550;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;z-index:9999;';
-      b.innerHTML='<span style="color:#4a7a4a;font-size:13px">You are logged in to DeenApp</span><a href="/home" style="background:#00a550;color:#001a00;padding:8px 18px;border-radius:8px;font-weight:bold;text-decoration:none;font-size:13px">Open App \u2192</a>';
+      b.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#0d1411;border-top:2px solid #34c97a;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;z-index:9999;font-family:Inter,sans-serif;';
+      b.innerHTML='<span style="color:#4a6858;font-size:13px">You are logged in to MyTazki</span><a href="/home" style="background:#34c97a;color:#0d1411;padding:8px 18px;border-radius:8px;font-weight:700;text-decoration:none;font-size:13px">Open App \u2192</a>';
       document.body.appendChild(b);
     }
   }catch(e){}
@@ -85,9 +88,9 @@ export function appRedirectBar(): string {
 }
 
 export function breadcrumb(items: Array<{ name: string; item?: string }>): string {
-  return `<nav style="font-size:13px;color:#4a7a4a;margin:16px 0">
+  return `<nav style="font-size:13px;color:#4a6858;margin:16px 0;font-family:Inter,sans-serif">
     ${items.map((item, i) => item.item
-      ? `<a href="${item.item}" style="color:#00a550;text-decoration:none">${esc(item.name)}</a>${i < items.length - 1 ? " › " : ""}`
+      ? `<a href="${item.item}" style="color:#34c97a;text-decoration:none">${esc(item.name)}</a>${i < items.length - 1 ? " › " : ""}`
       : `<span>${esc(item.name)}</span>`
     ).join("")}
   </nav>`;
@@ -101,7 +104,7 @@ export function breadcrumbSchema(items: Array<{ name: string; item?: string }>):
       "@type": "ListItem",
       "position": i + 1,
       "name": item.name,
-      ...(item.item ? { "item": `https://deenapp.app${item.item}` } : {}),
+      ...(item.item ? { "item": `https://mytazki.com${item.item}` } : {}),
     })),
   };
 }
@@ -121,7 +124,7 @@ export function faqSchema(faqs: Array<{ q: string; a: string }>): object {
 export function faqHtml(faqs: Array<{ q: string; a: string }>): string {
   return `<section style="margin:32px 0">
     <h2>Frequently Asked Questions</h2>
-    ${faqs.map(f => `<div class="faq-item"><strong style="color:#e8f5e8">${esc(f.q)}</strong><p style="margin:6px 0 0;color:#a0c8a0;font-size:14px">${esc(f.a)}</p></div>`).join("")}
+    ${faqs.map(f => `<div class="faq-item"><strong style="color:#eaf4ee;font-family:Inter,sans-serif">${esc(f.q)}</strong><p style="margin:6px 0 0;color:#a0c8a0;font-size:14px;font-family:Inter,sans-serif">${esc(f.a)}</p></div>`).join("")}
   </section>`;
 }
 

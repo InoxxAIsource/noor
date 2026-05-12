@@ -33,7 +33,7 @@ router.post("/rooms", requireAuth, async (req: AuthRequest, res: Response) => {
     ? (sessions as Array<Record<string, unknown>>).find((s) => s["id"] === sessionId)
     : null;
 
-  const code = "DEEN-" + nanoid(4).toUpperCase();
+  const code = "TAZKI-" + nanoid(4).toUpperCase();
   const room = {
     code,
     name,

@@ -1,0 +1,263 @@
+You are a senior product branding + frontend migration expert.
+
+We are fully rebranding the application from:
+
+OLD BRAND:
+DeenApp.app
+
+NEW BRAND:
+MyTazki.com
+
+MyTazki is a premium AI-first Islamic lifestyle platform focused on:
+- guided Islamic growth
+- Quran reflections
+- Azkar
+- Duas
+- spiritual routines
+- AI-powered Muslim companion experiences
+- calm, modern, emotional UX
+
+The app should feel closer to:
+- Calm
+- Headspace
+- Notion
+than traditional cluttered Islamic utility apps.
+
+========================================
+GLOBAL BRANDING RULES
+========================================
+
+Replace ALL occurrences of:
+- DeenApp
+- deenapp
+- deen app
+- Deen App
+
+with:
+MyTazki
+
+Update:
+- metadata
+- titles
+- descriptions
+- OpenGraph
+- Twitter cards
+- schema
+- manifest
+- favicon references
+- app name
+- splash screens
+- logo labels
+- footer branding
+- auth screens
+- onboarding text
+- empty states
+- loading screens
+- notification names
+- email templates
+- app headers
+- browser titles
+- PWA manifest
+- structured data
+- canonical URLs
+- robots/sitemap branding
+
+========================================
+NEW BRAND POSITIONING
+========================================
+
+Primary positioning:
+"AI Islamic Companion for Daily Muslim Growth"
+
+Alternative supporting lines:
+- "Build Better Islamic Habits Every Day"
+- "Guided Quran Reflections, Azkar & Spiritual Growth"
+- "Your Daily Muslim Growth Journey"
+
+Tone:
+- calm
+- premium
+- emotionally warm
+- modern
+- spiritually uplifting
+- minimal
+- intelligent
+
+Avoid:
+- overly corporate
+- overly scholarly
+- donation-app feeling
+- feature overload
+- generic Islamic marketplace vibe
+
+========================================
+VISUAL DIRECTION
+========================================
+
+Redesign UI to feel:
+- minimal
+- breathable
+- elegant
+- premium dark mode
+- soft gradients
+- smooth rounded corners
+- modern typography
+- calm spacing
+
+Inspired by:
+- Calm
+- Headspace
+- Apple Wellness
+- Notion simplicity
+
+Avoid:
+- busy dashboards
+- crowded cards
+- random Islamic ornaments everywhere
+- gold-heavy old Islamic styles
+- too many accent colors
+
+========================================
+COLOR SYSTEM
+========================================
+
+Primary:
+Deep emerald / forest green
+
+Secondary:
+Warm beige / sand / soft cream
+
+Accent:
+Muted gold only sparingly
+
+Backgrounds:
+Soft dark charcoal + warm light surfaces
+
+Use high-end subtle gradients.
+
+========================================
+TYPOGRAPHY
+========================================
+
+Use modern premium typography.
+
+Suggested:
+- DM Sans
+- Inter
+- Plus Jakarta Sans
+- Manrope
+
+Headings:
+Elegant but minimal.
+
+Spacing should feel luxurious and calm.
+
+========================================
+HOMEPAGE STRUCTURE
+========================================
+
+Hero headline:
+"Grow Spiritually Every Day"
+
+Subheadline:
+"Guided Quran reflections, Azkar, Duas, and AI-powered Islamic growth journeys designed for modern Muslims."
+
+Primary CTA:
+"Start Your Journey"
+
+Secondary CTA:
+"Explore Daily Sessions"
+
+Homepage sections:
+1. Hero
+2. Daily habits
+3. Guided sessions
+4. Quran reflections
+5. AI companion
+6. Testimonials
+7. Streaks / routines
+8. Premium features
+9. FAQ
+10. Final CTA
+
+========================================
+ONBOARDING REWRITE
+========================================
+
+Onboarding should focus on:
+- peace
+- growth
+- consistency
+- spiritual routines
+- emotional wellness
+- personalized Islamic journey
+
+NOT:
+- feature dumping
+- technical explanations
+
+========================================
+SEO + GEO FOUNDATION
+========================================
+
+Update all metadata to target:
+- AI Islamic companion
+- Muslim growth app
+- Islamic self improvement
+- Quran reflection app
+- Azkar app
+- Islamic habit tracker
+- Muslim wellness app
+
+Generate:
+- proper schema
+- organization schema
+- FAQ schema
+- app schema
+- article schema foundations
+
+========================================
+TECHNICAL MIGRATION
+========================================
+
+Ensure:
+- all old URLs redirect properly
+- canonical tags updated
+- no broken references
+- no old branding remains
+- social previews updated
+- PWA branding updated
+- app icons regenerated
+- cache/version updated
+
+========================================
+DELIVERABLES
+========================================
+
+Provide:
+1. Complete migration checklist
+2. Updated branding copy
+3. Updated metadata
+4. UI/UX improvement suggestions
+5. SEO foundation updates
+6. GEO optimization improvements
+7. Component-level branding updates
+8. Recommended homepage structure
+9. New app description
+10. Premium onboarding copy
+
+Do NOT break the existing architecture or functionality.
+
+Preserve:
+- existing sessions
+- existing flows
+- existing routing
+- existing backend logic
+
+Only improve:
+- branding
+- positioning
+- emotional UX
+- visual identity
+- metadata
+- SEO/GEO readiness

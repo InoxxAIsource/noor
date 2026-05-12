@@ -24,7 +24,7 @@ const RoomsPage: React.FC = () => {
   const [roomName, setRoomName] = useState("");
   const [creating, setCreating] = useState(false);
   const [createdCode, setCreatedCode] = useState("");
-  const token = localStorage.getItem("deen_token");
+  const token = localStorage.getItem("tazki_token");
 
   useEffect(() => {
     fetchRooms();
@@ -189,7 +189,7 @@ const RoomsPage: React.FC = () => {
                     </button>
                   </div>
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent(`Join me to pray together on DeenApp 🕌\nRoom code: ${createdCode}\n${window.location.origin}/room/${createdCode}`)}`}
+                    href={`https://wa.me/?text=${encodeURIComponent(`Join me to pray together on MyTazki 🕌\nRoom code: ${createdCode}\n${window.location.origin}/room/${createdCode}`)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white py-3 rounded-xl font-semibold mb-3"
