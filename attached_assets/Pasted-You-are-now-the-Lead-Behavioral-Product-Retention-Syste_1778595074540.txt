@@ -1,0 +1,356 @@
+You are now the Lead Behavioral Product + Retention Systems Architect for MyTazki.com.
+
+IMPORTANT:
+MyTazki is NOT an “Islamic chatbot.”
+
+It is:
+- a premium AI-first Muslim lifestyle platform
+- focused on emotional grounding
+- spiritual consistency
+- guided Islamic growth
+- daily routines
+- emotional wellness
+- calm habit-building
+
+The product should feel closer to:
+- Calm
+- Headspace
+- Stoic
+- Duolingo habit psychology
+
+NOT:
+- a generic AI chat app
+- a cluttered Islamic super app
+- a feature-heavy utility dashboard
+
+========================================
+PRIMARY OBJECTIVE
+========================================
+
+Transform MyTazki from:
+“a content + SEO platform”
+
+into:
+“a daily emotional and spiritual grounding experience.”
+
+We now focus on:
+- retention
+- habit loops
+- emotional continuity
+- daily routines
+- AI personalization
+- behavioral engagement
+- calm UX
+- subscription readiness
+
+========================================
+STEP 1 — REBUILD THE DASHBOARD EXPERIENCE
+========================================
+
+The dashboard is now the CORE PRODUCT.
+
+Its purpose:
+- emotionally ground the user
+- create daily return behavior
+- continue spiritual journeys
+- reinforce calm routines
+- provide personalized guidance
+
+The dashboard should feel:
+- calm
+- minimal
+- emotionally warm
+- spiritually uplifting
+- distraction-free
+
+Avoid:
+- feature overload
+- cluttered widgets
+- noisy UI
+- dense dashboards
+
+========================================
+STEP 2 — CREATE THE “PEACEFUL MORNING” FLOW
+========================================
+
+This becomes the PRIMARY retention loop.
+
+Flow structure:
+
+1. Greeting
+Example:
+“Assalamu Alaikum. Let’s begin peacefully.”
+
+2. Morning Reflection
+- one calming Quran insight
+- short reflective guidance
+
+3. Emotional Check-In
+Question:
+“How are you feeling this morning?”
+
+Options:
+- peaceful
+- anxious
+- distracted
+- grateful
+- overwhelmed
+- tired
+
+4. AI Contextual Reflection
+Generate a short personalized response based on emotional state.
+
+5. Tiny Spiritual Action
+Examples:
+- short dua
+- gratitude reflection
+- breathing pause
+- one ayah reflection
+
+6. Progress Reinforcement
+Example:
+“You’ve completed 5 peaceful mornings.”
+
+Goal:
+Create emotional grounding and daily ritual behavior.
+
+========================================
+STEP 3 — BUILD EMOTIONAL CONTINUITY
+========================================
+
+Users should feel:
+“MyTazki remembers my journey.”
+
+Implement:
+- contextual greetings
+- journey continuation prompts
+- emotional memory
+- routine continuity
+- personalized recommendations
+
+Examples:
+“Continue your reconnect journey.”
+“You were focusing on finding peace last week.”
+
+Avoid generic:
+“Welcome back.”
+
+========================================
+STEP 4 — AI PERSONALIZATION LAYER
+========================================
+
+AI should NOT behave like a generic chatbot.
+
+AI should:
+- understand emotional states
+- remember journey progress
+- adapt routines
+- suggest calming content
+- personalize reflections
+- recommend next steps
+
+Examples:
+If user repeatedly visits:
+- anxiety pages
+- peace journeys
+- sleep reflections
+
+AI adapts:
+“Would you like a calmer evening reflection tonight?”
+
+The AI should feel:
+- gentle
+- emotionally aware
+- spiritually respectful
+- supportive
+- calming
+
+NOT:
+- robotic
+- hyper-productive
+- generic chatbot energy
+
+========================================
+STEP 5 — BUILD HABIT SYSTEMS
+========================================
+
+Create soft habit reinforcement.
+
+Avoid:
+- guilt pressure
+- aggressive streak loss
+- dopamine-heavy gamification
+
+Use:
+- identity reinforcement
+- emotional consistency
+- calm momentum
+
+Examples:
+GOOD:
+“You’ve shown up for 7 peaceful mornings.”
+
+BAD:
+“You broke your streak!”
+
+========================================
+STEP 6 — CREATE DAILY LOOPS
+========================================
+
+Morning Loop:
+- reflection
+- emotional check-in
+- routine
+- progress
+
+Evening Loop:
+- gratitude
+- journaling
+- calming dua
+- reflection recap
+
+Weekly Loop:
+- consistency recap
+- emotional insights
+- growth milestones
+
+========================================
+STEP 7 — BUILD JOURNEY CONTINUITY
+========================================
+
+Guided journeys should persist emotionally.
+
+Examples:
+- Reconnect With Allah Journey
+- Inner Peace Journey
+- Salah Reset Journey
+- Tahajjud Journey
+
+Dashboard should surface:
+- current progress
+- next step
+- emotional encouragement
+- continuation prompts
+
+========================================
+STEP 8 — CREATE SOFT RETENTION MECHANICS
+========================================
+
+Implement:
+- streak memory
+- progress milestones
+- peaceful achievements
+- routine completion
+- emotional reinforcement
+
+Avoid:
+- manipulative notifications
+- guilt tactics
+- urgency pressure
+
+Goal:
+Users return because they FEEL better.
+
+========================================
+STEP 9 — ADD LIGHTWEIGHT JOURNALING
+========================================
+
+Create:
+- gratitude journaling
+- emotional reflections
+- AI reflection prompts
+- nightly recaps
+
+Journal experience should feel:
+- private
+- calming
+- reflective
+- emotionally safe
+
+========================================
+STEP 10 — BUILD RETENTION ANALYTICS
+========================================
+
+Track:
+- D1 retention
+- D7 retention
+- journey completion
+- morning routine completion
+- emotional check-in frequency
+- session depth
+- streak continuity
+- return frequency
+
+Goal:
+Validate whether emotional routines create habitual usage.
+
+========================================
+STEP 11 — SUBSCRIPTION POSITIONING
+========================================
+
+Premium should enhance:
+- personalization
+- AI continuity
+- guided journeys
+- emotional wellness
+- deeper reflections
+- advanced routines
+
+Do NOT paywall:
+- core spiritual access
+- educational SEO pages
+- beginner content
+
+========================================
+STEP 12 — UX + DESIGN PRINCIPLES
+========================================
+
+Design should feel:
+- peaceful
+- breathable
+- minimal
+- emotionally grounding
+- premium
+- distraction-free
+
+Prioritize:
+- whitespace
+- calm typography
+- soft animations
+- smooth transitions
+- emotionally warm copy
+
+========================================
+STEP 13 — FINAL OBJECTIVE
+========================================
+
+Transform MyTazki into:
+- a daily spiritual grounding experience
+- an emotionally intelligent Muslim companion
+- a habit-forming Islamic wellness platform
+- a calm AI-guided growth ecosystem
+
+The north star is:
+Users emotionally wanting to return tomorrow.
+
+NOT:
+feature count
+NOT:
+AI novelty
+NOT:
+content volume
+
+Focus on:
+- emotional usefulness
+- consistency
+- grounding
+- calm routines
+- personalized guidance
+- spiritual continuity
+
+Preserve:
+- premium identity
+- calm branding
+- emotional warmth
+- semantic SEO foundation
+- GEO optimization
