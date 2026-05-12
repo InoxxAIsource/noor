@@ -117,6 +117,15 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — HEALING category + 10 new sessions + player enhancements
+- **10 new HEALING sessions** added: Healing Through Sujood, Dua for Overthinking, Surah Ad-Duha Reflection, Trusting Allah in Hard Times, Slowing Down in Salah, Sleep with Ayatul Kursi, Letting Go with Tawakkul, Tahajjud Companion, Rizq Anxiety Session, Finding Peace After Isha
+- **Session total: 35** (was 25) across 7 categories: AZKAR, QURAN, DHIKR, SLEEP, DUA60, SALAH, HEALING
+- **All 35 sessions have Alafasy audio** — patch-audio endpoint extended to cover all new titles
+- **Admin endpoint**: `POST /api/admin/sessions/add-healing` — non-destructive append (duplicate-safe by title)
+- **Player enhancements**: Arabic text glow pulse (`arabicPulse` keyframe), play button breathing animation while playing (`breathe` keyframe), smoother progress bar with CSS transitions, fade-in-up entrance for scripture block, ambient gold radial backdrop behind Arabic
+- **Homepage healing section**: `Sparkles` icon, Ayat 26:80 in Amiri as header, 2 featured HEALING session cards with dark emerald gradient + gold border, tappable to player
+- **Design preserved**: same emerald/gold palette, card radius, spacing, typography — feels like natural evolution not redesign
+
 ### 2026-05-11 — Session audio wired up (everyayah.com + Islamic Network CDN)
 - **All 25 sessions** now have `audioUrl` populated — no more "Audio coming soon"
 - **Source**: Sheikh Alafasy recitations from `everyayah.com` (per-ayah) and `cdn.islamic.network` (full surahs)

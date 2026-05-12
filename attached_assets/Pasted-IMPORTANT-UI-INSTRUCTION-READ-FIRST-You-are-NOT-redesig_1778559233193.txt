@@ -1,0 +1,193 @@
+IMPORTANT UI INSTRUCTION — READ FIRST
+
+You are NOT redesigning DeenApp.
+
+The current app already has:
+- premium dark emerald Islamic aesthetic
+- cinematic spiritual atmosphere
+- centered Arabic hierarchy
+- immersive gradients
+- calm spacing
+- glassmorphism styling
+- mood-based emotional design
+
+Your job is ONLY to:
+EXTEND the current guided sessions system WITHOUT breaking or changing the existing visual identity.
+
+====================================================
+CRITICAL UI RULES
+====================================================
+
+DO NOT:
+- redesign layout system
+- change navigation structure
+- change current typography system
+- replace existing cards globally
+- add cluttered dashboard grids
+- introduce bright colors
+- introduce modern SaaS UI style
+- overcrowd pages
+- use heavy shadows
+- use emoji-heavy interfaces
+- create inconsistent components
+
+PRESERVE:
+- current emerald/gold palette
+- atmospheric dark backgrounds
+- cinematic mood
+- centered spiritual layouts
+- Arabic-first hierarchy
+- spacious breathing room
+- minimal premium feel
+- immersive visual direction
+
+The app should continue feeling like:
+- Calm
+- Hallow
+- Headspace
+
+NOT:
+- admin dashboard
+- utility app
+- fintech app
+- productivity SaaS
+
+====================================================
+ONLY EXTEND EXISTING SESSION SYSTEM
+====================================================
+
+Add the following 10 sessions ONLY.
+
+DO NOT rebuild the session architecture.
+
+Use the existing:
+- session cards
+- player system
+- gradients
+- mood engine
+- animations
+- progress tracking
+- typography
+- spacing system
+
+====================================================
+NEW SESSIONS
+====================================================
+
+1. Healing Through Sujood
+2. Dua for Overthinking
+3. Surah Ad-Duha Reflection
+4. Trusting Allah in Hard Times
+5. Slowing Down in Salah
+6. Sleep with Ayatul Kursi
+7. Letting Go with Tawakkul
+8. Tahajjud Companion
+9. Rizq Anxiety Session
+10. Finding Peace After Isha
+
+====================================================
+DESIGN CONSISTENCY RULES
+====================================================
+
+Every new session card must:
+- match existing card radius
+- match existing padding
+- match current typography scale
+- match current glow intensity
+- match current animation timing
+- match current gradient softness
+
+DO NOT create visually different cards.
+
+====================================================
+NEW CATEGORY RULE
+====================================================
+
+Add ONE new category only:
+HEALING
+
+Style it consistently with:
+- deep emerald gradients
+- subtle gold accents
+- calm atmospheric blur
+
+NO bright colors.
+
+====================================================
+PLAYER ENHANCEMENTS
+====================================================
+
+Enhance the existing player subtly.
+
+Add ONLY:
+- smoother fade transitions
+- subtle Arabic glow pulse
+- ambient dim layer
+- improved subtitle fade timing
+- breathing pause spacing
+- smoother progress animation
+
+DO NOT redesign the player UI.
+
+====================================================
+HOME PAGE RULES
+====================================================
+
+DO NOT overcrowd home screen.
+
+Add:
+- max 1 healing section
+- max 2 featured sessions
+- preserve whitespace
+- preserve cinematic atmosphere
+
+Avoid:
+- large grids
+- crowded categories
+- excessive quick actions
+
+====================================================
+MOBILE EXPERIENCE
+====================================================
+
+Preserve current immersive mobile-first feeling.
+
+Ensure:
+- smooth scrolling
+- no overflow issues
+- no layout jumping
+- no oversized cards
+- no typography breaks
+- no spacing inconsistencies
+
+====================================================
+TECHNICAL SAFETY
+====================================================
+
+DO NOT:
+- remove existing routes
+- modify auth
+- alter DB structure unnecessarily
+- break current session APIs
+- remove current animations
+- replace existing components globally
+
+ONLY extend safely.
+
+====================================================
+FINAL GOAL
+====================================================
+
+The final result should feel like:
+the current DeenApp evolved naturally,
+NOT a different app.
+
+The app must remain:
+- immersive
+- calming
+- spiritual
+- cinematic
+- emotionally peaceful
+- visually premium
+- minimal
+- atmospheric

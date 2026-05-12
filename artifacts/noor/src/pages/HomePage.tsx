@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
-import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2 } from "lucide-react";
+import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2, Sparkles } from "lucide-react";
 
 interface PrayerTime { name: string; time: string; }
 interface HijriData { day: string; month: { number: number; en: string }; year: string; }
@@ -32,7 +32,7 @@ function formatCountdown(ms: number): string {
 
 const CATEGORY_ICONS: Record<string, typeof Sun> = {
   azkar: Sun, quran: BookOpen, dhikr: RotateCcw,
-  sleep: Moon, dua60: Heart, dua: Heart, salah: Building2,
+  sleep: Moon, dua60: Heart, dua: Heart, salah: Building2, healing: Sparkles,
 };
 
 export default function HomePage() {
@@ -45,6 +45,7 @@ export default function HomePage() {
   const [nameOfAllah, setNameOfAllah] = useState<NameOfAllah>({ arabic: "الرَّحْمَن", nameEnglish: "Ar-Rahman", meaningEnglish: "The Most Merciful" });
   const [hadith, setHadith] = useState<Hadith>({ textEnglish: "The best of you are those who learn the Quran and teach it.", source: "Sahih Bukhari" });
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [healingSessions, setHealingSessions] = useState<Session[]>([]);
   const [countdown, setCountdown] = useState("--:--:--");
   const [iftarCountdown, setIftarCountdown] = useState("--:--:--");
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string }>({ name: "Fajr", time: "04:43" });
@@ -67,13 +68,18 @@ export default function HomePage() {
       fetch("/api/names-of-allah/today").then(r => r.json()).catch(() => null),
       fetch("/api/hadith/today").then(r => r.json()).catch(() => null),
       fetch("/api/sessions?limit=4").then(r => r.json()).catch(() => null),
-    ]).then(([prayerData, hijriData, streakData, nameData, hadithData, sessionsData]) => {
+      fetch("/api/sessions?category=HEALING&limit=2").then(r => r.json()).catch(() => null),
+    ]).then(([prayerData, hijriData, streakData, nameData, hadithData, sessionsData, healingData]) => {
       if (prayerData?.times) setPrayerTimes(prayerData.times);
       if (hijriData?.day) setHijri(hijriData as HijriData);
       if (streakData?.currentStreak !== undefined) setStreak(streakData as StreakData);
       if (nameData?.arabic) setNameOfAllah(nameData as NameOfAllah);
       if (hadithData?.textEnglish) setHadith(hadithData as Hadith);
       if (Array.isArray(sessionsData)) setSessions((sessionsData as Session[]).slice(0, 4));
+      if (Array.isArray(healingData)) {
+        const filtered = (healingData as Session[]).filter(s => s.category === "HEALING").slice(0, 2);
+        setHealingSessions(filtered);
+      }
     });
   }, [city, token]);
 
@@ -410,6 +416,64 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+
+        {/* Section 11: Healing Sessions */}
+        {healingSessions.length > 0 && (
+          <>
+            <div style={{ padding: "0 16px", marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                <Sparkles size={13} color="#ffd700" />
+                <span style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1 }}>
+                  Healing sessions
+                </span>
+              </div>
+              <div style={{ fontFamily: "Amiri, serif", fontSize: 13, color: "rgba(255,215,0,0.45)", direction: "rtl", textAlign: "right" }}>
+                وَإِذَا مَرِضْتُ فَهُوَ يَشْفِينِ
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: "0 16px", marginBottom: 20 }}>
+              {healingSessions.map(s => (
+                <div
+                  key={s.id}
+                  onClick={() => void navigate(`/player/${s.id}`)}
+                  style={{
+                    background: "linear-gradient(135deg, rgba(0,38,0,0.9) 0%, rgba(0,55,25,0.7) 100%)",
+                    border: "0.5px solid rgba(255,215,0,0.15)",
+                    borderRadius: 12, padding: "13px 14px", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    backdropFilter: "blur(8px)",
+                  }}
+                  onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,215,0,0.3)"; }}
+                  onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,215,0,0.15)"; }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{
+                      width: 36, height: 36, borderRadius: "50%",
+                      background: "radial-gradient(circle, rgba(255,215,0,0.12) 0%, rgba(0,165,80,0.08) 100%)",
+                      border: "0.5px solid rgba(255,215,0,0.2)",
+                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    }}>
+                      <Sparkles size={16} color="#ffd700" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8", marginBottom: 2 }}>{s.title}</div>
+                      <div style={{ fontSize: 11, color: "#4a7a4a" }}>
+                        {Math.floor(s.durationSeconds / 60)} min · Healing
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: "50%",
+                    background: "rgba(0,165,80,0.15)", border: "0.5px solid rgba(0,165,80,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <span style={{ fontSize: 11, color: "#00a550", marginLeft: 2 }}>▶</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
       </div>
 

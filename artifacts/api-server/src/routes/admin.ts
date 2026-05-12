@@ -276,6 +276,54 @@ router.post("/admin/blog/generate-all", async (req, res) => {
   res.json({ ok: true, queued: slugs.length, message: "Run /admin/blog/generate for each slug individually to avoid timeouts." });
 });
 
+// ─── Append HEALING sessions (non-destructive) ───────────────────────────────
+
+router.post("/admin/sessions/add-healing", async (_req, res) => {
+  const { nanoid } = await import("nanoid");
+  const HEALING = [
+    { category: "HEALING", title: "Healing Through Sujood", durationSeconds: 600, scriptureRef: "Quran 96:19", scriptureArabic: "وَٱسْجُدْ وَٱقْتَرِب", scriptureText: "Prostrate and draw near [to Allah].", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/096019.mp3" },
+    { category: "HEALING", title: "Dua for Overthinking", durationSeconds: 480, scriptureRef: "Quran 13:28", scriptureArabic: "أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ", scriptureText: "Verily, in the remembrance of Allah do hearts find rest.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/013028.mp3" },
+    { category: "HEALING", title: "Surah Ad-Duha Reflection", durationSeconds: 720, scriptureRef: "Quran 93:5", scriptureArabic: "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ", scriptureText: "And your Lord is going to give you, and you will be satisfied.", audioUrl: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3" },
+    { category: "HEALING", title: "Trusting Allah in Hard Times", durationSeconds: 600, scriptureRef: "Quran 65:3", scriptureArabic: "وَمَن يَتَوَكَّلْ عَلَى ٱللَّهِ فَهُوَ حَسْبُهُۥ", scriptureText: "Whoever relies upon Allah — then He is sufficient for him.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/065003.mp3" },
+    { category: "HEALING", title: "Slowing Down in Salah", durationSeconds: 540, scriptureRef: "Quran 2:45", scriptureArabic: "وَٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ", scriptureText: "And seek help through patience and prayer.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/002045.mp3" },
+    { category: "HEALING", title: "Sleep with Ayatul Kursi", durationSeconds: 900, scriptureRef: "Quran 2:255", scriptureArabic: "ٱللَّهُ لَآ إِلَـٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ", scriptureText: "Allah — there is no deity except Him, the Ever-Living, the Sustainer of existence.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/002255.mp3" },
+    { category: "HEALING", title: "Letting Go with Tawakkul", durationSeconds: 600, scriptureRef: "Quran 3:159", scriptureArabic: "فَتَوَكَّلْ عَلَى ٱللَّهِ ۚ إِنَّ ٱللَّهَ يُحِبُّ ٱلْمُتَوَكِّلِينَ", scriptureText: "And rely upon Allah. Indeed, Allah loves those who rely upon Him.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/003159.mp3" },
+    { category: "HEALING", title: "Tahajjud Companion", durationSeconds: 1200, scriptureRef: "Quran 17:79", scriptureArabic: "وَمِنَ ٱلَّيْلِ فَتَهَجَّدْ بِهِۦ نَافِلَةً لَّكَ", scriptureText: "And rise from sleep for prayer as an extra offering for you.", audioUrl: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/73.mp3" },
+    { category: "HEALING", title: "Rizq Anxiety Session", durationSeconds: 480, scriptureRef: "Quran 11:6", scriptureArabic: "وَمَا مِن دَآبَّةٍۢ فِى ٱلْأَرْضِ إِلَّا عَلَى ٱللَّهِ رِزْقُهَا", scriptureText: "There is no creature on earth but that upon Allah is its provision.", audioUrl: "https://everyayah.com/data/Alafasy_128kbps/011006.mp3" },
+    { category: "HEALING", title: "Finding Peace After Isha", durationSeconds: 600, scriptureRef: "Quran 93:11", scriptureArabic: "وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ", scriptureText: "And speak of the favor of your Lord.", audioUrl: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3" },
+  ];
+
+  try {
+    const existing = ((await getAllSessions()) as Array<Record<string, unknown>>) ?? [];
+    const existingTitles = new Set(existing.map(s => s["title"] as string));
+    const toAdd = HEALING.filter(h => !existingTitles.has(h.title));
+
+    if (toAdd.length === 0) {
+      res.json({ ok: true, added: 0, message: "All HEALING sessions already exist" });
+      return;
+    }
+
+    const newSessions = toAdd.map(h => ({
+      id: nanoid(),
+      slug: h.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+      guideName: "DeenApp Team",
+      isPremium: false,
+      language: "en",
+      tags: ["healing"],
+      madhab: null,
+      playCount: 0,
+      description: `A ${Math.floor(h.durationSeconds / 60)}-minute healing session.`,
+      ...h,
+    }));
+
+    await setAllSessions([...existing, ...newSessions]);
+    res.json({ ok: true, added: newSessions.length, total: existing.length + newSessions.length, titles: newSessions.map(s => s.title) });
+  } catch (err) {
+    logger.error({ err }, "add-healing error");
+    res.status(500).json({ error: String(err) });
+  }
+});
+
 // ─── Bulk session audio patch (everyayah.com + Islamic Network CDN) ──────────
 
 router.post("/admin/sessions/patch-audio", async (_req, res) => {
@@ -312,6 +360,17 @@ router.post("/admin/sessions/patch-audio", async (_req, res) => {
     "Understanding Fatiha in Salah": "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3", // Al-Fatiha
     "Khushoo Guide":               "https://everyayah.com/data/Alafasy_128kbps/023002.mp3", // Quran 23:2
     "Post-Salah Dhikr":            "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/103.mp3", // Al-Asr
+    // HEALING — verse-matched audio
+    "Healing Through Sujood":      "https://everyayah.com/data/Alafasy_128kbps/096019.mp3", // Quran 96:19
+    "Dua for Overthinking":        "https://everyayah.com/data/Alafasy_128kbps/013028.mp3", // Quran 13:28
+    "Surah Ad-Duha Reflection":    "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  // Surah Ad-Duha
+    "Trusting Allah in Hard Times":"https://everyayah.com/data/Alafasy_128kbps/065003.mp3", // Quran 65:3
+    "Slowing Down in Salah":       "https://everyayah.com/data/Alafasy_128kbps/002045.mp3", // Quran 2:45
+    "Sleep with Ayatul Kursi":     "https://everyayah.com/data/Alafasy_128kbps/002255.mp3", // Quran 2:255
+    "Letting Go with Tawakkul":    "https://everyayah.com/data/Alafasy_128kbps/003159.mp3", // Quran 3:159
+    "Tahajjud Companion":          "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/73.mp3",  // Al-Muzzammil (night prayer)
+    "Rizq Anxiety Session":        "https://everyayah.com/data/Alafasy_128kbps/011006.mp3", // Quran 11:6
+    "Finding Peace After Isha":    "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  // Surah Ad-Duha
   };
 
   try {

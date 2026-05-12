@@ -313,6 +313,30 @@ const PlayerPage: React.FC = () => {
           0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
           100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
+        @keyframes arabicPulse {
+          0%, 100% { text-shadow: 0 0 12px rgba(255,215,0,0.25), 0 0 24px rgba(255,215,0,0.1); }
+          50% { text-shadow: 0 0 24px rgba(255,215,0,0.55), 0 0 48px rgba(255,215,0,0.2); }
+        }
+        @keyframes breathe {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0,165,80,0.4); }
+          50% { transform: scale(1.04); box-shadow: 0 0 44px rgba(0,165,80,0.65); }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .arabic-glow { animation: arabicPulse 4s ease-in-out infinite; }
+        .play-breathe { animation: breathe 3.5s ease-in-out infinite; }
+        .fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+        input[type=range].progress-bar {
+          transition: all 0.3s ease;
+        }
+        input[type=range].progress-bar::-webkit-slider-thumb {
+          transition: transform 0.15s ease;
+        }
+        input[type=range].progress-bar::-webkit-slider-thumb:active {
+          transform: scale(1.4);
+        }
       `}</style>
 
       {/* Header */}
@@ -329,16 +353,21 @@ const PlayerPage: React.FC = () => {
       <div className="flex-1 overflow-y-auto pb-8 px-6">
         {/* Scripture display */}
         {!!(s?.["scriptureArabic"]) && (
-          <div className="text-center mb-8">
-            <p className="font-amiri text-3xl text-[var(--gold)] leading-loose rtl mb-3" dir="rtl">
-              {String(s!["scriptureArabic"])}
-            </p>
-            {!!(s?.["scriptureText"]) && (
-              <p className="text-sm italic text-[var(--green)] mb-2">{String(s!["scriptureText"])}</p>
-            )}
-            {!!(s?.["scriptureRef"]) && (
-              <p className="text-xs text-[var(--muted)]">— {String(s!["scriptureRef"])}</p>
-            )}
+          <div className="text-center mb-8 fade-in-up">
+            <div style={{
+              background: "radial-gradient(ellipse at center, rgba(255,215,0,0.06) 0%, transparent 70%)",
+              borderRadius: 24, padding: "24px 16px 16px",
+            }}>
+              <p className="font-amiri text-3xl text-[var(--gold)] leading-loose rtl mb-3 arabic-glow" dir="rtl">
+                {String(s!["scriptureArabic"])}
+              </p>
+              {!!(s?.["scriptureText"]) && (
+                <p className="text-sm italic text-[var(--green)] mb-2" style={{ transition: "opacity 0.4s ease" }}>{String(s!["scriptureText"])}</p>
+              )}
+              {!!(s?.["scriptureRef"]) && (
+                <p className="text-xs text-[var(--muted)]">— {String(s!["scriptureRef"])}</p>
+              )}
+            </div>
           </div>
         )}
 
@@ -375,7 +404,7 @@ const PlayerPage: React.FC = () => {
                   <input
                     type="range" min="0" max={duration || 1} step="0.1" value={currentTime}
                     onChange={handleSeek}
-                    className="w-full h-1 accent-[var(--green)] cursor-pointer"
+                    className="w-full h-1 accent-[var(--green)] cursor-pointer progress-bar"
                   />
                   <div className="flex justify-between text-xs text-[var(--muted)] mt-1">
                     <span>{fmt(currentTime)}</span>
@@ -386,7 +415,7 @@ const PlayerPage: React.FC = () => {
                 <div className="flex items-center justify-center mb-6">
                   <button
                     onClick={togglePlay}
-                    className="w-20 h-20 bg-[var(--green)] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(0,165,80,0.4)] hover:scale-105 transition-transform"
+                    className={`w-20 h-20 bg-[var(--green)] rounded-full flex items-center justify-center hover:scale-105 transition-transform ${isPlaying ? "play-breathe" : "shadow-[0_0_30px_rgba(0,165,80,0.4)]"}`}
                   >
                     {isPlaying
                       ? <Pause size={36} className="fill-white text-white" />
