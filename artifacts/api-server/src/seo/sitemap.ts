@@ -10,7 +10,7 @@ function slugify(s: string): string {
   return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
-const BASE = "https://noorapp.com";
+const BASE = "https://deenapp.app";
 const TODAY = new Date().toISOString().split("T")[0]!;
 
 function url(loc: string, priority: string, lastmod = TODAY): string {
@@ -117,7 +117,7 @@ Disallow: /tasbih
 Disallow: /mood
 Disallow: /rooms
 
-Sitemap: https://noorapp.com/sitemap.xml
+Sitemap: https://deenapp.app/sitemap.xml
 `;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");

@@ -117,6 +117,18 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — SEO improvements (Lighthouse: page blocked from indexing)
+- **Root cause**: Lighthouse ran on the Replit dev/`.replit.app` URL — Replit intentionally adds `X-Robots-Tag: noindex` to dev domains; `deenapp.app` custom domain has no such header
+- **Sitemap domain fixed**: `noorapp.com` → `deenapp.app` in `sitemap.ts` BASE URL and Sitemap directive in `robots.txt`
+- **Canonical tag added**: `<link rel="canonical" href="https://deenapp.app/">` in `index.html`
+- **og:url + og:image added**: full Open Graph set now complete with `https://deenapp.app/og-image.png`
+- **JSON-LD structured data**: `MobileApplication` schema + `Organization` schema injected into `index.html`
+- **Keywords meta tag added**: targets key queries (Islamic prayer app, salah times, namaz times, Quran reader, etc.)
+- **`lang` + `dir` attributes**: `<html lang="en" dir="ltr">` now explicit
+- **robots meta expanded**: `max-snippet:-1, max-image-preview:large` added for richer Google results
+- **Sitemap link in `<head>`**: `<link rel="sitemap">` tag added
+- **Typecheck**: Clean across all packages
+
 ### 2026-05-12 — DeenApp rebrand: new logo + favicon (removed Noor/نور)
 - **Logo**: Created `DeenAppLogo.tsx` reusable component — dark green rounded-square icon with gold crescent moon + 5-pointed star, gradient "DEENAPP" wordmark in Cinzel, gold drop-shadow glow
 - **Favicon**: Replaced red dot (`#FF3C00`) in `public/favicon.svg` with the crescent+star icon on dark green background — visible in browser tab and bookmark bar
