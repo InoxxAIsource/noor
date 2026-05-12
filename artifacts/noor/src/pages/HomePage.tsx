@@ -12,7 +12,7 @@ interface PrayerTime { name: string; time: string; }
 interface HijriData { day: string; month: { number: number; en: string }; year: string; }
 interface StreakData { currentStreak: number; weeklyCompleted: number; weeklyGoal: number; }
 interface MoodData { emotion: string | null; completedMorning: boolean; morningStreak: number; }
-interface Session { id: string; title: string; category: string; durationSeconds: number; }
+interface Session { id: string; title: string; category: string; durationSeconds: number; audioUrl?: string | null; }
 interface NameOfAllah { arabic: string; nameEnglish: string; meaningEnglish: string; }
 
 const PRAYER_ORDER = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
@@ -391,7 +391,9 @@ export default function HomePage() {
               <div>
                 <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{featuredSession.title}</div>
                 <div style={{ fontSize: 12, color: "#6a9878" }}>
-                  {Math.floor(featuredSession.durationSeconds / 60)} min · {featuredSession.category}
+                  {featuredSession.audioUrl
+                    ? `${Math.floor(featuredSession.durationSeconds / 60)} min · ${featuredSession.category}`
+                    : `Guided reading · ${featuredSession.category}`}
                 </div>
               </div>
               <div style={{

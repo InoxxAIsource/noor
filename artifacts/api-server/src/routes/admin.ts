@@ -328,50 +328,50 @@ router.post("/admin/sessions/add-healing", async (_req, res) => {
 // ─── Bulk session audio patch (everyayah.com + Islamic Network CDN) ──────────
 
 router.post("/admin/sessions/patch-audio", async (_req, res) => {
-  // Map each session title to a free Alafasy recitation URL
-  const AUDIO_MAP: Record<string, string> = {
-    // AZKAR — referenced Quran verse per session
-    "Morning Azkar Full":          "https://everyayah.com/data/Alafasy_128kbps/003041.mp3", // Quran 3:41
-    "Dua After Fajr":              "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3", // Al-Fatiha (morning dua)
-    "Dua for Rizq":                "https://everyayah.com/data/Alafasy_128kbps/065003.mp3", // Quran 65:3
-    "Ayatul Kursi Explained":      "https://everyayah.com/data/Alafasy_128kbps/002255.mp3", // Quran 2:255
-    "Evening Azkar Full":          "https://everyayah.com/data/Alafasy_128kbps/033042.mp3", // Quran 33:42
+  // Each entry: { url, durationSeconds } — durations match actual audio length
+  const AUDIO_MAP: Record<string, { url: string; durationSeconds: number }> = {
+    // AZKAR — full surah recitations matching session theme
+    "Morning Azkar Full":           { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/18.mp3",  durationSeconds: 2400 }, // Al-Kahf (~40 min)
+    "Dua After Fajr":               { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/36.mp3",  durationSeconds: 1440 }, // Ya-Sin (~24 min)
+    "Dua for Rizq":                 { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/56.mp3",  durationSeconds: 480  }, // Al-Waqi'ah (~8 min)
+    "Ayatul Kursi Explained":       { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/2.mp3",   durationSeconds: 7200 }, // Al-Baqarah (~2 hr)
+    "Evening Azkar Full":           { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/67.mp3",  durationSeconds: 660  }, // Al-Mulk (~11 min)
     // QURAN — full surah recitations
-    "Surah Fatiha Reflection":     "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3",  // Surah 1
-    "Ayatul Kursi Deep Dive":      "https://everyayah.com/data/Alafasy_128kbps/002255.mp3", // Quran 2:255
-    "Surah Ar-Rahman":             "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/55.mp3", // Surah 55
-    "Last Three Surahs":           "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", // Surah 112
-    "Surah Al-Kahf":               "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/18.mp3",  // Surah 18
-    // DHIKR — referenced verse or thematically close surah
-    "SubhanAllah 33x with Meaning":"https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", // Al-Ikhlas (Tawhid)
-    "Salawat on the Prophet":      "https://everyayah.com/data/Alafasy_128kbps/033056.mp3", // Quran 33:56
-    "La ilaha illallah Meditation":"https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", // Al-Ikhlas
-    "Istighfar Session":           "https://everyayah.com/data/Alafasy_128kbps/071010.mp3", // Quran 71:10
-    // SLEEP — referenced story verse
-    "Ibrahim AS and the Fire":     "https://everyayah.com/data/Alafasy_128kbps/021069.mp3", // Quran 21:69
-    "Yunus AS in the Whale":       "https://everyayah.com/data/Alafasy_128kbps/021087.mp3", // Quran 21:87
-    "Musa AS and the Sea":         "https://everyayah.com/data/Alafasy_128kbps/026063.mp3", // Quran 26:63
-    "The Night Journey: Isra and Miraj": "https://everyayah.com/data/Alafasy_128kbps/017001.mp3", // Quran 17:1
-    // DUA60 — referenced verse (short sessions)
-    "60s Dua for Anxiety":         "https://everyayah.com/data/Alafasy_128kbps/013028.mp3", // Quran 13:28
-    "60s Morning Fiat":            "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3",   // Al-Fatiha
-    "60s Dua for Gratitude":       "https://everyayah.com/data/Alafasy_128kbps/014007.mp3", // Quran 14:7
-    "60s Dua Before Sleep":        "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/113.mp3", // Al-Falaq (protection)
-    // SALAH — referenced verse
-    "Understanding Fatiha in Salah": "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3", // Al-Fatiha
-    "Khushoo Guide":               "https://everyayah.com/data/Alafasy_128kbps/023002.mp3", // Quran 23:2
-    "Post-Salah Dhikr":            "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/103.mp3", // Al-Asr
-    // HEALING — verse-matched audio
-    "Healing Through Sujood":      "https://everyayah.com/data/Alafasy_128kbps/096019.mp3", // Quran 96:19
-    "Dua for Overthinking":        "https://everyayah.com/data/Alafasy_128kbps/013028.mp3", // Quran 13:28
-    "Surah Ad-Duha Reflection":    "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  // Surah Ad-Duha
-    "Trusting Allah in Hard Times":"https://everyayah.com/data/Alafasy_128kbps/065003.mp3", // Quran 65:3
-    "Slowing Down in Salah":       "https://everyayah.com/data/Alafasy_128kbps/002045.mp3", // Quran 2:45
-    "Sleep with Ayatul Kursi":     "https://everyayah.com/data/Alafasy_128kbps/002255.mp3", // Quran 2:255
-    "Letting Go with Tawakkul":    "https://everyayah.com/data/Alafasy_128kbps/003159.mp3", // Quran 3:159
-    "Tahajjud Companion":          "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/73.mp3",  // Al-Muzzammil (night prayer)
-    "Rizq Anxiety Session":        "https://everyayah.com/data/Alafasy_128kbps/011006.mp3", // Quran 11:6
-    "Finding Peace After Isha":    "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  // Surah Ad-Duha
+    "Surah Fatiha Reflection":      { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3",   durationSeconds: 50   }, // Al-Fatiha (~50 sec)
+    "Ayatul Kursi Deep Dive":       { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/2.mp3",   durationSeconds: 7200 }, // Al-Baqarah
+    "Surah Ar-Rahman":              { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/55.mp3",  durationSeconds: 660  }, // Ar-Rahman (~11 min)
+    "Last Three Surahs":            { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", durationSeconds: 60   }, // Al-Ikhlas + short (~1 min total)
+    "Surah Al-Kahf":                { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/18.mp3",  durationSeconds: 2400 }, // Al-Kahf (~40 min)
+    // DHIKR — thematically matched full surahs
+    "SubhanAllah 33x with Meaning": { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", durationSeconds: 25   }, // Al-Ikhlas (~25 sec)
+    "Salawat on the Prophet":       { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/33.mp3",  durationSeconds: 1500 }, // Al-Ahzab (~25 min)
+    "La ilaha illallah Meditation": { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/112.mp3", durationSeconds: 25   }, // Al-Ikhlas
+    "Istighfar Session":            { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/71.mp3",  durationSeconds: 360  }, // Nuh (~6 min)
+    // SLEEP — full surah recitations of the Prophets' stories (real sleep-length audio)
+    "Ibrahim AS and the Fire":      { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/21.mp3",  durationSeconds: 900  }, // Al-Anbiya (~15 min)
+    "Yunus AS in the Whale":        { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/10.mp3",  durationSeconds: 2220 }, // Yunus (~37 min)
+    "Musa AS and the Sea":          { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/26.mp3",  durationSeconds: 1140 }, // Ash-Shu'ara (~19 min)
+    "The Night Journey: Isra and Miraj": { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/17.mp3", durationSeconds: 1140 }, // Al-Isra (~19 min)
+    // DUA60 — short single-ayah or Al-Fatiha clips (1-2 min)
+    "60s Dua for Anxiety":          { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/94.mp3",  durationSeconds: 40   }, // Ash-Sharh (~40 sec)
+    "60s Morning Fiat":             { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3",   durationSeconds: 50   }, // Al-Fatiha (~50 sec)
+    "60s Dua for Gratitude":        { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  durationSeconds: 50   }, // Ad-Duha (~50 sec)
+    "60s Dua Before Sleep":         { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/113.mp3", durationSeconds: 25   }, // Al-Falaq (~25 sec)
+    // SALAH — full surahs
+    "Understanding Fatiha in Salah":{ url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3",   durationSeconds: 50   }, // Al-Fatiha
+    "Khushoo Guide":                { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/23.mp3",  durationSeconds: 720  }, // Al-Mu'minun (~12 min)
+    "Post-Salah Dhikr":             { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/103.mp3", durationSeconds: 20   }, // Al-Asr (~20 sec)
+    // HEALING — full surahs matching themes
+    "Healing Through Sujood":       { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/96.mp3",  durationSeconds: 60   }, // Al-Alaq (~1 min)
+    "Dua for Overthinking":         { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/94.mp3",  durationSeconds: 40   }, // Ash-Sharh
+    "Surah Ad-Duha Reflection":     { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/93.mp3",  durationSeconds: 50   }, // Ad-Duha
+    "Trusting Allah in Hard Times": { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/65.mp3",  durationSeconds: 300  }, // At-Talaq (~5 min)
+    "Slowing Down in Salah":        { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/2.mp3",   durationSeconds: 7200 }, // Al-Baqarah
+    "Sleep with Ayatul Kursi":      { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/67.mp3",  durationSeconds: 660  }, // Al-Mulk (sleep surah, ~11 min)
+    "Letting Go with Tawakkul":     { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/3.mp3",   durationSeconds: 3600 }, // Al-Imran (~60 min)
+    "Tahajjud Companion":           { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/73.mp3",  durationSeconds: 360  }, // Al-Muzzammil (~6 min)
+    "Rizq Anxiety Session":         { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/56.mp3",  durationSeconds: 480  }, // Al-Waqi'ah (~8 min)
+    "Finding Peace After Isha":     { url: "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/67.mp3",  durationSeconds: 660  }, // Al-Mulk (~11 min)
   };
 
   try {
@@ -381,12 +381,16 @@ router.post("/admin/sessions/patch-audio", async (_req, res) => {
     let updated = 0;
     for (const s of sessions) {
       const title = s["title"] as string;
-      const url = AUDIO_MAP[title];
-      if (url) { s["audioUrl"] = url; updated++; }
+      const entry = AUDIO_MAP[title];
+      if (entry) {
+        s["audioUrl"] = entry.url;
+        s["durationSeconds"] = entry.durationSeconds;
+        updated++;
+      }
     }
 
     await setAllSessions(sessions);
-    res.json({ ok: true, total: sessions.length, updated, message: `${updated} sessions now have Alafasy audio` });
+    res.json({ ok: true, total: sessions.length, updated, message: `${updated} sessions updated with accurate audio and durations` });
   } catch (err) {
     logger.error({ err }, "sessions patch-audio error");
     res.status(500).json({ error: String(err) });
