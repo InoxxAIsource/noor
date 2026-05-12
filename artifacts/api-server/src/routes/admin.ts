@@ -13,6 +13,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { logger } from "../lib/logger.js";
 import { BLOG_STUBS } from "../seo/blog-seo.js";
 import { seedNames } from "../seed/names.js";
+import { seedDuas } from "../seed/duas.js";
 
 const router = Router();
 
@@ -388,6 +389,19 @@ router.post("/admin/sessions/patch-audio", async (_req, res) => {
     res.json({ ok: true, total: sessions.length, updated, message: `${updated} sessions now have Alafasy audio` });
   } catch (err) {
     logger.error({ err }, "sessions patch-audio error");
+    res.status(500).json({ error: String(err) });
+  }
+});
+
+// ─── Duas reseed (force replace all duas with expanded seed data) ────────────
+
+router.post("/admin/duas/reseed", async (_req, res) => {
+  try {
+    await seedDuas();
+    const duas = await getAllDuas();
+    res.json({ ok: true, total: (duas as unknown[])?.length ?? 0, message: "Duas reseeded successfully" });
+  } catch (err) {
+    logger.error({ err }, "duas reseed error");
     res.status(500).json({ error: String(err) });
   }
 });

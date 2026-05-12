@@ -117,6 +117,13 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — Duas library expanded (26 → 110 across all 20 categories)
+- **Root cause**: Only 26 duas in DB; categories Food, Anxiety, Grief, Work, Study, Marriage, Children had zero entries
+- **Fix**: Rewrote `seed/duas.ts` with 110 authentic duas from Quran and Hadith covering all 20 UI categories
+- **Coverage**: ~5-6 duas per category: Morning, Evening, Protection, Forgiveness, Salah, Daily Life, Sleep, Travel, Hardship, Gratitude, Family, Quran, Food, Anxiety, Grief, Work, Study, Marriage, Children
+- **Admin endpoint**: `POST /api/admin/duas/reseed` — force-replaces all duas from seed without restarting
+- **Typecheck**: Clean across all packages
+
 ### 2026-05-12 — HEALING category + 10 new sessions + player enhancements
 - **10 new HEALING sessions** added: Healing Through Sujood, Dua for Overthinking, Surah Ad-Duha Reflection, Trusting Allah in Hard Times, Slowing Down in Salah, Sleep with Ayatul Kursi, Letting Go with Tawakkul, Tahajjud Companion, Rizq Anxiety Session, Finding Peace After Isha
 - **Session total: 35** (was 25) across 7 categories: AZKAR, QURAN, DHIKR, SLEEP, DUA60, SALAH, HEALING
