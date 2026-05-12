@@ -52,7 +52,14 @@ export function CalmDashboard() {
         <div style={{ display: "flex", gap: 8, marginBottom: 24 }}><div style={{ flex: 1, background: "#152019", border: "1px solid rgba(52,201,122,0.15)", borderRadius: 12, padding: "10px 6px", textAlign: "center", cursor: "pointer" }}><div style={{ fontFamily: "serif", fontSize: 14, color: "#b8946a" }}>سُبْحَانَ اللَّهِ</div><div style={{ fontSize: 10, color: "#6a9878", marginTop: 4 }}>SubhanAllah</div></div><div style={{ flex: 1, background: "#152019", border: "1px solid rgba(52,201,122,0.15)", borderRadius: 12, padding: "10px 6px", textAlign: "center", cursor: "pointer" }}><div style={{ fontFamily: "serif", fontSize: 14, color: "#b8946a" }}>اَلْحَمْدُ لِلَّهِ</div><div style={{ fontSize: 10, color: "#6a9878", marginTop: 4 }}>Alhamdulillah</div></div><div style={{ flex: 1, background: "#152019", border: "1px solid rgba(52,201,122,0.15)", borderRadius: 12, padding: "10px 6px", textAlign: "center", cursor: "pointer" }}><div style={{ fontFamily: "serif", fontSize: 14, color: "#b8946a" }}>اللَّهُ أَكْبَرُ</div><div style={{ fontSize: 10, color: "#6a9878", marginTop: 4 }}>Allahu Akbar</div></div></div>
         <div style={{ background: "#152019", border: "1px solid rgba(184,148,106,0.15)", borderRadius: 16, padding: "14px 18px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}><div><div style={{ fontSize: 14, fontWeight: 500, color: "#b8946a" }}>What do you need today?</div><div style={{ fontSize: 12, color: "#6a9878", marginTop: 2 }}>Find the right dua for this moment</div></div><span style={{ color: "#6a9878" }}>›</span></div>
         <div style={{ fontSize: 10, color: "#6a9878", textTransform: "uppercase", letterSpacing: 2, marginBottom: 10 }}>Islamic tools</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>{['Quran','Qibla','Masjid','Zakat','Calendar','99 Names','Farz','Wudu','Salah','Sadqa','Qurbani','Names'].map(label => <div key={label} style={{ background: "#152019", border: "1px solid rgba(52,201,122,0.1)", borderRadius: 14, padding: "12px 6px", textAlign: "center", cursor: "pointer" }}><div style={{ fontSize: 18, marginBottom: 5 }}>•</div><div style={{ fontSize: 10, color: "#6a9878" }}>{label}</div></div>)}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+          {['Quran','Qibla','Masjid','Zakat','Calendar','99 Names','Farz','Wudu','Salah','Sadqa','Qurbani','Names'].map(label => (
+            <div key={label} style={{ background: "#152019", border: "1px solid rgba(52,201,122,0.1)", borderRadius: 14, padding: "12px 6px", textAlign: "center", cursor: "pointer" }}>
+              <div style={{ fontSize: 18, marginBottom: 5 }}>•</div>
+              <div style={{ fontSize: 10, color: "#6a9878" }}>{label}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
