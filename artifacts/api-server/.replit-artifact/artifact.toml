@@ -118,6 +118,29 @@ kind = "api"
     "/best-islamic-ai-apps",
     "/ai-for-muslims",
     "/chatgpt-for-islamic-questions",
+    "/about",
+    "/mission",
+    "/our-philosophy",
+    "/how-mytazki-works",
+    "/contributors",
+    "/authors",
+    "/editorial-guidelines",
+    "/ai-ethics",
+    "/trust-and-safety",
+    "/islamic-guidance-policy",
+    "/content-verification",
+    "/how-ai-content-is-reviewed",
+    "/best-islamic-app-for-anxiety",
+    "/best-muslim-habit-app",
+    "/ai-islamic-companion",
+    "/ai-quran-reflection",
+    "/islamic-self-improvement-app",
+    "/muslim-wellness-app",
+    "/start-here",
+    "/reconnect-with-allah",
+    "/find-peace-in-islam",
+    "/build-islamic-habits",
+    "/start-praying-again",
   ]
 
   [services.development]
@@ -132,7 +155,6 @@ kind = "api"
   NODE_ENV = "production"
 
   [services.production.run]
-  # we don't run through pnpm to make startup faster in production
   args = ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
 
   [services.production.run.env]

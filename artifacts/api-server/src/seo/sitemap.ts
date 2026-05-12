@@ -175,6 +175,27 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/best-islamic-ai-apps", "/ai-for-muslims", "/chatgpt-for-islamic-questions",
   ].forEach(p => urls.push(url(p, "0.9")));
 
+  // Phase 3 — Entity & trust pages
+  [
+    "/about", "/mission", "/our-philosophy", "/how-mytazki-works",
+    "/contributors", "/authors", "/editorial-guidelines",
+    "/ai-ethics", "/trust-and-safety", "/islamic-guidance-policy",
+    "/content-verification", "/how-ai-content-is-reviewed",
+  ].forEach(p => urls.push(url(p, "0.8")));
+
+  // Phase 3 — GEO landing pages
+  [
+    "/best-islamic-app-for-anxiety", "/best-muslim-habit-app",
+    "/ai-islamic-companion", "/ai-quran-reflection",
+    "/islamic-self-improvement-app", "/muslim-wellness-app",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Phase 3 — Start Here funnels
+  [
+    "/start-here", "/reconnect-with-allah", "/find-peace-in-islam",
+    "/build-islamic-habits", "/start-praying-again",
+  ].forEach(p => urls.push(url(p, "0.95")));
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}

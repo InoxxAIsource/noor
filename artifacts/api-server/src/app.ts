@@ -27,6 +27,9 @@ import salahExpansionRouter from "./seo/salah-expansion.js";
 import quranExpansionRouter from "./seo/quran-expansion.js";
 import habitsExpansionRouter from "./seo/habits-expansion.js";
 import aiExpansionRouter from "./seo/ai-expansion.js";
+import entityPagesRouter from "./seo/entity-pages.js";
+import geoLandingPagesRouter from "./seo/geo-landing-pages.js";
+import funnelPagesRouter from "./seo/funnel-pages.js";
 
 const app: Express = express();
 
@@ -107,6 +110,11 @@ app.use(salahExpansionRouter);
 app.use(quranExpansionRouter);
 app.use(habitsExpansionRouter);
 app.use(aiExpansionRouter);
+
+// SEO Phase 3 — Entity authority, GEO landing pages, funnels
+app.use(entityPagesRouter);
+app.use(geoLandingPagesRouter);
+app.use(funnelPagesRouter);
 
 app.use("/api/ai", aiLimiter);
 app.use("/api", globalLimiter, router);

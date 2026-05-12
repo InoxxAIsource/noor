@@ -229,6 +229,22 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — SEO Phase 3: Entity Authority + Distribution System
+- **12 Entity & Trust pages**: /about, /mission, /our-philosophy, /how-mytazki-works, /contributors, /authors, /editorial-guidelines, /ai-ethics, /trust-and-safety, /islamic-guidance-policy, /content-verification, /how-ai-content-is-reviewed
+- **6 GEO landing pages**: /best-islamic-app-for-anxiety, /best-muslim-habit-app, /ai-islamic-companion, /ai-quran-reflection, /islamic-self-improvement-app, /muslim-wellness-app
+- **5 Start-Here funnel pages**: /start-here, /reconnect-with-allah, /find-peace-in-islam, /build-islamic-habits, /start-praying-again
+- **E-E-A-T signals**: `eeatBar()` component on all pages — author credit, reviewed-by, updated date, Verified Content badge
+- **Schema markup**: Organization, AboutPage, Person, FAQPage, BreadcrumbList JSON-LD on all entity pages
+- **GEO/AI citation blocks**: `quickAnswerBox()` on every page — structured for ChatGPT/Perplexity/Google AI Overviews retrieval
+- **Branded entity language**: "MyTazki AI Islamic Companion", "MyTazki spiritual growth platform" woven throughout all pages
+- **Content relationship graph**: Related articles grid with hub→cluster→expansion internal linking on every page
+- **Comparison tables**: MyTazki vs generic apps on all GEO landing pages
+- **Trust signals**: Islamic guidance policy, content verification 6-step process, correction inbox, editorial review cycle
+- **Sitemap updated**: 23 new Phase 3 URLs — entity pages at 0.8, GEO pages at 0.9, funnels at 0.95
+- **artifact.toml updated**: All 23 Phase 3 paths added to proxy routing
+- **Total crawlable URL count**: ~155+ pages
+- **Typecheck**: Clean across all packages
+
 ### 2026-05-12 — SEO Phase 2: Semantic Authority + Internal Linking Engine
 - **52 new SEO pages** across 5 thematic expansions + hub + journey pages
 - **5 Hub pages** (priority 1.0): `/mental-wellness`, `/salah`, `/quran-reflections`, `/islamic-habits`, `/ai-islamic-tools` — pillar pages linking to all cluster pages
