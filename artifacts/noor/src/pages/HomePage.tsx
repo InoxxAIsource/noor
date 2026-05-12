@@ -50,12 +50,43 @@ export default function HomePage() {
   const [iftarCountdown, setIftarCountdown] = useState("--:--:--");
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string }>({ name: "Fajr", time: "04:43" });
 
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<{ sessions: Session[]; duas: { id: string; title: string; category: string }[]; names: { nameEnglish: string; nameArabic: string; meaningEnglish: string }[] }>({ sessions: [], duas: [], names: [] });
+  const [allSessions, setAllSessions] = useState<Session[]>([]);
+
   const particleKeys = useRef(Array.from({ length: 8 }, (_, i) => i));
   const token = typeof window !== "undefined" ? localStorage.getItem("tazki_token") : null;
   const u = user as Record<string, unknown> | null;
   const city = (u?.["city"] as string) || "Delhi";
   const isRamadan = hijri?.month?.number === 9;
   const isMuharram = hijri?.month?.number === 1;
+
+  // Fetch all sessions once for search
+  useEffect(() => {
+    fetch("/api/sessions?limit=100").then(r => r.json()).then(d => {
+      if (Array.isArray(d)) setAllSessions(d as Session[]);
+    }).catch(() => null);
+  }, []);
+
+  // Live search across sessions, duas, names
+  useEffect(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) { setSearchResults({ sessions: [], duas: [], names: [] }); return; }
+    const matchedSessions = allSessions.filter(s => s.title.toLowerCase().includes(q) || s.category.toLowerCase().includes(q)).slice(0, 5);
+    Promise.all([
+      fetch(`/api/duas`).then(r => r.json()).catch(() => []),
+      fetch(`/api/names?q=${encodeURIComponent(q)}&limit=5`).then(r => r.json()).catch(() => []),
+    ]).then(([duasData, namesData]) => {
+      const filteredDuas = (Array.isArray(duasData) ? duasData : []).filter(
+        (d: { title: string; category: string }) => d.title?.toLowerCase().includes(q) || d.category?.toLowerCase().includes(q)
+      ).slice(0, 5);
+      const filteredNames = (Array.isArray(namesData) ? namesData : []).slice(0, 5);
+      setSearchResults({ sessions: matchedSessions, duas: filteredDuas, names: filteredNames });
+    });
+  }, [searchQuery, allSessions]);
 
   useEffect(() => {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -190,9 +221,9 @@ export default function HomePage() {
             MYTAZKI
           </div>
           <div style={{ display: "flex", gap: 16, color: "#4a7a4a" }}>
-            <span style={{ fontSize: 20, cursor: "pointer" }}>🔔</span>
-            <span style={{ fontSize: 20, cursor: "pointer" }}>🔍</span>
-            <span style={{ fontSize: 20, cursor: "pointer" }}>☰</span>
+            <span style={{ fontSize: 20, cursor: "pointer" }} onClick={() => { setShowNotifications(v => !v); setShowSearch(false); setShowMenu(false); }}>🔔</span>
+            <span style={{ fontSize: 20, cursor: "pointer" }} onClick={() => { setShowSearch(v => !v); setShowNotifications(false); setShowMenu(false); setSearchQuery(""); }}>🔍</span>
+            <span style={{ fontSize: 20, cursor: "pointer" }} onClick={() => { setShowMenu(v => !v); setShowNotifications(false); setShowSearch(false); }}>☰</span>
           </div>
         </div>
 
@@ -514,6 +545,254 @@ export default function HomePage() {
         )}
 
       </div>
+
+      {/* ── NOTIFICATION PANEL ── */}
+      {showNotifications && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 200,
+        }} onClick={() => setShowNotifications(false)}>
+          <div
+            style={{
+              position: "absolute", top: 98, left: 12, right: 12,
+              background: "#001f00", border: "1px solid rgba(0,165,80,0.25)",
+              borderRadius: 16, padding: "4px 0", boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ padding: "14px 16px 10px", borderBottom: "0.5px solid rgba(0,165,80,0.15)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#e8f5e8" }}>Notifications</span>
+              <span style={{ fontSize: 11, color: "#00a550", cursor: "pointer" }} onClick={() => setShowNotifications(false)}>Close</span>
+            </div>
+            {[
+              { icon: "🕌", title: `Next prayer: ${nextPrayer.name}`, sub: `In ${countdown}`, action: () => { void navigate("/prayer-times"); setShowNotifications(false); } },
+              { icon: "🔥", title: `Streak: Day ${streak.currentStreak}`, sub: `${streak.weeklyCompleted}/${streak.weeklyGoal} days this week`, action: null },
+              { icon: "✦", title: `Name of Allah: ${nameOfAllah.nameEnglish}`, sub: nameOfAllah.meaningEnglish, action: () => { void navigate("/99-names"); setShowNotifications(false); } },
+              { icon: "📿", title: "Daily Azkar reminder", sub: "Start your morning Azkar session", action: () => { void navigate("/duas"); setShowNotifications(false); } },
+              { icon: "📖", title: "Today's Hadith", sub: hadith.textEnglish.slice(0, 60) + "…", action: null },
+            ].map((n, i) => (
+              <div
+                key={i}
+                onClick={n.action ?? undefined}
+                style={{
+                  display: "flex", gap: 12, padding: "12px 16px",
+                  borderBottom: i < 4 ? "0.5px solid rgba(0,165,80,0.08)" : "none",
+                  cursor: n.action ? "pointer" : "default",
+                  alignItems: "flex-start",
+                }}
+              >
+                <span style={{ fontSize: 20, flexShrink: 0, marginTop: 1 }}>{n.icon}</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8", marginBottom: 2 }}>{n.title}</div>
+                  <div style={{ fontSize: 11, color: "#4a7a4a", lineHeight: 1.4 }}>{n.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── SEARCH OVERLAY ── */}
+      {showSearch && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 300,
+          background: "rgba(0,10,0,0.97)", display: "flex", flexDirection: "column",
+        }}>
+          {/* Search header */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 16px 12px", borderBottom: "0.5px solid rgba(0,165,80,0.15)" }}>
+            <span style={{ fontSize: 18 }}>🔍</span>
+            <input
+              autoFocus
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search sessions, duas, names…"
+              style={{
+                flex: 1, background: "transparent", border: "none", outline: "none",
+                color: "#e8f5e8", fontSize: 15, fontFamily: "inherit",
+              }}
+            />
+            <button
+              onClick={() => { setShowSearch(false); setSearchQuery(""); }}
+              style={{ background: "transparent", border: "none", color: "#4a7a4a", fontSize: 14, cursor: "pointer", fontFamily: "inherit", padding: "4px 8px" }}
+            >
+              Cancel
+            </button>
+          </div>
+
+          {/* Results */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "12px 16px" }}>
+            {!searchQuery && (
+              <div>
+                <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>Quick access</div>
+                {[
+                  { label: "Prayer Times", path: "/prayer-times", icon: "🕌" },
+                  { label: "Quran Reader", path: "/quran", icon: "📖" },
+                  { label: "Duas Library", path: "/duas", icon: "🤲" },
+                  { label: "Baby Names", path: "/names", icon: "👶" },
+                  { label: "Tasbih Counter", path: "/tasbih", icon: "📿" },
+                  { label: "Qibla Compass", path: "/qibla", icon: "🧭" },
+                  { label: "99 Names of Allah", path: "/99-names", icon: "✨" },
+                  { label: "Zakat Calculator", path: "/zakat-calculator", icon: "💰" },
+                ].map(item => (
+                  <div
+                    key={item.path}
+                    onClick={() => { void navigate(item.path); setShowSearch(false); setSearchQuery(""); }}
+                    style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 0", borderBottom: "0.5px solid rgba(0,165,80,0.08)", cursor: "pointer" }}
+                  >
+                    <span style={{ fontSize: 18 }}>{item.icon}</span>
+                    <span style={{ fontSize: 14, color: "#e8f5e8" }}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {searchQuery && (
+              <>
+                {searchResults.sessions.length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 11, color: "#00a550", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Sessions</div>
+                    {searchResults.sessions.map(s => (
+                      <div key={s.id} onClick={() => { void navigate(`/player/${s.id}`); setShowSearch(false); setSearchQuery(""); }}
+                        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "0.5px solid rgba(0,165,80,0.08)", cursor: "pointer" }}>
+                        <div>
+                          <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8" }}>{s.title}</div>
+                          <div style={{ fontSize: 11, color: "#4a7a4a", marginTop: 2 }}>{s.category} · {Math.floor(s.durationSeconds / 60)} min</div>
+                        </div>
+                        <span style={{ fontSize: 14, color: "#00a550" }}>▶</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchResults.duas.length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 11, color: "#00a550", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Duas</div>
+                    {searchResults.duas.map((d, i) => (
+                      <div key={i} onClick={() => { void navigate("/duas"); setShowSearch(false); setSearchQuery(""); }}
+                        style={{ padding: "10px 0", borderBottom: "0.5px solid rgba(0,165,80,0.08)", cursor: "pointer" }}>
+                        <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8" }}>{d.title}</div>
+                        <div style={{ fontSize: 11, color: "#4a7a4a", marginTop: 2 }}>{d.category}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchResults.names.length > 0 && (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 11, color: "#00a550", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Names</div>
+                    {searchResults.names.map((n: { nameEnglish: string; nameArabic: string; meaningEnglish: string }, i) => (
+                      <div key={i} onClick={() => { void navigate("/names"); setShowSearch(false); setSearchQuery(""); }}
+                        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "0.5px solid rgba(0,165,80,0.08)", cursor: "pointer" }}>
+                        <div>
+                          <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8" }}>{n.nameEnglish}</div>
+                          <div style={{ fontSize: 11, color: "#4a7a4a", marginTop: 2 }}>{n.meaningEnglish}</div>
+                        </div>
+                        <span style={{ fontFamily: "Amiri, serif", fontSize: 16, color: "#4a7a4a", direction: "rtl" }}>{n.nameArabic}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchResults.sessions.length === 0 && searchResults.duas.length === 0 && searchResults.names.length === 0 && (
+                  <div style={{ textAlign: "center", padding: "40px 0", color: "#4a7a4a", fontSize: 14 }}>
+                    No results for "{searchQuery}"
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── MENU DRAWER ── */}
+      {showMenu && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 400 }} onClick={() => setShowMenu(false)}>
+          <div
+            style={{
+              position: "absolute", top: 0, right: 0, bottom: 0, width: "78%", maxWidth: 320,
+              background: "#001500", borderLeft: "1px solid rgba(0,165,80,0.2)",
+              overflowY: "auto", display: "flex", flexDirection: "column",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Drawer header */}
+            <div style={{ padding: "20px 20px 16px", borderBottom: "0.5px solid rgba(0,165,80,0.15)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#00a550", fontFamily: "Cinzel, serif", letterSpacing: 2 }}>MYTAZKI</div>
+                <div style={{ fontSize: 12, color: "#4a7a4a", marginTop: 2 }}>As-salamu alaykum, {(u?.["name"] as string) || "Guest"}</div>
+              </div>
+              <button onClick={() => setShowMenu(false)} style={{ background: "rgba(0,165,80,0.1)", border: "1px solid rgba(0,165,80,0.2)", borderRadius: 8, color: "#4a7a4a", fontSize: 18, cursor: "pointer", width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+            </div>
+
+            {/* Menu sections */}
+            {[
+              {
+                section: "Daily Practice",
+                items: [
+                  { icon: "🕌", label: "Prayer Times", path: "/prayer-times" },
+                  { icon: "📖", label: "Quran Reader", path: "/quran" },
+                  { icon: "🤲", label: "Duas Library", path: "/duas" },
+                  { icon: "📿", label: "Tasbih Counter", path: "/tasbih" },
+                  { icon: "🌙", label: "Azkar Sessions", path: "/home" },
+                ],
+              },
+              {
+                section: "Islamic Tools",
+                items: [
+                  { icon: "🧭", label: "Qibla Compass", path: "/qibla" },
+                  { icon: "📍", label: "Masjid Finder", path: "/masjid-finder" },
+                  { icon: "💰", label: "Zakat Calculator", path: "/zakat-calculator" },
+                  { icon: "📅", label: "Islamic Calendar", path: "/islamic-calendar" },
+                  { icon: "✨", label: "99 Names of Allah", path: "/99-names" },
+                  { icon: "👶", label: "Baby Names", path: "/names" },
+                ],
+              },
+              {
+                section: "Guides",
+                items: [
+                  { icon: "🙏", label: "Salah Guide", path: "/salah-guide" },
+                  { icon: "💧", label: "Wudu Guide", path: "/wudu-guide" },
+                  { icon: "📋", label: "Farz Guide", path: "/farz-guide" },
+                  { icon: "💚", label: "Sadqa Guide", path: "/sadqa-guide" },
+                  { icon: "🐑", label: "Qurbani Guide", path: "/qurbani-guide" },
+                ],
+              },
+              {
+                section: "Growth",
+                items: [
+                  { icon: "📈", label: "My Growth", path: "/growth" },
+                  { icon: "📓", label: "Journal", path: "/journal" },
+                  { icon: "🤝", label: "Halaqah Groups", path: "/halaqah" },
+                  { icon: "😌", label: "Mood Check-in", path: "/mood" },
+                ],
+              },
+              {
+                section: "Account",
+                items: [
+                  { icon: "👤", label: "My Profile", path: "/profile" },
+                  { icon: "🎁", label: "Gift Premium", path: "/gift/token" },
+                ],
+              },
+            ].map(group => (
+              <div key={group.section}>
+                <div style={{ fontSize: 10, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1.5, padding: "14px 20px 6px", fontWeight: 600 }}>{group.section}</div>
+                {group.items.map(item => (
+                  <div
+                    key={item.path}
+                    onClick={() => { void navigate(item.path); setShowMenu(false); }}
+                    style={{ display: "flex", alignItems: "center", gap: 14, padding: "11px 20px", cursor: "pointer", borderBottom: "0.5px solid rgba(0,165,80,0.06)" }}
+                    onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.08)"; }}
+                    onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.background = "transparent"; }}
+                  >
+                    <span style={{ fontSize: 17, width: 24, textAlign: "center" }}>{item.icon}</span>
+                    <span style={{ fontSize: 14, color: "#e8f5e8" }}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            <div style={{ padding: "16px 20px", marginTop: "auto", borderTop: "0.5px solid rgba(0,165,80,0.1)" }}>
+              <div style={{ fontSize: 11, color: "#2a3a2a", textAlign: "center" }}>MyTazki · Grow Spiritually Every Day</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNav />
     </div>

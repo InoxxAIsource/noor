@@ -229,6 +229,13 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Dashboard header tabs: Bell, Search, Menu implemented
+- **Bell (🔔) — Notifications panel**: dropdown shows next prayer + countdown, streak status, today's Name of Allah (tappable to /99-names), daily Azkar reminder (tappable to /duas), today's Hadith; dismisses on backdrop tap
+- **Search (🔍) — Full-screen overlay**: autofocused input, live search across sessions (client-side from /api/sessions?limit=100), duas (from /api/duas filtered), and names (from /api/names); Quick Access shortcuts shown when empty (8 common routes); results grouped by category; "Cancel" button closes
+- **Menu (☰) — Slide-in drawer**: right-side drawer (78% width) with 5 sections: Daily Practice, Islamic Tools, Guides, Growth, Account; 24 app routes; hover highlight; user greeting; backdrop tap to dismiss
+- All three panels mutually exclusive (opening one closes others); state variables: showNotifications, showSearch, showMenu, searchQuery, searchResults, allSessions
+- **Typecheck**: Clean
+
 ### 2026-05-12 — Em dash removal (site-wide)
 - **Scope**: All user-facing content across 30+ files — SEO pages, seed data (duas, sessions, hadiths, names), manifest.json, index.html, AI routes, mockup components
 - **Replacement**: ` — ` replaced with `, ` throughout; standalone `—` replaced with `-`
