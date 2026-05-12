@@ -28,10 +28,20 @@
 
 ---
 
-### 2026-05-12 — Signup Redirect Loop Fix
+### 2026-05-12 — Signup / Onboarding Redirect Loop — Root-cause fix (v2)
 
-- `RegisterPage`: after successful register, immediately sets the user object in auth context via `setAuthUser(data.user)` before navigating — prevents the async `getMe()` race condition that caused the signup → onboarding → redirect loop
-- `AuthContext`: `setAuthUser` exposed so pages can synchronously hydrate user state after registration
+Two bugs were causing the register → onboarding → home loop:
+
+**Bug 1 — RegisterPage `useEffect` race:**
+- The `useEffect` watching `isLoggedIn` was firing immediately after `login(token)` set the token, overriding the explicit `navigate("/onboarding")` with `navigate("/home")`.
+- Fix: added `justRegistered` ref. It is set to `true` before calling `login()` so the effect is silenced for the freshly-registered session.
+
+**Bug 2 — OnboardingPage not updating auth context on complete:**
+- `PATCH /api/auth/me` returns the full updated user object (with `onboardingComplete: true`), but `onSuccess` was ignoring it and navigating immediately.
+- `ProtectedRoute` still saw `user.onboardingComplete === false` and bounced the user back to `/onboarding`.
+- Fix: `onSuccess(updatedUser)` now calls `setAuthUser(updatedUser)` to sync the updated user into context **before** `navigate("/home", { replace: true })`.
+
+Also: replaced the unused `login` import in `OnboardingPage` with `setAuthUser`.
 
 ---
 
