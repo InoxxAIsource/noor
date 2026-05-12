@@ -154,8 +154,8 @@ const QuranSurahPage: React.FC = () => {
         return;
       }
 
-      // 4-second gap then advance — reads `playAyah` from the stable ref below
-      gapTimerRef.current = setTimeout(() => playFnRef.current(nextAyah, true), 4000);
+      // 2-second gap then advance — reads `playAyah` from the stable ref below
+      gapTimerRef.current = setTimeout(() => playFnRef.current(nextAyah, true), 2000);
     };
 
     audio.addEventListener("ended", onEnded);
