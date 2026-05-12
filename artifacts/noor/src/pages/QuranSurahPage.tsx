@@ -159,10 +159,40 @@ const QuranSurahPage: React.FC = () => {
     };
 
     audio.addEventListener("ended", onEnded);
+
+    // Media Session action handlers — lock screen controls
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("play", () => {
+        audio.play().catch(() => {});
+        if (currentAyahRef.current !== null) setPlayingAyah(currentAyahRef.current);
+        navigator.mediaSession.playbackState = "playing";
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audio.pause();
+        setPlayingAyah(null);
+        navigator.mediaSession.playbackState = "paused";
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        const prev = (currentAyahRef.current ?? 2) - 1;
+        if (prev >= 1) playFnRef.current(prev, sequentialRef.current);
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        const next = (currentAyahRef.current ?? 0) + 1;
+        if (next <= versesRef.current.length) playFnRef.current(next, sequentialRef.current);
+      });
+    }
+
     return () => {
       audio.removeEventListener("ended", onEnded);
       audio.pause();
       if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "none";
+        navigator.mediaSession.setActionHandler("play", null);
+        navigator.mediaSession.setActionHandler("pause", null);
+        navigator.mediaSession.setActionHandler("previoustrack", null);
+        navigator.mediaSession.setActionHandler("nexttrack", null);
+      }
     };
   }, []); // runs once — everything it needs lives in refs
 
@@ -184,6 +214,20 @@ const QuranSurahPage: React.FC = () => {
     setIsSequential(sequential);
     markRead(ayahNum);
 
+    // Update lock screen metadata
+    if ("mediaSession" in navigator) {
+      const surahName = SURAH_NAMES[numRef.current] ?? `Surah ${numRef.current}`;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `${surahName} — Ayah ${ayahNum}`,
+        artist: "Sheikh Mishary Alafasy",
+        album: "Al-Quran Al-Kareem • MyTazki",
+        artwork: [
+          { src: "/favicon.svg", sizes: "512x512", type: "image/svg+xml" },
+        ],
+      });
+      navigator.mediaSession.playbackState = "playing";
+    }
+
     audio.play().catch(() => {
       // Play blocked (e.g. page not focused) — still advance sequentially
       if (sequential) {
@@ -203,6 +247,9 @@ const QuranSurahPage: React.FC = () => {
     currentAyahRef.current = null;
     setPlayingAyah(null);
     setIsSequential(false);
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = "none";
+    }
   };
 
   const handlePlayButton = (ayahNum: number) => {
