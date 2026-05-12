@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useRegister } from "@workspace/api-client-react";
@@ -14,9 +14,14 @@ const RegisterPage: React.FC = () => {
   const { login, isLoggedIn, isLoading, setAuthUser } = useAuth();
   const navigate = useNavigate();
   const registerMutation = useRegister();
+  // Tracks whether we just completed a registration — prevents the
+  // isLoggedIn watcher below from overriding our navigate("/onboarding").
+  const justRegistered = useRef(false);
 
+  // Redirect already-logged-in users to home (e.g. back-button after login).
+  // Must NOT fire after a fresh registration — that is guarded by justRegistered.
   useEffect(() => {
-    if (!isLoading && isLoggedIn) {
+    if (!isLoading && isLoggedIn && !justRegistered.current) {
       void navigate("/home", { replace: true });
     }
   }, [isLoggedIn, isLoading, navigate]);
@@ -28,6 +33,9 @@ const RegisterPage: React.FC = () => {
       { data: { name, email, password } },
       {
         onSuccess: (data) => {
+          // Mark before calling login() so the isLoggedIn effect above
+          // does not fire and override the navigate to /onboarding.
+          justRegistered.current = true;
           login(data.token);
           if (data.user) {
             setAuthUser(data.user);
@@ -36,7 +44,7 @@ const RegisterPage: React.FC = () => {
         },
         onError: (error) => {
           setErrorMsg(error.message || "Failed to register. Please try again.");
-        }
+        },
       }
     );
   };
@@ -57,7 +65,7 @@ const RegisterPage: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
         {errorMsg && <div className="text-red-400 text-sm text-center">{errorMsg}</div>}
-        
+
         <Input
           type="text"
           placeholder="Full Name"
@@ -82,9 +90,9 @@ const RegisterPage: React.FC = () => {
           required
           className="bg-[var(--surface)] border-[var(--border)] text-[var(--text)] rounded-xl py-6 px-4"
         />
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           disabled={registerMutation.isPending}
           className="w-full bg-[var(--green)] hover:bg-[var(--green)]/90 text-white rounded-xl py-6 mt-4 font-semibold text-lg"
         >

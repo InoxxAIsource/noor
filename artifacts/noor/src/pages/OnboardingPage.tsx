@@ -61,7 +61,7 @@ const OnboardingPage: React.FC = () => {
   const [reminderHour, setReminderHour] = useState<number>(5);
   const [weeklyGoal, setWeeklyGoal] = useState<number>(3);
   
-  const { login } = useAuth();
+  const { setAuthUser } = useAuth();
   const navigate = useNavigate();
   const updateMeMutation = useUpdateMe();
 
@@ -109,8 +109,11 @@ const OnboardingPage: React.FC = () => {
         } 
       },
       {
-        onSuccess: () => {
-          navigate("/home");
+        onSuccess: (updatedUser) => {
+          // Sync the returned user (onboardingComplete: true) into context
+          // BEFORE navigating so ProtectedRoute doesn't bounce us back.
+          setAuthUser(updatedUser);
+          navigate("/home", { replace: true });
         }
       }
     );
