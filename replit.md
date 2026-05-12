@@ -117,6 +117,13 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-11 — Session audio wired up (everyayah.com + Islamic Network CDN)
+- **All 25 sessions** now have `audioUrl` populated — no more "Audio coming soon"
+- **Source**: Sheikh Alafasy recitations from `everyayah.com` (per-ayah) and `cdn.islamic.network` (full surahs)
+- **Mapping**: QURAN sessions → full surah MP3; AZKAR/DHIKR/SLEEP/DUA60/SALAH → referenced Quran verse
+- **Admin endpoint**: `POST /api/admin/sessions/patch-audio` re-applies all mappings without reseeding
+- **Both CDNs verified**: HTTP 200 on both `everyayah.com` and `cdn.islamic.network`
+
 ### 2026-05-11 — Session card loading fix
 - **Root cause**: HomePage had hardcoded fallback session cards (`morning-azkar`, `evening-azkar`, etc.) shown while API data loaded. Clicking them sent the player to `/player/morning-azkar` which returned 404.
 - **Fix 1 — HomePage**: Replaced fallback hardcoded sessions with animated skeleton placeholders while sessions load from API. Real session IDs are only used once the API data arrives.
