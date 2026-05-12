@@ -439,7 +439,7 @@ const PlayerPage: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center mb-8">
                   <button
                     onClick={() => setRainOn(!rainOn)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors ${
@@ -451,6 +451,51 @@ const PlayerPage: React.FC = () => {
                     {rainOn ? "🌧 Rain on" : "🔇 Silence"}
                   </button>
                 </div>
+
+                {/* Subtitle display */}
+                {!!(s?.["scriptureArabic"] || s?.["scriptureText"]) && (
+                  <div style={{
+                    background: "linear-gradient(180deg, rgba(0,28,0,0.0) 0%, rgba(0,28,0,0.55) 30%, rgba(0,28,0,0.55) 70%, rgba(0,28,0,0.0) 100%)",
+                    borderRadius: 16,
+                    padding: "20px 18px",
+                    textAlign: "center",
+                    animation: "fadeInUp 0.6s ease forwards",
+                  }}>
+                    {!!(s?.["scriptureArabic"]) && (
+                      <p
+                        className="arabic-glow"
+                        style={{
+                          fontFamily: "Amiri, serif",
+                          fontSize: 22,
+                          color: "#ffd700",
+                          direction: "rtl",
+                          lineHeight: 1.9,
+                          marginBottom: 10,
+                        }}
+                        dir="rtl"
+                      >
+                        {String(s!["scriptureArabic"])}
+                      </p>
+                    )}
+                    {!!(s?.["scriptureText"]) && (
+                      <p style={{
+                        fontSize: 13,
+                        color: "rgba(200,232,200,0.85)",
+                        fontStyle: "italic",
+                        lineHeight: 1.6,
+                        marginBottom: 6,
+                        transition: "opacity 0.5s ease",
+                      }}>
+                        {String(s!["scriptureText"])}
+                      </p>
+                    )}
+                    {!!(s?.["scriptureRef"]) && (
+                      <p style={{ fontSize: 11, color: "#4a7a4a", letterSpacing: "0.04em" }}>
+                        — {String(s!["scriptureRef"])}
+                      </p>
+                    )}
+                  </div>
+                )}
               </>
             ) : (
               <div className="text-center">
