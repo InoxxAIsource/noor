@@ -388,3 +388,37 @@ export async function getAllBlogSlugs(): Promise<string[]> {
   const keys = await dbList("blog:");
   return keys.map(k => k.replace("blog:", ""));
 }
+
+// ─── Mood + Morning Flow helpers ──────────────────────────────────────────────
+
+export interface MoodCheckin {
+  emotion: string;
+  recordedAt: string;
+}
+
+export async function getMoodCheckin(userId: string, date: string): Promise<MoodCheckin | null> {
+  return dbGet<MoodCheckin>(`mood:${userId}:${date}`);
+}
+
+export async function setMoodCheckin(userId: string, date: string, data: MoodCheckin): Promise<void> {
+  await dbSet(`mood:${userId}:${date}`, data);
+}
+
+export async function getMorningStatus(userId: string, date: string): Promise<boolean> {
+  return (await dbGet<boolean>(`morning:${userId}:${date}`)) ?? false;
+}
+
+export async function setMorningComplete(userId: string, date: string): Promise<void> {
+  await dbSet(`morning:${userId}:${date}`, true);
+}
+
+export async function getMorningStreak(userId: string): Promise<number> {
+  return (await dbGet<number>(`morningStreak:${userId}`)) ?? 0;
+}
+
+export async function incrementMorningStreak(userId: string): Promise<number> {
+  const current = await getMorningStreak(userId);
+  const next = current + 1;
+  await dbSet(`morningStreak:${userId}`, next);
+  return next;
+}

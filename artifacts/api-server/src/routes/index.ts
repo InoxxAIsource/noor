@@ -19,6 +19,7 @@ import halaqahRouter from "./halaqah.js";
 import growthRouter from "./growth.js";
 import adminRouter from "./admin.js";
 import notificationsRouter from "./notifications.js";
+import moodRouter from "./mood.js";
 
 const router: IRouter = Router();
 
@@ -42,5 +43,6 @@ router.use(halaqahRouter);
 router.use(growthRouter);
 router.use(adminRouter);
 router.use(notificationsRouter);
+router.use(moodRouter);
 
 export default router;

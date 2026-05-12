@@ -1,5 +1,43 @@
 # MyTazki — Changelog
 
+### 2026-05-12 — Calm Dashboard Rebuild + Peaceful Morning Flow
+
+**Dashboard (HomePage.tsx) — full rebuild:**
+- New design using official tokens: `#0d1411` bg, `#34c97a` green, `#b8946a` gold, `#eaf4ee` text, `#6a9878` muted
+- Removed: floating particles, crescent SVG animation, horizontal scroll carousels, cluttered widget wall
+- Time-aware greeting: Good morning / afternoon / evening / night with contextual subtitle
+- Peaceful Morning CTA as hero card — primary daily retention loop
+- Inline emotional check-in chips (6 emotions) if no mood recorded today
+- Prayer times card (compact, kept)
+- Streak shown with warm language: "X days of ibadah" not "STREAK"
+- Today's focus: one session surfaced based on time of day (azkar in morning, quran afternoon, sleep evening)
+- Name of Allah card (daily)
+- Quick dhikr row (SubhanAllah / Alhamdulillah / Allahu Akbar)
+- "What do you need today?" mood/dua entry point
+- Simplified 4-col tools grid (all 12 tools preserved)
+- Slide-in side menu + search panel
+
+**New page: /morning — Peaceful Morning Flow:**
+- 5-step guided ritual: Greeting → Quran insight → Emotional check-in → AI reflection → Spiritual action → Completion
+- Step progress indicator at top
+- Curated rotating Quran insights (5 ayahs)
+- 6 emotional states with emoji: peaceful, grateful, anxious, distracted, overwhelmed, tired
+- AI contextual reflection via new `POST /api/mood/reflect` endpoint (Claude Sonnet)
+- Emotion-specific tiny spiritual action (dua/dhikr tailored to state)
+- Morning streak counter: "X peaceful mornings" shown on completion
+- Fallback reflections if AI unavailable
+
+**New API routes (mood.ts):**
+- `GET /api/mood/today` — today's emotion + morning completion status + morning streak
+- `POST /api/mood/checkin` — save emotional state for the day
+- `POST /api/morning/complete` — mark morning flow done, increment streak
+- `POST /api/mood/reflect` — AI-generated Islamic reflection based on emotional state
+
+**New DB helpers (db.ts):**
+- `getMoodCheckin` / `setMoodCheckin` — key: `mood:{userId}:{date}`
+- `getMorningStatus` / `setMorningComplete` — key: `morning:{userId}:{date}`
+- `getMorningStreak` / `incrementMorningStreak` — key: `morningStreak:{userId}`
+
 ### 2026-05-12 — Quran reader: Play All sequential playback fix
 - **Root cause**: `useCallback` + `new Audio()` per ayah caused two bugs: (1) stale closure in `onended` meant `playAyahAt` called wrong version after ayah 1-2; (2) iOS Safari autoplay policy blocks `new Audio().play()` for any audio not linked to original user gesture
 - **Fix**: Single persistent `Audio` element created once at mount — only `audio.src` + `audio.load()` + `audio.play()` called per ayah, maintaining iOS autoplay continuity

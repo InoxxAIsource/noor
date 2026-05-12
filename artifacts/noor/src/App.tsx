@@ -43,6 +43,7 @@ import TrendingNamesPage from "@/pages/TrendingNamesPage";
 import AdminPage from "@/pages/AdminPage";
 import SubscribePage from "@/pages/SubscribePage";
 import DownloadPage from "@/pages/DownloadPage";
+import MorningFlow from "@/pages/MorningFlow";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -90,6 +91,7 @@ const router = createBrowserRouter(
         { path: "/halaqah/:code/admin", element: <HalaqahAdminPage /> },
         { path: "/names/forbidden", element: <ForbiddenNamesPage /> },
         { path: "/names/trending", element: <TrendingNamesPage /> },
+        { path: "/morning", element: <MorningFlow /> },
       ],
     },
     { path: "*", element: <NotFound /> },
