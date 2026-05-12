@@ -77,7 +77,7 @@ export default function HomePage() {
   const [isRamadan, setIsRamadan] = useState(false);
 
   const { greeting, sub } = getTimeGreeting();
-  const authHeaders = token ? { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } : {};
+  const authHeaders: Record<string, string> = token ? { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } : {};
 
   useEffect(() => {
     Promise.all([
