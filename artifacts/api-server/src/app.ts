@@ -20,6 +20,13 @@ import salahClusterRouter from "./seo/salah-seo.js";
 import reflectionRouter from "./seo/reflection-seo.js";
 import habitsRouter from "./seo/habits-seo.js";
 import aiClusterRouter from "./seo/ai-seo.js";
+import hubPagesRouter from "./seo/hub-pages.js";
+import journeyPagesRouter from "./seo/journey-pages.js";
+import wellnessExpansionRouter from "./seo/wellness-expansion.js";
+import salahExpansionRouter from "./seo/salah-expansion.js";
+import quranExpansionRouter from "./seo/quran-expansion.js";
+import habitsExpansionRouter from "./seo/habits-expansion.js";
+import aiExpansionRouter from "./seo/ai-expansion.js";
 
 const app: Express = express();
 
@@ -83,12 +90,21 @@ app.use(toolsSeoRouter);
 app.use(blogRouter);
 app.use(comparisonRouter);
 
-// SEO content clusters
+// SEO content clusters — Phase 1
 app.use(emotionalRouter);
 app.use(salahClusterRouter);
 app.use(reflectionRouter);
 app.use(habitsRouter);
 app.use(aiClusterRouter);
+
+// SEO Phase 2 — Hub pages, journeys, cluster expansion
+app.use(hubPagesRouter);
+app.use(journeyPagesRouter);
+app.use(wellnessExpansionRouter);
+app.use(salahExpansionRouter);
+app.use(quranExpansionRouter);
+app.use(habitsExpansionRouter);
+app.use(aiExpansionRouter);
 
 app.use("/api/ai", aiLimiter);
 app.use("/api", globalLimiter, router);

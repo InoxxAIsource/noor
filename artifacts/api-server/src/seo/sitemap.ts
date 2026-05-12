@@ -125,6 +125,56 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/islamic-ai-companion", "/quran-ai-reflection", "/ai-fatwa-guide",
   ].forEach(p => urls.push(url(p, "0.9")));
 
+  // Phase 2 — Hub pages
+  [
+    "/mental-wellness", "/salah", "/quran-reflections",
+    "/islamic-habits", "/ai-islamic-tools",
+  ].forEach(p => urls.push(url(p, "1.0")));
+
+  // Phase 2 — Guided journey pages
+  [
+    "/7-day-inner-peace-journey", "/reconnect-with-allah-journey",
+    "/7-day-salah-reset", "/morning-barakah-routine",
+    "/tahajjud-transformation-journey",
+  ].forEach(p => urls.push(url(p, "0.95")));
+
+  // Phase 2 — Wellness expansion
+  [
+    "/dua-for-loneliness", "/islamic-healing-from-heartbreak", "/dua-for-grief",
+    "/quran-verses-about-patience", "/emotional-healing-in-islam",
+    "/islamic-cure-for-burnout", "/dua-for-sadness", "/quran-for-hopelessness",
+    "/islamic-mental-health", "/dua-for-healing",
+    "/how-to-stop-overthinking-islam", "/quran-verses-about-hope", "/islamic-self-care",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Phase 2 — Salah expansion
+  [
+    "/tahajjud-prayer-guide", "/how-to-pray-tahajjud", "/fajr-prayer-tips",
+    "/khushu-in-salah", "/salah-and-mental-health", "/salah-motivation",
+    "/night-prayer-benefits",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Phase 2 — Quran expansion
+  [
+    "/quran-verses-about-mercy", "/quran-verses-about-healing",
+    "/quran-verses-about-gratitude", "/quran-on-patience",
+    "/surah-baqarah-reflection", "/surah-inshirah-reflection",
+    "/quran-for-forgiveness", "/best-surahs-for-morning", "/quran-daily-reading-guide",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Phase 2 — Habits expansion
+  [
+    "/islamic-discipline", "/gratitude-in-islam", "/islamic-sleep-routine",
+    "/islamic-time-management", "/30-day-islamic-challenge",
+    "/evening-azkar-routine", "/halal-productivity",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
+  // Phase 2 — AI expansion
+  [
+    "/ai-tafsir", "/ai-islamic-coach", "/ai-dua-generator",
+    "/best-islamic-ai-apps", "/ai-for-muslims", "/chatgpt-for-islamic-questions",
+  ].forEach(p => urls.push(url(p, "0.9")));
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}
