@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
-import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2, Sparkles } from "lucide-react";
+import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2, Sparkles, Compass, MapPin, Calculator, Calendar, BookMarked, Droplets, Star, Gift, Baby } from "lucide-react";
 
 interface PrayerTime { name: string; time: string; }
 interface HijriData { day: string; month: { number: number; en: string }; year: string; }
@@ -417,7 +417,45 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Section 11: Healing Sessions */}
+        {/* Section 11: Islamic Tools Grid */}
+        <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, padding: "0 16px", marginBottom: 8 }}>
+          Islamic Tools
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 16px", marginBottom: 20 }}>
+          {[
+            { icon: BookOpen,   label: "Quran",           path: "/quran" },
+            { icon: Compass,    label: "Qibla",           path: "/qibla" },
+            { icon: MapPin,     label: "Masjid Finder",   path: "/masjid-finder" },
+            { icon: Calculator, label: "Zakat",           path: "/zakat-calculator" },
+            { icon: Calendar,   label: "Calendar",        path: "/islamic-calendar" },
+            { icon: Star,       label: "99 Names",        path: "/99-names" },
+            { icon: BookMarked, label: "Farz Guide",      path: "/farz-guide" },
+            { icon: Droplets,   label: "Wudu Guide",      path: "/wudu-guide" },
+            { icon: Building2,  label: "Salah Guide",     path: "/salah-guide" },
+            { icon: Gift,       label: "Sadqa",           path: "/sadqa-guide" },
+            { icon: Heart,      label: "Qurbani",         path: "/qurbani-guide" },
+            { icon: Baby,       label: "Baby Names",      path: "/names" },
+          ].map(({ icon: Icon, label, path }) => (
+            <div
+              key={path}
+              onClick={() => void navigate(path)}
+              style={{
+                background: "rgba(0,165,80,0.06)",
+                border: "0.5px solid rgba(0,165,80,0.18)",
+                borderRadius: 10, padding: "12px 8px",
+                display: "flex", flexDirection: "column", alignItems: "center",
+                gap: 6, cursor: "pointer", textAlign: "center",
+              }}
+              onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.14)"; }}
+              onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(0,165,80,0.06)"; }}
+            >
+              <Icon size={20} color="#00a550" />
+              <div style={{ fontSize: 11, color: "#e8f5e8", fontWeight: 500, lineHeight: 1.2 }}>{label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Section 12: Healing Sessions */}
         {healingSessions.length > 0 && (
           <>
             <div style={{ padding: "0 16px", marginBottom: 8 }}>

@@ -117,6 +117,11 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 
 ## Changelog
 
+### 2026-05-12 — Islamic Tools grid restored on HomePage
+- **Root cause**: The 12-tile Islamic Tools grid was missing from the HomePage — Masjid Finder, Qibla, Zakat, Calendar, and all other tools were unreachable from home
+- **Fix**: Added 3-column tools grid (Section 11) between Quick Tasbih and Healing Sessions, covering all 12 tools: Quran, Qibla, Masjid Finder, Zakat, Calendar, 99 Names, Farz Guide, Wudu Guide, Salah Guide, Sadqa, Qurbani, Baby Names
+- **Typecheck**: Clean
+
 ### 2026-05-12 — Duas library expanded (26 → 110 across all 20 categories)
 - **Root cause**: Only 26 duas in DB; categories Food, Anxiety, Grief, Work, Study, Marriage, Children had zero entries
 - **Fix**: Rewrote `seed/duas.ts` with 110 authentic duas from Quran and Hadith covering all 20 UI categories
