@@ -60,10 +60,19 @@ const QuranSurahPage: React.FC = () => {
     catch { return new Set(); }
   });
 
+  // Single persistent audio element — iOS requires continuity from the user gesture
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  if (audioRef.current === null) audioRef.current = new Audio();
+
   const gapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const versesRef = useRef<Verse[]>([]);
   versesRef.current = verses;
+
+  // Refs so the 'ended' listener always reads live values, never stale closures
+  const sequentialRef = useRef(false);
+  const currentAyahRef = useRef<number | null>(null);
+  const numRef = useRef(num);
+  numRef.current = num;
 
   useEffect(() => {
     localStorage.setItem("lastSurah", String(num));
@@ -122,55 +131,88 @@ const QuranSurahPage: React.FC = () => {
     });
   }, [num]);
 
-  const stopAll = useCallback(() => {
-    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current.onended = null; audioRef.current = null; }
-    setPlayingAyah(null);
-    setIsSequential(false);
-  }, []);
+  // ── Single 'ended' listener wired once; reads refs so it never goes stale ──
+  useEffect(() => {
+    const audio = audioRef.current!;
 
-  const playAyahAt = useCallback((ayahNum: number, sequential: boolean) => {
-    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current.onended = null; audioRef.current = null; }
+    const onEnded = () => {
+      if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
 
-    const url = ayahAudioUrl(num, ayahNum);
-    const audio = new Audio(url);
-    audioRef.current = audio;
+      if (!sequentialRef.current || currentAyahRef.current === null) {
+        setPlayingAyah(null);
+        setIsSequential(false);
+        currentAyahRef.current = null;
+        return;
+      }
+
+      const nextAyah = currentAyahRef.current + 1;
+      if (nextAyah > versesRef.current.length) {
+        setPlayingAyah(null);
+        setIsSequential(false);
+        sequentialRef.current = false;
+        currentAyahRef.current = null;
+        return;
+      }
+
+      // 4-second gap then advance — reads `playAyah` from the stable ref below
+      gapTimerRef.current = setTimeout(() => playFnRef.current(nextAyah, true), 4000);
+    };
+
+    audio.addEventListener("ended", onEnded);
+    return () => {
+      audio.removeEventListener("ended", onEnded);
+      audio.pause();
+      if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+    };
+  }, []); // runs once — everything it needs lives in refs
+
+  // Keep a ref to the play function so the 'ended' closure can call the latest version
+  const playFnRef = useRef<(ayahNum: number, sequential: boolean) => void>(() => {});
+
+  const playAyah = (ayahNum: number, sequential: boolean) => {
+    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+
+    const audio = audioRef.current!;
+    audio.pause();
+    audio.src = ayahAudioUrl(numRef.current, ayahNum);
+    audio.load();
+
+    sequentialRef.current = sequential;
+    currentAyahRef.current = ayahNum;
+
     setPlayingAyah(ayahNum);
     setIsSequential(sequential);
     markRead(ayahNum);
 
-    audio.play().catch(() => { setPlayingAyah(null); });
-
-    audio.onended = () => {
-      if (!sequential) {
+    audio.play().catch(() => {
+      // Play blocked (e.g. page not focused) — still advance sequentially
+      if (sequential) {
+        gapTimerRef.current = setTimeout(() => playFnRef.current(ayahNum + 1, true), 1000);
+      } else {
         setPlayingAyah(null);
-        setIsSequential(false);
-        return;
+        currentAyahRef.current = null;
       }
-      const allVerses = versesRef.current;
-      const nextAyah = ayahNum + 1;
-      if (nextAyah > allVerses.length) {
-        setPlayingAyah(null);
-        setIsSequential(false);
-        return;
-      }
-      gapTimerRef.current = setTimeout(() => {
-        playAyahAt(nextAyah, true);
-      }, 4000);
-    };
-  }, [num, markRead]);
+    });
+  };
+  playFnRef.current = playAyah;
 
-  useEffect(() => () => stopAll(), [stopAll]);
+  const stopAll = () => {
+    if (gapTimerRef.current) clearTimeout(gapTimerRef.current);
+    audioRef.current!.pause();
+    sequentialRef.current = false;
+    currentAyahRef.current = null;
+    setPlayingAyah(null);
+    setIsSequential(false);
+  };
 
   const handlePlayButton = (ayahNum: number) => {
     if (playingAyah === ayahNum) { stopAll(); return; }
-    playAyahAt(ayahNum, false);
+    playAyah(ayahNum, false);
   };
 
   const handlePlayAll = (fromAyah: number) => {
-    if (isSequential && playingAyah !== null) { stopAll(); return; }
-    playAyahAt(fromAyah, true);
+    if (isSequential) { stopAll(); return; }
+    playAyah(fromAyah, true);
   };
 
   const toggleBookmark = (ayahNum: number) => {
