@@ -229,6 +229,21 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — SEO Phase 2: Semantic Authority + Internal Linking Engine
+- **52 new SEO pages** across 5 thematic expansions + hub + journey pages
+- **5 Hub pages** (priority 1.0): `/mental-wellness`, `/salah`, `/quran-reflections`, `/islamic-habits`, `/ai-islamic-tools` — pillar pages linking to all cluster pages
+- **5 Journey pages** (priority 0.95): `/7-day-inner-peace-journey`, `/reconnect-with-allah-journey`, `/7-day-salah-reset`, `/morning-barakah-routine`, `/tahajjud-transformation-journey`
+- **13 Wellness expansion pages**: dua-for-loneliness, dua-for-grief, dua-for-sadness, dua-for-healing, emotional-healing-in-islam, islamic-mental-health, islamic-cure-for-burnout, quran-verses-about-patience, quran-verses-about-hope, quran-for-hopelessness, how-to-stop-overthinking-islam, islamic-healing-from-heartbreak, islamic-self-care
+- **7 Salah expansion pages**: tahajjud-prayer-guide, how-to-pray-tahajjud, fajr-prayer-tips, khushu-in-salah, salah-and-mental-health, salah-motivation, night-prayer-benefits
+- **9 Quran expansion pages**: quran-verses-about-mercy, quran-verses-about-healing, quran-verses-about-gratitude, quran-on-patience, surah-baqarah-reflection, surah-inshirah-reflection, quran-for-forgiveness, best-surahs-for-morning, quran-daily-reading-guide
+- **7 Habits expansion pages**: islamic-discipline, gratitude-in-islam, islamic-sleep-routine, islamic-time-management, 30-day-islamic-challenge, evening-azkar-routine, halal-productivity
+- **6 AI expansion pages**: ai-tafsir, ai-islamic-coach, ai-dua-generator, best-islamic-ai-apps, ai-for-muslims, chatgpt-for-islamic-questions
+- **Reusable components**: `seo-components.ts` — feature grids, step cards, FAQ accordions, CTA boxes, comparison tables
+- **Sitemap updated**: All 52 Phase 2 URLs added with correct priorities
+- **artifact.toml updated**: All 52 Phase 2 paths added to proxy routing so Google can crawl them
+- **trust proxy fix**: `app.set("trust proxy", 1)` — fixes rate limiter ERR_ERL_UNEXPECTED_X_FORWARDED_FOR, prevents Googlebot from being misidentified
+- **Total SEO URL count**: ~130+ crawlable pages across all clusters, hubs, journeys, city pages, surah pages, dua pages, name pages
+
 ### 2026-05-11 — Full Audit & DeenApp Rebrand
 - **Rebrand**: All "Noor"/"NOOR" UI references renamed to "DeenApp"/"DEENAPP" across 30+ files (frontend pages, SEO layer, AI system prompts, admin panel, seed data, share text)
 - **Token rename**: `noor_token` → `deen_token` in localStorage across all 16 files (AuthContext, 13 pages, SEO shared.ts)
