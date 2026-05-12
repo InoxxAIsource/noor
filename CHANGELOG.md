@@ -1,5 +1,12 @@
 # MyTazki — Changelog
 
+### 2026-05-12 — Signup Redirect Loop Fix
+
+- `RegisterPage`: after successful register, immediately sets the user object in auth context via `setAuthUser(data.user)` before navigating — prevents the async `getMe()` race condition that caused the signup → onboarding → redirect loop
+- `AuthContext`: `setAuthUser` exposed so pages can synchronously hydrate user state after registration
+
+---
+
 ### 2026-05-12 — Calm Dashboard Rebuild + Peaceful Morning Flow
 
 **Dashboard (HomePage.tsx) — full rebuild:**
