@@ -18,6 +18,7 @@ import journalRouter from "./journal.js";
 import halaqahRouter from "./halaqah.js";
 import growthRouter from "./growth.js";
 import adminRouter from "./admin.js";
+import notificationsRouter from "./notifications.js";
 
 const router: IRouter = Router();
 
@@ -40,5 +41,6 @@ router.use(journalRouter);
 router.use(halaqahRouter);
 router.use(growthRouter);
 router.use(adminRouter);
+router.use(notificationsRouter);
 
 export default router;

@@ -30,6 +30,7 @@ import aiExpansionRouter from "./seo/ai-expansion.js";
 import entityPagesRouter from "./seo/entity-pages.js";
 import geoLandingPagesRouter from "./seo/geo-landing-pages.js";
 import funnelPagesRouter from "./seo/funnel-pages.js";
+import { runNotificationScheduler } from "./routes/notifications.js";
 
 const app: Express = express();
 
@@ -118,5 +119,8 @@ app.use(funnelPagesRouter);
 
 app.use("/api/ai", aiLimiter);
 app.use("/api", globalLimiter, router);
+
+// Start prayer-time + daily notification scheduler
+runNotificationScheduler().catch(() => null);
 
 export default app;

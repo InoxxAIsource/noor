@@ -341,6 +341,41 @@ export interface BlogPostRecord {
   generatedAt?: string;
 }
 
+// ─── Push Subscription helpers ────────────────────────────────────────────────
+
+export interface PushSubscriptionRecord {
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
+  userId: string;
+  city: string;
+  madhab?: string;
+  timezone?: string;
+  notifyPrayer: boolean;
+  notifyDua: boolean;
+  notifyHadith: boolean;
+  notifyStreak: boolean;
+  createdAt: number;
+}
+
+export async function savePushSubscription(userId: string, record: PushSubscriptionRecord): Promise<void> {
+  await dbSet(`push:${userId}`, record);
+}
+
+export async function getPushSubscription(userId: string): Promise<PushSubscriptionRecord | null> {
+  return dbGet<PushSubscriptionRecord>(`push:${userId}`);
+}
+
+export async function deletePushSubscription(userId: string): Promise<void> {
+  await db.delete(`push:${userId}`);
+}
+
+export async function getAllPushSubscriptions(): Promise<PushSubscriptionRecord[]> {
+  const keys = await dbList("push:");
+  if (keys.length === 0) return [];
+  const records = await Promise.all(keys.map(k => dbGet<PushSubscriptionRecord>(k)));
+  return records.filter((r): r is PushSubscriptionRecord => r !== null);
+}
+
 export async function getBlogPost(slug: string): Promise<BlogPostRecord | null> {
   return dbGet<BlogPostRecord>(`blog:${slug}`);
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
+import { useNotifications } from "../hooks/useNotifications";
 import { Sun, Moon, Heart, BookOpen, RotateCcw, Building2, Sparkles, Compass, MapPin, Calculator, Calendar, BookMarked, Droplets, Star, Gift, Baby } from "lucide-react";
 
 interface PrayerTime { name: string; time: string; }
@@ -56,6 +57,8 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<{ sessions: Session[]; duas: { id: string; title: string; category: string }[]; names: { nameEnglish: string; nameArabic: string; meaningEnglish: string }[] }>({ sessions: [], duas: [], names: [] });
   const [allSessions, setAllSessions] = useState<Session[]>([]);
+
+  const { subscribed, subscribe, unsubscribe, loading: notifLoading, prefs: notifPrefs, updatePrefs, sendTest, permission: notifPermission, supported: notifSupported } = useNotifications();
 
   const particleKeys = useRef(Array.from({ length: 8 }, (_, i) => i));
   const token = typeof window !== "undefined" ? localStorage.getItem("tazki_token") : null;
@@ -548,45 +551,94 @@ export default function HomePage() {
 
       {/* ── NOTIFICATION PANEL ── */}
       {showNotifications && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 200,
-        }} onClick={() => setShowNotifications(false)}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 200 }} onClick={() => setShowNotifications(false)}>
           <div
             style={{
-              position: "absolute", top: 98, left: 12, right: 12,
-              background: "#001f00", border: "1px solid rgba(0,165,80,0.25)",
-              borderRadius: 16, padding: "4px 0", boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+              position: "absolute", top: 56, left: 12, right: 12,
+              background: "#001500", border: "1px solid rgba(0,165,80,0.25)",
+              borderRadius: 16, boxShadow: "0 8px 32px rgba(0,0,0,0.7)", overflow: "hidden",
             }}
             onClick={e => e.stopPropagation()}
           >
+            {/* Header */}
             <div style={{ padding: "14px 16px 10px", borderBottom: "0.5px solid rgba(0,165,80,0.15)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#e8f5e8" }}>Notifications</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#e8f5e8" }}>🔔 Notifications</span>
               <span style={{ fontSize: 11, color: "#00a550", cursor: "pointer" }} onClick={() => setShowNotifications(false)}>Close</span>
             </div>
+
+            {/* Live summary items */}
             {[
-              { icon: "🕌", title: `Next prayer: ${nextPrayer.name}`, sub: `In ${countdown}`, action: () => { void navigate("/prayer-times"); setShowNotifications(false); } },
-              { icon: "🔥", title: `Streak: Day ${streak.currentStreak}`, sub: `${streak.weeklyCompleted}/${streak.weeklyGoal} days this week`, action: null },
-              { icon: "✦", title: `Name of Allah: ${nameOfAllah.nameEnglish}`, sub: nameOfAllah.meaningEnglish, action: () => { void navigate("/99-names"); setShowNotifications(false); } },
-              { icon: "📿", title: "Daily Azkar reminder", sub: "Start your morning Azkar session", action: () => { void navigate("/duas"); setShowNotifications(false); } },
-              { icon: "📖", title: "Today's Hadith", sub: hadith.textEnglish.slice(0, 60) + "…", action: null },
+              { icon: "🕌", title: `Next: ${nextPrayer.name}`, sub: `Prayer in ${countdown}`, action: () => { void navigate("/prayer-times"); setShowNotifications(false); } },
+              { icon: "🔥", title: `Day ${streak.currentStreak} streak`, sub: `${streak.weeklyCompleted}/${streak.weeklyGoal} days this week`, action: null },
+              { icon: "✦", title: nameOfAllah.nameEnglish, sub: nameOfAllah.meaningEnglish, action: () => { void navigate("/99-names"); setShowNotifications(false); } },
+              { icon: "📖", title: "Today's Hadith", sub: hadith.textEnglish.slice(0, 58) + "…", action: null },
             ].map((n, i) => (
-              <div
-                key={i}
-                onClick={n.action ?? undefined}
-                style={{
-                  display: "flex", gap: 12, padding: "12px 16px",
-                  borderBottom: i < 4 ? "0.5px solid rgba(0,165,80,0.08)" : "none",
-                  cursor: n.action ? "pointer" : "default",
-                  alignItems: "flex-start",
-                }}
-              >
-                <span style={{ fontSize: 20, flexShrink: 0, marginTop: 1 }}>{n.icon}</span>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: "#e8f5e8", marginBottom: 2 }}>{n.title}</div>
-                  <div style={{ fontSize: 11, color: "#4a7a4a", lineHeight: 1.4 }}>{n.sub}</div>
+              <div key={i} onClick={n.action ?? undefined} style={{ display: "flex", gap: 12, padding: "11px 16px", borderBottom: "0.5px solid rgba(0,165,80,0.07)", cursor: n.action ? "pointer" : "default", alignItems: "center" }}>
+                <span style={{ fontSize: 18, flexShrink: 0 }}>{n.icon}</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "#e8f5e8" }}>{n.title}</div>
+                  <div style={{ fontSize: 11, color: "#4a7a4a", marginTop: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.sub}</div>
                 </div>
               </div>
             ))}
+
+            {/* Push notification controls */}
+            <div style={{ padding: "14px 16px", borderTop: "1px solid rgba(0,165,80,0.12)", background: "rgba(0,165,80,0.04)" }}>
+              <div style={{ fontSize: 11, color: "#4a7a4a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontWeight: 600 }}>Push Notifications</div>
+
+              {!notifSupported ? (
+                <div style={{ fontSize: 12, color: "#4a7a4a" }}>Not supported in this browser.</div>
+              ) : notifPermission === "denied" ? (
+                <div style={{ fontSize: 12, color: "#b8946a" }}>Notifications blocked. Enable in browser settings.</div>
+              ) : !subscribed ? (
+                <button
+                  onClick={() => { void subscribe(); }}
+                  disabled={notifLoading}
+                  style={{ width: "100%", padding: "10px", background: notifLoading ? "rgba(0,165,80,0.3)" : "#00a550", border: "none", borderRadius: 10, color: "#fff", fontSize: 13, fontWeight: 600, cursor: notifLoading ? "default" : "pointer", fontFamily: "inherit" }}
+                >
+                  {notifLoading ? "Enabling…" : "Enable Push Notifications"}
+                </button>
+              ) : (
+                <>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+                    {([
+                      { key: "notifyPrayer", label: "🕌 Prayer Times" },
+                      { key: "notifyDua", label: "🤲 Daily Duas" },
+                      { key: "notifyHadith", label: "📖 Hadith" },
+                      { key: "notifyStreak", label: "🔥 Streak" },
+                    ] as { key: keyof typeof notifPrefs; label: string }[]).map(({ key, label }) => (
+                      <button
+                        key={key}
+                        onClick={() => void updatePrefs({ [key]: !notifPrefs[key] })}
+                        style={{
+                          padding: "8px 6px", borderRadius: 8, border: `1px solid ${notifPrefs[key] ? "#00a550" : "rgba(0,165,80,0.2)"}`,
+                          background: notifPrefs[key] ? "rgba(0,165,80,0.15)" : "transparent",
+                          color: notifPrefs[key] ? "#00a550" : "#4a7a4a", fontSize: 11, cursor: "pointer", fontFamily: "inherit", fontWeight: 500,
+                          textAlign: "center",
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={() => void sendTest()}
+                      style={{ flex: 1, padding: "8px", background: "rgba(0,165,80,0.1)", border: "1px solid rgba(0,165,80,0.25)", borderRadius: 8, color: "#00a550", fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}
+                    >
+                      Send Test
+                    </button>
+                    <button
+                      onClick={() => void unsubscribe()}
+                      disabled={notifLoading}
+                      style={{ flex: 1, padding: "8px", background: "transparent", border: "1px solid rgba(165,0,0,0.3)", borderRadius: 8, color: "#a05050", fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}
+                    >
+                      {notifLoading ? "…" : "Turn Off"}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -42,3 +42,10 @@ externalPort = 3000
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+VAPID_PUBLIC_KEY = "BEOqXehxEErEDaESlBWc-XjazzIT_awBjwOAr7CaWmzX8QLj6NEL-00RuCUf7chD_I-WX82fxXSfYNx42bLfIS8"
+VAPID_PRIVATE_KEY = "j7GU7Usk6pQeFm2wDhwFvp5RjYfmAE1L23mrx0VK-Gs"
+VAPID_EMAIL = "mailto:hello@mytazki.com"

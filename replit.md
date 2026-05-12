@@ -229,6 +229,22 @@ Fonts: Cinzel (headings/logo) | Amiri (Arabic, always rtl) | system-ui (body/nav
 - **Manifest.json**: Updated PWA manifest with `start_url: /home`, 4 shortcuts (Prayer Times, Quran, Tasbih, Duas), `lang`, `dir`, and proper description
 - **Typecheck clean**: Fixed pre-existing `landing.ts` SEO head missing `schema: []` error; all typechecks pass cleanly
 
+### 2026-05-12 — Push Notifications: prayer times, duas, hadith, streak
+- **web-push installed** on api-server; VAPID keys generated + stored as env vars (VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_EMAIL)
+- **DB helpers**: `push:{userId}` key stores `PushSubscriptionRecord` (endpoint, keys, city, madhab, 4 preference flags)
+- **Notifications route** (`/api/notifications/`):
+  - `POST /subscribe` (auth) — save subscription, send welcome push
+  - `DELETE /subscribe` (auth) — unsubscribe
+  - `GET /status` (auth) — returns subscribed state + preferences
+  - `PATCH /preferences` (auth) — toggle prayer/dua/hadith/streak independently
+  - `POST /test` (auth) — send a test push to your device
+  - `GET /vapid-public-key` (public) — returns VAPID public key to frontend
+- **Prayer scheduler** (`runNotificationScheduler`): setInterval 60s — fetches aladhan.com prayer times per city/madhab, sends push 5 min before each prayer; sends daily dua reminders at 06:00/12:30/18:00, hadith at 08:00, streak reminder at 21:00; `sentToday` Set prevents duplicates; city cache avoids hammering aladhan.com
+- **Service worker updated**: typed notification categories (prayer/dua/hadith/streak/welcome/test), each with distinct vibrate pattern, requireInteraction, actions; "dismiss" action skips navigation
+- **`useNotifications` hook**: permission request, PushManager subscribe, save to API, expose `subscribed`/`prefs`/`subscribe`/`unsubscribe`/`updatePrefs`/`sendTest`
+- **Bell panel redesigned**: shows live prayer countdown, streak, Name of Allah, hadith; lower section has push enable button (if not subscribed), 4 toggle chips (Prayer/Dua/Hadith/Streak), Send Test + Turn Off buttons
+- **Typecheck**: Clean across both packages
+
 ### 2026-05-12 — Dashboard header tabs: Bell, Search, Menu implemented
 - **Bell (🔔) — Notifications panel**: dropdown shows next prayer + countdown, streak status, today's Name of Allah (tappable to /99-names), daily Azkar reminder (tappable to /duas), today's Hadith; dismisses on backdrop tap
 - **Search (🔍) — Full-screen overlay**: autofocused input, live search across sessions (client-side from /api/sessions?limit=100), duas (from /api/duas filtered), and names (from /api/names); Quick Access shortcuts shown when empty (8 common routes); results grouped by category; "Cancel" button closes

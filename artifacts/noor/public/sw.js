@@ -1,5 +1,5 @@
-// Noor Service Worker — Push Notifications + Offline Cache
-const CACHE_NAME = "noor-v1";
+// MyTazki Service Worker — Push Notifications + Offline Cache
+const CACHE_NAME = "mytazki-v2";
 const STATIC_ASSETS = ["/", "/manifest.json"];
 
 self.addEventListener("install", (event) => {
@@ -18,30 +18,106 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Push notifications
+// ── Notification type configs ─────────────────────────────────────────────────
+const TYPE_CONFIG = {
+  prayer: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [300, 100, 300, 100, 300],
+    requireInteraction: true,
+    actions: [
+      { action: "open", title: "Open Prayer Times" },
+      { action: "dismiss", title: "Dismiss" },
+    ],
+  },
+  dua: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [200, 100, 200],
+    requireInteraction: false,
+    actions: [
+      { action: "open", title: "View Duas" },
+      { action: "dismiss", title: "Later" },
+    ],
+  },
+  hadith: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [100, 50, 100],
+    requireInteraction: false,
+    actions: [
+      { action: "open", title: "Read Hadith" },
+      { action: "dismiss", title: "Later" },
+    ],
+  },
+  streak: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [200, 100, 200],
+    requireInteraction: false,
+    actions: [
+      { action: "open", title: "Open MyTazki" },
+      { action: "dismiss", title: "Dismiss" },
+    ],
+  },
+  welcome: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [100],
+    requireInteraction: false,
+    actions: [],
+  },
+  test: {
+    icon: "/favicon.svg",
+    badge: "/favicon.svg",
+    vibrate: [100],
+    requireInteraction: false,
+    actions: [{ action: "open", title: "Open App" }],
+  },
+};
+
+// ── Push handler ──────────────────────────────────────────────────────────────
 self.addEventListener("push", (event) => {
-  let data = { title: "Noor", body: "Remember Allah. Every day.", url: "/" };
+  let data = {
+    title: "MyTazki",
+    body: "Remember Allah. Every moment is a blessing.",
+    url: "/home",
+    type: "welcome",
+    tag: "mytazki-default",
+  };
+
   try {
-    if (event.data) data = event.data.json();
+    if (event.data) data = { ...data, ...event.data.json() };
   } catch {}
+
+  const typeKey = data.type || "welcome";
+  const config = TYPE_CONFIG[typeKey] || TYPE_CONFIG.welcome;
 
   const options = {
     body: data.body,
-    icon: "/icon-192.png",
-    badge: "/icon-72.png",
-    vibrate: [200, 100, 200],
-    data: { url: data.url || "/" },
-    actions: [{ action: "open", title: "Open Noor" }],
-    requireInteraction: false,
+    icon: config.icon,
+    badge: config.badge,
+    vibrate: config.vibrate,
+    data: { url: data.url || "/home" },
+    actions: config.actions,
+    requireInteraction: config.requireInteraction,
+    tag: data.tag || `mytazki-${typeKey}`,
+    silent: false,
+    dir: "ltr",
+    lang: "en",
   };
 
   event.waitUntil(self.registration.showNotification(data.title, options));
 });
 
-// Notification click
+// ── Notification click ────────────────────────────────────────────────────────
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = event.notification.data?.url || "/";
+
+  if (event.action === "dismiss") return;
+
+  const url = event.notification.data?.url || "/home";
+
   event.waitUntil(
     clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
@@ -55,7 +131,7 @@ self.addEventListener("notificationclick", (event) => {
   );
 });
 
-// Fetch — network first, cache fallback for navigation
+// ── Fetch — network first, cache fallback for navigation ─────────────────────
 self.addEventListener("fetch", (event) => {
   if (event.request.mode !== "navigate") return;
   event.respondWith(
