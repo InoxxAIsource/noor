@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   isLoading: boolean;
+  setAuthUser: (user: User | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -61,6 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     getMe().then(setUser).catch(console.error);
   };
 
+  const setAuthUser = (nextUser: User | null) => {
+    setUser(nextUser);
+  };
+
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem("deen_token");
@@ -69,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!token, token, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!token, token, login, logout, isLoading, setAuthUser }}>
       {children}
     </AuthContext.Provider>
   );

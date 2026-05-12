@@ -11,7 +11,7 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const { login, isLoggedIn, isLoading } = useAuth();
+  const { login, isLoggedIn, isLoading, setAuthUser } = useAuth();
   const navigate = useNavigate();
   const registerMutation = useRegister();
 
@@ -29,7 +29,10 @@ const RegisterPage: React.FC = () => {
       {
         onSuccess: (data) => {
           login(data.token);
-          navigate("/onboarding");
+          if (data.user) {
+            setAuthUser(data.user);
+          }
+          navigate("/onboarding", { replace: true });
         },
         onError: (error) => {
           setErrorMsg(error.message || "Failed to register. Please try again.");
