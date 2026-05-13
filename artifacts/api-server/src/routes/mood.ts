@@ -3,6 +3,7 @@ import { requireAuth, type AuthRequest } from "../middleware/auth.js";
 import {
   getMoodCheckin,
   setMoodCheckin,
+  getMoodHistory,
   getMorningStatus,
   setMorningComplete,
   getMorningStreak,
@@ -50,6 +51,31 @@ router.get("/mood/today", requireAuth, async (req: AuthRequest, res: Response) =
     completedMorning,
     morningStreak,
   });
+});
+
+// GET /api/mood/history — last 7 days of emotional check-ins + a personalized insight string
+router.get("/mood/history", requireAuth, async (req: AuthRequest, res: Response) => {
+  const history = await getMoodHistory(req.userId!, 7);
+
+  let insight: string | null = null;
+  if (history.length >= 2) {
+    const counts: Record<string, number> = {};
+    for (const h of history) counts[h.emotion] = (counts[h.emotion] ?? 0) + 1;
+    const dominant = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+    const insightMap: Record<string, string> = {
+      peaceful:    "You've been finding moments of peace recently.",
+      anxious:     "You've been navigating some challenges lately.",
+      grateful:    "Your heart has been full of gratitude.",
+      overwhelmed: "You've been carrying a lot recently.",
+      lonely:      "You've been on a journey of seeking connection.",
+      frustrated:  "You've been working through some difficulties.",
+      grieving:    "You've been walking through a tender time.",
+      joyful:      "You've been carrying joy in your heart.",
+    };
+    if (dominant) insight = insightMap[dominant] ?? null;
+  }
+
+  res.json({ history, insight });
 });
 
 // POST /api/mood/checkin

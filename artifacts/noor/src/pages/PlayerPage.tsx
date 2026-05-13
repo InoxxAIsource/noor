@@ -65,6 +65,8 @@ const PlayerPage: React.FC = () => {
 
   const [moodBefore, setMoodBefore] = useState<string | null>(null);
   const [moodAfter, setMoodAfter] = useState<string | null>(null);
+  const [heartNote, setHeartNote] = useState("");
+  const [heartNoteSaved, setHeartNoteSaved] = useState(false);
   const [phase, setPhase] = useState<"moodBefore" | "playing" | "complete">("moodBefore");
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -526,7 +528,8 @@ const PlayerPage: React.FC = () => {
             {/* Mood After */}
             {!moodAfter ? (
               <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)]">
-                <p className="font-cinzel text-[var(--gold)] text-center mb-4">How do you feel now?</p>
+                <p className="font-cinzel text-[var(--gold)] text-center mb-2">How do you feel now?</p>
+                <p className="text-xs text-[var(--muted)] text-center mb-4">Notice any shift in your heart</p>
                 <div className="grid grid-cols-4 gap-2">
                   {MOODS.map((m) => (
                     <button
@@ -546,6 +549,47 @@ const PlayerPage: React.FC = () => {
                   <span>Before: <strong>{moodBefore}</strong></span>
                   <span>→</span>
                   <span>After: <strong className="text-[var(--green)]">{moodAfter}</strong></span>
+                </div>
+
+                {/* Heart reflection — warm, optional, before journal */}
+                <div className="bg-[var(--surface)] p-5 rounded-2xl border border-[var(--border)]">
+                  <p className="text-sm text-[var(--gold)] mb-1" style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 600 }}>
+                    What stayed with your heart today?
+                  </p>
+                  <p className="text-xs text-[var(--muted)] mb-3">
+                    A single word, a feeling, or a moment — whatever came to you.
+                  </p>
+                  {!heartNoteSaved ? (
+                    <>
+                      <textarea
+                        value={heartNote}
+                        onChange={(e) => setHeartNote(e.target.value.slice(0, 200))}
+                        placeholder="Something that touched me..."
+                        maxLength={200}
+                        rows={2}
+                        className="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 text-sm text-[var(--text)] placeholder-[var(--muted)] resize-none focus:outline-none focus:border-[var(--green)] transition-colors"
+                      />
+                      <div className="flex justify-between items-center mt-2">
+                        <button
+                          onClick={() => setHeartNoteSaved(true)}
+                          className="text-xs text-[var(--muted)] hover:text-[var(--text)] transition-colors"
+                        >
+                          Skip
+                        </button>
+                        <button
+                          onClick={() => setHeartNoteSaved(true)}
+                          disabled={!heartNote.trim()}
+                          className="text-xs bg-[var(--green)] text-white px-4 py-1.5 rounded-full disabled:opacity-40 hover:bg-[var(--green)]/90"
+                        >
+                          Hold this ✦
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-[var(--green)] italic">
+                      {heartNote.trim() ? `"${heartNote.trim()}"` : "That stillness is enough."}
+                    </p>
+                  )}
                 </div>
 
                 {/* Journal */}

@@ -90,4 +90,11 @@ router.get("/progress/me", requireAuth, async (req: AuthRequest, res: Response) 
   res.json(entries);
 });
 
+// GET /api/progress/recent — returns the single most-recent session entry
+router.get("/progress/recent", requireAuth, async (req: AuthRequest, res: Response) => {
+  const entries = await getProgress(req.userId!);
+  const recent = entries[0] ?? null;
+  res.json({ recent });
+});
+
 export default router;

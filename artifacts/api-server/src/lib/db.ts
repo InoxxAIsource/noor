@@ -400,6 +400,21 @@ export async function getMoodCheckin(userId: string, date: string): Promise<Mood
   return dbGet<MoodCheckin>(`mood:${userId}:${date}`);
 }
 
+export async function getMoodHistory(
+  userId: string,
+  days = 7
+): Promise<Array<MoodCheckin & { date: string }>> {
+  const results: Array<MoodCheckin & { date: string }> = [];
+  for (let i = 0; i < days; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0]!;
+    const mood = await getMoodCheckin(userId, dateStr);
+    if (mood) results.push({ ...mood, date: dateStr });
+  }
+  return results;
+}
+
 export async function setMoodCheckin(userId: string, date: string, data: MoodCheckin): Promise<void> {
   await dbSet(`mood:${userId}:${date}`, data);
 }
