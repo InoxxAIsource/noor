@@ -28,6 +28,60 @@
 
 ---
 
+### 2026-05-13 — Emotional Retention System
+
+Transforms MyTazki from an Islamic content platform into a daily emotional and spiritual grounding experience. All changes are incremental — no existing pages, routes, SEO, or audio infrastructure removed.
+
+**Emotional Check-in (Step 1)**
+- Full 8-emotion picker on HomePage: Anxious 🌊, Peaceful 🌿, Overwhelmed 🌧️, Lonely 🕊️, Grateful ✨, Frustrated 🔥, Grieving 💙, Joyful ☀️
+- Shown prominently at top of home whenever no check-in logged today
+- Confirmed state shows which emotion is active with a "change" link
+- Check-in persists to `/api/mood/checkin` on every selection
+
+**Emotional Memory (Step 2)**
+- New `getMoodHistory(userId, days)` DB helper — reads last N days of mood entries
+- New `GET /api/mood/history` route — returns history + a personalized insight string based on dominant emotion
+- New `GET /api/progress/recent` route — returns last session played for journey continuity
+- HomePage greeting sub-line replaced with warm personalized insight when emotional history exists
+  e.g. "You've been navigating some challenges lately." / "Your heart has been full of gratitude."
+
+**Session Recommendations by Emotion (Step 7)**
+- `EMOTION_SESSIONS` map routes each emotional state to preferred session categories
+  (e.g. anxious → healing/sleep/dua; grateful → azkar/quran)
+- Featured session on HomePage is now emotionally matched when a check-in exists
+- Section label changes: "Today's focus" → "For when you feel anxious"
+
+**Journey Continuity (Step 4)**
+- New continuity card on HomePage fetches last played session from `/api/progress/recent`
+- Warm framing: "Continue your journey" + "You returned for another moment of reflection"
+- Gold-accented card placed between morning flow and prayer times
+
+**Streak Psychology (Step 5)**
+- Replaced flat streak label with identity-reinforcing language:
+  0 → "Your journey begins today"
+  1 → "Day 1 of your journey 🌱"
+  N → "N days of consistent remembrance"
+- Added secondary line: "Masha'Allah — you're building a beautiful habit" at 7+ days
+- No guilt-based language
+
+**Reduced Utility Dominance (Step 6)**
+- Islamic tools grid now shows only 4 tools by default
+- "See all / Show less" toggle expands to full 12-tool grid
+- Emotionally-driven experiences (check-in, continuity, sessions, companion) appear above tools
+
+**Post-Session Reflection (Step 8)**
+- PlayerPage completion flow now includes a warm reflection card between mood-after selection and the journal:
+  "What stayed with your heart today?"
+  "A single word, a feeling, or a moment — whatever came to you."
+- Optional 200-char textarea with "Hold this ✦" / "Skip" actions
+- On save: shows the note back as a quiet quote — or "That stillness is enough." if skipped
+
+**AI Companion promoted**
+- "Talk to your companion" card replaces the old "What do you need today?" utility link
+- Direct navigation to `/companion`
+
+---
+
 ### 2026-05-12 — Signup / Onboarding Redirect Loop — Root-cause fix (v2)
 
 Two bugs were causing the register → onboarding → home loop:
