@@ -1,2 +1,16 @@
 User-agent: *
 Allow: /
+
+Disallow: /login
+Disallow: /register
+Disallow: /onboarding
+Disallow: /admin
+Disallow: /profile
+Disallow: /journal
+Disallow: /mood
+Disallow: /home
+Disallow: /room/
+Disallow: /halaqah/*/admin
+Disallow: /gift/
+
+Sitemap: https://mytazki.com/sitemap.xml

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ── Public pages ── -->
+  <url><loc>https://mytazki.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mytazki.com/subscribe</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/download</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ── Prayer & Worship tools ── -->
+  <url><loc>https://mytazki.com/prayer-times</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mytazki.com/qibla</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/tasbih</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/salah-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/wudu-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ── Quran ── -->
+  <url><loc>https://mytazki.com/quran</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mytazki.com/quran/read/1</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/quran/read/2</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/quran/read/3</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/4</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/5</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/6</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/7</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/8</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/9</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/10</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/11</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/12</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/13</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/14</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/15</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/16</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/17</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/18</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/19</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/20</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/21</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/22</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/23</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/24</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/25</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/26</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/27</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/28</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/29</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/30</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/31</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/32</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/33</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/34</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/35</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/36</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/37</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/38</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/39</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/40</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/41</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/42</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/43</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/44</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/45</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/46</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/47</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/48</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/49</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/50</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/51</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/52</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/53</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/54</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/55</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/56</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/57</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/58</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/59</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/60</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/61</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/62</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/63</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/64</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/65</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/66</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/67</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/68</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/69</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/70</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/71</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/72</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/73</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/74</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/75</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/76</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/77</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/78</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/79</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/80</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/81</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/82</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/83</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/84</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/85</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/86</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/87</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/88</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/89</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/90</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/91</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/92</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/93</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/94</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/95</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/96</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/97</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/98</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/99</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/100</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/101</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/102</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/103</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/104</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/105</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/106</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/107</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/108</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/109</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/110</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/111</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/112</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/113</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/quran/read/114</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- ── Islamic knowledge & guides ── -->
+  <url><loc>https://mytazki.com/duas</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mytazki.com/99-names</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/farz-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/sadqa-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/qurbani-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- ── Baby names ── -->
+  <url><loc>https://mytazki.com/names</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mytazki.com/names/trending</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/names/forbidden</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- ── Finance & life ── -->
+  <url><loc>https://mytazki.com/zakat-calculator</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/islamic-calendar</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/masjid-finder</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ── Sessions & growth ── -->
+  <url><loc>https://mytazki.com/sessions</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/growth</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/morning</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/companion</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mytazki.com/halaqah</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+</urlset>
