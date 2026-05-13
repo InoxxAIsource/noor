@@ -1,5 +1,15 @@
 # MyTazki — Changelog
 
+### 2026-05-13 — Language switcher now works globally
+
+**Bug fix: language preference was saved but never applied**
+- Created `LanguageContext` — reads user's saved language from the server, falls back to `localStorage`
+- Switching to Arabic or Urdu now immediately sets `dir="rtl"` on the entire app (and `lang` attribute)
+- Switching back to English restores `dir="ltr"` instantly
+- Language preference is also persisted to `localStorage` (`tazki_lang`) so RTL survives page refresh before the user object loads
+- ProfilePage language buttons now wire directly into the global context — change is instant on click, no save required for the UI to update
+- Server PATCH (`/api/auth/me`) still saves the preference so it syncs across devices
+
 ### 2026-05-12 — AI Companion page + Bottom Nav + MoodPage redesign
 
 **New page: /companion — Full-screen AI Islamic Guide:**

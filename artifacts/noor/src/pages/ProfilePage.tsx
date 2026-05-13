@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useLanguage, type Lang } from "../contexts/LanguageContext";
 import { useGetMyStreak } from "@workspace/api-client-react";
 import { LogOut, Save, MapPin, BookOpen, Link as LinkIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ProfilePage: React.FC = () => {
   const { user, logout } = useAuth();
+  const { language, setLanguage } = useLanguage();
   const { data: streakData } = useGetMyStreak();
   const token = localStorage.getItem("tazki_token");
 
@@ -14,7 +16,6 @@ const ProfilePage: React.FC = () => {
   const [city, setCity] = useState((u?.["city"] as string) || "");
   const [madhab, setMadhab] = useState((u?.["madhab"] as string) || "sunni");
   const [sunniMadhab, setSunniMadhab] = useState((u?.["sunniMadhab"] as string) || "hanafi");
-  const [language, setLanguage] = useState((u?.["language"] as string) || "en");
   const [reminderHour, setReminderHour] = useState((u?.["reminderHour"] as number) ?? 7);
   const [weeklyGoal, setWeeklyGoal] = useState((u?.["weeklyGoal"] as number) ?? 5);
   const [saving, setSaving] = useState(false);
@@ -118,7 +119,7 @@ const ProfilePage: React.FC = () => {
           <div>
             <label className="text-xs text-[var(--muted)] uppercase tracking-wider mb-2 block">Language</label>
             <div className="flex gap-2">
-              {[["en", "English"], ["ur", "Urdu"], ["ar", "Arabic"]].map(([code, label]) => (
+              {([ ["en", "English"], ["ur", "Urdu"], ["ar", "Arabic"] ] as [Lang, string][]).map(([code, label]) => (
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
