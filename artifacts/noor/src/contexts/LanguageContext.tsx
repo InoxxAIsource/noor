@@ -3,15 +3,15 @@ import { useAuth } from "./AuthContext";
 
 export type Lang = "en" | "ur" | "ar";
 
-interface LanguageContextType {
+export interface LanguageContextType {
   language: Lang;
   dir: "ltr" | "rtl";
   setLanguage: (lang: Lang) => void;
 }
 
-const RTL_LANGS: Lang[] = ["ar", "ur"];
+export const RTL_LANGS: Lang[] = ["ar", "ur"];
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuth();
@@ -26,15 +26,17 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     const fromUser = (user as Record<string, unknown> | null)?.["language"] as Lang | undefined;
-    if (fromUser) {
+    if (fromUser && fromUser !== language) {
       setLangState(fromUser);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
     const dir = RTL_LANGS.includes(language) ? "rtl" : "ltr";
-    document.documentElement.dir = dir;
-    document.documentElement.lang = language;
+    document.documentElement.setAttribute("dir", dir);
+    document.documentElement.setAttribute("lang", language);
+    document.documentElement.setAttribute("data-lang", language);
     localStorage.setItem("tazki_lang", language);
   }, [language]);
 
@@ -50,10 +52,4 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error("useLanguage must be used within LanguageProvider");
-  return ctx;
 };

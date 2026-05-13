@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useLanguage, type Lang } from "../contexts/LanguageContext";
+import { useLanguage } from "../hooks/useLanguage";
+import type { Lang } from "../contexts/LanguageContext";
 import { useGetMyStreak } from "@workspace/api-client-react";
 import { LogOut, Save, MapPin, BookOpen, Link as LinkIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const LANG_LABELS: Record<Lang, string> = { en: "English", ur: "اردو", ar: "العربية" };
 
 const ProfilePage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -21,6 +24,13 @@ const ProfilePage: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [detectingGps, setDetectingGps] = useState(false);
+  const [langToast, setLangToast] = useState<string | null>(null);
+
+  const handleLanguageChange = (lang: Lang) => {
+    setLanguage(lang);
+    setLangToast(`Language set to ${LANG_LABELS[lang]}`);
+    setTimeout(() => setLangToast(null), 2500);
+  };
 
   const getInitials = (name?: string) => {
     if (!name) return "N";
@@ -66,6 +76,18 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] pb-24 animate-fade-in">
+      {/* Language toast */}
+      {langToast && (
+        <div style={{
+          position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)",
+          zIndex: 9999, background: "var(--green)", color: "#0d1411",
+          padding: "10px 22px", borderRadius: 24, fontWeight: 600, fontSize: 14,
+          boxShadow: "0 4px 20px rgba(52,201,122,0.45)",
+          transition: "opacity 0.3s",
+        }}>
+          {langToast}
+        </div>
+      )}
       {/* Header */}
       <div className="p-6 pb-0">
         <div className="flex items-center gap-5 mb-6 bg-[var(--surface)] p-5 rounded-3xl border border-[var(--border)]">
@@ -122,7 +144,7 @@ const ProfilePage: React.FC = () => {
               {([ ["en", "English"], ["ur", "Urdu"], ["ar", "Arabic"] ] as [Lang, string][]).map(([code, label]) => (
                 <button
                   key={code}
-                  onClick={() => setLanguage(code)}
+                  onClick={() => handleLanguageChange(code)}
                   className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${
                     language === code
                       ? "bg-[var(--green)] text-white border-[var(--green)]"
