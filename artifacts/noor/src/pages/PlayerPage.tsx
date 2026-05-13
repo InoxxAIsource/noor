@@ -23,6 +23,16 @@ const MOOD_SCORE: Record<string, number> = {
   "Anxious": 2, "Frustrated": 2, "Overwhelmed": 2, "Lonely": 2, "Grieving": 1,
 };
 
+// Map session category → emotional pathway name + next recommended category
+const CATEGORY_PATHWAY: Record<string, { name: string; emoji: string; nextCat: string }> = {
+  "AZKAR":  { name: "Morning Grounding",    emoji: "🌅", nextCat: "QURAN"  },
+  "QURAN":  { name: "Find Peace",           emoji: "🌿", nextCat: "DHIKR"  },
+  "DHIKR":  { name: "Breathing Dhikr",      emoji: "🤲", nextCat: "DUAS"   },
+  "DUAS":   { name: "Calm Anxiety",         emoji: "🌊", nextCat: "SLEEP"  },
+  "SLEEP":  { name: "Evening Wind-down",    emoji: "🌙", nextCat: "DHIKR"  },
+  "SALAH":  { name: "Reconnect with Allah", emoji: "💚", nextCat: "QURAN"  },
+};
+
 function ConfettiEffect() {
   const particles = useMemo(
     () =>
@@ -327,6 +337,10 @@ const PlayerPage: React.FC = () => {
           from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes ambientPulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.18); opacity: 0.6; }
+        }
         .arabic-glow { animation: arabicPulse 4s ease-in-out infinite; }
         .play-breathe { animation: breathe 3.5s ease-in-out infinite; }
         .fade-in-up { animation: fadeInUp 0.5s ease forwards; }
@@ -346,9 +360,20 @@ const PlayerPage: React.FC = () => {
         <button onClick={() => navigate(-1)} className="p-2 text-[var(--muted)] hover:text-[var(--gold)]">
           <ChevronLeft size={28} />
         </button>
-        <span className="text-xs uppercase tracking-widest text-[var(--green)] bg-[var(--green)]/10 px-3 py-1 rounded-full border border-[var(--green)]/30">
-          {s?.["category"] as string}
-        </span>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="text-xs uppercase tracking-widest text-[var(--green)] bg-[var(--green)]/10 px-3 py-1 rounded-full border border-[var(--green)]/30">
+            {s?.["category"] as string}
+          </span>
+          {(() => {
+            const cat = (s?.["category"] as string ?? "").toUpperCase();
+            const pathway = CATEGORY_PATHWAY[cat];
+            return pathway ? (
+              <span className="text-[10px] text-[var(--muted)]">
+                {pathway.emoji} {pathway.name} path
+              </span>
+            ) : null;
+          })()}
+        </div>
         <div className="w-10" />
       </div>
 
@@ -414,10 +439,29 @@ const PlayerPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center mb-6">
+                {/* Atmospheric ambient ring + play button */}
+                <div className="flex items-center justify-center mb-6" style={{ position: "relative" }}>
+                  {/* Outer ambient glow — breathes slowly when playing */}
+                  {isPlaying && (
+                    <>
+                      <div className="ambient-ring-outer" style={{
+                        position: "absolute", width: 160, height: 160, borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(52,201,122,0.08) 0%, transparent 70%)",
+                        animation: "ambientPulse 4s ease-in-out infinite",
+                        pointerEvents: "none",
+                      }} />
+                      <div className="ambient-ring-mid" style={{
+                        position: "absolute", width: 120, height: 120, borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(52,201,122,0.12) 0%, transparent 65%)",
+                        animation: "ambientPulse 4s ease-in-out infinite 0.5s",
+                        pointerEvents: "none",
+                      }} />
+                    </>
+                  )}
                   <button
                     onClick={togglePlay}
                     className={`w-20 h-20 bg-[var(--green)] rounded-full flex items-center justify-center hover:scale-105 transition-transform ${isPlaying ? "play-breathe" : "shadow-[0_0_30px_rgba(0,165,80,0.4)]"}`}
+                    style={{ position: "relative", zIndex: 1 }}
                   >
                     {isPlaying
                       ? <Pause size={36} className="fill-white text-white" />
@@ -644,29 +688,70 @@ const PlayerPage: React.FC = () => {
                   <Gift size={18} /> Gift this dua to someone
                 </button>
 
-                {/* Related sessions */}
-                {relatedSessions.length > 0 && (
-                  <div>
-                    <p className="font-cinzel text-sm text-[var(--gold)] mb-3">Continue your journey</p>
-                    <div className="space-y-2">
-                      {relatedSessions.map((rs) => (
-                        <Link
-                          key={rs["id"] as string}
-                          to={`/player/${rs["id"]}`}
-                          className="flex items-center justify-between bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 hover:border-[var(--green)]/50 transition-colors"
-                        >
-                          <div>
-                            <p className="text-sm font-semibold">{rs["title"] as string}</p>
+                {/* Pathway-aware next step */}
+                {(() => {
+                  const cat = (s?.["category"] as string ?? "").toUpperCase();
+                  const pathway = CATEGORY_PATHWAY[cat];
+                  const nextSessions = pathway
+                    ? (allSessions as Array<Record<string, unknown>> | undefined)
+                        ?.filter(rs =>
+                          (rs["category"] as string)?.toUpperCase() === pathway.nextCat &&
+                          rs["id"] !== id
+                        ).slice(0, 2) ?? []
+                    : relatedSessions;
+
+                  return (
+                    <div>
+                      {pathway ? (
+                        <>
+                          <div style={{ marginBottom: 10 }}>
+                            <p className="text-xs text-[var(--gold)] font-semibold mb-0.5">
+                              {pathway.emoji} Your next step on the {pathway.name} path
+                            </p>
                             <p className="text-xs text-[var(--muted)]">
-                              {Math.ceil((rs["durationSeconds"] as number) / 60)} min
+                              When you're ready — no rush.
                             </p>
                           </div>
-                          <Play size={16} className="text-[var(--green)]" />
-                        </Link>
-                      ))}
+                        </>
+                      ) : (
+                        <p className="font-cinzel text-sm text-[var(--gold)] mb-3">Continue your journey</p>
+                      )}
+                      <div className="space-y-2">
+                        {nextSessions.map((rs) => (
+                          <Link
+                            key={rs["id"] as string}
+                            to={`/player/${rs["id"]}`}
+                            className="flex items-center justify-between bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 hover:border-[var(--green)]/50 transition-colors"
+                          >
+                            <div>
+                              <p className="text-sm font-semibold">{rs["title"] as string}</p>
+                              <p className="text-xs text-[var(--muted)]">
+                                {Math.ceil((rs["durationSeconds"] as number) / 60)} min ·{" "}
+                                {rs["category"] as string}
+                              </p>
+                            </div>
+                            <Play size={16} className="text-[var(--green)]" />
+                          </Link>
+                        ))}
+                        {nextSessions.length === 0 && relatedSessions.length > 0 && relatedSessions.map((rs) => (
+                          <Link
+                            key={rs["id"] as string}
+                            to={`/player/${rs["id"]}`}
+                            className="flex items-center justify-between bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 hover:border-[var(--green)]/50 transition-colors"
+                          >
+                            <div>
+                              <p className="text-sm font-semibold">{rs["title"] as string}</p>
+                              <p className="text-xs text-[var(--muted)]">
+                                {Math.ceil((rs["durationSeconds"] as number) / 60)} min
+                              </p>
+                            </div>
+                            <Play size={16} className="text-[var(--green)]" />
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
               </>
             )}
           </div>
