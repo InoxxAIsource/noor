@@ -1,0 +1,225 @@
+You are now the Lead Audio Experience + Guided Session Architect for MyTazki.com.
+
+IMPORTANT:
+Preserve ALL existing:
+- session infrastructure
+- audio playback
+- guided session routes
+- UI design
+- mobile responsiveness
+- dashboard
+- emotional check-in system
+- SEO/GEO systems
+- internal links
+- branding
+
+DO NOT rebuild audio architecture from scratch.
+
+Enhance the existing session experience incrementally.
+
+========================================
+PRIMARY OBJECTIVE
+========================================
+
+Transform guided sessions from:
+“content playback”
+
+into:
+“immersive emotional and spiritual grounding experiences.”
+
+Sessions should feel:
+- calming
+- immersive
+- reflective
+- emotionally supportive
+- spiritually grounding
+
+Closer to:
+- Calm sleep stories
+- guided meditation apps
+- reflective wellness experiences
+
+NOT:
+- podcast feeds
+- lecture libraries
+- generic audio players
+
+========================================
+STEP 1 — BUILD AUDIO-FIRST EXPERIENCE
+========================================
+
+Audio becomes a core retention system.
+
+Preserve:
+- minimal playback UI
+- calming visual design
+- immersive focus
+- distraction-free listening
+
+Enhance:
+- emotional atmosphere
+- continuity
+- post-session flow
+- personalized recommendations
+
+========================================
+STEP 2 — PRIORITIZE SHORT IMMERSIVE SESSIONS
+========================================
+
+Focus heavily on:
+- 2 minute sessions
+- 5 minute sessions
+- 10 minute sessions
+
+Short sessions improve:
+- completion rates
+- daily habits
+- emotional accessibility
+- retention behavior
+
+Avoid:
+- overly long lecture-style sessions initially
+
+========================================
+STEP 3 — BUILD EMOTIONAL AUDIO CATEGORIES
+========================================
+
+Prioritize:
+- anxiety relief
+- peace and calm
+- reconnect with Allah
+- sleep reflections
+- gratitude
+- emotional healing
+- morning grounding
+- nightly reflections
+- breathing dhikr
+
+Sessions should feel emotionally intentional.
+
+========================================
+STEP 4 — ENHANCE SESSION STRUCTURE
+========================================
+
+Each session should include:
+- calming introduction
+- immersive audio playback
+- reflective pacing
+- Quran-centered grounding
+- peaceful transitions
+
+Optional:
+- ambient sounds
+- breathing rhythm pacing
+- subtle visual calming states
+
+========================================
+STEP 5 — BUILD POST-SESSION CONTINUITY
+========================================
+
+After playback ends:
+DO NOT abruptly stop experience.
+
+Instead show:
+- reflection prompt
+- emotional check-in
+- continuity suggestion
+- recommended next session
+
+Examples:
+“How do you feel after this reflection?”
+“Would you like a peaceful evening session tonight?”
+
+========================================
+STEP 6 — CREATE SESSION PATHWAYS
+========================================
+
+Build emotional pathways.
+
+Examples:
+
+ANXIETY PATH:
+- calming reflection
+- breathing dhikr
+- peaceful sleep session
+- gratitude follow-up
+
+RECONNECT PATH:
+- reconnect reflection
+- salah consistency
+- Tahajjud continuation
+
+LONELINESS PATH:
+- comforting ayahs
+- Allah’s mercy reflections
+- hope sessions
+
+Goal:
+Create guided emotional ecosystems.
+
+========================================
+STEP 7 — BUILD AI SESSION RECOMMENDATIONS
+========================================
+
+AI should recommend sessions based on:
+- emotional state
+- time of day
+- session history
+- active journey
+- emotional patterns
+
+Examples:
+User feels overwhelmed →
+recommend calming night reflection
+
+User repeatedly listens to peace sessions →
+suggest deeper peace journey
+
+========================================
+STEP 8 — PREMIUM AUDIO POSITIONING
+========================================
+
+Premium should unlock:
+- immersive audio journeys
+- advanced sleep sessions
+- personalized audio routines
+- AI-guided continuity
+- deeper reflection libraries
+
+Premium should feel:
+supportive and calming
+
+NOT:
+aggressive paywalling
+
+========================================
+STEP 9 — RETENTION OPTIMIZATION
+========================================
+
+Track:
+- session completion rates
+- replay behavior
+- favorite categories
+- nighttime listening
+- return frequency
+- emotional patterns
+
+Goal:
+Validate audio-driven retention behavior.
+
+========================================
+FINAL OBJECTIVE
+========================================
+
+Transform audio sessions into:
+- daily grounding rituals
+- emotional wellness experiences
+- spiritually calming routines
+- habit-forming reflective moments
+
+The session system should become:
+- emotionally sticky
+- immersive
+- calming
+- personalized
+- retention-driven
