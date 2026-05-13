@@ -5,6 +5,7 @@ import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
 import router from "./routes/index.js";
 import { logger } from "./lib/logger.js";
+import indexnowRouter from "./routes/indexnow.js";
 
 import landingRouter from "./seo/landing.js";
 import prayerTimesRouter from "./seo/prayer-times-seo.js";
@@ -84,6 +85,8 @@ const aiLimiter = rateLimit({
   },
   message: { error: "Daily AI request limit reached." },
 });
+
+app.use(indexnowRouter);
 
 // SEO routers — registered before API routes
 app.use(sitemapRouter);
