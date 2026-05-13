@@ -1,0 +1,283 @@
+You are now the Lead Emotional Retention + Behavioral Experience Architect for MyTazki.com.
+
+IMPORTANT:
+Preserve ALL existing:
+- SEO pages
+- GEO architecture
+- homepage SEO
+- semantic structure
+- emotional wellness clusters
+- dashboard
+- guided session infrastructure
+- audio playback
+- routing
+- internal linking
+- schemas
+- mobile-first design
+- calm premium branding
+
+DO NOT rebuild the app from scratch.
+
+Enhance the platform incrementally.
+
+========================================
+PRIMARY OBJECTIVE
+========================================
+
+Transform MyTazki from:
+“an Islamic content platform”
+
+into:
+“a daily emotional and spiritual grounding experience.”
+
+The product should:
+- create daily return behavior
+- build emotional continuity
+- deepen spiritual consistency
+- reinforce calmness
+- guide users emotionally
+
+Focus heavily on:
+- retention
+- emotional memory
+- continuity
+- daily loops
+- habit systems
+- personalized experiences
+
+========================================
+STEP 1 — BUILD EMOTIONAL CHECK-IN SYSTEM
+========================================
+
+Create a lightweight emotional check-in flow.
+
+Question:
+“What do you need right now?”
+
+Emotion options:
+- anxious
+- peaceful
+- overwhelmed
+- lonely
+- grateful
+- frustrated
+- grieving
+- joyful
+
+The check-in system should:
+- feel emotionally warm
+- remain visually minimal
+- integrate naturally into dashboard/session flow
+
+The selected emotional state should influence:
+- session recommendations
+- dashboard messaging
+- AI suggestions
+- continuity prompts
+- routines
+
+========================================
+STEP 2 — BUILD EMOTIONAL MEMORY
+========================================
+
+Users should feel:
+“MyTazki remembers my journey.”
+
+Track:
+- emotional states selected
+- completed sessions
+- favorite categories
+- routines completed
+- consistency patterns
+- active journeys
+
+Use this data to personalize:
+- greetings
+- recommendations
+- dashboard cards
+- routines
+- reflection prompts
+
+Examples:
+“You’ve been focusing on finding peace recently.”
+“Continue your reconnect journey.”
+
+Avoid:
+- creepy memory behavior
+- invasive personalization
+
+Keep personalization:
+- gentle
+- spiritually respectful
+- emotionally calming
+
+========================================
+STEP 3 — CREATE DAILY CONTINUITY LOOPS
+========================================
+
+Build structured emotional loops.
+
+MORNING LOOP:
+- grounding greeting
+- emotional check-in
+- calming session
+- peaceful reinforcement
+
+EVENING LOOP:
+- gratitude reflection
+- calming audio
+- emotional release
+- peaceful ending
+
+WEEKLY LOOP:
+- emotional consistency recap
+- peaceful milestones
+- journey continuation
+
+Goal:
+Build habitual emotional return behavior.
+
+========================================
+STEP 4 — BUILD JOURNEY CONTINUITY
+========================================
+
+Users should always feel progression.
+
+Surface:
+- current journey
+- next step
+- emotional encouragement
+- continuity prompts
+
+Examples:
+“Day 3 — Reconnect Journey”
+“You returned for another peaceful moment.”
+
+Avoid dead ends after session completion.
+
+========================================
+STEP 5 — IMPROVE STREAK PSYCHOLOGY
+========================================
+
+Avoid:
+- guilt pressure
+- harsh streak loss
+- manipulative gamification
+
+Use:
+- identity reinforcement
+- gentle encouragement
+- peaceful consistency
+
+Examples:
+“You’ve completed 5 peaceful mornings.”
+“Your reconnect journey is growing.”
+
+========================================
+STEP 6 — REDUCE UTILITY DOMINANCE
+========================================
+
+Utilities should become secondary.
+
+Reduce visual dominance of:
+- tools grid
+- Qibla
+- calculators
+- generic utility sections
+
+Prioritize emotionally-driven experiences:
+- guided sessions
+- routines
+- journeys
+- reflections
+- continuity cards
+
+The app identity is:
+Islamic emotional grounding
+
+NOT:
+generic Islamic toolbox
+
+========================================
+STEP 7 — AI CONTEXTUAL GUIDANCE
+========================================
+
+AI should work silently in the background.
+
+AI should:
+- recommend sessions
+- adapt to emotional patterns
+- personalize routines
+- continue journeys
+- suggest calming flows
+
+Examples:
+User repeatedly selects anxious →
+recommend calming evening session
+
+User consistently uses reconnect journey →
+surface Tahajjud continuation
+
+AI should feel:
+- calm
+- emotionally aware
+- supportive
+- spiritually grounded
+
+Avoid:
+- chatbot overload
+- robotic productivity tone
+
+========================================
+STEP 8 — POST-SESSION REFLECTION FLOW
+========================================
+
+After every session:
+show a reflection layer.
+
+Examples:
+“What stayed with your heart today?”
+“How do you feel after this reflection?”
+
+Then:
+- emotional check-in
+- calming suggestion
+- next-step continuity
+- gentle recommendation
+
+Goal:
+Transform sessions into continuity experiences.
+
+========================================
+STEP 9 — RETENTION ANALYTICS
+========================================
+
+Track:
+- D1 retention
+- D7 retention
+- session completion
+- emotional check-ins
+- journey progression
+- morning/evening usage
+- return frequency
+
+Goal:
+Validate emotional habit formation.
+
+========================================
+FINAL OBJECTIVE
+========================================
+
+Transform MyTazki into:
+- a calm Islamic emotional wellness platform
+- a guided spiritual grounding experience
+- a daily habit-forming companion
+- an emotionally intelligent Muslim growth system
+
+Focus on:
+- emotional continuity
+- guidance
+- calmness
+- retention
+- daily rituals
+- spiritual consistency
