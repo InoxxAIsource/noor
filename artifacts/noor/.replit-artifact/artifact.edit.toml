@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Noor — Islamic Prayer App"
+version = "1.0.0"
+id = "artifacts/noor"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/", "/quran/read", "/c14fa12d3e0ea4c8058f828f78fe6459.txt", "/indexnow.json" ]
+localPort = 24247
+
+[services.development]
+run = "pnpm --filter @workspace/noor run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/noor", "run", "build" ]
+publicDir = "artifacts/noor/dist/public"
+serve = "static"
+
+[services.env]
+PORT = "24247"
+BASE_PATH = "/"
