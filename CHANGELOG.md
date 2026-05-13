@@ -28,6 +28,50 @@
 
 ---
 
+### 2026-05-13 — Immersive Session Experience
+
+Transforms guided sessions from content playback into emotionally immersive grounding experiences. All enhancements are incremental on top of existing audio infrastructure.
+
+**Emotional Pathways — SessionsPage (Steps 3, 6)**
+- New "Begin a Journey" section appears above the category grid with 6 curated pathways:
+  - 🌊 Calm Anxiety → Duas · Breathing Dhikr · Peaceful Sleep
+  - 🌅 Morning Grounding → Azkar · Quran Reflection · Dhikr
+  - 🌿 Find Peace → Quran · Dhikr · Dua
+  - 💚 Reconnect with Allah → Salah Guide · Quran · Evening Azkar
+  - 🌙 Evening Wind-down → Sleep Reflection · Night Dhikr · Closing Dua
+  - ✨ Gratitude Practice → Azkar · Gratitude Dua · Quran
+- Each pathway card is collapsed by default (tap to expand), shows step pills with arrows
+- Expanding shows up to 4 real sessions from the database, numbered in sequence
+- "Begin this journey" CTA navigates to the first available session in the path
+
+**Pathway Context in Player — Header (Step 1)**
+- PlayerPage header now shows the emotional pathway name beneath the category badge
+  e.g. "🌅 Morning Grounding path" / "🌙 Evening Wind-down path"
+- Derived from session category via `CATEGORY_PATHWAY` mapping
+
+**Atmospheric Ambient Ring (Steps 1, 4)**
+- During audio playback, two concentric radial gradient rings appear around the play button
+- Outer ring: 160px soft green glow, `ambientPulse` animation (4s ease-in-out, 0s delay)
+- Mid ring: 120px slightly stronger, same animation staggered 0.5s
+- Rings fade and disappear when audio is paused — environment matches emotional state
+- New `@keyframes ambientPulse` added to PlayerPage stylesheet
+
+**Pathway-aware Post-Session Continuity (Steps 5, 6)**
+- Completion screen "Continue your journey" section is now pathway-aware:
+  - Detects current session's category, maps to `CATEGORY_PATHWAY[cat].nextCat`
+  - Surfaces 2 sessions from the NEXT category in the emotional pathway
+  - Label: "🌅 Your next step on the Morning Grounding path — When you're ready — no rush."
+  - Falls back to same-category related sessions if no pathway match or next sessions found
+- Framing is supportive and unhurried, never pressuring
+
+**SessionsPage visual polish**
+- Redesigned session cards: cleaner spacing, softer borders, consistent design tokens
+- Header now shows total session count
+- Category and madhab filters redesigned with inline styles matching design tokens
+- Grid uses 1fr/1fr with 10px gap for better breathing room
+
+---
+
 ### 2026-05-13 — Emotional Retention System
 
 Transforms MyTazki from an Islamic content platform into a daily emotional and spiritual grounding experience. All changes are incremental — no existing pages, routes, SEO, or audio infrastructure removed.
