@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 const TODAY = new Date().toISOString().split("T")[0]!;
@@ -45,6 +46,7 @@ ${opts.conversationalQ.map(q => `<p style="color:#a0c8a0;margin:8px 0;font-size:
 <a href="/home" style="background:#34c97a;color:#0d1411;padding:14px 36px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px;display:inline-block;font-family:Inter,sans-serif">Try MyTazki AI Free →</a>
 <p style="color:#6a9878;font-size:12px;margin:10px 0 0;font-family:Inter,sans-serif">Free · 20 questions/day · Grounded in Quran & Sunnah</p>
 </div>
+${geoBlock('ai')}
 ${faqHtml(opts.faqs)}
 <h2>More Islamic Tools</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0">

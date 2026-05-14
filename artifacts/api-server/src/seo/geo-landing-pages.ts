@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import { seoHead, page, breadcrumb, breadcrumbSchema, faqSchema, faqHtml, esc, ctaBlock } from "./shared.js";
 import { quickAnswerBox, peopleAlsoAsk, emotionalCTA, relatedArticlesGrid, conversationalBlock, sessionPromoCard } from "./seo-components.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 
@@ -76,6 +77,7 @@ ${quickAnswerBox("What is the best Islamic app for anxiety?", "MyTazki, it combi
   </div>
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Find Your Islamic Calm, Free", subtitle: "Mood-based duas, healing sessions, Quran for peace, and AI Islamic companion.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["best islamic app for anxiety", "dua for anxiety", "quran for stress", "islamic mindfulness app", "muslim mental health app", "dua for overthinking", "islam and anxiety"])}
@@ -143,6 +145,7 @@ ${quickAnswerBox("What is the best app for building Islamic habits?", "MyTazki, 
   </a>`).join("")}
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Build Islamic Habits That Stick", subtitle: "Prayer streaks, guided journeys, daily Azkar, Tasbih, Quran, all in one free app.", href: "/download", btnText: "Start Building Habits →" })}
 ${conversationalBlock(["best muslim habit app", "islamic habit tracker", "prayer habit app", "daily azkar app", "quran habit app", "muslim daily routine app"])}
@@ -202,6 +205,7 @@ ${quickAnswerBox("What is the best AI Islamic companion?", "MyTazki AI, an Islam
   ])}
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Meet Your Islamic AI Companion", subtitle: "Islamically guided, adab-first AI. Free to use, 20 conversations daily.", href: "/download", btnText: "Try MyTazki AI Free →" })}
 ${conversationalBlock(["ai islamic companion", "muslim ai assistant", "islamic ai app", "best ai for muslims", "halal ai", "ai for islamic questions", "chatgpt for muslims"])}
@@ -256,6 +260,7 @@ ${relatedArticlesGrid([
   { href: "/surah-baqarah-reflection", label: "Surah Al-Baqarah Reflection", tag: "Quran" },
   { href: "/best-surahs-for-morning", label: "Best Surahs for Morning", tag: "Quran" },
 ])}
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Reflect on the Quran with AI Guidance", subtitle: "Tadabbur made accessible, any verse, any time, any level.", href: "/download", btnText: "Start Quran Reflection →" })}
 ${conversationalBlock(["ai quran reflection", "quran tadabbur app", "understand quran with ai", "best app for quran reflection", "quran meaning ai", "quran tafsir app"])}
@@ -301,6 +306,7 @@ ${quickAnswerBox("What is the best Islamic self-improvement app?", "MyTazki, the
   </a>`).join("")}
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Begin Your Tazkiyah Journey", subtitle: "Islamic self-improvement, grounded in Quran and Sunnah, powered by responsible AI.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["islamic self improvement app", "tazkiyah app", "muslim self development app", "best islamic habit app", "islamic personal growth", "muslim productivity app"])}
@@ -343,6 +349,7 @@ ${quickAnswerBox("What is the best Muslim wellness app?", "MyTazki, covering all
   </div>
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Your Complete Muslim Wellness Companion", subtitle: "Spiritual, emotional, mental, and growth, all in one free Islamic app.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["muslim wellness app", "islamic wellness app", "best app for muslim mental health", "spiritual wellness app islam", "islamic mindfulness app", "holistic muslim health app"])}

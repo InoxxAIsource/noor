@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
 import { quickAnswerBox, relatedArticlesGrid, emotionalCTA } from "./seo-components.js";
 
@@ -93,6 +94,7 @@ ${stepList([
   { n: "6", title: "Duha prayer — sunrise investment", desc: "Remain seated after Fajr until sunrise (approximately 20 minutes). Then pray 2-12 rakaat of Duha. The Prophet ﷺ said: 'Whoever prays Fajr in congregation and remains until sunrise, then prays two rakaat, has the reward of a complete Hajj and Umrah.' This is the morning's highest-yield practice." },
 ])}
 ${quranRef("أَقِمِ الصَّلَاةَ لِدُلُوكِ الشَّمْسِ إِلَىٰ غَسَقِ اللَّيْلِ وَقُرْآنَ الْفَجْرِ إِنَّ قُرْآنَ الْفَجْرِ كَانَ مَشْهُودًا", "Establish prayer at the decline of the sun until the darkness of night and the Fajr recitation. Indeed, the Fajr recitation is witnessed.", "Quran 17:78 — the Fajr prayer is specifically witnessed by the angels of the night and day during their shift change")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Start Your Islamic Morning with MyTazki", subtitle: "Prayer times, morning azkar, Quran, and AI companion — all free.", href: "/prayer-times", btnText: "Get Prayer Times →" })}
@@ -123,6 +125,7 @@ ${duaCard("اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ 
 ${card("Why Morning Azkar Is Different from Random Dhikr", "Morning azkar is structured protection — like a pre-flight checklist for your soul. Each dhikr has a specific function: Ayatul Kursi secures against spiritual attack until evening (confirmed hadith). The three Quls provide comprehensive protection. Sayyidul Istighfar guarantees Jannah for those who believe it and die that day. These are not inspirational phrases — they are protection protocols.")}
 ${card("The Science and Spirit of Morning Dhikr", "Morning dhikr creates cognitive priming — the thoughts you hold in the first 30 minutes after waking set the emotional register for the entire day. Secular psychology recommends gratitude journaling for the same reason. Morning azkar is gratitude, protection, connection, and forgiveness compressed into 15 minutes of structured conversation with Allah.")}
 ${card("Building the Morning Azkar Habit", "Start with just Ayatul Kursi and the three Quls — 5 minutes. Do this for 14 days without exception. Then add Sayyidul Istighfar. Then add Subhanallaahi wa bihamdih × 100. The Prophet ﷺ preferred consistent small deeds. One morning azkar performed consistently for a year is worth more than occasional full sets.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Morning Azkar Counter in MyTazki", subtitle: "Complete azkar library, tasbih counter, and guided morning sessions — free.", href: "/duas", btnText: "Open Duas →" })}
@@ -153,6 +156,7 @@ ${card("Habit 3: One Page of Quran Daily", "At the pace of one page per day, you
 ${duaCard("اللَّهُمَّ أَعِنِّي عَلَىٰ ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ", "Allahumma a'inni 'ala dhikrika wa shukrika wa husni 'ibadatik", "O Allah, help me to remember You, be grateful to You, and worship You well.", "Abu Dawud 1522 — the Prophet's own dua for consistency in worship. Make it your daily habit intention.")}
 ${card("Habit 4: Sadqa — The Daily Investment", "The Prophet ﷺ said: 'Every day two angels descend and one says: O Allah, compensate the one who spends. The other says: O Allah, destroy the wealth of the one who withholds.' Even £1 daily is sadqa. Even a smile. Even removing harm from the road. The habit of giving changes you more than it helps others.")}
 ${card("Habit 5: Istighfar — 100× Before Sleeping", "The Prophet ﷺ made istighfar 70-100 times daily despite being sinless. Istighfar is not just sin-removal — it opens doors of provision, removes hardship, and clarifies the heart. Make it the last intentional thing before sleep: 'Astaghfirullah' × 100 while lying down.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Track Islamic Habits with MyTazki", subtitle: "Streak tracker, habit dashboard, guided sessions — free.", href: "/download", btnText: "Start Tracking →" })}
@@ -182,6 +186,7 @@ ${card("The Prophet's Daily Schedule — Reconstructed", "From authentic hadith 
 ${card("Salah as Focus Blocks — The Science", "Research on sustained attention shows optimal focus cycles of 60-90 minutes followed by meaningful breaks. Fajr to Dhuhr is 5-7 hours — enough for 3-4 deep work blocks with natural salah breaks. Salah breaks include physical movement (wudu, prostration), mental context switch, and spiritual re-centering — a more complete break than coffee.")}
 ${duaCard("اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نَافِعاً وَرِزْقاً طَيِّباً وَعَمَلاً مُتَقَبَّلاً", "Allahumma inni as'aluka 'ilman nafi'an wa rizqan tayyiban wa 'amalan mutaqabbala", "O Allah, I ask You for beneficial knowledge, good provision, and accepted deeds.", "Ibn Majah 925 — said after Fajr salah. The Islamic productivity dua: knowledge, provision, accepted work.")}
 ${card("Qailulah — The Sunnah Nap", "The Prophet ﷺ took a midday rest before Dhuhr. Modern sleep research confirms that a 20-minute nap between 1-3pm improves afternoon cognitive performance by 34% (NASA study). The Sunnah is not just spiritually wise — it is biologically optimal. Keep it under 30 minutes to avoid deep sleep cycles.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Build Your Muslim Routine with MyTazki", subtitle: "Prayer times, habit tracker, streak counter, and guided sessions — free.", href: "/download", btnText: "Start Building →" })}
@@ -212,6 +217,7 @@ ${quranRef("إِنَّ قُرْآنَ الْفَجْرِ كَانَ مَشْهُ
 ${card("The Window Between Fajr and Sunrise", "This is the most underutilized spiritual window in the day. The Prophet ﷺ would remain in the masjid after Fajr, in dhikr and dua, until sunrise. He called this period blessed. Research on circadian rhythms shows the early morning is optimal for focused learning and spiritual practice. Do not waste it on your phone.")}
 ${card("How to Wake Up for Fajr Consistently", "The Prophet ﷺ slept early. This is the primary Fajr habit. Secondary: sleep with wudu — the body remains in a state of purity and waking feels connected to worship. Third: the night intention — 'I intend to wake for Fajr' said before sleeping. Fourth: accountability — a family member, friend, or alarm system. Fifth: make the post-Fajr time worth getting up for.")}
 ${card("The Duha Prayer — The Most Underrated Sunnah", "After Fajr, sit until sunrise (approximately 20 minutes depending on season), then pray 2-12 rakaat of Duha. The Prophet ﷺ said: 'Whoever prays Fajr in congregation then sits in his place of prayer until he prays Duha — they will receive the reward of a complete and accepted Hajj and Umrah.' This is repeatable every single day.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Never Miss Fajr with MyTazki", subtitle: "Accurate local prayer times, Fajr notifications, and morning azkar guide — free.", href: "/prayer-times", btnText: "Get Fajr Time →" })}
@@ -243,6 +249,7 @@ ${card("Tafakkur — Islamic Contemplative Reflection", "Tafakkur is deep reflec
 ${duaCard("اللَّهُمَّ آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", "Allahumma atina fid-dunya hasanatan wa fil-akhirati hasanatan wa qina 'adhaban-nar", "O Allah, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.", "Quran 2:201 — the Prophet's ﷺ most frequently recited dua. A mindfulness anchor: present good, future good, protection from harm.")}
 ${card("Khushu in Salah — The Practice Ground", "Khushu (presence in prayer) is the highest form of Islamic mindfulness. The Quran says: 'Successful are the believers who in their prayer have khushu.' (23:1-2). Practice: before each salah, pause for 30 seconds. Say: 'I am about to stand before Allah.' Feel what that means. Enter the prayer with this awareness. Khushu is trained, not found.")}
 ${card("Mindful Dhikr — Quality Over Quantity", "The Prophet ﷺ preferred consistent small deeds. For dhikr: 'Subhanallah' said once with full presence — feeling the meaning of Allah's perfection — is worth more than 100 fast repetitions. Slow down. One Subhanallah per breath. Feel the meaning: 'Allah is far above any imperfection.' This is mindfulness applied to remembrance.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Daily Mindfulness Practice in MyTazki", subtitle: "Guided muraqabah sessions, AI companion, and dhikr tracker — free.", href: "/download", btnText: "Open MyTazki →" })}
@@ -273,6 +280,7 @@ ${quranRef("قَدْ أَفْلَحَ مَن زَكَّاهَا وَقَدْ خ�
 ${card("The Five Daily Tazkiyah Practices", "1. Morning reflection — one question: 'Which quality of my nafs do I want to improve today?' 2. Istighfar × 100 — the primary spiritual cleaning agent. 3. One page of Islamic character literature — Ibn Qayyim's Madarij al-Salikin, or Al-Ghazali's Ihya. 4. Evening muhasabah — five minutes of self-accounting: what was good, what needs repair. 5. Dua for character — 'Allahumma ahsin khalqi kama ahsanta khalqi' (O Allah, perfect my character as You perfected my creation).")}
 ${duaCard("اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا وَزَكِّهَا أَنْتَ خَيْرُ مَن زَكَّاهَا", "Allahumma ati nafsi taqwaha wa zakkiha anta khayru man zakkaha", "O Allah, grant my soul its righteousness and purify it — You are the best of those who purify.", "Sahih Muslim 2722 — the Prophet's own tazkiyah dua. Ask Allah directly to purify you — He is the best purifier.")}
 ${card("The Nafs and Its Three States", "The Quran describes the nafs in three states: (1) Ammara bis-su (commanding toward evil, 12:53) — the unpurified default state. (2) Lawwama (self-reproaching, 75:2) — the state of awareness and accountability. (3) Mutma'inna (tranquil, 89:27) — the purified state that Allah calls toward Him at death. Tazkiyah is the path from the first to the third.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_GROWTH)}
 ${emotionalCTA({ title: "Guided Tazkiyah Sessions in MyTazki", subtitle: "Structured spiritual growth sessions, character development, and AI Islamic companion — free.", href: "/sessions", btnText: "Begin Tazkiyah →" })}
@@ -303,6 +311,7 @@ ${quranRef("أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ ا
 ${duaCard("سُبْحَانَ اللَّهِ وَبِحَمْدِهِ سُبْحَانَ اللَّهِ الْعَظِيمِ", "Subhanallaahi wa bihamdih, subhanallaahil-'adhim", "Glory be to Allah and praise be to Him. Glory be to Allah, the Magnificent.", "Bukhari/Muslim — described as 'two phrases light on the tongue, heavy in the scales, beloved to the Most Merciful.' The most efficient healing dhikr.")}
 ${card("The Dhikr Protocol for Healing Anxiety", "Morning: 'Hasbunallahu wa ni'mal wakil' × 100 — protection and release of control. Midday: 'Subhanallaahi wa bihamdih' × 100 — grounding in Allah's perfection. Evening: 'La ilaha illallah wahdahu la sharika lah' × 100 — recalibration of what is real. Night: 'Astaghfirullah' × 100 — clearing the day's spiritual residue. This 4-part daily dhikr protocol addresses anxiety at every level.")}
 ${card("Dhikr for Grief — The Specific Prescription", "The dua of Yunus ﷺ: 'La ilaha illa anta subhanaka inni kuntu minadh-dhalimin' — was said from inside a whale, in complete darkness, after a mistake. It contains: the affirmation that Allah alone is God, the recognition of His perfection, and honest acknowledgment of human failure. Grief and this dua: recite it × 40 while naming your specific grief to Allah. The hadith says it is answered.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid([...RELATED_GROWTH, { href: "/tasbih", label: "Digital Tasbih Counter", tag: "Tool" }])}
 ${emotionalCTA({ title: "Daily Dhikr Practice in MyTazki", subtitle: "Tasbih counter, guided dhikr sessions, and AI Islamic companion — free.", href: "/tasbih", btnText: "Open Tasbih →" })}
@@ -334,6 +343,7 @@ ${duaCard("يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَل�
 ${card("The Difference Between Burnout and Hypocrisy", "Spiritual burnout is exhaustion — the tank is empty. Hypocrisy (nifaq) is deliberate concealment of disbelief. If you are worried that you are becoming a hypocrite, you are almost certainly not one — hypocrites do not worry about being hypocrites. Your concern itself is the evidence of your faith. What you have is burnout, and burnout has a cure.")}
 ${card("The Minimum Viable Islamic Practice for Burnout Recovery", "During burnout: stop adding. Start protecting the minimum. The minimum is: (1) Fajr on time. (2) Maghrib on time. (3) Isha on time. Just these three, done with presence. Not perfectly — just honestly. Once you can do this consistently for a week, add morning azkar. Then Dhuhr. Then Asr. Rebuild the structure one brick at a time. Do not try to return to your peak all at once.")}
 ${card("Nature and Tafakkur — The Burnout Antidote", "When religious activity itself has become exhausting, return to the signs of Allah in creation. Walk outside. Look at the sky. Watch the trees. The Quran instructs this: 'Do they not look at the camels, how they were created?' (88:17). Creation is the primary classroom of faith before any masjid was built. Tafakkur in nature rekindles what religious performance has exhausted.")}
+${geoBlock('morning')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid([...RELATED_GROWTH, { href: "/reconnect-with-allah-journey", label: "Reconnect with Allah Journey", tag: "Journey" }])}
 ${emotionalCTA({ title: "Rebuild Your Connection with MyTazki", subtitle: "Gentle guided sessions for spiritual recovery — not overwhelming, just healing.", href: "/sessions", btnText: "Begin Recovery →" })}

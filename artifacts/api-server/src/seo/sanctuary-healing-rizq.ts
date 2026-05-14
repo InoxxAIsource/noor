@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
 import { quickAnswerBox, relatedArticlesGrid, emotionalCTA } from "./seo-components.js";
 
@@ -89,6 +90,7 @@ ${duaCard("رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ ل
 ${quranRef("إِنَّ مَعَ الْعُسْرِ يُسْرًا", "Indeed, with hardship comes ease.", "Quran 94:6 — 'with' not 'after.' The ease is already present inside the difficulty. Read this when stress convinces you there is no way through.")}
 ${card("The Stress Protocol — 5 Minutes", "1. Stop. Put down everything. 2. Recite 'La hawla wa la quwwata illa billah' × 10 slowly. 3. Make wudu if possible. 4. Recite the full stress dua from Bukhari 6369 above. 5. Name the specific thing stressing you and make personal dua about it. 6. Return to your task with a clear beginning. This is not avoidance — it is the reset that makes action possible.")}
 ${card("What Stress Is Spiritually", "Stress is the gap between what you believe should be happening and what is happening. Islam narrows this gap through qadar (divine decree) — not as resignation, but as the liberating recognition that the universe is running according to a plan you are not required to manage. Your job is action. Allah's job is outcome.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Islamic Stress Relief Daily", subtitle: "Guided duas, breathing sessions, and AI Islamic companion — free in MyTazki.", href: "/download", btnText: "Try MyTazki →" })}
@@ -120,6 +122,7 @@ ${card("For Grief — Quran 2:155-157", "Recite slowly: 'We will surely test you
 ${card("For Anxiety — Quran 13:28", "'Verily, in the remembrance of Allah do hearts find rest.' The key word is tatma'inn — complete, settled stillness, not temporary distraction. Recite this verse and then recite Subhanallah slowly × 33, Alhamdulillah × 33, Allahu Akbar × 34. Feel the word tatma'inn as a promise being fulfilled in real time.")}
 ${card("For Hopelessness — Surah Ad-Duha", "Read when you feel abandoned: 'Your Lord has not forsaken you, nor has He detested you.' (93:3). This verse was revealed to the Prophet ﷺ during the most painful period of his life. Allah's response to his pain was not explanation — it was presence. The reassurance that He had not left.")}
 ${card("For Overwhelm — Surah Al-Inshirah", "'For indeed, with hardship will be ease. Indeed, with hardship will be ease.' (94:5-6). Scholars note that 'hardship' is definite (al-'usr) — the same hardship each time. But 'ease' is indefinite (yusr) — a new ease each mention. Two eases for every hardship. This is not optimism. This is Quran.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Read Quran for Healing Daily", subtitle: "Audio Quran, guided reflections, and healing sessions — free in MyTazki.", href: "/quran", btnText: "Open Quran →" })}
@@ -151,6 +154,7 @@ ${duaCard("اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ ا
 ${card("Islam Validates Grief — Do Not Rush Through It", "One of the most harmful misunderstandings in Muslim communities is the expectation to 'be patient' by not showing sadness. True sabr (patience) is not the suppression of feeling. It is the refusal to despair while feeling. Yaqub ﷺ wept and refused to despair simultaneously. That is the Islamic model.")}
 ${card("The Year of Sadness — Even the Prophet Was Not Exempt", "In one year, the Prophet ﷺ lost his beloved wife Khadijah RA and his protector Abu Talib. Islamic historians named it 'Am al-Huzn' — the Year of Grief. Allah did not remove his sadness immediately. He revealed Surah Ad-Duha to sit with the Prophet ﷺ inside his grief and remind him He had not left.")}
 ${card("When Sadness Becomes Depression", "Extended sadness that affects daily functioning, sleep, eating, and salah may be clinical depression — a medical condition. The Prophet ﷺ said: 'Seek treatment, for Allah has not sent down any disease without sending down a cure.' Consulting a therapist or doctor is Sunnah action, not spiritual failure.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Islamic Emotional Support in MyTazki", subtitle: "Guided healing sessions, duas for sadness, and AI Islamic companion — free.", href: "/download", btnText: "Open MyTazki →" })}
@@ -181,6 +185,7 @@ ${quranRef("وَلَنَبْلُوَنَّكُم بِشَيْءٍ مِّنَ ا�
 ${duaCard("إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا", "Inna lillahi wa inna ilayhi raji'un. Allahumma ujurni fi musibati wa akhlif li khayran minha", "Indeed we belong to Allah and to Him we shall return. O Allah, reward me for my affliction and replace it for me with something better.", "Sahih Muslim 918 — the Prophet ﷺ said whoever says this, Allah will give them something better than what they lost")}
 ${card("What Trials Actually Do Spiritually", "Ibn Qayyim Al-Jawziyyah wrote: 'Had it not been for the trials of this world, the servant would become arrogant, cruel, and hard-hearted.' Trials do what comfort cannot: they return you to your actual size, remind you of your actual dependencies, and open doors of du'a that success never opens.")}
 ${card("The Ranking of Trials — A Comforting Truth", "The Prophet ﷺ said: 'The amount of trial a person receives is proportional to their level of faith. If their faith is firm, the trial increases. If there is weakness in their faith, the trial is adjusted accordingly.' This means: your trial is calibrated to you. Allah is not careless with it.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Navigate Trials with MyTazki", subtitle: "Guided sessions on sabr, tawakkul, and healing — free.", href: "/download", btnText: "Open MyTazki →" })}
@@ -211,6 +216,7 @@ ${duaCard("اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنَ ال�
 ${quranRef("عَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ", "Perhaps you hate a thing and it is good for you.", "Quran 2:216 — the verse for every heartbreak. What ended was not your enemy. What you lost may have been what would have harmed you.")}
 ${card("The 40-Day Healing Practice", "Islamic scholars recommend a 40-day intention for healing. For 40 days: (1) Two rakaat Duha prayer daily, asking Allah to replace what was lost with something better. (2) Recite Ayatul Kursi every morning with intention of healing. (3) Cut all contact with the person. (4) Give sadqa on Fridays for your own healing. (5) Keep a du'a journal — one specific request per day.")}
 ${card("What Qadar Means for This Loss", "Qadar (divine decree) in relationships means: the person Allah has written for you is written. It cannot be stolen, it cannot arrive late, it cannot be stopped. What was not written for you — no matter how much you loved them — was not yours to keep. This is not cold comfort. It is the most loving architecture imaginable: your perfect provision already decided, already coming.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Heal with Islamic Guidance Daily", subtitle: "Guided sessions, duas for heartbreak, and AI Islamic companion — free.", href: "/download", btnText: "Begin Healing →" })}
@@ -239,6 +245,7 @@ ${duaCard("إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَا�
 ${duaCard("إِنَّمَا أَشْكُو بَثِّي وَحُزْنِي إِلَى اللَّهِ", "Innama ashku bathhi wa huzni ilallah", "I only complain of my suffering and grief to Allah.", "Quran 12:86 — Prophet Yaqub ﷺ, speaking about his unbearable grief. Bring your pain to Allah by name.")}
 ${quranRef("وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ وَعَسَىٰ أَن تُحِبُّوا شَيْئًا وَهُوَ شَرٌّ لَّكُمْ", "Perhaps you dislike a thing and it is good for you, and perhaps you love a thing and it is bad for you. Allah knows while you do not know.", "Quran 2:216 — the theological foundation of healing from heartbreak")}
 ${card("How to Use These Duas for Heartbreak", "Don't recite them mechanically. Recite them as conversation. When you say 'Inna lillahi' — feel what it means that you and the person you lost both belong to Allah. You were always borrowing each other. When you say 'Allahumma akhlif li khayran minha' — believe it. Umm Salamah RA believed it. Allah honored it.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Heal with MyTazki Daily", subtitle: "Duas library, guided healing sessions, and AI Islamic companion — free.", href: "/download", btnText: "Open MyTazki →" })}
@@ -267,6 +274,7 @@ ${quickAnswerBox("How do you let go islamically?", "Letting go in Islam is an ac
 ${duaCard("حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", "Hasbunallahu wa ni'mal wakil", "Allah is sufficient for us, and He is the best disposer of affairs.", "Quran 3:173 — the dua of release. Say it and mean it: Allah is enough. He will handle what you are letting go of.")}
 ${quranRef("مَا أَصَابَ مِن مُّصِيبَةٍ إِلَّا بِإِذْنِ اللَّهِ وَمَن يُؤْمِن بِاللَّهِ يَهْدِ قَلْبَهُ", "No disaster strikes except by permission of Allah. And whoever believes in Allah — He will guide his heart.", "Quran 64:11 — belief in Allah's permission is what makes letting go possible. The loss was permitted. It was not random.")}
 ${card("The Difference Between Letting Go and Giving Up", "Islamic letting go is active. You do everything within your ability — then you release the outcome. Ibrahim ﷺ laid his son down. Musa ﷺ placed the basket in the river. Hajar RA walked between Safa and Marwa. They acted fully, then surrendered the result. That is the model. Not passivity. Not defeat. Faith in action followed by surrender.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_HEALING)}
 ${emotionalCTA({ title: "Release and Heal with MyTazki", subtitle: "Guided tawakkul sessions, duas, and AI Islamic companion — free.", href: "/download", btnText: "Begin Releasing →" })}
@@ -296,6 +304,7 @@ ${duaCard("يَا جَبَّارُ اجْبُرْ قَلْبِي", "Ya Jabbar, i
 ${quranRef("أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ", "Did We not expand for you your chest?", "Quran 94:1 — Allah healed the Prophet's ﷺ heart. The same Allah who did that is the One you are calling on now.")}
 ${card("What Al-Jabbar Means for Your Specific Wound", "Al-Jabbar does not heal abstractly. He heals specifically. The same precision He applied to setting the bones of Ibrahim ﷺ after the fire, the same precision He applied to returning Musa ﷺ to his mother — He applies to your wound. Tell Him its specifics. 'Ya Allah, my heart broke here, over this, in this way.' He knows. But the telling is for you.")}
 ${card("The Healing Timeline in Islam", "Allah healed Yaqub's blindness from grief — after years. He restored Ayyub's health — after a decade. He brought Yusuf to power — twenty years after the pit. Islamic healing is not instant, but it is complete. The question is not if Allah will heal your heart. It is whether you will stay close enough to receive the healing when it arrives.")}
+${geoBlock('healing')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid([...RELATED_HEALING, { href: "/99-names", label: "99 Names of Allah", tag: "Asma" }])}
 ${emotionalCTA({ title: "Call on Allah Daily with MyTazki", subtitle: "99 Names of Allah, guided healing sessions, and AI Islamic companion — free.", href: "/99-names", btnText: "Learn 99 Names →" })}
@@ -328,6 +337,7 @@ ${duaCard("اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ
 ${quranRef("وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ", "And whoever fears Allah — He will make for him a way out, and will provide for him from where he does not expect.", "Quran 65:2-3 — the rizq verse. Taqwa (God-consciousness) is a direct cause of provision from unexpected sources.")}
 ${card("The Three Amplifiers of Rizq in Islam", "(1) Istighfar — seeking forgiveness opens the gates of provision (Quran 71:10-12). (2) Salawat on the Prophet ﷺ — creates barakah that multiplies provision. (3) Sadqa — charity does not decrease wealth; it increases it. (Bukhari 1469). These three practiced daily create a compounding effect on barakah in provision.")}
 ${card("What Ar-Razzaq Means for Your Situation", "Ar-Razzaq (the Provider) is one of Allah's divine names. His provision is not conditional on the economy, your boss, the market, or your circumstances. 'There is no creature on earth but that upon Allah is its provision' (11:6). This includes you. Your rizq is written and will reach you — the dua is for barakah in it and protection from haram alternatives.")}
+${geoBlock('rizq')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_RIZQ)}
 ${emotionalCTA({ title: "Daily Rizq Duas in MyTazki", subtitle: "Complete duas library, morning azkar for provision, and AI Islamic guide — free.", href: "/duas", btnText: "Open Duas →" })}
@@ -357,6 +367,7 @@ ${duaCard("اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَ�
 ${quranRef("لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ وَلَئِن كَفَرْتُمْ إِنَّ عَذَابِي لَشَدِيدٌ", "If you are grateful, I will surely increase you; but if you deny, indeed My punishment is severe.", "Quran 14:7 — gratitude is not just etiquette. It is the mechanism Allah has linked to increase.")}
 ${card("The Zakat-Barakah Connection", "Zakat (2.5% of qualifying wealth annually) is not charity — it is purification. Allah says: 'Take from their wealth a charity by which you purify them and cause them increase' (9:103). The word for increase here is tuzakkihim — the same root as tazkiyah (purification). Paying Zakat removes the impurity that blocks barakah. Use MyTazki's Zakat calculator to find your exact amount.")}
 ${card("Why Haram Income Destroys Barakah", "Ibn Abbas RA reported that the Prophet ﷺ said: 'If a person earns haram and gives sadqa from it, it is not accepted. If he spends from it, there is no barakah in it.' A single haram source in your income can remove barakah from all of it — not as punishment, but as physics. Purity is the container that holds blessing.")}
+${geoBlock('rizq')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_RIZQ)}
 ${emotionalCTA({ title: "Track Spiritual Habits with MyTazki", subtitle: "Zakat calculator, daily duas, growth tracker — free Islamic life tool.", href: "/zakat-calculator", btnText: "Calculate Zakat →" })}
@@ -386,6 +397,7 @@ ${duaCard("رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ ل
 ${duaCard("اللَّهُمَّ يَسِّرْ وَلَا تُعَسِّرْ", "Allahumma yassir wa la tu'assir", "O Allah, make it easy and do not make it difficult.", "Widely reported — the simplest dua for ease in any situation including job search and interviews")}
 ${card("The Islamic Job Search Framework", "Islam teaches: tie your camel (do the action) then trust Allah (release the outcome). For job seeking: (1) Perfect your skills — this is your camel. (2) Research the opportunity thoroughly. (3) Pray Istikhara before committing to a specific role. (4) Make dua but do not let rejection convince you Allah is not providing — He may be redirecting to something better.")}
 ${card("What Istikhara Means for Career Decisions", "Istikhara is not a divine yes/no signal — it is asking Allah to write the good outcome through your effort. After Istikhara: proceed in the direction you feel inclined toward. If it works, alhamdulillah. If it doesn't, trust that the redirection was the Istikhara being answered — not the answer being wrong.")}
+${geoBlock('rizq')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_RIZQ)}
 ${emotionalCTA({ title: "Islamic Career Guidance in MyTazki", subtitle: "Duas library, guided sessions, and AI Islamic companion for life decisions.", href: "/download", btnText: "Open MyTazki →" })}
@@ -414,6 +426,7 @@ ${card("Surah Al-Waqiah (56) — The Surah of Provision", "Al-Waqiah covers thre
 ${card("Surah Al-Kahf (18) — Every Friday for Provision", "The Prophet ﷺ said: 'Whoever reads Surah Al-Kahf on Friday, a light will illuminate him between the two Fridays.' The surah contains the story of the People of the Cave (trust in Allah during hardship), Dhul-Qarnayn (provision through effort and guidance), and the rich man who lost his garden (the fragility of provision without gratitude). Powerful rizq content.")}
 ${quranRef("وَمَا مِن دَابَّةٍ فِي الْأَرْضِ إِلَّا عَلَى اللَّهِ رِزْقُهَا", "There is no creature on earth but that upon Allah is its provision.", "Quran 11:6 — the foundational statement of Islamic rizq theology. Your provision is Allah's responsibility. Your job is the effort.")}
 ${card("How to Recite Surahs for Rizq Effectively", "Recitation with understanding is more powerful than fast recitation. For each surah: (1) Read the tafsir of one page before reciting. (2) Recite slowly, reflecting on the provision-related verses. (3) After reciting, make personal dua: 'Ya Razzaq, bless me from what You have written for me.' This transforms recitation from performance to conversation.")}
+${geoBlock('rizq')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_RIZQ)}
 ${emotionalCTA({ title: "Read Quran for Rizq Daily", subtitle: "Audio Quran, verse reflections, and guided sessions — free in MyTazki.", href: "/quran", btnText: "Open Quran →" })}
@@ -443,6 +456,7 @@ ${duaCard("اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ
 ${quranRef("وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ", "And whoever fears Allah — He will make for him a way out, and provide for him from where he does not expect.", "Quran 65:2-3 — the Islamic promise for financial hardship: taqwa opens unexpected doors of provision")}
 ${card("The Prophet's Own Financial Hardship", "The Prophet ﷺ and his companions experienced poverty, hunger, and financial restriction. He tied a stone to his stomach against hunger. His household sometimes went days without cooking. This is not incidental — it is the framework: the best of people experienced financial hardship without it diminishing their rank with Allah. Your hardship is not a sign of His displeasure.")}
 ${card("Practical Islamic Steps for Financial Stress", "1. List all debts — ambiguity amplifies anxiety. 2. Pay Zakat even in difficulty — purification of what you have. 3. Give consistent small sadqa — the Prophet guaranteed it does not decrease wealth. 4. Seek halal income increase — this is an act of worship. 5. Make dua specifically: 'Ya Razzaq, open a door of halal provision for me from where I do not expect.' Then act.")}
+${geoBlock('rizq')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_RIZQ)}
 ${emotionalCTA({ title: "Spiritual Tools for Financial Peace", subtitle: "Duas for rizq, Zakat calculator, and daily guidance — free in MyTazki.", href: "/zakat-calculator", btnText: "Calculate Zakat →" })}

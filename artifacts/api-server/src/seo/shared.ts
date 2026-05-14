@@ -149,6 +149,40 @@ export function esc(str: string): string {
     .replace(/"/g, "&quot;");
 }
 
+export function statsBlock(stats: Array<{ stat: string; source: string }>): string {
+  return `<div class="stats-block" style="background:rgba(52,201,122,0.04);border:1px solid rgba(52,201,122,0.15);border-radius:14px;padding:20px 24px;margin:28px 0">
+  <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#34c97a;margin:0 0 14px;font-family:Inter,sans-serif">Key Statistics</p>
+  <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px">
+    ${stats.map(s => `<li style="display:flex;gap:10px;align-items:flex-start;font-family:Inter,sans-serif">
+      <span style="color:#34c97a;font-size:16px;flex-shrink:0;line-height:1.6">•</span>
+      <span style="font-size:14px;line-height:1.65"><strong style="color:#eaf4ee">${esc(s.stat)}</strong>&nbsp;<span style="color:#4a6858;font-size:12px">(${esc(s.source)})</span></span>
+    </li>`).join("")}
+  </ul>
+</div>`;
+}
+
+export function scholarQuote(quote: string, scholar: string, source: string): string {
+  return `<blockquote class="scholar-quote" style="border-left:3px solid #b8946a;margin:28px 0;padding:18px 22px;background:rgba(184,148,106,0.05);border-radius:0 12px 12px 0">
+  <p style="color:#eaf4ee;font-size:15px;line-height:1.8;margin:0 0 12px;font-family:Inter,sans-serif;font-style:italic">"${esc(quote)}"</p>
+  <footer style="color:#b8946a;font-size:13px;font-family:Inter,sans-serif">— <strong>${esc(scholar)}</strong><span style="color:#4a6858">, ${esc(source)}</span></footer>
+</blockquote>`;
+}
+
+export function howToSchema(name: string, description: string, steps: Array<{ name: string; text: string }>): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": name,
+    "description": description,
+    "step": steps.map((s, i) => ({
+      "@type": "HowToStep",
+      "position": i + 1,
+      "name": s.name,
+      "text": s.text,
+    })),
+  };
+}
+
 export const INDIA_CITIES = [
   "Delhi", "Mumbai", "Hyderabad", "Lucknow", "Bangalore", "Kolkata", "Chennai",
   "Jaipur", "Bhopal", "Patna", "Srinagar", "Aligarh", "Moradabad", "Meerut",

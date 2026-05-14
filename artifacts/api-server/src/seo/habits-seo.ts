@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
+import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc, howToSchema } from "./shared.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 const TODAY = new Date().toISOString().split("T")[0]!;
@@ -21,7 +22,7 @@ function habitPage(opts: {
   relatedArticles: Array<{ href: string; label: string }>;
   breadcrumbs: Array<{ name: string; item?: string }>;
 }): string {
-  const head = seoHead({ title: opts.title, description: opts.desc, canonical: opts.slug, schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs)] });
+  const head = seoHead({ title: opts.title, description: opts.desc, canonical: opts.slug, schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs), howToSchema(opts.h1, opts.desc, opts.steps.map(s => ({ name: s.title, text: s.desc })))] });
   const body = `
 ${breadcrumb(opts.breadcrumbs)}
 <h1>${esc(opts.h1)}</h1>
@@ -40,6 +41,7 @@ ${opts.steps.map(s => `<li style="margin-bottom:10px"><strong style="color:#eaf4
 <p style="color:#34c97a;font-style:italic;margin:0 0 6px;font-size:14px">${esc(opts.quranRef.trans)}</p>
 <p style="color:#6a9878;font-size:13px;margin:0">${esc(opts.quranRef.ref)}</p>
 </div>
+${geoBlock('habits')}
 ${faqHtml(opts.faqs)}
 <h2>Build This Habit with MyTazki</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0">

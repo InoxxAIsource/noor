@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import { seoHead, page, breadcrumb, breadcrumbSchema, faqSchema, faqHtml, esc, ctaBlock } from "./shared.js";
 import { quickAnswerBox, peopleAlsoAsk, emotionalCTA, relatedArticlesGrid, conversationalBlock } from "./seo-components.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 
@@ -121,6 +122,7 @@ ${quickAnswerBox("What is MyTazki?", "MyTazki is an AI-powered Islamic spiritual
   <p style="margin-top:12px"><a href="/ai-ethics" style="color:#34c97a;font-family:Inter,sans-serif;font-size:14px">Read our full AI Ethics policy →</a></p>
 </section>
 
+${geoBlock('mental-health')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Begin Your Spiritual Journey", subtitle: "Free prayer times, Quran, Azkar, Duas, and AI Islamic companion, all in one place.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["what is mytazki", "mytazki app review", "best islamic app", "ai muslim app", "islamic growth app", "mytazki vs other apps"])}
@@ -275,6 +277,7 @@ ${quickAnswerBox("How does MyTazki work?", "MyTazki combines four layers: authen
   </div>`).join("")}
 </section>
 
+${geoBlock('mental-health')}
 ${faqHtml(faqs)}
 ${ctaBlock()}
 `
@@ -387,6 +390,7 @@ ${quickAnswerBox("How does MyTazki use AI ethically?", "MyTazki uses Claude AI w
   </div>
 </section>
 
+${geoBlock('mental-health')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid([
   { href: "/trust-and-safety", label: "Trust & Safety", tag: "Policy" },

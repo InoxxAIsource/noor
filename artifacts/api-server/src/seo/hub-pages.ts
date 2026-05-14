@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, ctaBlock, esc } from "./shared.js";
 import {
   hubHero, clusterNavBar, articleGrid, mostReadSection, startHereBox,
@@ -122,6 +123,7 @@ ${emotionalCTA({
   btnText: "Download MyTazki Free →",
 })}
 
+${geoBlock('mental-health')}
 ${faqHtml([
   { q: "Is Islamic mental wellness different from regular therapy?", a: "Islamic wellness complements therapy, it adds the spiritual dimension: connection to Allah, belief in qadr, dua, salah, and community. Many Muslims find that combining Islamic practices with professional support gives the most complete healing." },
   { q: "How does MyTazki help with mental wellness?", a: "MyTazki offers guided audio sessions (including a HEALING category), a curated duas library with 110+ authentic duas, daily azkar, AI Islamic companion for questions, and streak-based habit building, all in one app." },

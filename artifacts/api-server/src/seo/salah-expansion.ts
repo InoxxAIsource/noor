@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, ctaBlock, esc } from "./shared.js";
 import { quickAnswerBox, peopleAlsoAsk, emotionalCTA, relatedArticlesGrid, conversationalBlock } from "./seo-components.js";
 
@@ -49,6 +50,7 @@ ${quranBlock("وَمِنَ اللَّيْلِ فَتَهَجَّدْ بِهِ ن
 </ol>
 <h2>The Best Duas to Make in Tahajjud</h2>
 <p style="color:#a0c8a0;line-height:1.8">After your rakaats, sit and make personal dua in your own language. The Prophet ﷺ would say: 'Allahumma lakal hamd anta qayyimus-samawati wal-ard...' (O Allah, all praise is for You, You are the Sustainer of the heavens and earth). Then ask for everything, your deen, dunya, and akhira.</p>
+${geoBlock('salah')}
 ${faqHtml([
   { q: "How many rakaats is Tahajjud?", a: "Tahajjud is minimum 2 rakaats and maximum unlimited, but the Prophet ﷺ typically prayed 8 rakaats of Tahajjud plus 3 Witr. For beginners, 2-4 rakaats is a complete and valid Tahajjud." },
   { q: "What is the difference between Tahajjud and Qiyam ul-Layl?", a: "Qiyam ul-Layl (standing of the night) refers to all voluntary night prayers. Tahajjud specifically refers to the prayer prayed AFTER sleeping, you must sleep first for it to be Tahajjud. The Witr prayer done without sleeping first is Qiyam, not Tahajjud." },

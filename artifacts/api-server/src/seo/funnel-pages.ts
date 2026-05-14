@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import { seoHead, page, breadcrumb, breadcrumbSchema, faqSchema, faqHtml, esc, ctaBlock } from "./shared.js";
 import { quickAnswerBox, emotionalCTA, relatedArticlesGrid, nextStepsBlock, startHereBox, guidedJourneysBlock, conversationalBlock, sessionPromoCard } from "./seo-components.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 
@@ -128,6 +129,7 @@ ${quickAnswerBox("How do I reconnect with Allah after drifting away?", "Start wi
   </div>
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Begin the 7-Day Reconnect Journey", subtitle: "Guided. Gentle. Step by step. You don't have to figure this out alone.", href: "/reconnect-with-allah-journey", btnText: "Start the Journey →" })}
 ${conversationalBlock(["how to reconnect with allah", "feeling distant from allah", "how to come back to islam", "drifted from deen", "how to get back to praying", "reconnect with quran"])}
@@ -184,6 +186,7 @@ ${quickAnswerBox("How do I find peace in Islam?", "Start with dhikr, say SubhanA
 ${sessionPromoCard({ title: "Healing Through Sujood", href: "/home", desc: "The closest you are to Allah is in prostration. A guided session on using Sujood as a place of refuge.", duration: "9 min" })}
 ${sessionPromoCard({ title: "Sleep with Ayatul Kursi", href: "/home", desc: "Prepare your heart for rest with the greatest verse in the Quran, Ayatul Kursi before sleep.", duration: "7 min" })}
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Your Path to Islamic Peace Starts Here", subtitle: "Duas, Quran, healing sessions, AI companion, all the Islamic peace tools, free.", href: "/download", btnText: "Download MyTazki →" })}
 ${conversationalBlock(["how to find peace in islam", "dua for peace of mind", "quran for inner peace", "islamic mindfulness", "peace of heart in islam", "how islam reduces anxiety"])}
@@ -254,6 +257,7 @@ ${quickAnswerBox("How do I build Islamic habits that last?", "The Islamic habit 
   </div>
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "Start Building Islamic Habits Today", subtitle: "Prayer streaks, guided journeys, morning Azkar, daily Quran, all in one free app.", href: "/download", btnText: "Download MyTazki Free →" })}
 ${conversationalBlock(["how to build islamic habits", "daily muslim habits", "islamic habit tracker", "prayer habit building", "morning azkar habit", "quran daily habit"])}
@@ -320,6 +324,7 @@ ${quickAnswerBox("How do I start praying again after years of not praying?", "On
   <p style="color:#a0c8a0;font-size:15px;line-height:1.8;font-family:Inter,sans-serif;margin:0">The Prophet ﷺ said: "All of the children of Adam sin, and the best of those who sin are those who repent." Guilt has its place, it should move you to action. But once you have made the intention to return, let the guilt go. Allah loves the one who turns back to Him. He is waiting for you.</p>
 </section>
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${emotionalCTA({ title: "The 7-Day Salah Reset, Start Today", subtitle: "Guided. Gentle. One prayer at a time. No judgment, just a path back.", href: "/7-day-salah-reset", btnText: "Begin the Salah Reset →" })}
 ${conversationalBlock(["how to start praying again", "how to get back into salah", "haven't prayed in years", "restart prayers islam", "salah motivation", "how to pray consistently"])}

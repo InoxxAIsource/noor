@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 const TODAY = new Date().toISOString().split("T")[0]!;
@@ -36,6 +37,7 @@ ${opts.keyVerses.map(v => `<div style="background:rgba(52,201,122,0.05);border-r
   <p style="color:#6a9878;font-size:13px;margin:0 0 10px">${esc(v.ref)}</p>
   <p style="color:#a0c8a0;font-size:14px;margin:0;line-height:1.7"><strong style="color:#eaf4ee">Reflection:</strong> ${esc(v.lesson)}</p>
 </div>`).join("")}
+${geoBlock('quran')}
 ${faqHtml(opts.faqs)}
 <h2>Read & Listen in MyTazki</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0">

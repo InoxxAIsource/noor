@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, ctaBlock, esc } from "./shared.js";
 import { quickAnswerBox, peopleAlsoAsk, emotionalCTA, relatedArticlesGrid, conversationalBlock, nextStepsBlock } from "./seo-components.js";
 
@@ -42,6 +43,7 @@ ${quranBlock("حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِ�
 ${quranBlock("لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ", "La ilaha illa anta subhanaka inni kuntu minadh-dhalimin", "The dua of Prophet Yunus ﷺ, answered in his deepest isolation, Quran 21:87")}
 <h2>Why Islam Says You Are Never Truly Alone</h2>
 <p style="color:#a0c8a0;line-height:1.8">Allah says: 'We are closer to him than his jugular vein' (50:16). 'And He is with you wherever you are' (57:4). 'Indeed, Allah is with those who are patient' (8:46). Your loneliness is a call, an invitation to turn toward the One who never leaves.</p>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "Is loneliness a sign of weak iman?", a: "No. Even the Prophet ﷺ experienced loneliness and the Sahaba felt isolation during persecution. Loneliness is a human experience. What matters is who you turn to in that loneliness, turn toward Allah, not away from Him." },
   { q: "What surah helps with loneliness?", a: "Surah Ad-Duha (93) was revealed when the Prophet ﷺ felt abandoned, Allah responded with reassurance. Surah Al-Inshirah (94) promises relief. Ayatul Kursi provides peace. Surah Al-Mulk provides protection in the quiet night hours." },
@@ -69,6 +71,7 @@ ${quranBlock("إِنَّ مَعَ الْعُسْرِ يُسْرًا", "Inna ma'a
   <li><strong style="color:#eaf4ee">Al-Tawakkul (The Trust)</strong>, Surrendering the 'why' and 'what now' to Allah who knows what you do not.</li>
   <li><strong style="color:#eaf4ee">Al-Shukr (The Gratitude)</strong>, Finding, eventually, what this loss protected you from or led you toward.</li>
 </ol>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "Is it haram to grieve a relationship in Islam?", a: "No. Grief is a human emotion that even prophets experienced. What Islam prohibits is despairing of Allah's mercy, or grieving in ways that harm yourself or others. Feeling pain from loss is natural and acknowledged in the Quran." },
   { q: "What dua helps heal a broken heart?", a: "Ya Jabbar (O Mender of broken things) repeated as dhikr. Also: 'Allahumma inni as'aluka an taj'al qalbi ma'aka' (O Allah, make my heart always be with You). And Ayatul Kursi for peace." },
@@ -89,6 +92,7 @@ ${quranBlock("إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَ
 <p style="color:#a0c8a0;line-height:1.8">Grief is one of the most honoured emotions in Islam. The Prophet ﷺ wept at the death of his son Ibrahim. He wept at the loss of Khadijah RA. Tears of grief are mercy, the Prophet ﷺ said: 'The eye weeps and the heart grieves, and we only say what pleases our Lord.' (Bukhari)</p>
 <h2>Islamic Stages of Grief</h2>
 <p style="color:#a0c8a0;line-height:1.8">Islam doesn't give a rigid timeline for grief. What it gives is a framework: Inna lillahi (we belong to Allah) acknowledges loss. Wa inna ilayhi raji'un (we return to Him) restores perspective. Sabr (patience) is not absence of pain, it is choosing trust despite pain. Akhira (the next life) gives ultimate hope, this separation is temporary.</p>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "How long is it acceptable to grieve in Islam?", a: "There is no set limit for grief in Islam (except for widows, who observe a 4-month-10-day iddah of mourning). The Prophet ﷺ said: 'Verily with hardship comes ease', he didn't say 'be fine by Day 40.' Grief heals at its own pace. What Islam prohibits is prolonged wailing, self-harm, or despair of Allah's mercy." },
   { q: "What does Islam say happens to those who die?", a: "Muslims believe in the akhira (hereafter), that death is a transition, not an end. The deceased are in the barzakh (a state between death and resurrection). Making dua for them, giving sadaqa jariyah on their behalf, and completing their unfulfilled religious obligations are all forms of ongoing connection." },
@@ -111,6 +115,7 @@ ${quranBlock("إِنَّمَا يُوَفَّى الصَّابِرُونَ أَ�
 ${quranBlock("وَلَنَبْلُوَنَّكُم بِشَيْءٍ مِّنَ الْخَوْفِ وَالْجُوعِ", "Wa la-nabluwan-nakum bi shay'im-minal-khawfi wal-ju'", "We will test you with fear, hunger, loss of wealth and lives, and give good tidings to the patient, Quran 2:155")}
 ${quranBlock("فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", "Fa inna ma'al-'usri yusra", "Indeed, with hardship comes ease, Quran 94:5")}
 <p style="color:#a0c8a0;line-height:1.8">Scholars note that Allah said 'inna ma'al-'usri yusra' TWICE in Surah Al-Inshirah (94:5 and 94:6), indicating that one hardship is accompanied by two reliefs. The Arabic uses 'al-'usr' (the hardship, specific) and 'yusra' (ease, without 'al-', meaning general/unlimited). One specific hardship. Unlimited ease.</p>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "What are the three types of sabr in Islam?", a: "Scholars describe sabr as: (1) Sabr 'ala ta'ah, patience in performing acts of obedience to Allah. (2) Sabr 'an ma'siyah, patience in refraining from sins. (3) Sabr 'ala al-musibah, patience with trials and calamities. All three are equally important." },
   { q: "What is the reward for sabr in Islam?", a: "Allah promises multiple rewards for patience: His company ('Allah is with the patient'), unlimited reward ('given without account'), Jannah ('Allah will reward the patient their reward' 39:10), Allah's love ('Allah loves the patient ones' 3:146), and relief after hardship ('with hardship comes ease' 94:5-6)." },
@@ -141,6 +146,7 @@ ${[
   <p style="color:#6a9878;font-size:14px;margin:0;line-height:1.65;font-family:Inter,sans-serif">${desc}</p>
 </div>`).join("")}
 </div>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "Can Islam heal trauma?", a: "Islam doesn't promise that all trauma resolves quickly, but it provides a framework: safe emotional expression (dua, journal), meaning-making (qadar, akhira perspective), community support, spiritual practices that regulate the nervous system, and hope (nothing is permanent except Allah's love). Many trauma specialists now integrate faith-based practices. Islam's approach complements professional therapy." },
   { q: "What is the Islamic definition of mental health?", a: "Islamic scholars describe mental health (sihat an-nafs) as: a heart free of major sins (safi), a soul at peace with Allah (mutma'inna), a balanced life (wasatiyyah), strong community connections (silat ur-rahm), and regular ibadah (worship). It is holistic, spiritual, emotional, physical, and social." },
@@ -184,6 +190,7 @@ ${quranBlock("اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ
 ${quranBlock("وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ", "Wa la tahinu wa la tahzanu wa antumul-a'lawn", "Do not lose hope, nor be sad, you will be superior if you are believers, Quran 3:139")}
 <h2>How to Use Dua When Feeling Sad</h2>
 <p style="color:#a0c8a0;line-height:1.8">Make wudu, the purification itself signals your intention to your mind and soul. Find a quiet space. Sit facing the qibla. Raise your hands. Say Bismillah. Then speak to Allah honestly, in Arabic, in your language, in tears, He understands all. The Prophet ﷺ said: 'Dua is the weapon of the believer.' Use it.</p>
+${geoBlock('healing')}
 ${faqHtml([
   { q: "Is it normal to feel sad as a Muslim?", a: "Yes. The Prophet ﷺ experienced grief, the Sahaba felt fear and sadness, and Allah revealed Quran in response to prophetic sorrow (Surah Ad-Duha was revealed when the Prophet ﷺ felt abandoned). Sadness is human. What distinguishes the believer is where they take that sadness, to Allah." },
 ])}

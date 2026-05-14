@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
+import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc, howToSchema } from "./shared.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 const TODAY = new Date().toISOString().split("T")[0]!;
@@ -42,7 +43,7 @@ function emotionPage(opts: {
     title: opts.title,
     description: opts.desc,
     canonical: opts.slug,
-    schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs)],
+    schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs), howToSchema(opts.h1, opts.desc, opts.steps.map(s => ({ name: s.title, text: s.desc })))],
   });
 
   const body = `
@@ -74,6 +75,7 @@ ${opts.quranRefs.map(r => `<div class="quran-block" style="background:rgba(52,20
 ${opts.relatedDuas.map(d => `<a href="${d.href}" style="background:rgba(52,201,122,0.08);border:1px solid rgba(52,201,122,0.2);color:#34c97a;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px;font-family:Inter,sans-serif">${esc(d.label)}</a>`).join("")}
 </div>
 
+${geoBlock('anxiety')}
 ${faqHtml(opts.faqs)}
 
 <h2>Continue Your Islamic Journey</h2>

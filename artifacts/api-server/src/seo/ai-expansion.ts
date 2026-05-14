@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, ctaBlock, esc } from "./shared.js";
 import { quickAnswerBox, peopleAlsoAsk, emotionalCTA, relatedArticlesGrid, conversationalBlock } from "./seo-components.js";
 
@@ -46,6 +47,7 @@ ${[
 </div>
 <h2>How AI Tafsir Works in MyTazki</h2>
 <p style="color:#a0c8a0;line-height:1.8">MyTazki's AI companion (powered by Claude, Anthropic's most capable model) can explain any Quran verse by: drawing from classical scholarship, presenting multiple scholarly opinions where they differ, providing linguistic analysis of the Arabic, contextualising within the surah's themes, and applying insights to contemporary situations, all while citing sources and maintaining Islamic adab (respect and propriety).</p>
+${geoBlock('ai')}
 ${faqHtml([
   { q: "Is AI tafsir reliable for Islamic learning?", a: "AI tafsir is reliable for introductory learning and exploration, it accurately draws from established classical sources. However, it is NOT a substitute for qualified scholars for complex fiqh questions, disputed interpretations, or anything that requires formal Islamic scholarship. Use AI tafsir to learn and explore, then verify important matters with a scholar." },
   { q: "Can AI replace an Islamic scholar?", a: "No. AI can provide information based on classical texts, but it lacks the lived embodiment, ijaza (scholarly transmission chain), nuanced judgment, and divine guidance that scholars carry. AI is a powerful learning tool, like a very comprehensive book, not a replacement for human Islamic scholarship." },

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
+import { seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc, howToSchema } from "./shared.js";
+import { geoBlock } from "./geo-content.js";
 
 const router = Router();
 const TODAY = new Date().toISOString().split("T")[0]!;
@@ -21,7 +22,7 @@ function salahPage(opts: {
   relatedArticles: Array<{ href: string; label: string }>;
   breadcrumbs: Array<{ name: string; item?: string }>;
 }): string {
-  const head = seoHead({ title: opts.title, description: opts.desc, canonical: opts.slug, schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs)] });
+  const head = seoHead({ title: opts.title, description: opts.desc, canonical: opts.slug, schema: [articleSchema(opts.title, opts.desc, opts.slug, opts.date), speakableSchema(opts.slug), faqSchema(opts.faqs), breadcrumbSchema(opts.breadcrumbs), howToSchema(opts.h1, opts.desc, opts.steps.map(s => ({ name: s.title, text: s.desc })))] });
   const body = `
 ${breadcrumb(opts.breadcrumbs)}
 <h1>${esc(opts.h1)}</h1>
@@ -36,6 +37,7 @@ ${opts.steps.map(s => `<li style="margin-bottom:10px"><strong style="color:#eaf4
 </ol>
 <h2>Quran & Hadith</h2>
 ${opts.quranRefs.map(r => `<div style="background:rgba(52,201,122,0.05);border-radius:10px;padding:16px 20px;margin:14px 0;border:1px solid rgba(52,201,122,0.12)"><p class="arabic" style="font-family:Amiri,serif;direction:rtl;text-align:right;color:#b8946a;font-size:1.5em;line-height:2;margin:0 0 8px">${r.arabic}</p><p style="color:#34c97a;font-style:italic;margin:0 0 6px;font-size:14px">${esc(r.trans)}</p><p style="color:#6a9878;font-size:13px;margin:0">${esc(r.ref)}</p></div>`).join("")}
+${geoBlock('salah')}
 ${faqHtml(opts.faqs)}
 <h2>Continue Your Journey</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0">

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { geoBlock } from "./geo-content.js";
 import { seoHead, page, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc } from "./shared.js";
 import { quickAnswerBox, relatedArticlesGrid, emotionalCTA } from "./seo-components.js";
 
@@ -101,6 +102,7 @@ ${sectionCard("Step 2 — Recite Ayatul Kursi slowly", "Read verse 2:255 with fu
 ${sectionCard("Step 3 — Recite the three Quls × 3", "Al-Ikhlas, Al-Falaq, An-Nas. Blow gently on your palms after each set and wipe over your face, chest, and arms. This is the exact method the Prophet ﷺ used before sleeping.")}
 ${sectionCard("Step 4 — Make personal dua", "After the formal ruqyah, speak to Allah in your own words about your exact anxiety. What are you afraid of? Tell Him. He is Al-Sami' (the Hearer).")}
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY, "More Islamic Wellness Guides")}
 ${emotionalCTA({ title: "Guided Ruqyah Sessions in MyTazki", subtitle: "Audio-guided spiritual healing sessions, duas library, and AI Islamic companion — free.", href: "/download", btnText: "Open MyTazki →" })}
@@ -142,6 +144,7 @@ ${sectionCard("5. Quran recitation — Healing at the cellular level", "Reciting
 
 ${quranRef("أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", "Verily, in the remembrance of Allah do hearts find rest.", "Quran 13:28 — this is the primary Islamic prescription for anxiety")}
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY, "Continue Your Healing")}
 ${emotionalCTA({ title: "Islamic Anxiety Support, Daily", subtitle: "Guided duas, AI companion, and spiritual growth tools — available free in MyTazki.", href: "/download", btnText: "Try MyTazki Free →" })}
@@ -179,6 +182,7 @@ ${sectionCard("Immediately: Recite and breathe together", "Recite 'Hasbunallahu 
 ${sectionCard("After 2 minutes: Ground with the senses", "Name aloud: 5 things you see, 4 you can touch, 3 you hear. This uses the prefrontal cortex (thinking brain) to override the amygdala (panic brain). The recitation continues between each.")}
 ${sectionCard("When calmer: Recite Ayatul Kursi", "Verse 2:255 in full. The rhythm and meaning — Al-Hayy (the Ever-Living), Al-Qayyum (the Sustainer) — rebuilds the truth that the universe has not collapsed, you are still held.")}
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY, "Related Islamic Mental Peace Guides")}
 ${emotionalCTA({ title: "Islamic Support When You Need It Most", subtitle: "Guided duas, breathing sessions, and AI Islamic companion available any time.", href: "/download", btnText: "Open MyTazki →" })}
@@ -221,6 +225,7 @@ ${quranRef("اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْح�
 <h2 style="color:#f0ece4;font-family:'DM Sans',sans-serif;font-size:1.4rem;margin:36px 0 16px">When Facing an Uncertain Future — Quran 65:3</h2>
 ${quranRef("وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ", "And whoever relies upon Allah — then He is sufficient for him.", "Quran 65:3 — for anxiety about the future, this verse resets the calculation: if Allah is your provider, what exactly are you afraid of?")}
 
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid([...RELATED_ANXIETY, { href: "/quran", label: "Read the Quran", tag: "Quran" }], "Explore More")}
 ${emotionalCTA({ title: "Read Quran Daily with MyTazki", subtitle: "Audio Quran, verse reflections, and guided sessions — free.", href: "/quran", btnText: "Open Quran →" })}
@@ -253,6 +258,7 @@ ${sectionCard("Method 4 — Tawakkul Journaling", "Write down: what you are afra
 ${sectionCard("Method 5 — Evening Azkar Routine", "The morning and evening azkar (remembrances) are a daily anxiety management system. They include specific duas for protection, provision, and peace. Doing them consistently reduces background anxiety over 2-4 weeks. Find them in MyTazki's Duas section.")}
 ${sectionCard("Method 6 — Community and Honest Conversation", "The Prophet ﷺ had companions who supported him in distress. Islam's cure for isolation-fueled anxiety is community. Tell a trusted Muslim friend what you are struggling with. Concealed anxiety compounds. Shared anxiety reduces.")}
 ${sectionCard("Method 7 — Seek Professional Help", "Islam explicitly endorses seeking medical treatment. If anxiety is affecting your daily life, sleep, work, or relationships for more than two weeks, see a therapist or doctor. This is not weak iman. This is following the Prophet's guidance: make use of treatment.")}
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY)}
 ${emotionalCTA({ title: "Daily Islamic Anxiety Tools", subtitle: "Guided duas, breathing sessions, morning azkar, and AI companion.", href: "/download", btnText: "Try MyTazki Free →" })}
@@ -287,6 +293,7 @@ ${duaCard("أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ �
 ${sectionCard("Why You Should Never Argue with Waswasa", "Engaging with a waswasa thought — trying to reason with it, disprove it, or understand it — strengthens it. This is true in Islamic scholarship and confirmed in cognitive behavioral therapy (OCD treatment). The cure is non-engagement: acknowledge it as waswasa, recite the isti'adha, and redirect your attention immediately.")}
 ${sectionCard("The Difference Between Waswasa and Sin", "A thought is not a sin until you (1) act on it, (2) say it approvingly, or (3) deliberately hold and cherish it. A horrifying thought that repulses you is, paradoxically, a sign of strong faith. The Prophet ﷺ explicitly said this is 'clear faith.'")}
 ${sectionCard("When Negative Thoughts Might Be OCD", "If negative thoughts are intrusive, repetitive, cause intense guilt, and are followed by compulsive behaviors (excessive wudu, repeated prayers, endless seeking of reassurance), this may be OCD — a medical condition, not spiritual failure. See a mental health professional. Islamic scholars endorse treatment.")}
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY)}
 ${emotionalCTA({ title: "Daily Spiritual Protection in MyTazki", subtitle: "Morning azkar, evening ruqyah, and AI Islamic companion to help with waswasa.", href: "/download", btnText: "Get Protected →" })}
@@ -318,6 +325,7 @@ ${quranRef("وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُ
 ${duaCard("اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلًا", "Allahumma la sahla illa ma ja'altahu sahla, wa anta taj'alul-hazna idha shi'ta sahla", "O Allah, there is no ease except what You make easy, and You make the difficult easy when You will.", "Ibn Hibban — the overthinking mind needs to hear this: ease is not found through planning more, but through Allah's will")}
 ${sectionCard("The Tawakkul Practice for Overthinkers", "Every evening, write down what occupied your mind that day. For each item: (1) What action can you take? Take it or schedule it. (2) What is beyond your control? Write: 'Ya Allah, I release this to You.' Then do not pick it back up mentally. When the thought returns — because it will — redirect: 'Hasbunallahu wa ni'mal wakil.'")}
 ${sectionCard("Why the Mind Overthinks (The Islamic View)", "Islam identifies the source of overthinking as Shaytan's waswasa + an untrained nafs (self). Shaytan feeds on uncertainty and amplifies it. The nafs wants control. Tawakkul starves both: it removes uncertainty (outcome is with Allah) and surrenders control (action is yours, result is Allah's).")}
+${geoBlock('anxiety')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_ANXIETY)}
 ${emotionalCTA({ title: "Build Tawakkul Daily with MyTazki", subtitle: "Guided sessions, morning intention setting, and AI Islamic companion.", href: "/download", btnText: "Start Today →" })}
@@ -354,6 +362,7 @@ ${duaCard("اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْي
 ${sectionCard("Step 3 — The Breathing Practice", "Inhale: 4 slow counts. Hold: 2. Exhale: 6 counts, reciting 'Subhanallah' internally on the exhale. The extended exhale activates the vagus nerve. Repeat 7-10 times. This is not innovation — it is the body mechanics behind slow dhikr recitation that scholars have practiced for centuries.")}
 ${sectionCard("Step 4 — Gratitude Before Closing", "Recall three specific things from today that you are grateful to Allah for. Not generic — specific. This shifts the brain's last conscious state from problem-scanning to recognition of blessings, measurably improving sleep quality and morning mood.")}
 ${quranRef("هُوَ الَّذِي جَعَلَ لَكُمُ اللَّيْلَ لِتَسْكُنُوا فِيهِ", "It is He who made the night for you so that you may rest in it.", "Quran 10:67 — sleep is not a biological accident. It is a mercy designed by Allah for you specifically.")}
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP, "More Night Wellness Guides")}
 ${emotionalCTA({ title: "Guided Islamic Sleep Sessions", subtitle: "Evening azkar, breathing practices, and AI companion for a peaceful night.", href: "/download", btnText: "Sleep Better →" })}
@@ -391,6 +400,7 @@ ${quranRef("اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْح�
 <h2 style="color:#f0ece4;font-family:'DM Sans',sans-serif;font-size:1.4rem;margin:36px 0 16px">For Anxiety That Keeps You Awake</h2>
 ${quranRef("وَمِنْ آيَاتِهِ مَنَامُكُم بِاللَّيْلِ وَالنَّهَارِ", "And of His signs is your sleep by night and by day.", "Quran 30:23 — your ability to sleep is itself a sign of Allah. When sleep doesn't come, remember: even your wakefulness is under His authority.")}
 ${quranRef("أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", "Verily, in the remembrance of Allah do hearts find rest.", "Quran 13:28 — when the mind races at night, the cure is dhikr. Slowly recite 'Subhanallah' × 33, 'Alhamdulillah' × 33, 'Allahu Akbar' × 34.")}
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP)}
 ${emotionalCTA({ title: "Guided Night Quran in MyTazki", subtitle: "Audio Quran recitation, evening azkar, and sleep sessions — free.", href: "/quran", btnText: "Open Quran →" })}
@@ -419,6 +429,7 @@ ${duaCard("اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْي
 ${duaCard("اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ وَفَوَّضْتُ أَمْرِي إِلَيْكَ", "Allahumma aslamtu nafsi ilayk, wa fawwadtu amri ilayk", "O Allah, I submit myself to You, and I entrust my matter to You.", "Sahih Bukhari 247 — said when lying down. The complete surrender of the day's burdens.")}
 ${duaCard("سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ لَا إِلَٰهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", "Subhanak Allahumma wa bihamdika, la ilaha illa anta, astaghfiruka wa atubu ilayk", "Glory be to You, O Allah, and I praise You. There is no god but You. I seek Your forgiveness and repent to You.", "Sahih al-Jami' — said before sleeping as expiation for sins of the day. Closes the day with tawbah.")}
 <p style="color:#6e5e4c;line-height:1.85;font-size:15px;font-family:Inter,sans-serif;margin:24px 0">The Prophet ﷺ also recommended: the Tasbeeh of Fatima RA before sleeping — Subhanallah × 33, Alhamdulillah × 33, Allahu Akbar × 34. He taught this to his daughter when she asked for a servant to help with tiredness. He said: <em style="color:#c9a472">"This is better for you than a servant."</em></p>
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP)}
 ${emotionalCTA({ title: "All Sleep Duas in MyTazki", subtitle: "Complete duas library with audio, transliteration, and translation.", href: "/duas", btnText: "Open Duas →" })}
@@ -447,6 +458,7 @@ ${quickAnswerBox("How do I do ruqyah for sleep?", "Before bed: (1) Wudu. (2) Rec
 ${duaCard("أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِن غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَن يَحْضُرُونِ", "A'udhu bikalimatillahit-tammati min ghadabihi wa 'iqabihi wa sharri 'ibadihi wa min hamazatish-shayatini wa an yahdhurun", "I seek refuge in the perfect words of Allah from His anger and punishment, from the evil of His servants, from the whispers of the devils and their presence.", "Abu Dawud 3893 — specifically for protection from evil during sleep")}
 <p style="color:#6e5e4c;line-height:1.85;font-size:15px;font-family:Inter,sans-serif;margin:24px 0">The Prophet ﷺ taught Abdullah ibn Mas'ud RA to recite Ayatul Kursi before sleeping and said: <em style="color:#c9a472">"A guardian from Allah will remain with you and Shaytan will not come near you until morning."</em> This is not poetry. This is the literal promise of the Prophet ﷺ.</p>
 ${quranRef("اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ", "Allah — there is no deity except Him, the Ever-Living, the Sustainer. Neither drowsiness overtakes Him nor sleep.", "Ayatul Kursi (2:255) — 'Neither drowsiness overtakes Him nor sleep' means your sleep is under His watch. He never sleeps, so you can.")}
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP)}
 ${emotionalCTA({ title: "Guided Night Ruqyah in MyTazki", subtitle: "Audio-guided evening azkar and spiritual healing for peaceful sleep.", href: "/download", btnText: "Peaceful Sleep →" })}
@@ -476,6 +488,7 @@ ${sectionCard("Surah Al-Mulk (67) — Every Single Night", "The Prophet ﷺ: 'Th
 ${sectionCard("Surah Al-Kafirun (109) — Before Closing Your Eyes", "The Prophet ﷺ said: 'Recite Surah Al-Kafirun then sleep at its end, for it is a disavowal of shirk.' It is the declaration that you enter sleep free from all false gods — a clean slate before your soul is held in Allah's hands.")}
 ${sectionCard("The Three Quls × 3 — The Sleep Shield", "Al-Ikhlas affirms tawhid (oneness). Al-Falaq seeks protection from external evil. An-Nas seeks protection from internal waswasa. Together × 3, blowing on palms and wiping the body, they are the spiritual armor the Prophet ﷺ wore every night. Aisha RA reported this practice in Sahih Bukhari.")}
 ${quranRef("قُلْ يَا أَيُّهَا الْكَافِرُونَ لَا أَعْبُدُ مَا تَعْبُدُونَ", "Say: O disbelievers, I do not worship what you worship.", "Surah Al-Kafirun 109:1-2 — begin this surah before sleeping as the Prophet ﷺ instructed")}
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP)}
 ${emotionalCTA({ title: "Complete Sleep Surah Library", subtitle: "Read or listen to all sleep surahs in MyTazki — audio, Arabic, and translation.", href: "/quran", btnText: "Open Quran →" })}
@@ -505,6 +518,7 @@ ${duaCard("لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ ل
 ${sectionCard("The Tasbeeh of Fatima RA — Before Sleeping", "Subhanallah × 33. Alhamdulillah × 33. Allahu Akbar × 34. The Prophet ﷺ taught this to his daughter Fatima RA when she was exhausted and asked for household help. He said this was better for her than a servant. It is a night dhikr for tiredness, for heaviness, for the weight of the day.")}
 ${sectionCard("Why Night Dhikr Works", "Dhikr before sleep shifts the mind's final conscious state from problem-scanning to gratitude and surrender. Sleep research confirms that the emotional content of pre-sleep thoughts significantly influences sleep quality and morning mood. Night dhikr systematically replaces anxiety (the default pre-sleep state for most people) with remembrance.")}
 ${quranRef("وَاذْكُر رَّبَّكَ فِي نَفْسِكَ تَضَرُّعًا وَخِيفَةً وَدُونَ الْجَهْرِ مِنَ الْقَوْلِ بِالْغُدُوِّ وَالْآصَالِ", "And remember your Lord within yourself in humility and in fear without loudness in words in the mornings and the evenings.", "Quran 7:205 — morning and evening dhikr is a Quranic command, not just sunnah")}
+${geoBlock('sleep')}
 ${faqHtml(faqs)}
 ${relatedArticlesGrid(RELATED_SLEEP)}
 ${emotionalCTA({ title: "Complete Night Dhikr in MyTazki", subtitle: "Evening azkar with audio, counter, and guided practice — free.", href: "/download", btnText: "Begin Tonight →" })}
