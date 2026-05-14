@@ -250,12 +250,25 @@ export default function LandingPage() {
         {/* Bottom melt into page */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "62%", zIndex: 3, background: `linear-gradient(to bottom, transparent 0%, rgba(9,7,10,0.18) 20%, rgba(9,7,10,0.62) 46%, rgba(9,7,10,0.92) 68%, ${C.bg} 100%)`, pointerEvents: "none" }} />
 
-        {/* ── VERSE — floating in center of image ── */}
-        <div style={{ position: "absolute", top: "22%", left: 0, right: 0, zIndex: 10, padding: "0 28px", textAlign: "center", opacity: verseVisible ? 1 : 0, transition: "opacity 0.8s ease-in-out", pointerEvents: "none" }}>
+        {/* Nav spacer — keeps content below fixed nav */}
+        <div style={{ height: 72, flexShrink: 0, zIndex: 10, position: "relative" }} />
+
+        {/* ── VERSE — in flex flow so it can never overlap headline ── */}
+        <div style={{
+          position: "relative", zIndex: 10,
+          flex: 1,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          padding: "0 28px",
+          textAlign: "center",
+          opacity: verseVisible ? 1 : 0,
+          transition: "opacity 0.8s ease-in-out",
+          pointerEvents: "none",
+          minHeight: 0,
+        }}>
           <div style={{ width: 32, height: 1, margin: "0 auto 18px", background: "linear-gradient(to right, transparent, rgba(201,164,114,0.65), transparent)" }} />
           <div style={{
             fontFamily: "'Scheherazade New', 'Traditional Arabic', 'Noto Naskh Arabic', Georgia, serif",
-            fontSize: "clamp(24px, 5.5vw, 34px)",
+            fontSize: "clamp(22px, 5.5vw, 34px)",
             fontWeight: 700, color: C.cream, direction: "rtl", lineHeight: 1.75, letterSpacing: 0.5,
             textShadow: "0 1px 2px rgba(0,0,0,1), 0 2px 6px rgba(0,0,0,1), 0 4px 12px rgba(0,0,0,0.95)",
             marginBottom: 14,
@@ -271,8 +284,8 @@ export default function LandingPage() {
           <div style={{ width: 32, height: 1, margin: "18px auto 0", background: "linear-gradient(to right, transparent, rgba(201,164,114,0.65), transparent)" }} />
         </div>
 
-        {/* ── HERO HEADLINE + CTA — in the lower third ── */}
-        <div style={{ position: "relative", zIndex: 10, marginTop: "auto", padding: "0 24px 80px", textAlign: "center", maxWidth: 640, margin: "auto auto 0", width: "100%" }}>
+        {/* ── HERO HEADLINE + CTA — always in lower portion, never overlapping ── */}
+        <div style={{ position: "relative", zIndex: 10, padding: "0 24px 72px", textAlign: "center", maxWidth: 640, margin: "0 auto", width: "100%", flexShrink: 0 }}>
           <h1 style={{ fontFamily: "DM Sans, Inter, sans-serif", fontSize: "clamp(32px, 8vw, 58px)", fontWeight: 800, color: C.text, margin: "0 0 18px", lineHeight: 1.06, letterSpacing: "-0.03em" }}>
             MyTazki — AI Islamic Companion<br />
             <span style={{ color: C.green }}>for Daily Muslim Growth</span>
