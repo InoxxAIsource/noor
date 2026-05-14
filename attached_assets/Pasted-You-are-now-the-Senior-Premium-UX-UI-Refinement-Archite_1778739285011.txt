@@ -1,0 +1,404 @@
+You are now the Senior Premium UX/UI Refinement Architect for MyTazki.com.
+
+IMPORTANT:
+This is a VISUAL POLISH + EXPERIENCE REFINEMENT task ONLY.
+
+DO NOT:
+- rebuild architecture
+- refactor backend
+- modify routing
+- alter SEO infrastructure
+- touch business logic
+- change audio systems
+- break session flows
+- remove components
+- change navigation logic
+- modify retention systems
+- alter authentication
+- change APIs
+- touch database systems
+
+Preserve ALL existing functionality exactly as-is.
+
+Your ONLY objective:
+transform the homepage and dashboard into a cinematic premium Islamic wellness experience using the new editorial image system.
+
+========================================
+PRIMARY GOAL
+========================================
+
+Evolve MyTazki from:
+“dark Islamic utility dashboard”
+
+into:
+“premium emotional Islamic wellness platform.”
+
+The product should now feel closer to:
+- Calm
+- Apple Wellness
+- Headspace
+- Quranly
+- premium editorial mindfulness experiences
+
+NOT:
+- crypto dashboard
+- neon gaming UI
+- AI-generated template app
+- feature-heavy utility platform
+
+========================================
+DESIGN PHILOSOPHY
+========================================
+
+The experience should feel:
+- emotionally calming
+- cinematic
+- immersive
+- reflective
+- editorial
+- minimal
+- spiritually grounding
+
+Everything should support:
+“a quiet spiritual reset.”
+
+========================================
+STEP 1 — APPLY NEW CINEMATIC IMAGE SYSTEM
+========================================
+
+Use the newly created cinematic editorial images strategically throughout:
+- homepage
+- dashboard
+- emotional sections
+- journey areas
+- session highlights
+
+IMPORTANT:
+Use images SPARINGLY.
+
+Do NOT overload the interface.
+
+Images should feel:
+- immersive
+- atmospheric
+- emotionally grounding
+- premium
+
+========================================
+IMAGE USAGE RULES
+========================================
+
+Use:
+- soft dark overlays
+- cinematic crops
+- subtle gradients
+- blurred atmospheric edges
+- editorial framing
+
+Images should integrate naturally into the UI.
+
+Avoid:
+- loud banners
+- stock-photo feeling
+- cluttered compositions
+- hard image edges
+- bright backgrounds
+
+========================================
+STEP 2 — HOMEPAGE HERO REDESIGN
+========================================
+
+Transform homepage hero into:
+a cinematic emotional wellness landing experience.
+
+Use:
+- one powerful cinematic hero image
+- dark atmospheric overlay
+- strong emotional typography
+- calm breathing spacing
+- premium editorial layout
+
+Hero should instantly communicate:
+- peace
+- reflection
+- guided spiritual wellness
+- emotional grounding
+
+========================================
+HERO SECTION GOALS
+========================================
+
+User should instantly feel:
+- emotionally safe
+- calm
+- spiritually welcomed
+- curious to continue
+
+The homepage should feel:
+like entering a peaceful spiritual environment.
+
+========================================
+STEP 3 — FIX TYPOGRAPHY + READABILITY
+========================================
+
+Current issue:
+dashboard text visibility is weak.
+
+Improve:
+- contrast
+- font sizing
+- spacing
+- hierarchy
+- readability
+
+Especially improve:
+- dashboard labels
+- section headings
+- subtitles
+- prayer timing text
+- pathway descriptions
+- CTA readability
+
+Typography should feel:
+- premium
+- editorial
+- calm
+- highly legible
+- emotionally soft
+
+========================================
+TYPOGRAPHY RULES
+========================================
+
+Use:
+- larger section titles
+- softer but readable secondary text
+- increased line-height
+- breathing room
+- stronger hierarchy
+
+Avoid:
+- tiny muted text
+- compressed spacing
+- low-opacity labels
+- flat typography
+
+========================================
+STEP 4 — CREATE VISUAL HIERARCHY
+========================================
+
+The homepage and dashboard currently feel visually flat.
+
+Create clear hierarchy between:
+1. emotional grounding
+2. today’s reflection
+3. pathways
+4. prayer continuity
+5. immersive sessions
+6. utilities/tools
+
+Utilities should feel secondary.
+
+The eye should naturally flow through the experience.
+
+========================================
+STEP 5 — REDESIGN DASHBOARD ATMOSPHERE
+========================================
+
+Dashboard should feel:
+like a peaceful spiritual home.
+
+Add:
+- atmospheric depth
+- subtle layered gradients
+- cinematic shadows
+- warm glow accents
+- softer card separation
+- breathing space
+
+Reduce:
+- flat green panels
+- visual density
+- repetitive card appearance
+
+========================================
+STEP 6 — REFINE CARD DESIGN SYSTEM
+========================================
+
+Current cards feel repetitive.
+
+Create:
+- stronger elevation hierarchy
+- softer glass/gradient feel
+- premium shadows
+- subtle hover/tap animations
+- better spacing rhythm
+
+Cards should feel:
+- immersive
+- premium
+- breathable
+- emotionally calm
+
+========================================
+STEP 7 — IMAGE-INTEGRATED SECTIONS
+========================================
+
+Strategically integrate cinematic imagery into:
+- homepage hero
+- emotional pathways
+- reflection sections
+- guided journeys
+- featured sessions
+
+Use:
+- edge fades
+- overlays
+- atmospheric blending
+- layered depth
+
+Avoid:
+- obvious rectangular image blocks
+- image spam
+- harsh transitions
+
+========================================
+STEP 8 — SESSION HIGHLIGHT POLISH
+========================================
+
+Today’s Focus and guided sessions should feel:
+- cinematic
+- emotionally immersive
+- calming
+- premium
+
+Enhance:
+- play button prominence
+- atmospheric glow
+- emotional typography
+- subtle ambient movement
+- elegant spacing
+
+Session cards should feel:
+like entering an experience.
+
+========================================
+STEP 9 — REMOVE ALL EMOJI ENERGY
+========================================
+
+Replace all remaining emojis with:
+- premium SVG icon system
+- Lucide icons
+- minimal line iconography
+
+Icons should feel:
+- calm
+- elegant
+- spiritual
+- intentional
+
+========================================
+STEP 10 — CREATE PREMIUM SPACING SYSTEM
+========================================
+
+Introduce:
+- more whitespace
+- calmer scrolling rhythm
+- breathing sections
+- softer layout density
+
+The UI should never feel:
+crowded or overwhelming.
+
+========================================
+STEP 11 — MOBILE-FIRST PREMIUM EXPERIENCE
+========================================
+
+Prioritize mobile immersion first.
+
+Ensure:
+- typography is readable
+- cards breathe properly
+- hero image crops elegantly
+- touch targets feel premium
+- scrolling feels cinematic
+
+Avoid:
+- cramped layouts
+- tiny text
+- compressed cards
+
+========================================
+STEP 12 — MICRO INTERACTIONS
+========================================
+
+Add subtle premium interactions:
+- soft fades
+- atmospheric transitions
+- breathing glows
+- smooth image transitions
+- elegant hover/tap states
+- calming motion
+
+Animations should feel:
+- subtle
+- immersive
+- emotionally soft
+
+NOT:
+- flashy
+- gamified
+- distracting
+
+========================================
+STEP 13 — CREATE EMOTIONAL CONTINUITY
+========================================
+
+Dashboard should visually communicate:
+- progress
+- calmness
+- continuity
+- spiritual return
+
+Users should feel:
+“MyTazki remembers my emotional journey.”
+
+========================================
+STEP 14 — MAINTAIN VISUAL CONSISTENCY
+========================================
+
+ALL new UI additions must match:
+- cinematic image palette
+- dark green atmosphere
+- warm beige/gold highlights
+- editorial wellness aesthetic
+- calm emotional tone
+
+Everything should feel like:
+ONE cohesive cinematic wellness system.
+
+========================================
+FINAL GOAL
+========================================
+
+The final homepage + dashboard should feel:
+- premium
+- cinematic
+- emotionally grounding
+- modern
+- immersive
+- spiritually calming
+- subscription-worthy
+
+Users should feel:
+they entered a peaceful emotional wellness sanctuary —
+not a feature-heavy utility dashboard.
+
+WITHOUT changing:
+- technical architecture
+- backend systems
+- routing
+- SEO/GEO systems
+- session logic
+- emotional retention systems
+- existing app functionality
