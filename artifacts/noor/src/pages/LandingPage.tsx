@@ -256,14 +256,16 @@ export default function LandingPage() {
         {/* ── VERSE — in flex flow so it can never overlap headline ── */}
         <div style={{
           position: "relative", zIndex: 10,
-          flex: 1,
+          flex: "1 1 0",
+          minHeight: 120,
+          maxHeight: 320,
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           padding: "0 28px",
           textAlign: "center",
           opacity: verseVisible ? 1 : 0,
           transition: "opacity 0.8s ease-in-out",
           pointerEvents: "none",
-          minHeight: 0,
+          overflow: "hidden",
         }}>
           <div style={{ width: 32, height: 1, margin: "0 auto 18px", background: "linear-gradient(to right, transparent, rgba(201,164,114,0.65), transparent)" }} />
           <div style={{

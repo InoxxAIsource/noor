@@ -306,30 +306,10 @@ html, body, #root {
   50%       { filter: drop-shadow(0 0 20px rgba(52,201,122,0.7)); }
 }
 
-/* ── RTL layout support (Arabic / Urdu) ─────────────────────────── */
-[dir="rtl"] body {
-  text-align: right;
-}
-[dir="rtl"] .flex-row,
-[dir="rtl"] [class*="flex"]:not([class*="flex-col"]) {
-  flex-direction: row-reverse;
-}
-/* Keep vertical flex as-is */
-[dir="rtl"] [class*="flex-col"] {
-  flex-direction: column;
-}
-/* Nav bottom bar: reverse icon order */
-[dir="rtl"] nav[class*="fixed bottom"] {
-  flex-direction: row-reverse;
-}
-/* Text inputs: align right */
+/* ── RTL text direction (Arabic / Urdu) ─────────────────────────── */
+/* Only adjust text alignment — never reverse layout containers.    */
+/* Arabic text uses inline dir="rtl" on individual elements only.   */
 [dir="rtl"] input,
 [dir="rtl"] textarea {
-  text-align: right;
-}
-/* Padding/margin logical swap helpers */
-[dir="rtl"] .animate-fade-in > * > h1,
-[dir="rtl"] .animate-fade-in > * > h2,
-[dir="rtl"] .animate-fade-in > * > p {
   text-align: right;
 }
