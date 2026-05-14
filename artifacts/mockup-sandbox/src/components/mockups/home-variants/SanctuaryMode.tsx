@@ -162,11 +162,11 @@ export function SanctuaryMode() {
               ألا بذكر الله تطمئن القلوب
             </div>
 
-            {/* Translation — no shadow spread, just hard drop */}
+            {/* Translation */}
             <div style={{
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 500,
-              color: "rgba(250,242,226,0.80)",
+              color: "rgba(250,242,226,0.96)",
               letterSpacing: 0.4,
               lineHeight: 1.7,
               textShadow: "0 1px 2px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,1)",
@@ -176,10 +176,10 @@ export function SanctuaryMode() {
 
             {/* Source */}
             <div style={{
-              fontSize: 10, fontWeight: 500,
-              color: "rgba(201,164,114,0.58)",
-              marginTop: 10, letterSpacing: 2,
-              textShadow: "0 1px 2px rgba(0,0,0,1)",
+              fontSize: 11, fontWeight: 600,
+              color: "rgba(201,164,114,0.92)",
+              marginTop: 11, letterSpacing: 2.2,
+              textShadow: "0 1px 2px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,1)",
             }}>
               SURAH AR-RA'D · 13:28
             </div>
