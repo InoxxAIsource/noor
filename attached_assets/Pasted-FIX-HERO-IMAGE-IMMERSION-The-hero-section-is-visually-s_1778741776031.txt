@@ -1,0 +1,272 @@
+FIX HERO IMAGE IMMERSION
+========================================
+
+The hero section is visually strong but currently:
+- slightly too dark
+- losing facial emotional detail
+- flattening the cinematic depth
+
+Improve:
+- tonal balance
+- shadow detail
+- emotional readability
+- atmospheric layering
+
+IMPORTANT:
+Do NOT brighten the entire image.
+
+Instead:
+- softly lift dark shadows
+- preserve cinematic contrast
+- maintain nighttime mood
+- improve emotional visibility
+
+The user’s face and hands should subtly emerge from the darkness naturally.
+
+========================================
+STEP 2 — CREATE SMOOTHER ATMOSPHERIC OVERLAYS
+========================================
+
+Current image-to-dashboard transition feels abrupt.
+
+Create:
+- atmospheric fade transitions
+- cinematic gradient blending
+- layered shadow overlays
+- soft immersion into content
+
+The dashboard should feel like:
+it emerges naturally from the emotional hero image.
+
+Avoid:
+- hard section cuts
+- obvious rectangular separations
+- flat panel transitions
+
+========================================
+STEP 3 — REFINE ARABIC TYPOGRAPHY
+========================================
+
+Current Arabic verse styling feels slightly:
+- floating
+- overly digital
+- neon-like
+
+Refine Arabic presentation into:
+quiet sacred editorial typography.
+
+Improve:
+- spacing
+- glow softness
+- positioning
+- visual elegance
+
+Use:
+- softer luminous glow
+- subtle blur diffusion
+- premium typography balance
+- cleaner vertical spacing
+
+The Arabic should feel:
+- immersive
+- elegant
+- spiritual
+- calm
+- emotionally grounded
+
+NOT:
+- flashy
+- neon
+- cyberpunk
+- glowing quote card
+
+========================================
+STEP 4 — IMPROVE VERSE HIERARCHY
+========================================
+
+Refine hierarchy between:
+- Arabic
+- translation
+- hero image
+- greeting section
+
+Translation text should feel:
+- calmer
+- softer
+- more premium
+- more readable
+
+Avoid:
+- compressed spacing
+- thin visibility
+- overly italicized weak readability
+
+========================================
+STEP 5 — GREETING SECTION POLISH
+========================================
+
+The greeting area currently feels slightly compressed.
+
+Improve:
+- spacing rhythm
+- typography scale
+- emotional breathing room
+- visual hierarchy
+
+Create more elegant separation between:
+- time greeting
+- username
+- emotional subtitle
+
+The greeting should feel:
+personal and emotionally warm.
+
+========================================
+STEP 6 — CREATE LAYERED DASHBOARD DEPTH
+========================================
+
+Current dashboard still feels visually flat.
+
+Introduce:
+- subtle depth layering
+- elevated surfaces
+- cinematic shadows
+- differentiated surface hierarchy
+- soft glow reflections
+
+Cards should feel:
+- immersive
+- atmospheric
+- premium
+- emotionally calm
+
+Avoid:
+- flat green blocks
+- repetitive surfaces
+- equal visual weight everywhere
+
+========================================
+STEP 7 — FOCUS SESSION CARD REFINEMENT
+========================================
+
+The “Your Focus Now” card is strong.
+
+Now elevate it further.
+
+Improve:
+- typography hierarchy
+- glow subtlety
+- button immersion
+- spacing
+- emotional emphasis
+
+The session card should feel:
+like entering a calming experience.
+
+NOT:
+like pressing a utility button.
+
+========================================
+STEP 8 — PREMIUM PLAY BUTTON POLISH
+========================================
+
+Current play button is good but can feel more premium.
+
+Refine:
+- glow diffusion
+- shadow softness
+- depth
+- hover/tap animation
+- ambient light reflection
+
+The button should feel:
+softly luminous and immersive.
+
+NOT:
+flat neon green.
+
+========================================
+STEP 9 — ADD SUBTLE ATMOSPHERIC MOTION
+========================================
+
+Add VERY subtle motion:
+- ambient breathing glow
+- soft floating gradients
+- slow atmospheric shimmer
+- cinematic background movement
+
+Animations should feel:
+- emotionally calming
+- premium
+- minimal
+- nearly invisible
+
+Avoid:
+- flashy animations
+- gamification
+- obvious effects
+
+========================================
+STEP 10 — IMPROVE READABILITY EVERYWHERE
+========================================
+
+Increase clarity for:
+- labels
+- subtitles
+- prayer countdowns
+- secondary text
+- dashboard metadata
+
+Current issue:
+some text still disappears into dark UI.
+
+Improve:
+- contrast
+- hierarchy
+- readability
+- spacing
+
+WITHOUT making UI brighter overall.
+
+========================================
+STEP 11 — CREATE PREMIUM SPACING RHYTHM
+========================================
+
+Introduce:
+- more whitespace
+- calmer layout pacing
+- elegant vertical rhythm
+- breathing room between sections
+
+The experience should never feel:
+crowded or dense.
+
+========================================
+STEP 12 — MOBILE-FIRST IMMERSION
+========================================
+
+Prioritize iPhone/mobile emotional immersion first.
+
+Ensure:
+- cinematic hero crops correctly
+- typography breathes
+- dashboard feels premium while scrolling
+- thumb interactions feel elegant
+- section transitions feel immersive
+
+========================================
+STEP 13 — MAINTAIN VISUAL CONSISTENCY
+========================================
+
+ALL UI elements must match:
+- cinematic editorial image system
+- dark green emotional palette
+- warm lamp glow atmosphere
+- premium wellness aesthetic
+- emotionally grounded mood
+
+Everything should feel:
+part of ONE cohesive cinematic universe.
+
+========================================
+FINAL EXPERIENCE GOAL
