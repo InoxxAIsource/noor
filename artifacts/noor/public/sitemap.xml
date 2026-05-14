@@ -154,4 +154,45 @@
   <url><loc>https://mytazki.com/companion</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://mytazki.com/halaqah</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
+  <!-- ── Sanctuary Mode: Anxiety & Sleep cluster ── -->
+  <url><loc>https://mytazki.com/ruqyah-for-anxiety</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/islamic-anxiety-help</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/panic-attack-dua</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/quran-verses-for-anxiety</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/how-to-calm-anxiety-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/negative-thoughts-in-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/trust-allah-and-stop-overthinking</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/islamic-sleep-meditation</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/quran-for-sleep</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/dua-before-sleep</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/ruqyah-for-sleep</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/surah-for-sleep</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/night-dhikr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ── Sanctuary Mode: Healing & Rizq cluster ── -->
+  <url><loc>https://mytazki.com/dua-for-stress</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/healing-through-quran</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/sadness-in-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/allah-tests-those-he-loves</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/healing-after-breakup-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/dua-for-heartbreak</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/letting-go-in-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/allah-heals-broken-hearts</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/dua-for-rizq</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/barakah-in-rizq</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/dua-for-job</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/surah-for-rizq</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/islamic-financial-stress</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ── Sanctuary Mode: Growth & Spiritual cluster ── -->
+  <url><loc>https://mytazki.com/islamic-morning-routine</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/morning-azkar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/daily-islamic-habits</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/productive-muslim-routine</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/fajr-routine</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/muslim-mindfulness</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/daily-tazkiyah</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/healing-with-dhikr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mytazki.com/spiritual-burnout-islam</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
 </urlset>

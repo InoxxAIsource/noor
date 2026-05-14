@@ -32,6 +32,9 @@ import aiExpansionRouter from "./seo/ai-expansion.js";
 import entityPagesRouter from "./seo/entity-pages.js";
 import geoLandingPagesRouter from "./seo/geo-landing-pages.js";
 import funnelPagesRouter from "./seo/funnel-pages.js";
+import sanctuaryAnxietySleepRouter from "./seo/sanctuary-anxiety-sleep.js";
+import sanctuaryHealingRizqRouter from "./seo/sanctuary-healing-rizq.js";
+import sanctuaryGrowthSpiritualRouter from "./seo/sanctuary-growth-spiritual.js";
 import { runNotificationScheduler } from "./routes/notifications.js";
 
 const app: Express = express();
@@ -122,6 +125,11 @@ app.use(aiExpansionRouter);
 app.use(entityPagesRouter);
 app.use(geoLandingPagesRouter);
 app.use(funnelPagesRouter);
+
+// SEO Phase 4 — Sanctuary Mode: anxiety/sleep, healing/rizq, growth/spiritual
+app.use(sanctuaryAnxietySleepRouter);
+app.use(sanctuaryHealingRizqRouter);
+app.use(sanctuaryGrowthSpiritualRouter);
 
 app.use("/api/ai", aiLimiter);
 app.use("/api", globalLimiter, router);

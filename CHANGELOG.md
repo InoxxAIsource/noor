@@ -1,5 +1,37 @@
 # MyTazki — Changelog
 
+### 2026-05-14 — SEO Phase 4: 35 new Sanctuary Mode landing pages (42 total)
+
+**New SSR route files (3 files, 35 routes):**
+
+- **`sanctuary-anxiety-sleep.ts`** — 13 routes:
+  - `/ruqyah-for-anxiety`, `/islamic-anxiety-help`, `/panic-attack-dua`, `/quran-verses-for-anxiety`, `/how-to-calm-anxiety-islam`, `/negative-thoughts-in-islam`, `/trust-allah-and-stop-overthinking`
+  - `/islamic-sleep-meditation`, `/quran-for-sleep`, `/dua-before-sleep`, `/ruqyah-for-sleep`, `/surah-for-sleep`, `/night-dhikr`
+
+- **`sanctuary-healing-rizq.ts`** — 13 routes:
+  - `/dua-for-stress`, `/healing-through-quran`, `/sadness-in-islam`, `/allah-tests-those-he-loves`, `/healing-after-breakup-islam`, `/dua-for-heartbreak`, `/letting-go-in-islam`, `/allah-heals-broken-hearts`
+  - `/dua-for-rizq`, `/barakah-in-rizq`, `/dua-for-job`, `/surah-for-rizq`, `/islamic-financial-stress`
+
+- **`sanctuary-growth-spiritual.ts`** — 9 routes:
+  - `/islamic-morning-routine`, `/morning-azkar`, `/daily-islamic-habits`, `/productive-muslim-routine`, `/fajr-routine`, `/muslim-mindfulness`, `/daily-tazkiyah`, `/healing-with-dhikr`, `/spiritual-burnout-islam`
+
+**Infrastructure updates:**
+- `app.ts` — 3 new router imports + `app.use()` registrations (SEO Phase 4 section)
+- `artifact.toml` — 35 new paths added to the API server routing config
+- `sitemap.xml` — 35 new URLs added across 3 annotated sections
+- All pages: TypeScript typecheck clean ✓, HTTP 200 confirmed ✓
+
+**Design language — Sanctuary Mode:**
+- Cinematic hero sections: dark warm gradient backgrounds (`#09070A` → `#0d0a08`), radial atmospheric overlays
+- DM Sans / Inter / Amiri typography with large display headings (clamp 1.85rem–2.9rem)
+- Gold (`#c9a472`) mood labels, green (`#34c97a`) CTAs, warm muted body text (`#6e5e4c`)
+- Each page: authentic Arabic duas with transliteration, Quranic ayat in Arabic + translation, FAQ schema, breadcrumb schema, Article schema, rel. articles grid
+
+**9 pages already existed (not duplicated):**
+`/dua-for-anxiety`, `/how-to-stop-overthinking-islam`, `/dua-for-overthinking`, `/islamic-mental-health`, `/islamic-habit-tracker`, `/islamic-self-improvement`, `/dua-for-loneliness`, `/islamic-healing-from-heartbreak`, `/quran-for-depression`
+
+---
+
 ### 2026-05-14 — Sanctuary Mode deep sweep: zero old colors remain + SubscribePage/DownloadPage rewrites
 
 **Complete palette audit — every remaining hardcoded old-green value eliminated:**
