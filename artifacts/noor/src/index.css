@@ -148,8 +148,8 @@ html, body, #root {
 * { box-sizing: border-box; }
 
 @keyframes crescent-glow {
-  0%,100%{box-shadow:0 0 20px rgba(0,165,80,0.2)}
-  50%{box-shadow:0 0 40px rgba(0,165,80,0.5)}
+  0%,100%{box-shadow:0 0 20px rgba(52,201,122,0.2)}
+  50%{box-shadow:0 0 40px rgba(52,201,122,0.5)}
 }
 @keyframes fade-in {
   from{opacity:0;transform:translateY(12px)}
@@ -302,8 +302,8 @@ html, body, #root {
 }
 
 @keyframes noor-crescent-glow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(0,165,80,0.3)); }
-  50%       { filter: drop-shadow(0 0 20px rgba(0,165,80,0.7)); }
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(52,201,122,0.3)); }
+  50%       { filter: drop-shadow(0 0 20px rgba(52,201,122,0.7)); }
 }
 
 /* ── RTL layout support (Arabic / Urdu) ─────────────────────────── */

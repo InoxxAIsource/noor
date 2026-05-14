@@ -96,7 +96,7 @@ const GiftPage: React.FC = () => {
           <p className="text-sm text-[var(--muted)]">Listen to this dua, free on MyTazki</p>
           <Link
             to="/register"
-            className="block w-full bg-[var(--green)] text-white py-4 rounded-2xl font-cinzel text-lg text-center shadow-[0_0_20px_rgba(0,165,80,0.3)] hover:bg-[var(--green)]/90 transition-colors"
+            className="block w-full bg-[var(--green)] text-white py-4 rounded-2xl font-cinzel text-lg text-center shadow-[0_0_20px_rgba(52,201,122,0.3)] hover:bg-[var(--green)]/90 transition-colors"
           >
             Listen to this Dua, Free
           </Link>

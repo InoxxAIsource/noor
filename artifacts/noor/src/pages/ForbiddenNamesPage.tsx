@@ -40,7 +40,7 @@ const FORBIDDEN_NAMES: ForbiddenName[] = [
 const RULINGS: Record<string, { label: string; color: string; bg: string }> = {
   haram:      { label: "Forbidden",    color: "#c04848", bg: "rgba(192,72,72,0.15)" },
   makrooh:    { label: "Disliked",     color: "#ff9900", bg: "rgba(255,153,0,0.12)" },
-  discouraged:{ label: "Discouraged",  color: "#4a7a4a", bg: "rgba(74,122,74,0.15)" },
+  discouraged:{ label: "Discouraged",  color: "#6e5e4c", bg: "rgba(110,94,76,0.12)" },
 };
 
 const ForbiddenNamesPage: React.FC = () => {

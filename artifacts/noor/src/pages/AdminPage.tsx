@@ -13,11 +13,11 @@ const TABS = ["Stats", "Sessions", "Duas", "Blog", "Names", "Allah Names", "Wait
 type Tab = typeof TABS[number];
 
 function StatusDot({ ok }: { ok: boolean }) {
-  return <span style={{ color: ok ? "#00a550" : "#ff4444", marginRight: 6 }}>{ok ? "🟢" : "🔴"}</span>;
+  return <span style={{ color: ok ? "#34c97a" : "#ff4444", marginRight: 6 }}>{ok ? "🟢" : "🔴"}</span>;
 }
 
 function Spinner() {
-  return <span style={{ color: "#4a7a4a" }}>Loading…</span>;
+  return <span style={{ color: "#6e5e4c" }}>Loading…</span>;
 }
 
 export default function AdminPage() {
@@ -136,22 +136,22 @@ export default function AdminPage() {
     await loadNames();
   }
 
-  const css: React.CSSProperties = { background: "#001a00", minHeight: "100vh", padding: "0 0 80px" };
-  const card: React.CSSProperties = { background: "#002800", border: "1px solid rgba(0,165,80,0.2)", borderRadius: 10, padding: 16, marginBottom: 12 };
-  const input: React.CSSProperties = { background: "#001a00", border: "1px solid rgba(0,165,80,0.3)", color: "#e8f5e8", borderRadius: 6, padding: "6px 10px", width: 280, fontSize: 13 };
-  const btn: React.CSSProperties = { background: "#00a550", color: "#001a00", border: "none", borderRadius: 6, padding: "6px 14px", cursor: "pointer", fontWeight: "bold", fontSize: 13, marginLeft: 8 };
-  const btnSm: React.CSSProperties = { ...btn, padding: "4px 10px", fontSize: 12, background: "#003800", color: "#00a550", border: "1px solid rgba(0,165,80,0.3)" };
+  const css: React.CSSProperties = { background: "#09070A", minHeight: "100vh", padding: "0 0 80px" };
+  const card: React.CSSProperties = { background: "#1a130d", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 10, padding: 16, marginBottom: 12 };
+  const input: React.CSSProperties = { background: "#09070A", border: "1px solid rgba(52,201,122,0.3)", color: "#f0ece4", borderRadius: 6, padding: "6px 10px", width: 280, fontSize: 13 };
+  const btn: React.CSSProperties = { background: "#34c97a", color: "#09070A", border: "none", borderRadius: 6, padding: "6px 14px", cursor: "pointer", fontWeight: "bold", fontSize: 13, marginLeft: 8 };
+  const btnSm: React.CSSProperties = { ...btn, padding: "4px 10px", fontSize: 12, background: "#241a10", color: "#34c97a", border: "1px solid rgba(52,201,122,0.3)" };
 
   return (
     <div style={css}>
-      <div style={{ background: "#002800", padding: "16px 20px", borderBottom: "1px solid rgba(0,165,80,0.2)", position: "sticky", top: 0, zIndex: 10 }}>
-        <h1 style={{ color: "#ffd700", fontFamily: "Cinzel,serif", fontSize: "1.2rem", margin: 0 }}>MyTazki Admin Panel</h1>
-        {msg && <p style={{ color: "#00a550", fontSize: 13, margin: "6px 0 0" }}>{msg}</p>}
+      <div style={{ background: "#1a130d", padding: "16px 20px", borderBottom: "1px solid rgba(52,201,122,0.2)", position: "sticky", top: 0, zIndex: 10 }}>
+        <h1 style={{ color: "#c9a472", fontFamily: "Cinzel,serif", fontSize: "1.2rem", margin: 0 }}>MyTazki Admin Panel</h1>
+        {msg && <p style={{ color: "#34c97a", fontSize: 13, margin: "6px 0 0" }}>{msg}</p>}
       </div>
 
       <div style={{ display: "flex", gap: 4, padding: "12px 16px", overflowX: "auto" }}>
         {TABS.map(t => (
-          <button key={t} onClick={() => setTab(t)} style={{ ...btnSm, background: tab === t ? "#00a550" : "#002800", color: tab === t ? "#001a00" : "#00a550", whiteSpace: "nowrap" }}>{t}</button>
+          <button key={t} onClick={() => setTab(t)} style={{ ...btnSm, background: tab === t ? "#34c97a" : "#1a130d", color: tab === t ? "#09070A" : "#34c97a", whiteSpace: "nowrap" }}>{t}</button>
         ))}
       </div>
 
@@ -170,8 +170,8 @@ export default function AdminPage() {
                   ["Est. Cost (USD)", `$${(stats.estimatedCostUSD ?? 0).toFixed(4)}`],
                 ].map(([label, val]) => (
                   <div key={String(label)} style={card}>
-                    <p style={{ color: "#4a7a4a", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase" }}>{label}</p>
-                    <p style={{ color: "#ffd700", fontSize: "1.5rem", fontFamily: "Cinzel,serif", margin: 0 }}>{val}</p>
+                    <p style={{ color: "#6e5e4c", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase" }}>{label}</p>
+                    <p style={{ color: "#c9a472", fontSize: "1.5rem", fontFamily: "Cinzel,serif", margin: 0 }}>{val}</p>
                   </div>
                 ))}
               </div>
@@ -188,8 +188,8 @@ export default function AdminPage() {
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
                   <div>
                     <StatusDot ok={!!s.audioUrl} />
-                    <span style={{ color: "#e8f5e8", fontSize: 14, fontWeight: "bold" }}>{s.title}</span>
-                    <span style={{ color: "#4a7a4a", fontSize: 12, marginLeft: 8 }}>{s.category} · {s.duration}</span>
+                    <span style={{ color: "#f0ece4", fontSize: 14, fontWeight: "bold" }}>{s.title}</span>
+                    <span style={{ color: "#6e5e4c", fontSize: 12, marginLeft: 8 }}>{s.category} · {s.duration}</span>
                   </div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <input
@@ -203,7 +203,7 @@ export default function AdminPage() {
                     </button>
                   </div>
                 </div>
-                {s.audioUrl && <p style={{ color: "#4a7a4a", fontSize: 11, margin: "6px 0 0", wordBreak: "break-all" }}>✅ {s.audioUrl}</p>}
+                {s.audioUrl && <p style={{ color: "#6e5e4c", fontSize: 11, margin: "6px 0 0", wordBreak: "break-all" }}>✅ {s.audioUrl}</p>}
               </div>
             ))}
           </div>
@@ -219,7 +219,7 @@ export default function AdminPage() {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
                     <div>
                       <StatusDot ok={!!d.audioUrl} />
-                      <span style={{ color: "#e8f5e8", fontSize: 13 }}>{d.title}</span>
+                      <span style={{ color: "#f0ece4", fontSize: 13 }}>{d.title}</span>
                     </div>
                     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                       <input
@@ -236,7 +236,7 @@ export default function AdminPage() {
                 </div>
               );
             })}
-            {duas.length > 50 && <p style={{ color: "#4a7a4a", fontSize: 13 }}>Showing 50 of {duas.length}</p>}
+            {duas.length > 50 && <p style={{ color: "#6e5e4c", fontSize: 13 }}>Showing 50 of {duas.length}</p>}
           </div>
         )}
 
@@ -246,7 +246,7 @@ export default function AdminPage() {
             {blogPosts.length === 0 ? <Spinner /> : (
               <>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                  <p style={{ color: "#4a7a4a", fontSize: 13, margin: 0 }}>
+                  <p style={{ color: "#6e5e4c", fontSize: 13, margin: 0 }}>
                     {blogPosts.filter(b => b.hasContent).length} / {blogPosts.length} posts generated
                   </p>
                   <button onClick={() => void loadBlogPosts()} style={{ ...btnSm }}>Refresh</button>
@@ -256,19 +256,19 @@ export default function AdminPage() {
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
                       <div>
                         <StatusDot ok={b.hasContent} />
-                        <span style={{ color: "#e8f5e8", fontSize: 13, fontWeight: "bold" }}>{b.slug}</span>
-                        <span style={{ color: "#4a7a4a", fontSize: 12, marginLeft: 8 }}>{b.category}</span>
-                        {b.hasContent && <span style={{ color: "#00a550", fontSize: 11, marginLeft: 8 }}>{b.wordCount} words</span>}
+                        <span style={{ color: "#f0ece4", fontSize: 13, fontWeight: "bold" }}>{b.slug}</span>
+                        <span style={{ color: "#6e5e4c", fontSize: 12, marginLeft: 8 }}>{b.category}</span>
+                        {b.hasContent && <span style={{ color: "#34c97a", fontSize: 11, marginLeft: 8 }}>{b.wordCount} words</span>}
                       </div>
                       <button
                         onClick={() => void generateBlog(b.slug, b.title, b.category)}
                         disabled={generating[b.slug]}
-                        style={{ ...btn, background: b.hasContent ? "#003800" : "#00a550", color: b.hasContent ? "#00a550" : "#001a00" }}
+                        style={{ ...btn, background: b.hasContent ? "#241a10" : "#34c97a", color: b.hasContent ? "#34c97a" : "#09070A" }}
                       >
                         {generating[b.slug] ? "Generating…" : b.hasContent ? "Regenerate" : "Generate"}
                       </button>
                     </div>
-                    <p style={{ color: "#4a7a4a", fontSize: 12, margin: "4px 0 0" }}>{b.title}</p>
+                    <p style={{ color: "#6e5e4c", fontSize: 12, margin: "4px 0 0" }}>{b.title}</p>
                     {b.generatedAt && <p style={{ color: "#2a4a2a", fontSize: 11, margin: "2px 0 0" }}>Generated {new Date(b.generatedAt).toLocaleDateString()}</p>}
                   </div>
                 ))}
@@ -281,12 +281,12 @@ export default function AdminPage() {
         {tab === "Names" && (
           <div>
             <div style={card}>
-              <p style={{ color: "#ffd700", fontFamily: "Cinzel,serif", margin: "0 0 8px" }}>Name Database</p>
-              <p style={{ color: "#e8f5e8", margin: "0 0 12px" }}>{names.length} names loaded</p>
-              <div style={{ background: "#001a00", borderRadius: 6, height: 12, marginBottom: 16, overflow: "hidden" }}>
-                <div style={{ width: `${Math.min(100, (names.length / 5000) * 100)}%`, height: "100%", background: "#00a550" }} />
+              <p style={{ color: "#c9a472", fontFamily: "Cinzel,serif", margin: "0 0 8px" }}>Name Database</p>
+              <p style={{ color: "#f0ece4", margin: "0 0 12px" }}>{names.length} names loaded</p>
+              <div style={{ background: "#09070A", borderRadius: 6, height: 12, marginBottom: 16, overflow: "hidden" }}>
+                <div style={{ width: `${Math.min(100, (names.length / 5000) * 100)}%`, height: "100%", background: "#34c97a" }} />
               </div>
-              <p style={{ color: "#4a7a4a", fontSize: 13, margin: "0 0 12px" }}>{names.length} / 5000 target</p>
+              <p style={{ color: "#6e5e4c", fontSize: 13, margin: "0 0 12px" }}>{names.length} / 5000 target</p>
               <div style={{ display: "flex", gap: 10 }}>
                 <button onClick={() => void generateNames("boy")} disabled={generating["names_gen"]} style={btn}>
                   {generating["names_gen"] ? "…" : "+ 20 Boy Names (AI)"}
@@ -307,8 +307,8 @@ export default function AdminPage() {
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
                   <div>
                     <StatusDot ok={!!n.audioUrl} />
-                    <span style={{ color: "#e8f5e8", fontSize: 13 }}>{n.number}. {n.transliteration}</span>
-                    <span dir="rtl" lang="ar" style={{ fontFamily: "Amiri,serif", color: "#ffd700", marginLeft: 12, fontSize: "1.1em" }}>{n.arabic}</span>
+                    <span style={{ color: "#f0ece4", fontSize: 13 }}>{n.number}. {n.transliteration}</span>
+                    <span dir="rtl" lang="ar" style={{ fontFamily: "Amiri,serif", color: "#c9a472", marginLeft: 12, fontSize: "1.1em" }}>{n.arabic}</span>
                   </div>
                 </div>
               </div>
@@ -320,11 +320,11 @@ export default function AdminPage() {
         {tab === "Waitlist" && (
           <div>
             <div style={card}>
-              <p style={{ color: "#ffd700", fontFamily: "Cinzel,serif", margin: "0 0 8px" }}>{waitlist.length} on waitlist</p>
-              <ul style={{ margin: 0, padding: "0 0 0 16px", color: "#a0c8a0", fontSize: 13 }}>
+              <p style={{ color: "#c9a472", fontFamily: "Cinzel,serif", margin: "0 0 8px" }}>{waitlist.length} on waitlist</p>
+              <ul style={{ margin: 0, padding: "0 0 0 16px", color: "#6e5e4c", fontSize: 13 }}>
                 {waitlist.map(e => <li key={e}>{e}</li>)}
               </ul>
-              {waitlist.length === 0 && <p style={{ color: "#4a7a4a", fontSize: 13 }}>No signups yet.</p>}
+              {waitlist.length === 0 && <p style={{ color: "#6e5e4c", fontSize: 13 }}>No signups yet.</p>}
             </div>
           </div>
         )}

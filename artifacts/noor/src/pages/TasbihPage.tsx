@@ -110,15 +110,15 @@ const TasbihPage: React.FC = () => {
               <div key={i} className="absolute w-3 h-3 rounded-full transition-all duration-100"
                 style={{
                   left: bx - 6, top: by - 6,
-                  backgroundColor: lit ? "var(--green)" : "rgba(0,165,80,0.15)",
-                  boxShadow: lit ? "0 0 6px rgba(0,165,80,0.6)" : "none",
+                  backgroundColor: lit ? "var(--green)" : "rgba(52,201,122,0.15)",
+                  boxShadow: lit ? "0 0 6px rgba(52,201,122,0.6)" : "none",
                 }}
               />
             );
           })}
 
           <svg width={size} height={size} className="absolute inset-0">
-            <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(0,165,80,0.1)" strokeWidth="8" />
+            <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(52,201,122,0.1)" strokeWidth="8" />
             <circle cx={cx} cy={cy} r={r} fill="none" stroke="var(--green)" strokeWidth="8"
               strokeDasharray={`${strokeDash} ${circumference}`}
               strokeLinecap="round"
@@ -129,9 +129,9 @@ const TasbihPage: React.FC = () => {
 
           <button
             onClick={handleTap}
-            className={`absolute inset-0 m-8 rounded-full bg-[var(--surface)] flex flex-col items-center justify-center shadow-[0_0_40px_rgba(0,165,80,0.15)] transition-all duration-150 border-2 ${
+            className={`absolute inset-0 m-8 rounded-full bg-[var(--surface)] flex flex-col items-center justify-center shadow-[0_0_40px_rgba(52,201,122,0.15)] transition-all duration-150 border-2 ${
               isPulsing
-                ? "scale-95 shadow-[0_0_60px_rgba(0,165,80,0.5)] border-[var(--gold)]"
+                ? "scale-95 shadow-[0_0_60px_rgba(52,201,122,0.5)] border-[var(--gold)]"
                 : justCompleted
                 ? "scale-105 border-[var(--gold)] bg-[var(--gold)]/10"
                 : "scale-100 border-[var(--green)]/40"

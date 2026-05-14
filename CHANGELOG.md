@@ -1,5 +1,28 @@
 # MyTazki — Changelog
 
+### 2026-05-14 — Sanctuary Mode deep sweep: zero old colors remain + SubscribePage/DownloadPage rewrites
+
+**Complete palette audit — every remaining hardcoded old-green value eliminated:**
+
+**Pages fully rewritten (Sanctuary Mode cinematic design):**
+- **SubscribePage.tsx** — full rewrite: was `#001a00` deep green bg; now warm dark `#09070A` with sticky nav, amber gold plan highlights, green/gold tier accents, warm card backgrounds
+- **DownloadPage.tsx** — full rewrite: same deep-green to Sanctuary Mode; sticky public nav, moon hero, warm feature grid cards, Sanctuary palette throughout
+
+**Remaining old-palette values fixed across 8 more files:**
+- **ForbiddenNamesPage.tsx** — `#4a7a4a` → `#6e5e4c` (warm muted), background rgba updated
+- **TrendingNamesPage.tsx** — canvas OG-image colors: `#001a00→#09070A`, `#ffd700→#c9a472`, `#e8f5e8→#f0ece4`, `#4a7a4a→#6e5e4c`, `#00a550→#34c97a`, `#006622→#1a130d`
+- **NamesPage.tsx** — same canvas OG-image fix
+- **PlayerPage.tsx** — particle rain colors, scripture Arabic gold, scripture text cream, reference muted text, spinner border, keyframe box-shadows all updated
+- **GrowthPage.tsx** — category color map (azkar/quran/other), heatmap color scale, mood chart line, khushoo bar chart — all axis ticks, gridlines and legend colors updated
+- **QiblaPage.tsx** — compass SVG: north needle `#00a550→#34c97a`, compass rings, N label color
+- **MasjidFinderPage.tsx** — full sweep: all inline template-literal HTML popup strings, map tile background, filter buttons, bottom sheet, spinner, location marker, Leaflet CSS override
+- **AdminPage.tsx** — full sweep: all style constants (css/card/input/btn), header, tab buttons, metric cards, session/dua/name list rows, waitlist section
+- **AIGuide.tsx, GiftPage.tsx, TasbihPage.tsx, index.css** — `rgba(0,165,80,…)` → `rgba(52,201,122,…)` across box-shadows, keyframes and beads
+
+**Result: zero old green-palette values (`#001a00`, `#002800`, `#00a550`, `#4a7a4a`, `#ffd700`, `rgba(0,165,80,…)`) remain anywhere in the frontend codebase.**
+
+---
+
 ### 2026-05-14 — Sanctuary Mode palette cascaded to ALL pages (full codebase sweep)
 
 **Zero old green-palette values remain anywhere in the frontend:**

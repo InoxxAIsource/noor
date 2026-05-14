@@ -100,7 +100,7 @@ const AIGuide: React.FC = () => {
       {/* Floating button */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-24 right-4 z-40 w-14 h-14 bg-[var(--green)] rounded-full shadow-[0_0_20px_rgba(0,165,80,0.5)] flex items-center justify-center text-2xl hover:scale-110 transition-transform"
+        className="fixed bottom-24 right-4 z-40 w-14 h-14 bg-[var(--green)] rounded-full shadow-[0_0_20px_rgba(52,201,122,0.5)] flex items-center justify-center text-2xl hover:scale-110 transition-transform"
         aria-label="Open MyTazki Guide"
       >
         ☪️

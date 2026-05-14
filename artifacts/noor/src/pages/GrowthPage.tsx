@@ -62,13 +62,13 @@ interface GrowthData {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  azkar: "#00a550",
-  quran: "#ffd700",
+  azkar: "#34c97a",
+  quran: "#c9a472",
   dhikr: "#6495ed",
   sleep: "#9b59b6",
   dua60: "#ff9900",
   salah: "#c04848",
-  other: "#4a7a4a",
+  other: "#6e5e4c",
 };
 
 function getCategoryColor(cat: string): string {
@@ -80,11 +80,11 @@ function getCategoryColor(cat: string): string {
 }
 
 function getHeatColor(minutes: number): string {
-  if (minutes === 0) return "#002800";
-  if (minutes < 10) return "#004400";
-  if (minutes < 30) return "#006600";
-  if (minutes < 60) return "#00a550";
-  return "#00ff66";
+  if (minutes === 0) return "#241a10";
+  if (minutes < 10) return "#2d2010";
+  if (minutes < 30) return "#3d2e14";
+  if (minutes < 60) return "#34c97a";
+  return "#5ee89a";
 }
 
 const BADGES = [
@@ -303,7 +303,7 @@ const GrowthPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-1 mt-3 text-[10px] text-[var(--muted)]">
             <span>Less</span>
-            {["#002800","#004400","#006600","#00a550","#00ff66"].map(c => (
+            {["#241a10","#2d2010","#3d2e14","#34c97a","#5ee89a"].map(c => (
               <div key={c} className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: c }} />
             ))}
             <span>More</span>
@@ -331,7 +331,7 @@ const GrowthPage: React.FC = () => {
                   {
                     label: "After",
                     data: moodAfter,
-                    borderColor: "#00a550",
+                    borderColor: "#34c97a",
                     pointRadius: 2,
                     tension: 0.4,
                     borderWidth: 2,
@@ -342,10 +342,10 @@ const GrowthPage: React.FC = () => {
               options={{
                 responsive: true,
                 scales: {
-                  y: { min: 1, max: 5, ticks: { color: "#4a7a4a", stepSize: 1 }, grid: { color: "#004400" } },
-                  x: { ticks: { color: "#4a7a4a", maxRotation: 45 }, grid: { display: false } },
+                  y: { min: 1, max: 5, ticks: { color: "#6e5e4c", stepSize: 1 }, grid: { color: "rgba(52,201,122,0.07)" } },
+                  x: { ticks: { color: "#6e5e4c", maxRotation: 45 }, grid: { display: false } },
                 },
-                plugins: { legend: { labels: { color: "#e8f5e8", boxWidth: 12 } } },
+                plugins: { legend: { labels: { color: "#f0ece4", boxWidth: 12 } } },
               }}
             />
           </div>
@@ -360,10 +360,10 @@ const GrowthPage: React.FC = () => {
               options={{
                 responsive: true,
                 scales: {
-                  y: { min: 0, max: 5, ticks: { color: "#4a7a4a", stepSize: 1 }, grid: { color: "#004400" } },
-                  x: { ticks: { color: "#4a7a4a" }, grid: { display: false } },
+                  y: { min: 0, max: 5, ticks: { color: "#6e5e4c", stepSize: 1 }, grid: { color: "rgba(52,201,122,0.07)" } },
+                  x: { ticks: { color: "#6e5e4c" }, grid: { display: false } },
                 },
-                plugins: { legend: { labels: { color: "#e8f5e8", boxWidth: 10, font: { size: 10 } } } },
+                plugins: { legend: { labels: { color: "#f0ece4", boxWidth: 10, font: { size: 10 } } } },
               }}
             />
           </div>

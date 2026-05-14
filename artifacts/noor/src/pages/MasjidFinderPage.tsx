@@ -69,14 +69,14 @@ const MasjidFinderPage: React.FC = () => {
 
     // User location marker
     const userIcon = L.divIcon({
-      html: `<div style="width:18px;height:18px;background:#00a550;border:3px solid white;border-radius:50%;box-shadow:0 0 0 6px rgba(0,165,80,0.25)"></div>`,
+      html: `<div style="width:18px;height:18px;background:#34c97a;border:3px solid white;border-radius:50%;box-shadow:0 0 0 6px rgba(52,201,122,0.25)"></div>`,
       iconSize: [18, 18],
       iconAnchor: [9, 9],
       className: "",
     });
     const uMarker = L.marker([lat, lng], { icon: userIcon })
       .addTo(map)
-      .bindPopup("<b style='color:#001a00;font-size:13px'>📍 You are here</b>", { maxWidth: 160 });
+      .bindPopup("<b style='color:#09070A;font-size:13px'>📍 You are here</b>", { maxWidth: 160 });
     userMarkerRef.current = uMarker;
   }, []);
 
@@ -96,8 +96,8 @@ const MasjidFinderPage: React.FC = () => {
     list.forEach((mosque, i) => {
       const mosqueIcon = L.divIcon({
         html: `<div style="position:relative;width:36px;height:36px">
-          <div style="width:36px;height:36px;background:#ffd700;border:2.5px solid #003800;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.5);font-size:18px">🕌</div>
-          ${i === 0 ? '<div style="position:absolute;-bottom:4px;left:50%;transform:translateX(-50%);background:#00a550;color:white;font-size:9px;padding:1px 4px;border-radius:3px;white-space:nowrap;font-weight:700">NEAREST</div>' : ""}
+          <div style="width:36px;height:36px;background:#c9a472;border:2.5px solid #003800;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.5);font-size:18px">🕌</div>
+          ${i === 0 ? '<div style="position:absolute;-bottom:4px;left:50%;transform:translateX(-50%);background:#34c97a;color:white;font-size:9px;padding:1px 4px;border-radius:3px;white-space:nowrap;font-weight:700">NEAREST</div>' : ""}
         </div>`,
         iconSize: [36, 36],
         iconAnchor: [18, 18],
@@ -109,10 +109,10 @@ const MasjidFinderPage: React.FC = () => {
         .addTo(map)
         .bindPopup(`
           <div style="font-family:system-ui;min-width:180px;padding:2px 0">
-            <b style="color:#001a00;font-size:13px;display:block;margin-bottom:4px">${mosque.name}</b>
-            <span style="color:#4a7a4a;font-size:12px">📏 ${mosque.distance} km away</span><br>
+            <b style="color:#09070A;font-size:13px;display:block;margin-bottom:4px">${mosque.name}</b>
+            <span style="color:#6e5e4c;font-size:12px">📏 ${mosque.distance} km away</span><br>
             <a href="${mosque.mapsUrl || `https://maps.google.com/maps?daddr=${mosque.lat},${mosque.lng}`}" target="_blank" rel="noreferrer"
-               style="display:inline-block;margin-top:6px;color:white;background:#00a550;font-size:11px;padding:4px 10px;border-radius:8px;text-decoration:none;font-weight:600">
+               style="display:inline-block;margin-top:6px;color:white;background:#34c97a;font-size:11px;padding:4px 10px;border-radius:8px;text-decoration:none;font-weight:600">
               🧭 Get Directions
             </a>
           </div>
@@ -239,20 +239,20 @@ const MasjidFinderPage: React.FC = () => {
   };
 
   return (
-    <div style={{ position: "fixed", inset: 0, display: "flex", flexDirection: "column", background: "#001a00" }}>
+    <div style={{ position: "fixed", inset: 0, display: "flex", flexDirection: "column", background: "#09070A" }}>
       {/* Top overlay header */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, zIndex: 1000,
-        background: "linear-gradient(to bottom, rgba(0,26,0,0.95) 60%, transparent)",
+        background: "linear-gradient(to bottom, rgba(9,7,10,0.95) 60%, transparent)",
         padding: "16px 16px 24px",
         pointerEvents: "none",
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", pointerEvents: "auto" }}>
           <div>
-            <h1 style={{ fontFamily: "Cinzel, serif", fontSize: 20, color: "#ffd700", margin: 0, lineHeight: 1.2 }}>
+            <h1 style={{ fontFamily: "Cinzel, serif", fontSize: 20, color: "#c9a472", margin: 0, lineHeight: 1.2 }}>
               🕌 Masjid Finder
             </h1>
-            <p style={{ color: "#4a7a4a", fontSize: 12, margin: "2px 0 0" }}>
+            <p style={{ color: "#6e5e4c", fontSize: 12, margin: "2px 0 0" }}>
               {loading ? "Searching for mosques…" :
                locating ? "Getting your location…" :
                mosques.length > 0 ? `${mosques.length} mosques found nearby` :
@@ -266,8 +266,8 @@ const MasjidFinderPage: React.FC = () => {
                 onClick={() => fetchMosques(coords.lat, coords.lng)}
                 disabled={loading}
                 style={{
-                  background: "rgba(0,56,0,0.9)", border: "1px solid rgba(0,165,80,0.3)",
-                  borderRadius: 10, padding: "8px 10px", color: "#4a7a4a", cursor: "pointer",
+                  background: "rgba(22,16,10,0.9)", border: "1px solid rgba(52,201,122,0.3)",
+                  borderRadius: 10, padding: "8px 10px", color: "#6e5e4c", cursor: "pointer",
                   display: "flex", alignItems: "center", gap: 4, fontSize: 12,
                 }}
               >
@@ -279,7 +279,7 @@ const MasjidFinderPage: React.FC = () => {
               onClick={requestLocation}
               disabled={locating}
               style={{
-                background: locating ? "rgba(0,165,80,0.3)" : "#00a550",
+                background: locating ? "rgba(52,201,122,0.3)" : "#34c97a",
                 border: "none", borderRadius: 10, padding: "8px 12px",
                 color: "white", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600,
               }}
@@ -298,9 +298,9 @@ const MasjidFinderPage: React.FC = () => {
               onClick={() => setFilter(f)}
               style={{
                 padding: "5px 12px", borderRadius: 20, fontSize: 11, whiteSpace: "nowrap", flexShrink: 0,
-                border: filter === f ? "1px solid #00a550" : "1px solid rgba(0,165,80,0.25)",
-                background: filter === f ? "#00a550" : "rgba(0,40,0,0.8)",
-                color: filter === f ? "white" : "#4a7a4a", cursor: "pointer",
+                border: filter === f ? "1px solid #34c97a" : "1px solid rgba(52,201,122,0.25)",
+                background: filter === f ? "#34c97a" : "rgba(26,19,13,0.8)",
+                color: filter === f ? "white" : "#6e5e4c", cursor: "pointer",
               }}
             >
               {f}
@@ -313,15 +313,15 @@ const MasjidFinderPage: React.FC = () => {
       {locError && (
         <div style={{
           position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
-          zIndex: 1100, background: "rgba(0,26,0,0.97)", border: "1px solid rgba(0,165,80,0.3)",
+          zIndex: 1100, background: "rgba(9,7,10,0.97)", border: "1px solid rgba(52,201,122,0.3)",
           borderRadius: 16, padding: "24px 20px", maxWidth: 300, textAlign: "center",
         }}>
-          <AlertCircle size={36} style={{ color: "#ffd700", marginBottom: 12 }} />
-          <p style={{ color: "#e8f5e8", fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>{locError}</p>
+          <AlertCircle size={36} style={{ color: "#c9a472", marginBottom: 12 }} />
+          <p style={{ color: "#f0ece4", fontSize: 13, marginBottom: 16, lineHeight: 1.5 }}>{locError}</p>
           <button
             onClick={requestLocation}
             style={{
-              background: "#00a550", border: "none", borderRadius: 10, padding: "10px 24px",
+              background: "#34c97a", border: "none", borderRadius: 10, padding: "10px 24px",
               color: "white", fontWeight: 700, fontSize: 13, cursor: "pointer",
             }}
           >
@@ -337,10 +337,10 @@ const MasjidFinderPage: React.FC = () => {
           zIndex: 999, display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
         }}>
           <div style={{
-            width: 40, height: 40, borderRadius: "50%", border: "3px solid rgba(0,165,80,0.3)",
-            borderTop: "3px solid #00a550", animation: "spin 0.8s linear infinite",
+            width: 40, height: 40, borderRadius: "50%", border: "3px solid rgba(52,201,122,0.3)",
+            borderTop: "3px solid #34c97a", animation: "spin 0.8s linear infinite",
           }} />
-          <p style={{ color: "#e8f5e8", fontSize: 12, background: "rgba(0,26,0,0.8)", padding: "4px 12px", borderRadius: 8 }}>
+          <p style={{ color: "#f0ece4", fontSize: 12, background: "rgba(9,7,10,0.8)", padding: "4px 12px", borderRadius: 8 }}>
             {locating ? "Getting your GPS location…" : "Finding mosques…"}
           </p>
         </div>
@@ -359,8 +359,8 @@ const MasjidFinderPage: React.FC = () => {
           }}
           style={{
             position: "absolute", right: 16, bottom: sheetOpen ? 320 : 96, zIndex: 1001,
-            width: 44, height: 44, borderRadius: "50%", background: "#001a00",
-            border: "2px solid rgba(0,165,80,0.5)", color: "#00a550",
+            width: 44, height: 44, borderRadius: "50%", background: "#09070A",
+            border: "2px solid rgba(52,201,122,0.5)", color: "#34c97a",
             display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)", cursor: "pointer", transition: "bottom 0.3s",
           }}
@@ -374,7 +374,7 @@ const MasjidFinderPage: React.FC = () => {
       {mosques.length > 0 && (
         <div style={{
           position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1002,
-          background: "rgba(0,26,0,0.97)", borderTop: "1px solid rgba(0,165,80,0.25)",
+          background: "rgba(9,7,10,0.97)", borderTop: "1px solid rgba(52,201,122,0.25)",
           borderRadius: "20px 20px 0 0",
           transform: sheetOpen ? "translateY(0)" : "translateY(calc(100% - 56px))",
           transition: "transform 0.3s ease",
@@ -391,13 +391,13 @@ const MasjidFinderPage: React.FC = () => {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(0,165,80,0.4)" }} />
-              <span style={{ color: "#ffd700", fontSize: 13, fontWeight: 700 }}>
+              <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(52,201,122,0.4)" }} />
+              <span style={{ color: "#c9a472", fontSize: 13, fontWeight: 700 }}>
                 {filteredMosques.length} mosque{filteredMosques.length !== 1 ? "s" : ""}
                 {filter !== "All" ? ` (${filter})` : " nearby"}
               </span>
             </div>
-            {sheetOpen ? <ChevronDown size={16} color="#4a7a4a" /> : <ChevronUp size={16} color="#4a7a4a" />}
+            {sheetOpen ? <ChevronDown size={16} color="#6e5e4c" /> : <ChevronUp size={16} color="#6e5e4c" />}
           </button>
 
           {/* Scrollable list */}
@@ -411,8 +411,8 @@ const MasjidFinderPage: React.FC = () => {
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                   width: "100%", padding: "8px 0", marginBottom: 8,
-                  color: "#4a7a4a", fontSize: 12, textDecoration: "none",
-                  borderBottom: "1px solid rgba(0,165,80,0.15)",
+                  color: "#6e5e4c", fontSize: 12, textDecoration: "none",
+                  borderBottom: "1px solid rgba(52,201,122,0.15)",
                 }}
               >
                 <ExternalLink size={12} /> Open in Google Maps
@@ -424,22 +424,22 @@ const MasjidFinderPage: React.FC = () => {
                 key={i}
                 onClick={() => flyToMasjid(m)}
                 style={{
-                  background: selectedMasjid?.name === m.name ? "rgba(0,165,80,0.12)" : "rgba(0,40,0,0.6)",
-                  border: selectedMasjid?.name === m.name ? "1px solid #00a550" : "1px solid rgba(0,165,80,0.15)",
+                  background: selectedMasjid?.name === m.name ? "rgba(52,201,122,0.12)" : "rgba(26,19,13,0.6)",
+                  border: selectedMasjid?.name === m.name ? "1px solid #34c97a" : "1px solid rgba(52,201,122,0.15)",
                   borderRadius: 14, padding: "12px", marginBottom: 8, cursor: "pointer",
                   display: "flex", alignItems: "center", gap: 12,
                   transition: "background 0.2s, border-color 0.2s",
                 }}
               >
                 <div style={{
-                  width: 42, height: 42, borderRadius: "50%", background: "rgba(0,165,80,0.15)",
+                  width: 42, height: 42, borderRadius: "50%", background: "rgba(52,201,122,0.15)",
                   display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0,
                 }}>🕌</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: "#e8f5e8", lineHeight: 1.3 }}>{m.name}</p>
+                  <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: "#f0ece4", lineHeight: 1.3 }}>{m.name}</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3 }}>
-                    <span style={{ fontSize: 11, color: "#4a7a4a" }}>📏 {m.distance} km</span>
-                    {i === 0 && <span style={{ fontSize: 10, color: "#ffd700", fontWeight: 700 }}>NEAREST</span>}
+                    <span style={{ fontSize: 11, color: "#6e5e4c" }}>📏 {m.distance} km</span>
+                    {i === 0 && <span style={{ fontSize: 10, color: "#c9a472", fontWeight: 700 }}>NEAREST</span>}
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
@@ -448,12 +448,12 @@ const MasjidFinderPage: React.FC = () => {
                     style={{
                       width: 32, height: 32, borderRadius: "50%", border: "none",
                       background: favourite?.name === m.name ? "rgba(255,215,0,0.15)" : "transparent",
-                      color: favourite?.name === m.name ? "#ffd700" : "#4a7a4a",
+                      color: favourite?.name === m.name ? "#c9a472" : "#6e5e4c",
                       cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="Save as favourite"
                   >
-                    <Star size={14} style={{ fill: favourite?.name === m.name ? "#ffd700" : "none" }} />
+                    <Star size={14} style={{ fill: favourite?.name === m.name ? "#c9a472" : "none" }} />
                   </button>
                   <a
                     href={m.mapsUrl || `https://maps.google.com/maps?daddr=${m.lat},${m.lng}`}
@@ -462,7 +462,7 @@ const MasjidFinderPage: React.FC = () => {
                     onClick={(e) => e.stopPropagation()}
                     style={{
                       width: 32, height: 32, borderRadius: "50%", border: "none",
-                      background: "transparent", color: "#4a7a4a",
+                      background: "transparent", color: "#6e5e4c",
                       display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none",
                     }}
                     title="Get directions"
@@ -478,7 +478,7 @@ const MasjidFinderPage: React.FC = () => {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        .leaflet-container { background: #001a00 !important; }
+        .leaflet-container { background: #09070A !important; }
       `}</style>
     </div>
   );

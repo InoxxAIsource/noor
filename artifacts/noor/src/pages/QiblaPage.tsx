@@ -82,23 +82,23 @@ const QiblaPage: React.FC = () => {
           <div className="w-full space-y-8 flex flex-col items-center">
             <div className="relative w-72 h-72">
               <svg viewBox="0 0 300 300" className="w-full h-full">
-                <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(0,165,80,0.15)" strokeWidth="2" />
-                <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(0,165,80,0.1)" strokeWidth="1" />
+                <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(52,201,122,0.15)" strokeWidth="2" />
+                <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(52,201,122,0.1)" strokeWidth="1" />
                 {["N","E","S","W"].map((dir, i) => {
                   const angle = i * 90;
                   const x = 150 + 130 * Math.sin((angle * Math.PI) / 180);
                   const y = 150 - 130 * Math.cos((angle * Math.PI) / 180);
                   return (
                     <text key={dir} x={x} y={y} textAnchor="middle" dominantBaseline="central"
-                      fill={dir === "N" ? "#ffd700" : "rgba(200,232,200,0.6)"} fontSize="16" fontWeight="bold" fontFamily="Cinzel">
+                      fill={dir === "N" ? "#c9a472" : "rgba(240,236,228,0.6)"} fontSize="16" fontWeight="bold" fontFamily="Cinzel">
                       {dir}
                     </text>
                   );
                 })}
                 <g transform={`rotate(${displayAngle}, 150, 150)`}>
-                  <polygon points="150,20 143,150 157,150" fill="#00a550" opacity="0.9" />
-                  <polygon points="150,280 143,150 157,150" fill="rgba(0,165,80,0.3)" />
-                  <circle cx="150" cy="20" r="8" fill="#00a550" />
+                  <polygon points="150,20 143,150 157,150" fill="#34c97a" opacity="0.9" />
+                  <polygon points="150,280 143,150 157,150" fill="rgba(52,201,122,0.3)" />
+                  <circle cx="150" cy="20" r="8" fill="#34c97a" />
                   <text x="150" y="23" textAnchor="middle" dominantBaseline="central" fill="white" fontSize="10">🕋</text>
                 </g>
                 <circle cx="150" cy="150" r="12" fill="var(--bg)" stroke="var(--green)" strokeWidth="2" />

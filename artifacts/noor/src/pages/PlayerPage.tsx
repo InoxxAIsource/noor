@@ -41,7 +41,7 @@ function ConfettiEffect() {
         left: Math.random() * 100,
         delay: Math.random() * 0.6,
         dur: 0.8 + Math.random() * 0.8,
-        color: i % 3 === 0 ? "#ffd700" : i % 3 === 1 ? "#00a550" : "#e8f5e8",
+        color: i % 3 === 0 ? "#c9a472" : i % 3 === 1 ? "#34c97a" : "#f0ece4",
       })),
     []
   );
@@ -291,8 +291,8 @@ const PlayerPage: React.FC = () => {
       <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center gap-4">
         <div style={{
           width: 48, height: 48, borderRadius: "50%",
-          border: "3px solid rgba(0,165,80,0.2)",
-          borderTopColor: "#00a550",
+          border: "3px solid rgba(52,201,122,0.2)",
+          borderTopColor: "#34c97a",
           animation: "spin 0.9s linear infinite",
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
@@ -330,8 +330,8 @@ const PlayerPage: React.FC = () => {
           50% { text-shadow: 0 0 24px rgba(255,215,0,0.55), 0 0 48px rgba(255,215,0,0.2); }
         }
         @keyframes breathe {
-          0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0,165,80,0.4); }
-          50% { transform: scale(1.04); box-shadow: 0 0 44px rgba(0,165,80,0.65); }
+          0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(52,201,122,0.4); }
+          50% { transform: scale(1.04); box-shadow: 0 0 44px rgba(52,201,122,0.65); }
         }
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(12px); }
@@ -460,7 +460,7 @@ const PlayerPage: React.FC = () => {
                   )}
                   <button
                     onClick={togglePlay}
-                    className={`w-20 h-20 bg-[var(--green)] rounded-full flex items-center justify-center hover:scale-105 transition-transform ${isPlaying ? "play-breathe" : "shadow-[0_0_30px_rgba(0,165,80,0.4)]"}`}
+                    className={`w-20 h-20 bg-[var(--green)] rounded-full flex items-center justify-center hover:scale-105 transition-transform ${isPlaying ? "play-breathe" : "shadow-[0_0_30px_rgba(52,201,122,0.4)]"}`}
                     style={{ position: "relative", zIndex: 1 }}
                   >
                     {isPlaying
@@ -513,7 +513,7 @@ const PlayerPage: React.FC = () => {
                         style={{
                           fontFamily: "Amiri, serif",
                           fontSize: 22,
-                          color: "#ffd700",
+                          color: "#c9a472",
                           direction: "rtl",
                           lineHeight: 1.9,
                           marginBottom: 10,
@@ -526,7 +526,7 @@ const PlayerPage: React.FC = () => {
                     {!!(s?.["scriptureText"]) && (
                       <p style={{
                         fontSize: 13,
-                        color: "rgba(200,232,200,0.85)",
+                        color: "rgba(240,236,228,0.80)",
                         fontStyle: "italic",
                         lineHeight: 1.6,
                         marginBottom: 6,
@@ -536,7 +536,7 @@ const PlayerPage: React.FC = () => {
                       </p>
                     )}
                     {!!(s?.["scriptureRef"]) && (
-                      <p style={{ fontSize: 11, color: "#4a7a4a", letterSpacing: "0.04em" }}>
+                      <p style={{ fontSize: 11, color: "#6e5e4c", letterSpacing: "0.04em" }}>
                        , {String(s!["scriptureRef"])}
                       </p>
                     )}
