@@ -137,68 +137,60 @@ export function SanctuaryMode() {
             <span style={{ fontSize: 11, color: TEXT, opacity: 0.45, letterSpacing: 1.5, fontWeight: 300 }}>7:41 PM</span>
           </div>
 
-          {/* ── ARABIC VERSE — sacred editorial ── */}
+          {/* ── ARABIC VERSE — pure text, no card ── */}
           <div style={{
-            position: "absolute", top: "32%", left: 0, right: 0,
-            padding: "0 36px", textAlign: "center", zIndex: 5,
+            position: "absolute", top: "30%", left: 0, right: 0,
+            padding: "0 32px", textAlign: "center", zIndex: 5,
           }}>
-            {/* Soft backdrop blur panel — very subtle */}
+            {/* Decorative hairline */}
             <div style={{
-              background: "rgba(13,11,8,0.15)",
-              backdropFilter: "blur(1px)",
-              borderRadius: 16,
-              padding: "18px 20px 16px",
-              border: "1px solid rgba(240,228,204,0.07)",
+              width: 24, height: 1,
+              background: "linear-gradient(to right, transparent, rgba(184,148,106,0.45), transparent)",
+              margin: "0 auto 16px",
+            }} />
+
+            {/* Arabic — Amiri, warm cream, floating directly over image */}
+            <div style={{
+              fontFamily: "'Amiri', 'Traditional Arabic', 'Scheherazade New', Georgia, serif",
+              fontSize: 24,
+              color: CREAM,
+              direction: "rtl",
+              lineHeight: 1.85,
+              letterSpacing: 0.5,
+              textShadow: "0 2px 24px rgba(0,0,0,0.95), 0 0 48px rgba(0,0,0,0.70)",
+              marginBottom: 14,
+              fontWeight: 400,
             }}>
-              {/* Decorative line */}
-              <div style={{
-                width: 28, height: 1,
-                background: `linear-gradient(to right, transparent, rgba(184,148,106,0.5), transparent)`,
-                margin: "0 auto 14px",
-              }} />
-
-              {/* Arabic — Amiri, warm cream, immersive */}
-              <div style={{
-                fontFamily: "'Amiri', 'Traditional Arabic', 'Scheherazade New', Georgia, serif",
-                fontSize: 23,
-                color: CREAM,
-                direction: "rtl", lang: "ar",
-                lineHeight: 1.8,
-                letterSpacing: 0.5,
-                textShadow: "0 2px 32px rgba(184,148,106,0.30), 0 1px 8px rgba(0,0,0,0.80)",
-                marginBottom: 12,
-                fontWeight: 400,
-              }}>
-                أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ
-              </div>
-
-              {/* Translation — calm, readable, not italic */}
-              <div style={{
-                fontSize: 12,
-                color: "rgba(240,228,204,0.72)",
-                letterSpacing: 0.4,
-                lineHeight: 1.6,
-                fontWeight: 300,
-                textShadow: "0 1px 12px rgba(0,0,0,0.90)",
-              }}>
-                Verily, in the remembrance of Allah do hearts find rest
-              </div>
-
-              {/* Source */}
-              <div style={{
-                fontSize: 10, color: "rgba(184,148,106,0.50)",
-                marginTop: 8, letterSpacing: 1.2, fontWeight: 400,
-              }}>
-                Surah Ar-Ra'd · 13:28
-              </div>
-
-              {/* Decorative line */}
-              <div style={{
-                width: 28, height: 1,
-                background: `linear-gradient(to right, transparent, rgba(184,148,106,0.5), transparent)`,
-                margin: "14px auto 0",
-              }} />
+              أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ
             </div>
+
+            {/* Translation — calm, readable */}
+            <div style={{
+              fontSize: 12,
+              color: "rgba(240,228,204,0.68)",
+              letterSpacing: 0.4,
+              lineHeight: 1.65,
+              fontWeight: 300,
+              textShadow: "0 1px 16px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.95)",
+            }}>
+              Verily, in the remembrance of Allah do hearts find rest
+            </div>
+
+            {/* Source */}
+            <div style={{
+              fontSize: 10, color: "rgba(184,148,106,0.45)",
+              marginTop: 9, letterSpacing: 1.5, fontWeight: 400,
+              textShadow: "0 1px 8px rgba(0,0,0,0.95)",
+            }}>
+              Surah Ar-Ra'd · 13:28
+            </div>
+
+            {/* Decorative hairline */}
+            <div style={{
+              width: 24, height: 1,
+              background: "linear-gradient(to right, transparent, rgba(184,148,106,0.45), transparent)",
+              margin: "16px auto 0",
+            }} />
           </div>
         </div>
 
