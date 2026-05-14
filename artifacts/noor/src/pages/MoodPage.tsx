@@ -195,7 +195,7 @@ const MoodPage: React.FC = () => {
               <button
                 onClick={() => void fetchRecommendations()}
                 style={{
-                  width: "100%", background: "var(--green)", color: "#0d1411",
+                  width: "100%", background: "var(--green)", color: "#09070A",
                   border: "none", borderRadius: 14, padding: "15px 16px",
                   fontSize: 15, fontWeight: 700, cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
@@ -266,7 +266,7 @@ const MoodPage: React.FC = () => {
                     <button
                       onClick={() => void navigate(`/player/${sessionId}`)}
                       style={{
-                        width: "100%", background: "var(--green)", color: "#0d1411",
+                        width: "100%", background: "var(--green)", color: "#09070A",
                         border: "none", borderRadius: 10, padding: "11px 16px",
                         fontSize: 13, fontWeight: 700, cursor: "pointer",
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 6,

@@ -1,5 +1,18 @@
 # MyTazki — Changelog
 
+### 2026-05-14 — Sanctuary Mode palette cascaded to ALL pages (full codebase sweep)
+
+**Zero old green-palette values remain anywhere in the frontend:**
+
+- **Batch replaced** across 29 pages + components: `#0d1411→#09070A`, `#152019→#16100a`, `#1c2d21→#1a130d`, `#b8946a→#c9a472`, `#6a9878→#6e5e4c`, `#2a3830→#241a10`, `#eaf4ee→#f0ece4`
+- **NamesPage.tsx**: Arabic calligraphy canvas overlay changed from `rgba(0,165,80,…)` green to `rgba(201,164,114,…)` warm amber
+- **IslamicCalendarPage.tsx**: Mawlid date badge converted from `text-green-400 bg-green-400/20` to CSS-variable brand green
+- **DeenAppLogo.tsx**: SVG fill + text colors updated to new warm palette
+- Pages updated: QuranSurahPage, MoodPage, SessionsPage, CompanionPage, ProfilePage, MorningFlow, NamesPage, QuranPage, DuasPage, PrayerTimesPage, PlayerPage, TasbihPage, GrowthPage, JournalPage, ZakatCalculatorPage, IslamicCalendarPage, NamesOfAllahPage, MasjidFinderPage, QiblaPage, AdminPage, OnboardingPage, LoginPage, FarzGuidePage, QurbaniGuidePage, SadqaGuidePage, WuduGuidePage, SalahGuidePage, BottomNav, DeenAppLogo
+- All pages continue to use `var(--bg)`, `var(--surface)`, `var(--card)`, `var(--gold)`, `var(--muted)` via Tailwind CSS-variable syntax — the global `index.css` `:root` definition drives the entire visual system
+
+---
+
 ### 2026-05-14 — Sanctuary Mode cinematic design adopted for Landing & Home pages
 
 **Full visual overhaul — both public landing page and logged-in dashboard now use the approved Sanctuary Mode aesthetic:**

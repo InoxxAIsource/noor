@@ -235,7 +235,7 @@ const CompanionPage: React.FC = () => {
                 borderRadius: msg.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
                 background: msg.role === "user" ? "var(--green)" : "var(--card)",
                 border: msg.role === "user" ? "none" : "1px solid var(--border)",
-                color: msg.role === "user" ? "#0d1411" : "var(--text)",
+                color: msg.role === "user" ? "#09070A" : "var(--text)",
                 fontSize: 14,
                 lineHeight: 1.6,
                 fontWeight: msg.role === "user" ? 500 : 400,
@@ -337,7 +337,7 @@ const CompanionPage: React.FC = () => {
                 transition: "background 0.2s", flexShrink: 0,
               }}
             >
-              <Send size={15} color={input.trim() && !loading ? "#0d1411" : "var(--muted)"} />
+              <Send size={15} color={input.trim() && !loading ? "#09070A" : "var(--muted)"} />
             </button>
           </div>
         )}

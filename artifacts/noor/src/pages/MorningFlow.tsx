@@ -90,14 +90,14 @@ export default function MorningFlow() {
 
   return (
     <div style={{
-      background: "#0d1411", minHeight: "100vh", color: "#eaf4ee",
+      background: "#09070A", minHeight: "100vh", color: "#f0ece4",
       display: "flex", flexDirection: "column", position: "relative",
     }}>
       {/* Top bar */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px 0" }}>
         <button
           onClick={() => step > 0 ? setStep(s => s - 1) : navigate("/home")}
-          style={{ background: "none", border: "none", color: "#6a9878", cursor: "pointer", fontSize: 14 }}
+          style={{ background: "none", border: "none", color: "#6e5e4c", cursor: "pointer", fontSize: 14 }}
         >
           ← Back
         </button>
@@ -106,7 +106,7 @@ export default function MorningFlow() {
             {Array.from({ length: totalSteps }).map((_, i) => (
               <div key={i} style={{
                 width: i === step ? 20 : 6, height: 6, borderRadius: 3,
-                background: i <= step ? "#34c97a" : "#2a3830",
+                background: i <= step ? "#34c97a" : "#241a10",
                 transition: "all 0.3s ease",
               }} />
             ))}
@@ -114,7 +114,7 @@ export default function MorningFlow() {
         )}
         <button
           onClick={() => navigate("/home")}
-          style={{ background: "none", border: "none", color: "#6a9878", cursor: "pointer", fontSize: 14 }}
+          style={{ background: "none", border: "none", color: "#6e5e4c", cursor: "pointer", fontSize: 14 }}
         >
           Skip
         </button>
@@ -125,13 +125,13 @@ export default function MorningFlow() {
         {/* Step 0: Greeting */}
         {step === 0 && (
           <div style={{ animation: "fadeIn 0.5s ease" }}>
-            <div style={{ fontFamily: "Amiri, serif", fontSize: 28, color: "#b8946a", textAlign: "center", marginBottom: 16, direction: "rtl" }}>
+            <div style={{ fontFamily: "Amiri, serif", fontSize: 28, color: "#c9a472", textAlign: "center", marginBottom: 16, direction: "rtl" }}>
               بِسْمِ اللَّهِ
             </div>
             <h1 style={{ fontSize: 26, fontFamily: "DM Sans, sans-serif", fontWeight: 600, textAlign: "center", marginBottom: 8, lineHeight: 1.3 }}>
               Assalamu Alaikum,<br />{name}.
             </h1>
-            <p style={{ fontSize: 15, color: "#6a9878", textAlign: "center", lineHeight: 1.6, marginBottom: 40 }}>
+            <p style={{ fontSize: 15, color: "#6e5e4c", textAlign: "center", lineHeight: 1.6, marginBottom: 40 }}>
               Let's begin your day peacefully,<br />one breath at a time.
             </p>
             <button onClick={() => setStep(1)} style={btnStyle}>
@@ -143,20 +143,20 @@ export default function MorningFlow() {
         {/* Step 1: Quran Insight */}
         {step === 1 && (
           <div style={{ animation: "fadeIn 0.5s ease" }}>
-            <p style={{ fontSize: 11, color: "#6a9878", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 32 }}>
+            <p style={{ fontSize: 11, color: "#6e5e4c", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 32 }}>
               Morning reflection
             </p>
             <div style={{
-              background: "#152019", border: "1px solid rgba(52,201,122,0.15)",
+              background: "#16100a", border: "1px solid rgba(52,201,122,0.15)",
               borderRadius: 20, padding: 28, marginBottom: 32, textAlign: "center",
             }}>
-              <div style={{ fontFamily: "Amiri, serif", fontSize: 24, color: "#b8946a", direction: "rtl", lineHeight: 1.6, marginBottom: 20 }}>
+              <div style={{ fontFamily: "Amiri, serif", fontSize: 24, color: "#c9a472", direction: "rtl", lineHeight: 1.6, marginBottom: 20 }}>
                 {insight.arabic}
               </div>
-              <p style={{ fontSize: 15, color: "#eaf4ee", lineHeight: 1.7, fontStyle: "italic", marginBottom: 10 }}>
+              <p style={{ fontSize: 15, color: "#f0ece4", lineHeight: 1.7, fontStyle: "italic", marginBottom: 10 }}>
                 "{insight.translation}"
               </p>
-              <p style={{ fontSize: 12, color: "#6a9878" }}>{insight.ref}</p>
+              <p style={{ fontSize: 12, color: "#6e5e4c" }}>{insight.ref}</p>
             </div>
             <button onClick={() => setStep(2)} style={btnStyle}>
               Continue →
@@ -167,13 +167,13 @@ export default function MorningFlow() {
         {/* Step 2: Emotional Check-In */}
         {step === 2 && (
           <div style={{ animation: "fadeIn 0.5s ease" }}>
-            <p style={{ fontSize: 11, color: "#6a9878", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
+            <p style={{ fontSize: 11, color: "#6e5e4c", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
               Emotional check-in
             </p>
             <h2 style={{ fontSize: 22, fontFamily: "DM Sans, sans-serif", fontWeight: 600, textAlign: "center", marginBottom: 8 }}>
               How are you feeling this morning?
             </h2>
-            <p style={{ fontSize: 14, color: "#6a9878", textAlign: "center", marginBottom: 32 }}>
+            <p style={{ fontSize: 14, color: "#6e5e4c", textAlign: "center", marginBottom: 32 }}>
               Be honest — all feelings are welcome here.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -182,16 +182,16 @@ export default function MorningFlow() {
                   key={em.key}
                   onClick={() => void handleEmotionSelect(em.key)}
                   style={{
-                    background: "#152019", border: "1px solid rgba(52,201,122,0.2)",
+                    background: "#16100a", border: "1px solid rgba(52,201,122,0.2)",
                     borderRadius: 14, padding: "16px 12px", cursor: "pointer",
                     display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
                     transition: "all 0.2s",
                   }}
-                  onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = "#1c2d21"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(52,201,122,0.5)"; }}
-                  onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = "#152019"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(52,201,122,0.2)"; }}
+                  onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = "#1a130d"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(52,201,122,0.5)"; }}
+                  onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = "#16100a"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(52,201,122,0.2)"; }}
                 >
                   <span style={{ fontSize: 28 }}>{em.emoji}</span>
-                  <span style={{ fontSize: 13, color: "#eaf4ee", fontWeight: 500 }}>{em.label}</span>
+                  <span style={{ fontSize: 13, color: "#f0ece4", fontWeight: 500 }}>{em.label}</span>
                 </button>
               ))}
             </div>
@@ -201,27 +201,27 @@ export default function MorningFlow() {
         {/* Step 3: AI Reflection */}
         {step === 3 && (
           <div style={{ animation: "fadeIn 0.5s ease" }}>
-            <p style={{ fontSize: 11, color: "#6a9878", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
+            <p style={{ fontSize: 11, color: "#6e5e4c", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
               A reflection for you
             </p>
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <span style={{ fontSize: 32 }}>{EMOTIONS.find(e => e.key === emotion)?.emoji}</span>
-              <div style={{ fontSize: 14, color: "#6a9878", marginTop: 6 }}>
+              <div style={{ fontSize: 14, color: "#6e5e4c", marginTop: 6 }}>
                 Feeling {emotion}
               </div>
             </div>
             <div style={{
-              background: "#152019", border: "1px solid rgba(52,201,122,0.15)",
+              background: "#16100a", border: "1px solid rgba(52,201,122,0.15)",
               borderRadius: 20, padding: 24, marginBottom: 32, minHeight: 100,
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               {loadingReflection ? (
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 24, marginBottom: 8 }}>🌿</div>
-                  <p style={{ fontSize: 13, color: "#6a9878" }}>Preparing your reflection...</p>
+                  <p style={{ fontSize: 13, color: "#6e5e4c" }}>Preparing your reflection...</p>
                 </div>
               ) : (
-                <p style={{ fontSize: 15, color: "#eaf4ee", lineHeight: 1.75, textAlign: "center", fontStyle: "italic" }}>
+                <p style={{ fontSize: 15, color: "#f0ece4", lineHeight: 1.75, textAlign: "center", fontStyle: "italic" }}>
                   {reflection}
                 </p>
               )}
@@ -237,20 +237,20 @@ export default function MorningFlow() {
         {/* Step 4: Tiny Spiritual Action */}
         {step === 4 && (
           <div style={{ animation: "fadeIn 0.5s ease" }}>
-            <p style={{ fontSize: 11, color: "#6a9878", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
+            <p style={{ fontSize: 11, color: "#6e5e4c", textTransform: "uppercase", letterSpacing: 2, textAlign: "center", marginBottom: 16 }}>
               Your moment of ibadah
             </p>
             <h2 style={{ fontSize: 20, fontFamily: "DM Sans, sans-serif", fontWeight: 600, textAlign: "center", marginBottom: 24 }}>
               {action.label}
             </h2>
             <div style={{
-              background: "#152019", border: "1px solid rgba(184,148,106,0.2)",
+              background: "#16100a", border: "1px solid rgba(184,148,106,0.2)",
               borderRadius: 20, padding: 28, marginBottom: 32, textAlign: "center",
             }}>
-              <div style={{ fontFamily: "Amiri, serif", fontSize: 26, color: "#b8946a", direction: "rtl", marginBottom: 16, lineHeight: 1.7 }}>
+              <div style={{ fontFamily: "Amiri, serif", fontSize: 26, color: "#c9a472", direction: "rtl", marginBottom: 16, lineHeight: 1.7 }}>
                 {action.arabic}
               </div>
-              <p style={{ fontSize: 14, color: "#eaf4ee", lineHeight: 1.7 }}>
+              <p style={{ fontSize: 14, color: "#f0ece4", lineHeight: 1.7 }}>
                 {action.dua}
               </p>
             </div>
@@ -267,12 +267,12 @@ export default function MorningFlow() {
             <h1 style={{ fontSize: 26, fontFamily: "DM Sans, sans-serif", fontWeight: 600, marginBottom: 12 }}>
               Alhamdulillah
             </h1>
-            <p style={{ fontSize: 15, color: "#6a9878", lineHeight: 1.7, marginBottom: 8 }}>
+            <p style={{ fontSize: 15, color: "#6e5e4c", lineHeight: 1.7, marginBottom: 8 }}>
               You've completed your peaceful morning.
             </p>
             {morningStreak > 0 && (
               <div style={{
-                display: "inline-block", background: "#152019",
+                display: "inline-block", background: "#16100a",
                 border: "1px solid rgba(52,201,122,0.3)", borderRadius: 40,
                 padding: "10px 24px", margin: "16px 0 32px",
               }}>
@@ -281,7 +281,7 @@ export default function MorningFlow() {
                 </span>
               </div>
             )}
-            <p style={{ fontSize: 13, color: "#6a9878", marginBottom: 40 }}>
+            <p style={{ fontSize: 13, color: "#6e5e4c", marginBottom: 40 }}>
               May Allah bless your day with ease and clarity.
             </p>
             <button onClick={() => navigate("/home")} style={btnStyle}>
@@ -301,7 +301,7 @@ export default function MorningFlow() {
 
 const btnStyle: React.CSSProperties = {
   width: "100%", padding: "16px", background: "#34c97a",
-  color: "#0d1411", border: "none", borderRadius: 14, fontSize: 15,
+  color: "#09070A", border: "none", borderRadius: 14, fontSize: 15,
   fontWeight: 600, cursor: "pointer", fontFamily: "DM Sans, sans-serif",
   transition: "opacity 0.2s",
 };

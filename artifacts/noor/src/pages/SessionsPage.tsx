@@ -249,7 +249,7 @@ const SessionsPage: React.FC = () => {
                             >
                               <div style={{
                                 width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
-                                background: "var(--green)", color: "#0d1411",
+                                background: "var(--green)", color: "#09070A",
                                 display: "flex", alignItems: "center", justifyContent: "center",
                                 fontSize: 10, fontWeight: 700,
                               }}>
@@ -274,7 +274,7 @@ const SessionsPage: React.FC = () => {
                         onClick={() => startPathway(pathway)}
                         style={{
                           marginTop: 12, width: "100%",
-                          background: "var(--green)", color: "#0d1411",
+                          background: "var(--green)", color: "#09070A",
                           border: "none", borderRadius: 12, padding: "12px",
                           fontSize: 13, fontWeight: 700, cursor: "pointer",
                           fontFamily: "DM Sans, sans-serif",
@@ -310,7 +310,7 @@ const SessionsPage: React.FC = () => {
                 borderRadius: 20, fontSize: 13, fontWeight: 500,
                 border: activeCategory === cat ? "1px solid var(--green)" : "1px solid rgba(52,201,122,0.15)",
                 background: activeCategory === cat ? "var(--green)" : "var(--surface)",
-                color: activeCategory === cat ? "#0d1411" : "var(--muted)",
+                color: activeCategory === cat ? "#09070A" : "var(--muted)",
                 cursor: "pointer", flexShrink: 0, transition: "all 0.15s",
               }}
             >

@@ -10,7 +10,7 @@ interface HijriDate {
 const SPECIAL_DATES: Record<string, { label: string; color: string }> = {
   "1-1": { label: "Islamic New Year", color: "text-blue-400 bg-blue-400/20" },
   "10-1": { label: "Ashura", color: "text-teal-400 bg-teal-400/20" },
-  "12-3": { label: "Mawlid", color: "text-green-400 bg-green-400/20" },
+  "12-3": { label: "Mawlid", color: "text-[var(--green)] bg-[var(--green)]/20" },
   "27-7": { label: "Isra Miraj", color: "text-blue-300 bg-blue-300/20" },
   "15-8": { label: "Shab-e-Barat", color: "text-purple-400 bg-purple-400/20" },
   "1-9": { label: "Ramadan Begins", color: "text-[var(--gold)] bg-[var(--gold)]/20" },

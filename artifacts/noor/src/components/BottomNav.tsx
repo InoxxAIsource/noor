@@ -53,7 +53,7 @@ const BottomNav: React.FC = () => {
               boxShadow: "0 4px 14px rgba(52,201,122,0.45)",
               marginTop: -18, border: "3px solid var(--bg)",
             }}>
-              <Play size={18} color="#0d1411" fill="#0d1411" />
+              <Play size={18} color="#09070A" fill="#09070A" />
             </div>
             <span style={{ color: isActive ? "var(--green)" : "var(--muted)" }}>Sessions</span>
           </>

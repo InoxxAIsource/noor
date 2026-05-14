@@ -32,11 +32,11 @@ function generateNameCardPNG(n: Name): void {
   ctx.fillStyle = "#001a00";
   ctx.fillRect(0, 0, 640, 400);
 
-  ctx.strokeStyle = "rgba(0,165,80,0.3)";
+  ctx.strokeStyle = "rgba(201,164,114,0.35)";
   ctx.lineWidth = 6;
   ctx.strokeRect(20, 20, 600, 360);
 
-  ctx.fillStyle = "rgba(0,165,80,0.06)";
+  ctx.fillStyle = "rgba(201,164,114,0.07)";
   ctx.fillRect(20, 20, 600, 360);
 
   ctx.fillStyle = "#ffd700";

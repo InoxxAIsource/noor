@@ -80,7 +80,7 @@ const ProfilePage: React.FC = () => {
       {langToast && (
         <div style={{
           position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)",
-          zIndex: 9999, background: "var(--green)", color: "#0d1411",
+          zIndex: 9999, background: "var(--green)", color: "#09070A",
           padding: "10px 22px", borderRadius: 24, fontWeight: 600, fontSize: 14,
           boxShadow: "0 4px 20px rgba(52,201,122,0.45)",
           transition: "opacity 0.3s",

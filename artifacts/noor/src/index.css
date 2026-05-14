@@ -66,44 +66,44 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE */
+/* SANCTUARY MODE — cinematic warm-dark palette */
 :root {
-  --bg:      #0d1411;
-  --surface: #152019;
-  --card:    #1c2d21;
-  --border:  rgba(52,201,122,0.13);
-  --green:   #34c97a;
-  --gold:    #b8946a;
-  --text:    #eaf4ee;
-  --muted:   #6a9878;
-  --faint:   #2a3830;
+  /* ── Core brand tokens ── */
+  --bg:      #09070A;   /* near-black, warm undertone          */
+  --surface: #16100a;   /* warm dark brown surface             */
+  --card:    #1a130d;   /* elevated card                       */
+  --border:  rgba(52,201,122,0.12);
+  --green:   #34c97a;   /* brand green — unchanged             */
+  --gold:    #c9a472;   /* amber gold — richer than before     */
+  --text:    #f0ece4;   /* warm cream text                     */
+  --muted:   #6e5e4c;   /* warm muted — replaces green-muted  */
+  --faint:   #241a10;   /* deep warm faint                     */
   --danger:  #c04848;
 
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
 
-  /* Automatic computation of border around primary / danger buttons */
-  --opaque-button-border-intensity: -8; /* In terms of percentages */
+  --opaque-button-border-intensity: -8;
 
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-1: rgba(0,0,0, .04);
+  --elevate-2: rgba(0,0,0, .10);
 
-  --background: 145 22% 7%; /* #0d1411 */
-  --foreground: 145 20% 93%; /* #eaf4ee */
-  --card-hsl: 145 22% 14%; /* #1c2d21 */
-  --card-foreground-hsl: 145 20% 93%;
-  --popover: 145 22% 14%;
-  --popover-foreground: 145 20% 93%;
-  --primary: 148 57% 50%; /* #34c97a */
-  --primary-foreground: 145 22% 7%;
-  --secondary: 145 22% 10%; /* #152019 */
-  --secondary-foreground: 145 20% 93%;
-  --muted-hsl: 145 19% 50%; /* #6a9878 */
-  --muted-foreground-hsl: 145 20% 80%;
-  --accent: 145 22% 10%;
-  --accent-foreground: 145 20% 93%;
-  --destructive: 0 49% 52%; /* #c04848 */
+  /* ── Tailwind / shadcn HSL equivalents ── */
+  --background: 280 18% 3%;   /* #09070A */
+  --foreground: 38 30% 92%;   /* #f0ece4 */
+  --card-hsl: 30 26% 8%;      /* #1a130d */
+  --card-foreground-hsl: 38 30% 92%;
+  --popover: 30 26% 8%;
+  --popover-foreground: 38 30% 92%;
+  --primary: 148 57% 50%;     /* #34c97a — green unchanged */
+  --primary-foreground: 280 18% 3%;
+  --secondary: 30 30% 6%;     /* #16100a */
+  --secondary-foreground: 38 30% 92%;
+  --muted-hsl: 30 14% 36%;    /* #6e5e4c */
+  --muted-foreground-hsl: 38 30% 80%;
+  --accent: 30 30% 6%;
+  --accent-foreground: 38 30% 92%;
+  --destructive: 0 49% 52%;
   --destructive-foreground: 0 0% 100%;
   --border-hsl: 148 57% 50%;
   --input-hsl: 148 57% 50%;
@@ -112,24 +112,24 @@
   --app-font-sans: 'DM Sans', 'Inter', system-ui, sans-serif;
   --app-font-serif: 'DM Sans', 'Inter', system-ui, sans-serif;
   --app-font-mono: Menlo, monospace;
-  --radius: .75rem; /* 12px */
+  --radius: .75rem;
 }
 
 .dark {
-  --background: 145 22% 7%;
-  --foreground: 145 20% 93%;
-  --card-hsl: 145 22% 14%;
-  --card-foreground-hsl: 145 20% 93%;
-  --popover: 145 22% 14%;
-  --popover-foreground: 145 20% 93%;
+  --background: 280 18% 3%;
+  --foreground: 38 30% 92%;
+  --card-hsl: 30 26% 8%;
+  --card-foreground-hsl: 38 30% 92%;
+  --popover: 30 26% 8%;
+  --popover-foreground: 38 30% 92%;
   --primary: 148 57% 50%;
-  --primary-foreground: 145 22% 7%;
-  --secondary: 145 22% 10%;
-  --secondary-foreground: 145 20% 93%;
-  --muted-hsl: 145 19% 50%;
-  --muted-foreground-hsl: 145 20% 80%;
-  --accent: 145 22% 10%;
-  --accent-foreground: 145 20% 93%;
+  --primary-foreground: 280 18% 3%;
+  --secondary: 30 30% 6%;
+  --secondary-foreground: 38 30% 92%;
+  --muted-hsl: 30 14% 36%;
+  --muted-foreground-hsl: 38 30% 80%;
+  --accent: 30 30% 6%;
+  --accent-foreground: 38 30% 92%;
   --destructive: 0 49% 52%;
   --destructive-foreground: 0 0% 100%;
   --border-hsl: 148 57% 50%;

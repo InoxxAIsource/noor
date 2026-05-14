@@ -275,7 +275,7 @@ const QuranSurahPage: React.FC = () => {
   const surahName = SURAH_NAMES[num] ?? `Surah ${num}`;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1411", paddingBottom: 80 }}>
+    <div style={{ minHeight: "100vh", background: "#09070A", paddingBottom: 80 }}>
 
       {/* Sticky header */}
       <div style={{
@@ -286,42 +286,42 @@ const QuranSurahPage: React.FC = () => {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
           <button onClick={() => navigate("/quran")}
-            style={{ background: "transparent", border: "none", color: "#6a9878", cursor: "pointer", padding: 4, display: "flex" }}>
+            style={{ background: "transparent", border: "none", color: "#6e5e4c", cursor: "pointer", padding: 4, display: "flex" }}>
             <ChevronLeft size={22} />
           </button>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 17, fontWeight: 700, color: "#eaf4ee", fontFamily: "DM Sans, Inter, sans-serif" }}>{surahName}</div>
-            <div style={{ fontSize: 11, color: "#6a9878", marginTop: 1, fontFamily: "Inter, sans-serif" }}>
+            <div style={{ fontSize: 17, fontWeight: 700, color: "#f0ece4", fontFamily: "DM Sans, Inter, sans-serif" }}>{surahName}</div>
+            <div style={{ fontSize: 11, color: "#6e5e4c", marginTop: 1, fontFamily: "Inter, sans-serif" }}>
               Surah {num} · {verses.length} ayahs · {ayahsRead.size} read
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={() => { stopAll(); navigate(`/quran/read/${num - 1}`); }} disabled={num <= 1}
-              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#2a3830", cursor: num > 1 ? "pointer" : "default" }}>
+              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#241a10", cursor: num > 1 ? "pointer" : "default" }}>
               <ChevronLeft size={14} />
             </button>
             <button onClick={() => { stopAll(); navigate(`/quran/read/${num + 1}`); }} disabled={num >= 114}
-              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num < 114 ? "#34c97a" : "#2a3830", cursor: num < 114 ? "pointer" : "default" }}>
+              style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num < 114 ? "#34c97a" : "#241a10", cursor: num < 114 ? "pointer" : "default" }}>
               <ChevronRight size={14} />
             </button>
           </div>
         </div>
         {verses.length > 0 && (
-          <div style={{ height: 3, background: "#1c2d21", borderRadius: 99, overflow: "hidden" }}>
+          <div style={{ height: 3, background: "#1a130d", borderRadius: 99, overflow: "hidden" }}>
             <div style={{ height: "100%", width: `${progressPct}%`, background: "#34c97a", borderRadius: 99, transition: "width 0.4s" }} />
           </div>
         )}
       </div>
 
       {loading && (
-        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878" }}>
-          <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif", fontSize: 36, color: "#b8946a", marginBottom: 16 }}>بِسْمِ ٱللَّهِ</div>
+        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6e5e4c" }}>
+          <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif", fontSize: 36, color: "#c9a472", marginBottom: 16 }}>بِسْمِ ٱللَّهِ</div>
           <div style={{ fontSize: 14, fontFamily: "Inter, sans-serif" }}>Loading {surahName}...</div>
         </div>
       )}
 
       {error && (
-        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6a9878", fontSize: 14 }}>
+        <div style={{ textAlign: "center", padding: "80px 20px", color: "#6e5e4c", fontSize: 14 }}>
           Could not load surah. Check your connection and try again.
         </div>
       )}
@@ -334,7 +334,7 @@ const QuranSurahPage: React.FC = () => {
               <div style={{
                 fontFamily: "Amiri, 'Arabic Typesetting', 'Traditional Arabic', serif",
                 fontSize: 28,
-                color: "#b8946a",
+                color: "#c9a472",
                 lineHeight: 2,
                 direction: "rtl",
               }}>
@@ -353,7 +353,7 @@ const QuranSurahPage: React.FC = () => {
                 padding: "8px 14px", borderRadius: 20,
                 background: isSequential ? "rgba(184,148,106,0.15)" : "rgba(52,201,122,0.12)",
                 border: `1px solid ${isSequential ? "rgba(184,148,106,0.4)" : "rgba(52,201,122,0.3)"}`,
-                color: isSequential ? "#b8946a" : "#34c97a",
+                color: isSequential ? "#c9a472" : "#34c97a",
                 fontSize: 12, fontWeight: 600, cursor: "pointer",
                 fontFamily: "Inter, sans-serif",
               }}
@@ -389,7 +389,7 @@ const QuranSurahPage: React.FC = () => {
                       background: isRead ? "rgba(52,201,122,0.2)" : "rgba(184,148,106,0.12)",
                       border: `1px solid ${isRead ? "rgba(52,201,122,0.5)" : "rgba(184,148,106,0.35)"}`,
                       fontSize: 11, fontWeight: 700,
-                      color: isRead ? "#34c97a" : "#b8946a",
+                      color: isRead ? "#34c97a" : "#c9a472",
                       fontFamily: "Inter, sans-serif",
                     }}>
                       {v.verse_number}
@@ -438,7 +438,7 @@ const QuranSurahPage: React.FC = () => {
                           width: 32, height: 32, borderRadius: "50%", border: "none", cursor: "pointer",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           background: isPlaying ? "#34c97a" : "rgba(52,201,122,0.12)",
-                          color: isPlaying ? "#fff" : "#6a9878",
+                          color: isPlaying ? "#fff" : "#6e5e4c",
                           transition: "all 0.2s",
                         }}
                       >
@@ -451,11 +451,11 @@ const QuranSurahPage: React.FC = () => {
                           width: 32, height: 32, borderRadius: "50%", border: "none", cursor: "pointer",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           background: isBookmarked ? "rgba(184,148,106,0.15)" : "rgba(52,201,122,0.08)",
-                          color: isBookmarked ? "#b8946a" : "#6a9878",
+                          color: isBookmarked ? "#c9a472" : "#6e5e4c",
                           transition: "all 0.2s",
                         }}
                       >
-                        <Bookmark size={13} style={{ fill: isBookmarked ? "#b8946a" : "transparent" }} />
+                        <Bookmark size={13} style={{ fill: isBookmarked ? "#c9a472" : "transparent" }} />
                       </button>
                     </div>
                   </div>
@@ -465,8 +465,8 @@ const QuranSurahPage: React.FC = () => {
           </div>
 
           {/* End of Surah */}
-          <div style={{ textAlign: "center", padding: "32px 20px 20px", color: "#6a9878" }}>
-            <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', serif", fontSize: 20, color: "#b8946a", marginBottom: 8 }}>
+          <div style={{ textAlign: "center", padding: "32px 20px 20px", color: "#6e5e4c" }}>
+            <div style={{ fontFamily: "Amiri, 'Arabic Typesetting', serif", fontSize: 20, color: "#c9a472", marginBottom: 8 }}>
               صَدَقَ ٱللَّهُ ٱلْعَظِيمُ
             </div>
             <div style={{ fontSize: 12, marginBottom: 24, fontFamily: "Inter, sans-serif" }}>End of {surahName}</div>
