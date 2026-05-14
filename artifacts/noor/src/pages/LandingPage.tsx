@@ -274,7 +274,7 @@ export default function LandingPage() {
         {/* ── HERO HEADLINE + CTA — in the lower third ── */}
         <div style={{ position: "relative", zIndex: 10, marginTop: "auto", padding: "0 24px 80px", textAlign: "center", maxWidth: 640, margin: "auto auto 0", width: "100%" }}>
           <h1 style={{ fontFamily: "DM Sans, Inter, sans-serif", fontSize: "clamp(32px, 8vw, 58px)", fontWeight: 800, color: C.text, margin: "0 0 18px", lineHeight: 1.06, letterSpacing: "-0.03em" }}>
-            AI Islamic Companion<br />
+            MyTazki — AI Islamic Companion<br />
             <span style={{ color: C.green }}>for Daily Muslim Growth</span>
           </h1>
           <p style={{ fontSize: "clamp(14px, 2.5vw, 17px)", color: "rgba(250,242,226,0.78)", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.78, fontWeight: 400 }}>
