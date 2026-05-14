@@ -1,5 +1,23 @@
 # MyTazki — Changelog
 
+### 2026-05-14 — GSC indexing fixes: robots.txt, sitemap, /download rewrite, index.html pre-render
+
+**Problem:** Google Search Console reported 3 indexing issues — Blocked by robots.txt (`/home`), Page with redirect (`http://mytazki.com/`), and Crawled not indexed (`/download`, `/`). Also discovered a critical bug: 35 Phase 4 pages were missing from the live dynamic sitemap.
+
+**Root causes fixed (4):**
+
+1. **`Disallow: /home` removed from robots.txt** (`sitemap.ts`) — `/home` is auth-protected and redirects to `/login`; the auth system handles exclusion, not robots.txt. Removing it clears the GSC "Blocked by robots.txt" notice.
+
+2. **35 Phase 4 pages added to dynamic sitemap** (`sitemap.ts`) — Critical bug: the API server's `/sitemap.xml` endpoint is what Google reads (API server claims that path), but the Phase 4 pages were only added to the static `artifacts/noor/public/sitemap.xml` which is never served. All 35 pages now appear in the live dynamic sitemap Google crawls.
+
+3. **`/download` page fully rewritten** (`landing.ts`) — Old page had empty schema `[]`, old green palette (`#002800`), and thin content. Rewritten with: `MobileApplication` schema + `FAQPage` schema (6 Q&As), breadcrumb nav, Sanctuary Mode palette (`#1a130d`, `#c9a472`, `#34c97a`), 10-feature grid with descriptions, 3-platform install guide with step-by-step instructions.
+
+4. **React `index.html` pre-render content made visible** (`noor/index.html`) — The pre-render H1 was CSS-hidden (`position:absolute;clip:rect(0,0,0,0)`) which Google treats as suspicious cloaking. Replaced with a fully visible pre-render section: visible H1, descriptive paragraph, core features list, and a `/download` CTA link — all in the correct Sanctuary palette. React mounts over it normally.
+
+**HTTP redirect issue (`http://mytazki.com/`):** Infrastructure-level HTTP→HTTPS redirect; canonical already set to `https://mytazki.com/` in index.html. No code change needed — GSC resolves this automatically.
+
+---
+
 ### 2026-05-14 — SEO Phase 4: 35 new Sanctuary Mode landing pages (42 total)
 
 **New SSR route files (3 files, 35 routes):**

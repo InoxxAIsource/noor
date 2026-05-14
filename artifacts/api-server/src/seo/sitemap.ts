@@ -196,6 +196,31 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/build-islamic-habits", "/start-praying-again",
   ].forEach(p => urls.push(url(p, "0.95")));
 
+  // Phase 4, Sanctuary Mode — Anxiety & Sleep cluster
+  [
+    "/ruqyah-for-anxiety", "/islamic-anxiety-help", "/panic-attack-dua",
+    "/quran-verses-for-anxiety", "/how-to-calm-anxiety-islam",
+    "/negative-thoughts-in-islam", "/trust-allah-and-stop-overthinking",
+    "/islamic-sleep-meditation", "/quran-for-sleep", "/dua-before-sleep",
+    "/ruqyah-for-sleep", "/surah-for-sleep", "/night-dhikr",
+  ].forEach(p => urls.push(url(p, "0.8")));
+
+  // Phase 4, Sanctuary Mode — Healing & Rizq cluster
+  [
+    "/dua-for-stress", "/healing-through-quran", "/sadness-in-islam",
+    "/allah-tests-those-he-loves", "/healing-after-breakup-islam",
+    "/dua-for-heartbreak", "/letting-go-in-islam", "/allah-heals-broken-hearts",
+    "/dua-for-rizq", "/barakah-in-rizq", "/dua-for-job",
+    "/surah-for-rizq", "/islamic-financial-stress",
+  ].forEach(p => urls.push(url(p, "0.8")));
+
+  // Phase 4, Sanctuary Mode — Growth & Spiritual cluster
+  [
+    "/islamic-morning-routine", "/morning-azkar", "/daily-islamic-habits",
+    "/productive-muslim-routine", "/fajr-routine", "/muslim-mindfulness",
+    "/daily-tazkiyah", "/healing-with-dhikr", "/spiritual-burnout-islam",
+  ].forEach(p => urls.push(url(p, "0.8")));
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}
@@ -211,7 +236,6 @@ router.get("/robots.txt", (_req: Request, res: Response) => {
 Allow: /
 
 Disallow: /api/
-Disallow: /home
 Disallow: /player/
 Disallow: /profile
 Disallow: /journal
