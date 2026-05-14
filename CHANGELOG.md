@@ -1,5 +1,39 @@
 # MyTazki — Changelog
 
+### 2026-05-14 — Sanctuary Mode cinematic design adopted for Landing & Home pages
+
+**Full visual overhaul — both public landing page and logged-in dashboard now use the approved Sanctuary Mode aesthetic:**
+
+**LandingPage.tsx (`/`):**
+- Cinematic full-screen hero — `woman-praying-night.png` with CSS film grade (`contrast(1.12) brightness(0.90) saturate(0.72)`)
+- Warm amber multiply overlay + radial vignette + top scrim + bottom melt gradient
+- Rotating Arabic verse floating over the image center with crisp stacked text-shadows (no blur wash-out)
+- Translation + Quran reference with near-full opacity, gold accent
+- Hero headline + CTAs in lower third over the dark melt
+- Fixed nav with `rgba(9,7,10,0.82)` + `backdrop-filter: blur(22px)` — new ghost Sign In + green Start Free buttons
+- Atmospheric second break section: `man-making-dua.png` with cinematic treatment + Arabic/English Quran 40:60 verse
+- Bottom CTA section: `woman-reading-quran.png` with opacity overlay + Arabic + headline
+- All section cards: warm dark palette (`#09070A` bg, `#16100a` surface, `#1a130d` card) with depth box-shadow
+- Gold border accents (`rgba(201,164,114,0.16)`) on entry cards and trust cards
+- Footer: warm dark, gold headings, cinematic brand logo
+
+**HomePage.tsx (`/home`):**
+- Cinematic 60vh hero — `man-making-dua.png` with same CSS film treatment
+- Fixed Arabic verse in hero: `ألا بذكر الله تطمئن القلوب` (13:28) with multi-stop text-shadow
+- Top bar: MYTAZKI wordmark + Search/Bell/Menu icons; slide-in side menu with all nav routes
+- Search panel with session search, live results filtered from all sessions
+- Greeting below hero: hijri date + first-name + time-of-day salutation + emotion insight
+- Featured session card: breathing `breathe` animation on play button + expanding ring pulse
+- Journey continuity card (gold accent border)
+- Prayer times card: countdown timer + 5-prayer mini-row
+- Emotion check-in (8 emotions in 4-col grid); persists via `/api/mood/checkin`
+- Streak row: large gold number + 7-dot week indicator
+- Name of Allah card (gold border, Scheherazade font)
+- Quick dhikr row (3 cards, navigate to `/tasbih?dhikr=...`)
+- AI Companion row (gold accent)
+- Collapsible tools grid (4-col, 8 → 12 tools)
+- All real API data wired: prayer times, hijri, streak, mood, sessions, nameOfAllah, progress
+
 ### 2026-05-13 — Language switcher now works globally
 
 **Bug fix: language preference was saved but never applied**

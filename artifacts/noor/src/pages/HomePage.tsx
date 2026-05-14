@@ -46,11 +46,30 @@ const TOOLS = [
 ];
 
 const SESSION_NAMES: Record<string, string> = {
-  azkar: "Morning Azkar",
-  quran: "Quran Reflection",
-  sleep: "Evening Calm",
-  dua: "Guided Dua",
-  healing: "Healing Session",
+  azkar: "Morning Azkar", quran: "Quran Reflection",
+  sleep: "Evening Calm",  dua: "Guided Dua", healing: "Healing Session",
+};
+
+const EMOTION_INSIGHTS: Record<string, string> = {
+  peaceful: "You've been finding moments of peace recently.",
+  anxious: "You've been navigating some challenges lately.",
+  grateful: "Your heart has been full of gratitude.",
+  overwhelmed: "You've been carrying a lot recently.",
+  lonely: "You've been on a journey of seeking connection.",
+  frustrated: "You've been working through some difficulties.",
+  grieving: "You've been walking through a tender time.",
+  joyful: "You've been carrying joy in your heart.",
+};
+
+const EMOTION_SESSIONS: Record<string, string[]> = {
+  anxious:     ["healing", "sleep", "dua"],
+  overwhelmed: ["healing", "azkar", "sleep"],
+  lonely:      ["dua", "quran", "azkar"],
+  frustrated:  ["azkar", "healing", "quran"],
+  grieving:    ["dua", "healing", "sleep"],
+  peaceful:    ["quran", "azkar", "dua"],
+  grateful:    ["azkar", "quran", "dua"],
+  joyful:      ["quran", "azkar", "dua"],
 };
 
 function parseTimeToDate(timeStr: string): Date {
@@ -66,35 +85,26 @@ function formatCountdown(ms: number): string {
   return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
-function getTimeGreeting(name: string): { greeting: string; sub: string } {
+function getTimeGreeting(): { salutation: string; sub: string } {
   const h = new Date().getHours();
-  if (h >= 4 && h < 12) return { greeting: `Good morning, ${name}`, sub: "Begin your day with intention." };
-  if (h >= 12 && h < 15) return { greeting: `Peace be with you, ${name}`, sub: "Stay grounded in Allah's remembrance." };
-  if (h >= 15 && h < 19) return { greeting: `Good evening, ${name}`, sub: "Reflect on the blessings of today." };
-  return { greeting: `Assalamu Alaikum, ${name}`, sub: "End your day in peace and gratitude." };
+  if (h >= 4  && h < 12) return { salutation: "Good morning",    sub: "Begin your day with intention." };
+  if (h >= 12 && h < 15) return { salutation: "Peace be with you", sub: "Stay grounded in Allah's remembrance." };
+  if (h >= 15 && h < 19) return { salutation: "Good afternoon",  sub: "Reflect on today's blessings." };
+  return { salutation: "Good evening", sub: "End your day in peace and gratitude." };
 }
 
-const EMOTION_INSIGHTS: Record<string, string> = {
-  peaceful:    "You've been finding moments of peace recently.",
-  anxious:     "You've been navigating some challenges lately.",
-  grateful:    "Your heart has been full of gratitude.",
-  overwhelmed: "You've been carrying a lot recently.",
-  lonely:      "You've been on a journey of seeking connection.",
-  frustrated:  "You've been working through some difficulties.",
-  grieving:    "You've been walking through a tender time.",
-  joyful:      "You've been carrying joy in your heart.",
-};
-
-// Session recommendations by emotional state
-const EMOTION_SESSIONS: Record<string, string[]> = {
-  anxious:     ["healing", "sleep", "dua"],
-  overwhelmed: ["healing", "azkar", "sleep"],
-  lonely:      ["dua", "quran", "azkar"],
-  frustrated:  ["azkar", "healing", "quran"],
-  grieving:    ["dua", "healing", "sleep"],
-  peaceful:    ["quran", "azkar", "dua"],
-  grateful:    ["azkar", "quran", "dua"],
-  joyful:      ["quran", "azkar", "dua"],
+// Cinematic palette
+const C = {
+  bg:      "#09070A",
+  surface: "#16100a",
+  card:    "#1a130d",
+  green:   "#34c97a",
+  gold:    "#c9a472",
+  cream:   "#faf2e2",
+  text:    "#f0ece4",
+  muted:   "#6e5e4c",
+  border:  "rgba(52,201,122,0.12)",
+  bGold:   "rgba(201,164,114,0.18)",
 };
 
 export default function HomePage() {
@@ -124,7 +134,7 @@ export default function HomePage() {
   const [recentSessionTitle, setRecentSessionTitle] = useState<string | null>(null);
   const [showAllTools, setShowAllTools] = useState(false);
 
-  const { greeting, sub } = getTimeGreeting(firstName);
+  const { salutation, sub } = getTimeGreeting();
   const authHeaders: Record<string, string> = token
     ? { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }
     : {};
@@ -141,56 +151,33 @@ export default function HomePage() {
       token ? fetch("/api/progress/recent", { headers: authHeaders }).then(r => r.json()).catch(() => null) : null,
     ]).then(([prayerData, hijriData, streakData, moodData, sessionsData, nameData, moodHistory, progressData]) => {
       if (prayerData?.times) setPrayerTimes(prayerData.times as PrayerTime[]);
-      if (hijriData?.day) {
-        setHijri(hijriData as HijriData);
-        setIsRamadan((hijriData as HijriData).month?.number === 9);
-      }
+      if (hijriData?.day) { setHijri(hijriData as HijriData); setIsRamadan((hijriData as HijriData).month?.number === 9); }
       if (streakData?.currentStreak !== undefined) setStreak(streakData as StreakData);
       if (moodData) setMood(moodData as MoodData);
-
       if (Array.isArray(sessionsData) && (sessionsData as Session[]).length > 0) {
         const sessions = sessionsData as Session[];
         setAllSessions(sessions);
-
-        // Pick featured session based on current emotion or time of day
         const currentEmotion = (moodData as MoodData | null)?.emotion;
         const preferredCats = currentEmotion
           ? (EMOTION_SESSIONS[currentEmotion] ?? [])
-          : (() => {
-              const h = new Date().getHours();
-              return h < 12 ? ["azkar"] : h < 17 ? ["quran"] : ["sleep"];
-            })();
-
+          : (() => { const h = new Date().getHours(); return h < 12 ? ["azkar"] : h < 17 ? ["quran"] : ["sleep"]; })();
         let match: Session | undefined;
-        for (const cat of preferredCats) {
-          match = sessions.find(s => s.category?.toLowerCase() === cat);
-          if (match) break;
-        }
+        for (const cat of preferredCats) { match = sessions.find(s => s.category?.toLowerCase() === cat); if (match) break; }
         setFeaturedSession(match ?? sessions[0] ?? null);
       }
-
       if (nameData?.arabic) setNameOfAllah(nameData as NameOfAllah);
-
-      // Emotional insight from mood history
-      if (moodHistory?.insight) {
-        setEmotionInsight(moodHistory.insight as string);
-      } else if (moodHistory?.history?.length >= 2) {
+      if (moodHistory?.insight) setEmotionInsight(moodHistory.insight as string);
+      else if (moodHistory?.history?.length >= 2) {
         const emotions = (moodHistory.history as Array<{ emotion: string }>).map(h => h.emotion);
         const dominant = emotions[0];
         if (dominant) setEmotionInsight(EMOTION_INSIGHTS[dominant] ?? null);
       }
-
-      // Journey continuity from last session
       if (progressData?.recent) {
         const prog = progressData.recent as RecentProgress;
         setRecentProgress(prog);
         if (Array.isArray(sessionsData)) {
           const matchedSession = (sessionsData as Session[]).find(s => s.id === prog.sessionId);
-          setRecentSessionTitle(
-            matchedSession?.title
-            ?? SESSION_NAMES[prog.category]
-            ?? prog.category
-          );
+          setRecentSessionTitle(matchedSession?.title ?? SESSION_NAMES[prog.category] ?? prog.category);
         }
       }
     });
@@ -218,577 +205,381 @@ export default function HomePage() {
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) { setSearchResults([]); return; }
-    setSearchResults(
-      allSessions
-        .filter(s => s.title.toLowerCase().includes(q) || s.category.toLowerCase().includes(q))
-        .slice(0, 6)
-    );
+    setSearchResults(allSessions.filter(s => s.title.toLowerCase().includes(q) || s.category.toLowerCase().includes(q)).slice(0, 6));
   }, [searchQuery, allSessions]);
 
-  const hijriLine = hijri ? `${hijri.day} ${hijri.month.en} ${hijri.year} AH` : "";
+  const hijriLine = hijri ? `${hijri.day} ${hijri.month.en} ${hijri.year} AH${isRamadan ? " · Ramadan Mubarak" : ""}` : "";
+  const visibleTools = showAllTools ? TOOLS : TOOLS.slice(0, 8);
+
+  const streakLabel = streak.currentStreak === 0 ? "Your journey begins today"
+    : streak.currentStreak === 1 ? "Day 1 of your journey"
+    : `${streak.currentStreak} days of remembrance`;
 
   const handleEmotionSelect = async (emotion: string) => {
     setMood(prev => ({ ...prev, emotion }));
-    if (token) {
-      await fetch("/api/mood/checkin", {
-        method: "POST",
-        headers: authHeaders,
-        body: JSON.stringify({ emotion }),
-      }).catch(() => {});
-    }
-    // Re-pick session based on new emotion
+    if (token) await fetch("/api/mood/checkin", { method: "POST", headers: authHeaders, body: JSON.stringify({ emotion }) }).catch(() => {});
     if (allSessions.length > 0) {
       const preferredCats = EMOTION_SESSIONS[emotion] ?? [];
       let match: Session | undefined;
-      for (const cat of preferredCats) {
-        match = allSessions.find(s => s.category?.toLowerCase() === cat);
-        if (match) break;
-      }
+      for (const cat of preferredCats) { match = allSessions.find(s => s.category?.toLowerCase() === cat); if (match) break; }
       if (match) setFeaturedSession(match);
     }
   };
 
-  const visibleTools = showAllTools ? TOOLS : TOOLS.slice(0, 4);
-
-  // Streak messaging — identity-reinforcing, never guilt-based
-  const streakLabel = streak.currentStreak === 0
-    ? "Your journey begins today"
-    : streak.currentStreak === 1
-      ? "Day 1 of your journey"
-      : `${streak.currentStreak} days of consistent remembrance`;
-
-  const streakSub = streak.currentStreak >= 7
-    ? "Masha'Allah — you're building a beautiful habit"
-    : streak.weeklyCompleted > 0
-      ? `${streak.weeklyCompleted} of ${streak.weeklyGoal} sessions this week`
-      : "Each moment of remembrance counts";
-
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh", color: "var(--text)", paddingBottom: 100, position: "relative" }}>
+    <div style={{ background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "Inter, -apple-system, sans-serif", paddingBottom: 100 }}>
       <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes breathe {
+          0%,100% { box-shadow: 0 0 14px rgba(52,201,122,0.30), 0 0 28px rgba(52,201,122,0.10); }
+          55%      { box-shadow: 0 0 22px rgba(52,201,122,0.55), 0 0 44px rgba(52,201,122,0.18); }
         }
-        @keyframes fadeDown {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes ring {
+          0%   { transform: scale(1);   opacity: 0.55; }
+          100% { transform: scale(1.7); opacity: 0; }
         }
         @keyframes slideLeft {
           from { transform: translateX(100%); }
-          to { transform: translateX(0); }
+          to   { transform: translateX(0); }
         }
-        @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(52,201,122,0.15); }
-          50% { box-shadow: 0 0 32px rgba(52,201,122,0.3); }
+        @keyframes fadeDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        .main-content {
-          animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        .hp-glow  { animation: breathe 3s ease-in-out infinite; }
+        .hp-ring  {
+          position: absolute; inset: -6px; border-radius: 50%;
+          border: 1px solid rgba(52,201,122,0.40);
+          animation: ring 3s ease-out infinite;
+          pointer-events: none;
         }
+        .hp-tap:active { opacity: 0.85; transform: scale(0.98); }
+        .hp-tool:active { opacity: 0.7; }
+        -webkit-font-smoothing: antialiased;
       `}</style>
 
-      {/* Atmospheric Header Background */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 280, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+      {/* ═══════ CINEMATIC HERO ═══════ */}
+      <div style={{ position: "relative", height: "60vh", flexShrink: 0, overflow: "hidden", isolation: "isolate" }}>
+
         <img
-          src="/images/man-praying-moon.png"
-          alt=""
-          aria-hidden="true"
+          src="/images/man-making-dua.png" alt=""
           style={{
-            width: "100%", height: "100%",
-            objectFit: "cover", objectPosition: "center 20%",
-            display: "block",
+            width: "100%", height: "100%", objectFit: "cover",
+            objectPosition: "center 20%", display: "block",
+            filter: "contrast(1.12) brightness(0.93) saturate(0.70)",
           }}
         />
-        {/* Fade the image out downward */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to bottom, rgba(13,20,17,0.35) 0%, rgba(13,20,17,0.55) 50%, rgba(13,20,17,1) 100%)",
-        }} />
-      </div>
 
-      {/* Top bar */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 20px 0", position: "relative", zIndex: 10 }}>
-        <div style={{ fontSize: 16, fontWeight: 700, color: "var(--green)", letterSpacing: 3, fontFamily: "DM Sans, sans-serif" }}>
-          MYTAZKI
-        </div>
-        <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
-          <Search size={20} color="var(--muted)" style={{ cursor: "pointer" }}
-            onClick={() => { setShowSearch(v => !v); setShowMenu(false); setSearchQuery(""); }} />
-          <Bell size={20} color="var(--muted)" style={{ cursor: "pointer" }}
-            onClick={() => void navigate("/profile")} />
-          <Menu size={20} color="var(--muted)" style={{ cursor: "pointer" }}
-            onClick={() => { setShowMenu(v => !v); setShowSearch(false); }} />
-        </div>
-      </div>
+        {/* Warm amber film grade */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, rgba(130,74,22,0.30) 0%, rgba(90,44,8,0.18) 55%, rgba(10,6,18,0.12) 100%)", mixBlendMode: "multiply", pointerEvents: "none" }} />
+        {/* Vignette */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 82% 74% at 50% 34%, transparent 34%, rgba(5,3,1,0.68) 100%)", pointerEvents: "none" }} />
+        {/* Top scrim */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 110, background: "linear-gradient(to bottom, rgba(5,3,2,0.80) 0%, transparent 100%)", pointerEvents: "none" }} />
+        {/* Bottom melt */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: `linear-gradient(to bottom, transparent 0%, rgba(9,7,10,0.18) 22%, rgba(9,7,10,0.62) 52%, rgba(9,7,10,0.92) 74%, ${C.bg} 100%)`, pointerEvents: "none" }} />
 
-      {/* Search panel */}
-      {showSearch && (
-        <div style={{ margin: "16px 20px 0", animation: "fadeDown 0.2s ease", position: "relative", zIndex: 10 }}>
-          <div style={{ position: "relative" }}>
-            <input
-              autoFocus
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search sessions, duas, guides..."
-              style={{
-                width: "100%", background: "var(--surface)", border: "1px solid rgba(52,201,122,0.2)",
-                borderRadius: 12, padding: "14px 40px 14px 16px", color: "var(--text)",
-                fontSize: 15, outline: "none", boxSizing: "border-box",
-              }}
-            />
-            <X size={18} color="var(--muted)" style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}
-              onClick={() => { setShowSearch(false); setSearchQuery(""); }} />
+        {/* TOP BAR */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 20px 0" }}>
+          <span style={{ fontSize: 12, fontWeight: 800, color: C.green, letterSpacing: 4 }}>MYTAZKI</span>
+          <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
+            <Search size={19} color={C.text} style={{ cursor: "pointer", opacity: 0.55 }}
+              onClick={() => { setShowSearch(v => !v); setShowMenu(false); setSearchQuery(""); }} />
+            <Bell size={19} color={C.text} style={{ cursor: "pointer", opacity: 0.55 }}
+              onClick={() => void navigate("/profile")} />
+            <Menu size={19} color={C.text} style={{ cursor: "pointer", opacity: 0.55 }}
+              onClick={() => { setShowMenu(v => !v); setShowSearch(false); }} />
           </div>
-          {searchResults.length > 0 && (
-            <div style={{ background: "var(--surface)", border: "1px solid rgba(52,201,122,0.15)", borderRadius: 12, marginTop: 8, overflow: "hidden" }}>
-              {searchResults.map(s => (
-                <div key={s.id}
-                  onClick={() => void navigate(`/player/${s.id}`)}
-                  style={{ padding: "14px 16px", borderBottom: "1px solid rgba(52,201,122,0.08)", cursor: "pointer", fontSize: 14 }}
-                >
-                  {s.title}
-                  <span style={{ fontSize: 11, color: "var(--muted)", marginLeft: 8 }}>{s.category}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
-      )}
 
-      {/* Side menu */}
+        {/* VERSE — floating over image */}
+        <div style={{ position: "absolute", top: "28%", left: 0, right: 0, zIndex: 8, padding: "0 28px", textAlign: "center", isolation: "isolate" }}>
+          <div style={{ width: 28, height: 1, margin: "0 auto 16px", background: "linear-gradient(to right, transparent, rgba(201,164,114,0.60), transparent)" }} />
+          <div style={{
+            fontFamily: "'Scheherazade New', 'Traditional Arabic', 'Noto Naskh Arabic', Georgia, serif",
+            fontSize: 30, fontWeight: 700, color: C.cream, direction: "rtl", lineHeight: 1.75, letterSpacing: 0.5,
+            textShadow: "0 1px 2px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,1), 0 3px 6px rgba(0,0,0,0.95)",
+            marginBottom: 12,
+          }}>
+            ألا بذكر الله تطمئن القلوب
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(250,242,226,0.92)", letterSpacing: 0.4, textShadow: "0 1px 2px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,1)" }}>
+            Verily, in the remembrance of Allah do hearts find rest
+          </div>
+          <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(201,164,114,0.88)", marginTop: 9, letterSpacing: 2, textShadow: "0 1px 2px rgba(0,0,0,1)" }}>
+            SURAH AR-RA'D · 13:28
+          </div>
+          <div style={{ width: 28, height: 1, margin: "16px auto 0", background: "linear-gradient(to right, transparent, rgba(201,164,114,0.60), transparent)" }} />
+        </div>
+
+        {/* SEARCH PANEL */}
+        {showSearch && (
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 20, padding: "0 20px 20px", animation: "fadeDown 0.2s ease" }}>
+            <div style={{ position: "relative" }}>
+              <input autoFocus value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search sessions, duas, guides..."
+                style={{ width: "100%", background: "rgba(26,19,13,0.95)", border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 40px 14px 16px", color: C.text, fontSize: 15, outline: "none", boxSizing: "border-box", backdropFilter: "blur(12px)" }}
+              />
+              <X size={18} color={C.muted} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}
+                onClick={() => { setShowSearch(false); setSearchQuery(""); }} />
+            </div>
+            {searchResults.length > 0 && (
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, marginTop: 8, overflow: "hidden" }}>
+                {searchResults.map(s => (
+                  <div key={s.id} onClick={() => void navigate(`/player/${s.id}`)}
+                    style={{ padding: "14px 16px", borderBottom: `1px solid rgba(52,201,122,0.06)`, cursor: "pointer", fontSize: 14, color: C.text }}>
+                    {s.title}
+                    <span style={{ fontSize: 11, color: C.muted, marginLeft: 8 }}>{s.category}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* SIDE MENU */}
       {showMenu && (
-        <div style={{
-          position: "fixed", top: 0, right: 0, bottom: 0, width: 280,
-          background: "var(--surface)", borderLeft: "1px solid rgba(52,201,122,0.15)",
-          zIndex: 100, padding: 32, animation: "slideLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-          boxShadow: "-10px 0 40px rgba(0,0,0,0.3)"
-        }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 36 }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: "var(--green)", letterSpacing: 1, textTransform: "uppercase" }}>Menu</span>
-            <X size={20} color="var(--muted)" style={{ cursor: "pointer" }} onClick={() => setShowMenu(false)} />
-          </div>
-          {[
-            { label: "Sessions", path: "/sessions", icon: Play },
-            { label: "Duas Library", path: "/duas", icon: BookOpen },
-            { label: "Prayer Times", path: "/prayer-times", icon: Building2 },
-            { label: "Journal", path: "/journal", icon: FileText },
-            { label: "Growth", path: "/growth", icon: Leaf },
-            { label: "AI Companion", path: "/companion", icon: Sparkles },
-            { label: "Profile", path: "/profile", icon: User },
-          ].map(item => {
-            const Icon = item.icon;
-            return (
-            <div key={item.path}
-              onClick={() => { void navigate(item.path); setShowMenu(false); }}
-              style={{ padding: "16px 0", borderBottom: "1px solid rgba(52,201,122,0.08)", cursor: "pointer", fontSize: 16, color: "var(--text)", display: "flex", alignItems: "center", gap: 14 }}
-            >
-              <Icon size={18} color="var(--muted)" />
-              {item.label}
+        <>
+          <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(0,0,0,0.6)" }} onClick={() => setShowMenu(false)} />
+          <div style={{ position: "fixed", top: 0, right: 0, bottom: 0, width: 280, background: C.surface, borderLeft: `1px solid ${C.border}`, zIndex: 100, padding: 32, animation: "slideLeft 0.3s cubic-bezier(0.16,1,0.3,1)", boxShadow: "-12px 0 48px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 36 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.green, letterSpacing: 3, textTransform: "uppercase" }}>Menu</span>
+              <X size={20} color={C.muted} style={{ cursor: "pointer" }} onClick={() => setShowMenu(false)} />
             </div>
-          )})}
-        </div>
+            {[
+              { label: "Sessions",     path: "/sessions",   icon: Play },
+              { label: "Duas Library", path: "/duas",       icon: BookOpen },
+              { label: "Prayer Times", path: "/prayer-times", icon: Building2 },
+              { label: "Journal",      path: "/journal",    icon: FileText },
+              { label: "Growth",       path: "/growth",     icon: Leaf },
+              { label: "AI Companion", path: "/companion",  icon: Sparkles },
+              { label: "Profile",      path: "/profile",    icon: User },
+            ].map(item => {
+              const Icon = item.icon;
+              return (
+                <div key={item.path} onClick={() => { void navigate(item.path); setShowMenu(false); }}
+                  style={{ padding: "16px 0", borderBottom: `1px solid rgba(52,201,122,0.07)`, cursor: "pointer", fontSize: 15, color: C.text, display: "flex", alignItems: "center", gap: 14 }}>
+                  <Icon size={18} color={C.muted} />
+                  {item.label}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
-      {showMenu && <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }} onClick={() => setShowMenu(false)} />}
 
-      <div className="main-content" style={{ padding: "32px 20px 0", position: "relative", zIndex: 10 }}>
+      {/* ═══════ DASHBOARD CONTENT ═══════ */}
+      <div style={{ padding: "0 20px", position: "relative", zIndex: 2 }}>
 
-        {/* ── Greeting ── */}
-        <div style={{ marginBottom: 32 }}>
+        {/* GREETING */}
+        <div style={{ paddingTop: 20, marginBottom: 24 }}>
           {hijriLine && (
-            <div style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)", letterSpacing: 1.5, marginBottom: 8, textTransform: "uppercase" }}>
-              {hijriLine}{isRamadan && " · Ramadan Mubarak"}
+            <div style={{ fontSize: 10, color: C.gold, letterSpacing: 3.5, fontWeight: 600, textTransform: "uppercase", opacity: 0.82, marginBottom: 8 }}>
+              {hijriLine}
             </div>
           )}
-          <h1 style={{ fontSize: 28, fontFamily: "DM Sans, sans-serif", fontWeight: 700, marginBottom: 6, lineHeight: 1.2 }}>
-            {greeting}
-          </h1>
-          <p style={{ fontSize: 14, color: emotionInsight ? "var(--gold)" : "var(--muted)", lineHeight: 1.5 }}>
+          <div style={{ fontSize: 10, color: C.gold, letterSpacing: 3, fontWeight: 500, textTransform: "uppercase", opacity: 0.75, marginBottom: 8, display: hijriLine ? "none" : "block" }}>
+            {salutation}
+          </div>
+          <div style={{ fontSize: 27, fontFamily: "DM Sans, sans-serif", fontWeight: 700, lineHeight: 1.05, letterSpacing: -0.4, marginBottom: 7 }}>
+            {hijriLine ? `${salutation}, ${firstName}` : firstName}
+          </div>
+          <div style={{ fontSize: 13, fontWeight: 400, lineHeight: 1.55, color: "rgba(201,164,114,0.78)" }}>
             {emotionInsight ?? sub}
-          </p>
+          </div>
         </div>
 
-        {/* ── Emotional check-in — shown when no emotion logged today ── */}
-        {!mood.emotion && (
-          <div style={{
-            background: `linear-gradient(160deg, var(--surface) 0%, rgba(21,32,25,0.8) 100%)`,
-            border: "1px solid rgba(184,148,106,0.2)",
-            borderRadius: 24, padding: "24px 20px", marginBottom: 24,
-            boxShadow: "0 8px 30px rgba(0,0,0,0.2)"
-          }}>
-            <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 6, fontFamily: "DM Sans, sans-serif" }}>
-              What do you need right now?
-            </div>
-            <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 20 }}>
-              Your answer shapes everything that follows.
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-              {EMOTIONS.map(em => {
-                const Icon = em.icon;
-                return (
-                <button
-                  key={em.key}
-                  onClick={() => void handleEmotionSelect(em.key)}
-                  style={{
-                    background: `linear-gradient(to bottom, var(--card), rgba(28,45,33,0.6))`,
-                    border: "1px solid rgba(52,201,122,0.1)",
-                    borderRadius: 16, padding: "14px 4px", cursor: "pointer",
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-                    transition: "border-color 0.2s, background 0.2s",
-                  }}
-                >
-                  <Icon size={22} color="var(--green)" strokeWidth={1.5} />
-                  <span style={{ fontSize: 11, color: "var(--muted)", textAlign: "center", lineHeight: 1.2, fontWeight: 500 }}>{em.label}</span>
-                </button>
-              )})}
-            </div>
-          </div>
-        )}
-
-        {/* ── Emotional check-in — confirmed state ── */}
-        {mood.emotion && (
-          <div style={{
-            background: "var(--surface)",
-            border: "1px solid rgba(52,201,122,0.15)",
-            borderRadius: 20, padding: "16px 20px", marginBottom: 24,
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(52,201,122,0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--green)" }}>
-                {(() => {
-                  const Icon = EMOTIONS.find(e => e.key === mood.emotion)?.icon ?? Leaf;
-                  return <Icon size={20} />;
-                })()}
-              </div>
-              <div>
-                <div style={{ fontSize: 14, color: "var(--text)", fontWeight: 600 }}>
-                  Feeling {mood.emotion}
-                </div>
-                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
-                  Sessions are matched to your state
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={() => setMood(prev => ({ ...prev, emotion: null }))}
-              style={{ background: "rgba(52,201,122,0.1)", border: "none", color: "var(--green)", borderRadius: 12, padding: "6px 12px", cursor: "pointer", fontSize: 11, fontWeight: 600 }}
-            >
-              Edit
-            </button>
-          </div>
-        )}
-
-        {/* ── Morning flow CTA ── */}
+        {/* MORNING FLOW */}
         {!mood.completedMorning ? (
-          <div
-            onClick={() => void navigate("/morning")}
-            style={{
-              backgroundImage: `linear-gradient(to right, rgba(21,32,25,0.9) 0%, rgba(21,32,25,0.8) 100%), url(/images/woman-reading-quran.png)`,
-              backgroundSize: "cover", backgroundPosition: "center",
-              border: "1px solid rgba(52,201,122,0.25)", borderRadius: 24,
-              padding: "24px", marginBottom: 24, cursor: "pointer",
-              position: "relative", overflow: "hidden",
-              boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
-            }}
-          >
-            <div style={{ position: "absolute", top: 16, right: 20, color: "var(--green)", opacity: 0.15 }}>
-              <Sunrise size={48} />
-            </div>
-            <div style={{ fontSize: 11, color: "var(--green)", textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 700, marginBottom: 10 }}>
-              Morning ritual
-            </div>
-            <div style={{ fontSize: 20, fontWeight: 700, fontFamily: "DM Sans, sans-serif", marginBottom: 6, color: "var(--text)" }}>
-              Begin your day with intention
-            </div>
-            <div style={{ fontSize: 14, color: "rgba(234,244,238,0.7)", marginBottom: 20 }}>
-              A 3-minute guided morning grounding
-            </div>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "var(--green)", color: "#0d1411", borderRadius: 20,
-              padding: "10px 20px", fontSize: 14, fontWeight: 700,
-            }}>
-              Begin now <ChevronRight size={16} strokeWidth={2.5} />
-            </div>
+          <div className="hp-tap" onClick={() => void navigate("/morning")}
+            style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid rgba(52,201,122,0.15)`, borderRadius: 20, padding: "20px 18px", marginBottom: 14, cursor: "pointer", boxShadow: "0 6px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "hidden", transition: "opacity 0.15s, transform 0.15s" }}>
+            <div style={{ position: "absolute", top: -30, right: -20, width: 80, height: 80, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,164,114,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 1, background: "linear-gradient(to right, transparent, rgba(201,164,114,0.30), transparent)" }} />
+            <div style={{ fontSize: 9, color: C.gold, textTransform: "uppercase", letterSpacing: 2.5, marginBottom: 9, fontWeight: 700 }}>Morning ritual</div>
+            <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 5, color: C.text }}>Begin your day with intention</div>
+            <div style={{ fontSize: 12, color: C.muted }}>A 3-minute guided morning grounding</div>
           </div>
         ) : (
-          <div style={{
-            background: "var(--surface)", border: "1px solid rgba(52,201,122,0.2)",
-            borderRadius: 20, padding: "18px 20px", marginBottom: 24,
-            display: "flex", alignItems: "center", gap: 14,
-          }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(52,201,122,0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--green)" }}>
-              <Leaf size={20} />
-            </div>
+          <div style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid rgba(52,201,122,0.14)`, borderRadius: 20, padding: "16px 18px", marginBottom: 14, display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(52,201,122,0.10)", display: "flex", alignItems: "center", justifyContent: "center", color: C.green }}><Leaf size={18} /></div>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "var(--green)" }}>
-                Alhamdulillah — morning complete
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.green }}>Alhamdulillah — morning complete</div>
+              <div style={{ fontSize: 12, color: C.muted, marginTop: 3 }}>{mood.morningStreak > 1 ? `${mood.morningStreak} peaceful mornings — keep going` : "Your first peaceful morning"}</div>
+            </div>
+          </div>
+        )}
+
+        {/* FEATURED SESSION */}
+        {featuredSession && (
+          <div className="hp-tap" onClick={() => void navigate(`/player/${featuredSession.id}`)}
+            style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid ${C.border}`, borderRadius: 20, padding: "19px 17px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, cursor: "pointer", boxShadow: "0 6px 24px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.03)", position: "relative", overflow: "hidden", transition: "opacity 0.15s, transform 0.15s" }}>
+            <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 1, background: "linear-gradient(to right, transparent, rgba(52,201,122,0.28), transparent)" }} />
+            <div style={{ flex: 1, paddingRight: 14 }}>
+              <div style={{ fontSize: 9, color: C.green, textTransform: "uppercase", letterSpacing: 2.5, marginBottom: 9, fontWeight: 700 }}>
+                {mood.emotion ? `For when you feel ${mood.emotion}` : "Your focus now"}
               </div>
-              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>
-                {mood.morningStreak > 1
-                  ? `${mood.morningStreak} peaceful mornings — keep going`
-                  : "Your first peaceful morning"}
+              <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 5, color: C.text }}>{featuredSession.title}</div>
+              <div style={{ fontSize: 12, color: C.muted }}>
+                {featuredSession.audioUrl ? `${Math.floor(featuredSession.durationSeconds / 60)} min · Begin when ready` : "Guided reflection · Begin when ready"}
+              </div>
+            </div>
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div className="hp-ring" />
+              <div className="hp-glow" style={{ width: 52, height: 52, borderRadius: "50%", background: `linear-gradient(145deg, #44e48a 0%, ${C.green} 60%, #27a060 100%)`, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <div style={{ position: "absolute", inset: 3, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.22)" }} />
+                <svg width="15" height="15" viewBox="0 0 24 24" fill={C.bg} style={{ marginLeft: 2 }}><polygon points="6,3 20,12 6,21" /></svg>
               </div>
             </div>
           </div>
         )}
 
-        {/* ── Journey continuity card ── */}
+        {/* JOURNEY CONTINUITY */}
         {recentProgress && recentSessionTitle && (
-          <div style={{
-            background: `linear-gradient(to right, var(--surface), rgba(184,148,106,0.05))`,
-            borderLeft: "3px solid var(--gold)",
-            borderTop: "1px solid rgba(184,148,106,0.15)",
-            borderRight: "1px solid rgba(184,148,106,0.15)",
-            borderBottom: "1px solid rgba(184,148,106,0.15)",
-            borderRadius: 20, padding: "20px", marginBottom: 24,
-            cursor: "pointer", boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          }}
-            onClick={() => void navigate(`/player/${recentProgress.sessionId}`)}
-          >
-            <div style={{ fontSize: 11, color: "var(--gold)", textTransform: "uppercase", letterSpacing: 2, fontWeight: 700, marginBottom: 10 }}>
-              Continue your journey
-            </div>
+          <div className="hp-tap" onClick={() => void navigate(`/player/${recentProgress.sessionId}`)}
+            style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, borderLeft: `3px solid ${C.gold}`, border: `1px solid ${C.bGold}`, borderRadius: 20, padding: "18px", marginBottom: 14, cursor: "pointer", boxShadow: "0 4px 20px rgba(0,0,0,0.40)", transition: "opacity 0.15s, transform 0.15s" }}>
+            <div style={{ fontSize: 9, color: C.gold, textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 700, marginBottom: 10 }}>Continue your journey</div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{recentSessionTitle}</div>
-                <div style={{ fontSize: 13, color: "var(--muted)" }}>
-                  You returned for another moment of reflection
-                </div>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4, color: C.text }}>{recentSessionTitle}</div>
+                <div style={{ fontSize: 12, color: C.muted }}>You returned for another moment of reflection</div>
               </div>
-              <div style={{
-                background: "rgba(184,148,106,0.15)",
-                border: "1px solid rgba(184,148,106,0.3)",
-                borderRadius: "50%", width: 44, height: 44,
-                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-              }}>
-                <Play size={18} color="var(--gold)" fill="currentColor" />
+              <div style={{ background: `rgba(201,164,114,0.12)`, border: `1px solid ${C.bGold}`, borderRadius: "50%", width: 42, height: 42, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Play size={16} color={C.gold} fill="currentColor" />
               </div>
             </div>
           </div>
         )}
 
-        <div style={{ height: 1, background: "rgba(52,201,122,0.1)", margin: "32px 0" }} />
-
-        {/* ── Prayer times ── */}
-        <div
-          onClick={() => void navigate("/prayer-times")}
-          style={{
-            background: "var(--surface)", border: "1px solid rgba(52,201,122,0.15)",
-            borderRadius: 24, padding: "24px", marginBottom: 24, cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        {/* PRAYER CARD */}
+        <div className="hp-tap" onClick={() => void navigate("/prayer-times")}
+          style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid rgba(255,255,255,0.05)`, borderRadius: 20, padding: "18px 18px", marginBottom: 14, cursor: "pointer", boxShadow: "0 4px 18px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.025)", transition: "opacity 0.15s, transform 0.15s" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
             <div>
-              <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 1.5, fontWeight: 700, marginBottom: 4 }}>
-                Next prayer
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: "var(--green)" }}>{nextPrayer.name}</div>
+              <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 2.2, marginBottom: 4, fontWeight: 600 }}>Next prayer</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.green }}>{nextPrayer.name}</div>
             </div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: "var(--gold)", fontFamily: "Menlo, monospace", letterSpacing: 1, fontVariantNumeric: "tabular-nums" }}>
+            <div style={{ fontSize: 24, fontWeight: 700, color: C.gold, fontFamily: "'SF Mono', 'Fira Mono', monospace", letterSpacing: -0.5, fontVariantNumeric: "tabular-nums" }}>
               {countdown}
             </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 16, borderTop: "1px solid rgba(52,201,122,0.08)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.04)" }}>
             {PRAYER_ORDER.map(name => {
               const p = prayerTimes.find(pt => pt.name === name);
               const isNext = name === nextPrayer.name;
               return (
-                <div key={name} style={{ 
-                  textAlign: "center", 
-                  background: isNext ? "rgba(184,148,106,0.1)" : "transparent",
-                  padding: "6px 10px", borderRadius: 10,
-                }}>
-                  <div style={{ fontSize: 11, color: isNext ? "var(--green)" : "var(--muted)", marginBottom: 4, fontWeight: isNext ? 600 : 400 }}>{name}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: isNext ? "var(--gold)" : "var(--text)" }}>{p?.time ?? "--:--"}</div>
+                <div key={name} style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 8, marginBottom: 3, fontWeight: 600, color: isNext ? C.green : C.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>{name}</div>
+                  <div style={{ fontSize: 10, fontWeight: isNext ? 700 : 400, color: isNext ? C.gold : "rgba(240,236,228,0.38)" }}>{p?.time ?? "--:--"}</div>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* ── Streak — identity-reinforcing ── */}
-        <div style={{
-          background: "var(--surface)", border: "1px solid rgba(52,201,122,0.15)",
-          borderRadius: 24, padding: "24px", marginBottom: 32,
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        }}>
-          <div>
-            <div style={{ fontSize: 36, fontWeight: 800, color: "var(--gold)", fontFamily: "DM Sans, sans-serif", lineHeight: 1 }}>
-              {streak.currentStreak}
-            </div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)", marginTop: 6 }}>{streakLabel}</div>
-            <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4, opacity: 0.8 }}>{streakSub}</div>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ display: "flex", gap: 6, justifyContent: "flex-end", marginBottom: 8 }}>
-              {Array(7).fill(null).map((_, i) => {
-                const completed = i < streak.weeklyCompleted;
+        {/* EMOTION CHECK-IN */}
+        {!mood.emotion ? (
+          <div style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid ${C.bGold}`, borderRadius: 20, padding: "20px 18px", marginBottom: 14, boxShadow: "0 4px 18px rgba(0,0,0,0.38)" }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 5 }}>What do you need right now?</div>
+            <div style={{ fontSize: 12, color: C.muted, marginBottom: 18 }}>Your answer shapes everything that follows.</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+              {EMOTIONS.map(em => {
+                const Icon = em.icon;
                 return (
-                <div key={i} style={{
-                  width: 10, height: 10, borderRadius: "50%",
-                  background: completed ? "var(--green)" : "var(--faint)",
-                  boxShadow: completed ? "0 0 8px rgba(52,201,122,0.4)" : "none",
-                }} />
-              )})}
-            </div>
-            <div style={{ fontSize: 12, color: "var(--muted)" }}>
-              {streak.weeklyCompleted} of {streak.weeklyGoal} this week
+                  <button key={em.key} onClick={() => void handleEmotionSelect(em.key)}
+                    style={{ background: `rgba(26,19,13,0.8)`, border: `1px solid rgba(52,201,122,0.09)`, borderRadius: 14, padding: "12px 4px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 7, transition: "border-color 0.2s" }}>
+                    <Icon size={20} color={C.green} strokeWidth={1.5} />
+                    <span style={{ fontSize: 10, color: C.muted, textAlign: "center", lineHeight: 1.2, fontWeight: 500 }}>{em.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </div>
-
-        {/* ── Today's emotionally-matched session ── */}
-        {featuredSession && (
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 2, fontWeight: 700, marginBottom: 12 }}>
-              {mood.emotion ? `For when you feel ${mood.emotion}` : "Today's focus"}
+        ) : (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+            <div>
+              <div style={{ fontSize: 12, color: C.muted, marginBottom: 2 }}>Feeling today</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.text, textTransform: "capitalize" }}>{mood.emotion}</div>
             </div>
-            <div
-              onClick={() => void navigate(`/player/${featuredSession.id}`)}
-              style={{
-                backgroundImage: `linear-gradient(to right, rgba(21,32,25,0.9) 0%, rgba(21,32,25,0.85) 100%), url(/images/quran-pages.png)`,
-                backgroundSize: "cover", backgroundPosition: "center",
-                border: "1px solid rgba(52,201,122,0.2)",
-                borderRadius: 24, padding: "24px", cursor: "pointer",
-                display: "flex", justifyContent: "space-between", alignItems: "center",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
-              }}
-            >
-              <div>
-                <div style={{ fontSize: 11, color: "var(--green)", fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6, background: "rgba(52,201,122,0.1)", padding: "4px 10px", borderRadius: 8, display: "inline-block" }}>
-                  {featuredSession.category}
-                </div>
-                <div style={{ fontSize: 17, fontWeight: 600, fontFamily: "DM Sans, sans-serif", marginBottom: 6 }}>{featuredSession.title}</div>
-                <div style={{ fontSize: 13, color: "var(--muted)" }}>
-                  {featuredSession.audioUrl
-                    ? `${Math.floor(featuredSession.durationSeconds / 60)} min guided audio`
-                    : `Guided reading reflection`}
-                </div>
-              </div>
-              <div style={{
-                background: "var(--green)", color: "#0d1411", borderRadius: "50%",
-                width: 48, height: 48, display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0, animation: "glowPulse 3s infinite",
-              }}>
-                <Play size={20} fill="currentColor" style={{ marginLeft: 3 }} />
-              </div>
-            </div>
+            <button onClick={() => setMood(prev => ({ ...prev, emotion: null }))}
+              style={{ background: "rgba(52,201,122,0.08)", border: "none", color: C.green, borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontSize: 11, fontWeight: 600 }}>
+              Edit
+            </button>
           </div>
         )}
 
-        <div style={{ height: 1, background: "rgba(52,201,122,0.1)", margin: "32px 0" }} />
+        {/* STREAK */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+          <div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: C.gold, fontFamily: "DM Sans, sans-serif", lineHeight: 1 }}>{streak.currentStreak}</div>
+            <div style={{ fontSize: 12, color: C.text, marginTop: 4, fontWeight: 500 }}>{streakLabel}</div>
+          </div>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {Array(7).fill(null).map((_, i) => {
+              const done = i < streak.weeklyCompleted;
+              return <div key={i} style={{ width: i === 6 ? 9 : 7, height: i === 6 ? 9 : 7, borderRadius: "50%", background: done ? C.green : "rgba(255,255,255,0.08)", boxShadow: done ? `0 0 6px ${C.green}70` : "none" }} />;
+            })}
+            <span style={{ marginLeft: 4, fontSize: 14, color: C.gold }}>🔥</span>
+          </div>
+        </div>
 
-        {/* ── Name of Allah ── */}
+        {/* NAME OF ALLAH */}
         {nameOfAllah && (
-          <div style={{
-            background: "var(--surface)", 
-            borderTop: "1px solid rgba(184,148,106,0.15)",
-            borderBottom: "1px solid rgba(184,148,106,0.15)",
-            padding: "32px 20px", marginBottom: 32, textAlign: "center",
-            position: "relative",
-          }}>
-            <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 1, background: "radial-gradient(circle, rgba(184,148,106,0.4) 0%, transparent 100%)" }} />
-            <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 700, marginBottom: 16 }}>
-              Name of Allah today
-            </div>
-            <div style={{ fontFamily: "Amiri, serif", fontSize: 34, color: "var(--gold)", direction: "rtl", marginBottom: 12, textShadow: "0 2px 10px rgba(184,148,106,0.2)" }}>
-              {nameOfAllah.arabic}
-            </div>
-            <div style={{ fontSize: 15, fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>{nameOfAllah.nameEnglish}</div>
-            <div style={{ fontSize: 13, color: "var(--muted)" }}>{nameOfAllah.meaningEnglish}</div>
-            <div style={{ position: "absolute", bottom: 0, left: "20%", right: "20%", height: 1, background: "radial-gradient(circle, rgba(184,148,106,0.4) 0%, transparent 100%)" }} />
+          <div style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid ${C.bGold}`, borderRadius: 20, padding: "22px 18px", marginTop: 14, marginBottom: 14, textAlign: "center", boxShadow: "0 4px 18px rgba(0,0,0,0.38)" }}>
+            <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 2.5, fontWeight: 600, marginBottom: 14 }}>Name of Allah today</div>
+            <div style={{ fontFamily: "'Scheherazade New', 'Traditional Arabic', serif", fontSize: 30, color: C.gold, direction: "rtl", marginBottom: 10, textShadow: "0 1px 2px rgba(0,0,0,1)" }}>{nameOfAllah.arabic}</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 4 }}>{nameOfAllah.nameEnglish}</div>
+            <div style={{ fontSize: 12, color: C.muted, lineHeight: 1.5 }}>{nameOfAllah.meaningEnglish}</div>
           </div>
         )}
 
-        {/* ── Quick dhikr ── */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-          <div style={{ height: 1, flex: 1, background: "rgba(52,201,122,0.1)" }} />
-          <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}>
-            Quick dhikr
-          </div>
-          <div style={{ height: 1, flex: 1, background: "rgba(52,201,122,0.1)" }} />
+        {/* QUICK DHIKR */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14, margin: "18px 0 12px" }}>
+          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
+          <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}>Quick dhikr</div>
+          <div style={{ height: 1, flex: 1, background: "rgba(255,255,255,0.04)" }} />
         </div>
-        
-        <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
+        <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
           {[
             { arabic: "سُبْحَانَ اللَّهِ", english: "SubhanAllah", dhikr: "subhanallah" },
             { arabic: "اَلْحَمْدُ لِلَّهِ", english: "Alhamdulillah", dhikr: "alhamdulillah" },
             { arabic: "اللَّهُ أَكْبَرُ", english: "Allahu Akbar", dhikr: "allahuakbar" },
           ].map(t => (
-            <div
-              key={t.dhikr}
-              onClick={() => void navigate(`/tasbih?dhikr=${t.dhikr}`)}
-              style={{
-                flex: 1, background: "var(--surface)", border: "1px solid rgba(52,201,122,0.15)",
-                borderRadius: 16, padding: "16px 10px", textAlign: "center", cursor: "pointer",
-                transition: "transform 0.15s, border-color 0.2s",
-              }}
-              onMouseDown={(e) => e.currentTarget.style.transform = "scale(0.96)"}
-              onMouseUp={(e) => e.currentTarget.style.transform = "scale(1)"}
-              onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
-            >
-              <div style={{ fontFamily: "Amiri, serif", fontSize: 18, color: "var(--gold)", direction: "rtl", marginBottom: 6 }}>{t.arabic}</div>
-              <div style={{ fontSize: 11, color: "var(--muted)", fontWeight: 500 }}>{t.english}</div>
+            <div key={t.dhikr} onClick={() => void navigate(`/tasbih?dhikr=${t.dhikr}`)}
+              style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "16px 8px", textAlign: "center", cursor: "pointer" }}>
+              <div style={{ fontFamily: "'Scheherazade New', serif", fontSize: 16, color: C.gold, direction: "rtl", marginBottom: 5, textShadow: "0 1px 2px rgba(0,0,0,1)" }}>{t.arabic}</div>
+              <div style={{ fontSize: 10, color: C.muted, fontWeight: 500 }}>{t.english}</div>
             </div>
           ))}
         </div>
 
-        {/* ── AI companion prompt ── */}
-        <div
-          onClick={() => void navigate("/companion")}
-          style={{
-            background: "linear-gradient(145deg, var(--surface) 0%, rgba(21,32,25,0.6) 100%)", 
-            border: "1px solid rgba(184,148,106,0.3)",
-            borderRadius: 20, padding: "20px 24px", marginBottom: 32,
-            display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(184,148,106,0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)" }}>
-              <Sparkles size={22} strokeWidth={1.5} />
-            </div>
+        {/* AI COMPANION */}
+        <div className="hp-tap" onClick={() => void navigate("/companion")}
+          style={{ background: `linear-gradient(148deg, ${C.card} 0%, ${C.surface} 100%)`, border: `1px solid ${C.bGold}`, borderRadius: 20, padding: "18px", marginBottom: 18, display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", boxShadow: "0 4px 18px rgba(0,0,0,0.38)", transition: "opacity 0.15s, transform 0.15s" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 42, height: 42, borderRadius: "50%", background: "rgba(201,164,114,0.10)", display: "flex", alignItems: "center", justifyContent: "center", color: C.gold }}><Sparkles size={20} strokeWidth={1.5} /></div>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "var(--gold)", marginBottom: 4 }}>Talk to your companion</div>
-              <div style={{ fontSize: 13, color: "var(--muted)" }}>
-                Reflect, seek guidance, or find calm
-              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 3 }}>Talk to your companion</div>
+              <div style={{ fontSize: 12, color: C.muted }}>Reflect, seek guidance, or find calm</div>
             </div>
           </div>
-          <ChevronRight size={18} color="var(--gold)" opacity={0.7} />
+          <ChevronRight size={16} color={C.gold} style={{ opacity: 0.6 }} />
         </div>
 
-        {/* ── Islamic tools — demoted, collapsible ── */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <div style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}>
-            Islamic tools
-          </div>
-          <button
-            onClick={() => setShowAllTools(v => !v)}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              display: "flex", alignItems: "center", gap: 6,
-              fontSize: 12, color: "var(--muted)", fontWeight: 500,
-            }}
-          >
+        {/* TOOLS */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}>Islamic tools</div>
+          <button onClick={() => setShowAllTools(v => !v)}
+            style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: C.muted, fontWeight: 500 }}>
             {showAllTools ? "Show less" : "See all"}
-            <ChevronDown size={14} style={{ transform: showAllTools ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+            <ChevronDown size={13} style={{ transform: showAllTools ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
           </button>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 9 }}>
           {visibleTools.map(({ icon: Icon, label, path }) => (
-            <div
-              key={path}
-              onClick={() => void navigate(path)}
-              style={{
-                background: "var(--surface)", border: "1px solid rgba(52,201,122,0.1)",
-                borderRadius: 16, padding: "16px 8px", textAlign: "center", cursor: "pointer",
-              }}
-            >
-              <Icon size={20} color="var(--green)" strokeWidth={1.5} style={{ margin: "0 auto 8px", display: "block" }} />
-              <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 500 }}>{label}</div>
+            <div key={path} className="hp-tool" onClick={() => void navigate(path)}
+              style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "15px 6px", textAlign: "center", cursor: "pointer", transition: "opacity 0.15s" }}>
+              <Icon size={19} color={C.green} strokeWidth={1.5} style={{ margin: "0 auto 7px", display: "block" }} />
+              <div style={{ fontSize: 10, color: C.text, fontWeight: 500 }}>{label}</div>
             </div>
           ))}
         </div>
