@@ -5,7 +5,11 @@ export const modules: ModuleMap = {
   "./components/mockups/bg-variants/NeutralBlack.tsx": () => import("../components/mockups/bg-variants/NeutralBlack.tsx"),
   "./components/mockups/bg-variants/WarmDark.tsx": () => import("../components/mockups/bg-variants/WarmDark.tsx"),
   "./components/mockups/home-variants/CalmDashboard.tsx": () => import("../components/mockups/home-variants/CalmDashboard.tsx"),
+  "./components/mockups/home-variants/DailyWird.tsx": () => import("../components/mockups/home-variants/DailyWird.tsx"),
   "./components/mockups/home-variants/ImmersiveDark.tsx": () => import("../components/mockups/home-variants/ImmersiveDark.tsx"),
   "./components/mockups/home-variants/MagazineGrid.tsx": () => import("../components/mockups/home-variants/MagazineGrid.tsx"),
-  "./components/mockups/home-variants/MinimalSacred.tsx": () => import("../components/mockups/home-variants/MinimalSacred.tsx")
+  "./components/mockups/home-variants/MinimalSacred.tsx": () => import("../components/mockups/home-variants/MinimalSacred.tsx"),
+  "./components/mockups/home-variants/MirrorOfHeart.tsx": () => import("../components/mockups/home-variants/MirrorOfHeart.tsx"),
+  "./components/mockups/home-variants/PrayerTimeline.tsx": () => import("../components/mockups/home-variants/PrayerTimeline.tsx"),
+  "./components/mockups/home-variants/SanctuaryMode.tsx": () => import("../components/mockups/home-variants/SanctuaryMode.tsx")
 };
