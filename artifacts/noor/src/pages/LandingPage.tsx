@@ -240,81 +240,103 @@ export default function LandingPage() {
 
       {/* ── HERO ── */}
       <header style={{ 
-        textAlign: "center", 
-        padding: "120px 24px 80px", 
         minHeight: "100svh",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-end",
+        overflow: "hidden",
       }}>
-        {/* Cinematic Background Image */}
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: `url(/images/woman-praying-night.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          zIndex: 0
-        }} />
-        {/* Dark Gradient Overlay */}
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: `linear-gradient(to bottom, rgba(13,20,17,0.3) 0%, rgba(13,20,17,1) 100%)`,
-          zIndex: 1
-        }} />
-        
-        <div style={{ position: "relative", zIndex: 2, maxWidth: 680, width: "100%" }}>
-          <div style={{ opacity: verseVisible ? 1 : 0, transition: "opacity 0.8s ease-in-out", marginBottom: 48, minHeight: 80 }}>
-            <div style={{ fontFamily: "Amiri, serif", fontSize: 32, color: s.green, direction: "rtl", marginBottom: 12, lineHeight: 1.5, textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
-              {verse.arabic}
-            </div>
-            <div style={{ fontSize: 13, color: s.text, fontStyle: "italic", letterSpacing: 0.5, opacity: 0.8 }}>
-              {verse.translation}
-            </div>
-          </div>
+        {/* Full-bleed background image — visible, no heavy overlay */}
+        <img
+          src="/images/woman-praying-night.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center top",
+            zIndex: 0,
+          }}
+        />
 
+        {/* Gradient: clear at top (image visible), dark only at bottom 40% for text */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(
+            to bottom,
+            rgba(13,20,17,0.05) 0%,
+            rgba(13,20,17,0.05) 30%,
+            rgba(13,20,17,0.55) 55%,
+            rgba(13,20,17,0.92) 72%,
+            rgba(13,20,17,1.0) 88%
+          )`,
+          zIndex: 1,
+        }} />
+
+        {/* Verse floats at the top over the image */}
+        <div style={{
+          position: "absolute",
+          top: "14%",
+          left: 0, right: 0,
+          textAlign: "center",
+          zIndex: 2,
+          padding: "0 24px",
+          opacity: verseVisible ? 1 : 0,
+          transition: "opacity 0.8s ease-in-out",
+        }}>
+          <div style={{ fontFamily: "Amiri, serif", fontSize: "clamp(22px,5vw,34px)", color: s.green, direction: "rtl", marginBottom: 10, lineHeight: 1.5, textShadow: "0 2px 16px rgba(0,0,0,0.8)" }}>
+            {verse.arabic}
+          </div>
+          <div style={{ fontSize: 13, color: "#d0e8d8", fontStyle: "italic", letterSpacing: 0.4, textShadow: "0 1px 8px rgba(0,0,0,0.9)" }}>
+            {verse.translation}
+          </div>
+        </div>
+
+        {/* Text + CTAs sit at the bottom over the dark gradient */}
+        <div style={{ position: "relative", zIndex: 2, padding: "0 24px 72px", textAlign: "center", maxWidth: 640, margin: "0 auto", width: "100%" }}>
           {/* PRIMARY H1, semantic SEO anchor */}
           <h1 style={{
             fontFamily: "DM Sans, Inter, sans-serif",
-            fontSize: "clamp(40px, 8vw, 68px)",
+            fontSize: "clamp(36px, 8vw, 64px)",
             fontWeight: 800,
             color: s.text,
-            margin: "0 0 24px",
+            margin: "0 0 20px",
             lineHeight: 1.05,
             letterSpacing: "-0.03em",
-            textShadow: "0 4px 20px rgba(0,0,0,0.5)"
           }}>
             AI Islamic Companion<br />
             <span style={{ color: s.green }}>for Daily Muslim Growth</span>
           </h1>
 
-          <p style={{ fontSize: "clamp(16px, 2.5vw, 19px)", color: s.text, opacity: 0.9, maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.7, fontWeight: 400 }}>
+          <p style={{ fontSize: "clamp(15px, 2.5vw, 18px)", color: "#c4dcc8", maxWidth: 520, margin: "0 auto 40px", lineHeight: 1.75, fontWeight: 400 }}>
             Guided Quran reflections, Azkar, Duas, and AI-powered spiritual journeys designed for modern Muslims seeking peace, purpose, and closeness to Allah.
           </p>
 
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={() => void navigate("/register")} style={{ 
               background: s.green, border: "none", color: s.bg, borderRadius: 16, 
-              padding: "18px 40px", fontSize: 16, fontWeight: 700, cursor: "pointer", 
+              padding: "17px 38px", fontSize: 16, fontWeight: 700, cursor: "pointer", 
               fontFamily: "inherit", letterSpacing: "-0.01em", 
-              boxShadow: "0 0 40px rgba(52,201,122,0.3)",
-              transition: "transform 0.2s, box-shadow 0.2s"
+              boxShadow: "0 0 40px rgba(52,201,122,0.4)",
+              transition: "transform 0.2s, box-shadow 0.2s",
             }} className="hero-primary-btn">
               Start Your Journey
             </button>
             <a href="/start-here" style={{ 
-              background: "rgba(52,201,122,0.05)", border: `1px solid rgba(52,201,122,0.3)`, 
-              color: s.text, borderRadius: 16, padding: "18px 40px", fontSize: 16, fontWeight: 500,
+              background: "rgba(255,255,255,0.08)", border: `1px solid rgba(255,255,255,0.22)`, 
+              color: s.text, borderRadius: 16, padding: "17px 38px", fontSize: 16, fontWeight: 500,
               textDecoration: "none", display: "inline-flex", alignItems: "center",
-              backdropFilter: "blur(10px)", transition: "background 0.2s"
+              backdropFilter: "blur(12px)",
             }} className="hero-secondary-btn">
               Where do I start?
             </a>
           </div>
-          <p style={{ fontSize: 13, color: s.text, opacity: 0.5, marginTop: 24, letterSpacing: 0.5 }}>Free forever · No credit card · Works on any device</p>
+          <p style={{ fontSize: 13, color: s.muted, marginTop: 22, letterSpacing: 0.3 }}>Free forever · No credit card · Works on any device</p>
         </div>
       </header>
 

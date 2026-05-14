@@ -288,18 +288,23 @@ export default function HomePage() {
       `}</style>
 
       {/* Atmospheric Header Background */}
-      <div style={{
-        position: "absolute",
-        top: 0, left: 0, right: 0, height: 200,
-        backgroundImage: `url(/images/man-praying-moon.png)`,
-        backgroundSize: "cover",
-        backgroundPosition: "top",
-        opacity: 0.15,
-        zIndex: 0,
-        pointerEvents: "none",
-        maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-      }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 280, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+        <img
+          src="/images/man-praying-moon.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center 20%",
+            display: "block",
+          }}
+        />
+        {/* Fade the image out downward */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to bottom, rgba(13,20,17,0.35) 0%, rgba(13,20,17,0.55) 50%, rgba(13,20,17,1) 100%)",
+        }} />
+      </div>
 
       {/* Top bar */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 20px 0", position: "relative", zIndex: 10 }}>
