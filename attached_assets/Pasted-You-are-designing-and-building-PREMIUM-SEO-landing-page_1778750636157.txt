@@ -1,0 +1,339 @@
+You are designing and building PREMIUM SEO landing pages for MyTazki.com.
+
+IMPORTANT:
+These pages are NOT generic Islamic blog pages.
+
+The experience must feel like:
+- Calm.com
+- Apple wellness landing pages
+- cinematic editorial storytelling
+- emotional healing experience
+- luxury spiritual wellness product
+
+The pages should emotionally calm the user within 3 seconds.
+
+========================================
+GLOBAL DESIGN DIRECTION
+========================================
+
+Visual style:
+- cinematic
+- calm
+- premium
+- emotionally grounding
+- modern Islamic wellness
+- soft luxury
+- minimal but immersive
+- dark elegant UI
+- subtle gold accents
+- glassmorphism lightly used
+- warm gradients
+- editorial typography
+- immersive spacing
+
+DO NOT USE:
+- colorful Islamic poster designs
+- mosque wallpaper style
+- cheap gradients
+- cartoon UI
+- generic stock Muslim imagery
+- cluttered dashboard layouts
+- over-Islamized ornamental design
+
+The design language should feel:
+“Apple meets Calm meets modern Islamic spirituality.”
+
+========================================
+IMAGE STYLE DIRECTION
+========================================
+
+Every page must include LARGE cinematic hero visuals.
+
+Image style:
+- premium editorial photography
+- emotionally reflective
+- soft shadows
+- realistic lighting
+- atmospheric
+- peaceful environments
+- subtle Islamic identity
+- natural skin textures
+- warm cinematic color grading
+
+Scenes may include:
+- Muslim man quietly reflecting at night
+- Muslim woman journaling peacefully
+- silhouette after Fajr
+- peaceful prayer reflection
+- Quran beside warm lamp
+- rain on window + dhikr environment
+- calm bedroom sleep atmosphere
+- spiritual solitude
+- healing emotional moments
+- nature + spirituality combination
+
+The images should feel:
+- emotionally safe
+- calming
+- luxurious
+- introspective
+- cinematic
+
+========================================
+SEO + CONTENT REQUIREMENTS
+========================================
+
+Each page must be:
+- fully SEO optimized
+- long-form
+- emotionally engaging
+- conversion optimized
+- structured for Google AI Overview
+- structured for GEO/AEO
+
+Include:
+- strong H1
+- emotional intro
+- FAQ section
+- schema-ready structure
+- conversational headings
+- long-tail keyword coverage
+- internal linking blocks
+- CTA blocks
+- audio session promotion
+- AI companion promotion
+
+Tone:
+- calm
+- wise
+- emotionally supportive
+- spiritually grounding
+- non-judgmental
+- premium
+
+DO NOT sound robotic or overly scholarly.
+
+========================================
+PAGE STRUCTURE
+========================================
+
+1. CINEMATIC HERO SECTION
+- immersive full-width image
+- emotional headline
+- calming subheadline
+- primary CTA
+- secondary CTA
+- subtle blur overlays
+- premium typography
+
+2. EMOTIONAL VALIDATION SECTION
+Explain the emotional struggle gently.
+
+3. ISLAMIC HEALING SECTION
+Include:
+- authentic dua
+- transliteration
+- translation
+- reflection
+- practical emotional guidance
+
+4. GUIDED EXPERIENCE SECTION
+Promote:
+- guided audio session
+- sleep mode
+- breathing experience
+- AI reflection companion
+
+5. DEEP REFLECTION SECTION
+Long-form calming content optimized for SEO.
+
+6. FAQ SECTION
+Target Google featured snippets.
+
+7. FINAL CTA SECTION
+Emotionally calming conversion block.
+
+========================================
+ANIMATION REQUIREMENTS
+========================================
+
+Use:
+- smooth fade-in animations
+- slow parallax
+- soft hover glow
+- cinematic transitions
+- elegant scrolling
+- ambient movement
+
+Avoid:
+- flashy effects
+- fast animations
+- gaming UI
+
+========================================
+MOBILE UX
+========================================
+
+The experience must feel incredible on mobile:
+- cinematic stacked sections
+- large readable typography
+- immersive spacing
+- sticky audio CTA
+- thumb-friendly navigation
+
+========================================
+BUILD THESE PAGES
+========================================
+
+1.
+/dua-for-anxiety
+
+Keywords:
+- dua for anxiety
+- anxiety in islam
+- islamic anxiety help
+- quran verses for anxiety
+
+Hero mood:
+night reflection + emotional healing
+
+----------------------------------------
+
+2.
+/ruqyah-for-anxiety
+
+Keywords:
+- ruqyah for anxiety
+- islamic healing for anxiety
+- quran healing anxiety
+
+Hero mood:
+peaceful spiritual protection atmosphere
+
+----------------------------------------
+
+3.
+/how-to-stop-overthinking-islam
+
+Keywords:
+- how to stop overthinking islam
+- overthinking in islam
+- islamic advice for overthinking
+
+Hero mood:
+quiet late-night contemplation
+
+----------------------------------------
+
+4.
+/islamic-sleep-meditation
+
+Keywords:
+- islamic sleep meditation
+- quran for sleep
+- peaceful islamic sleep
+
+Hero mood:
+warm calm bedroom + rain ambience
+
+----------------------------------------
+
+5.
+/quran-for-sleep
+
+Keywords:
+- quran for sleep
+- surah for sleep
+- sleep with quran
+
+Hero mood:
+soft lamp lighting + Quran atmosphere
+
+----------------------------------------
+
+6.
+/dua-for-stress
+
+Keywords:
+- best dua for stress
+- stress relief in islam
+- islamic stress relief
+
+Hero mood:
+healing after emotional exhaustion
+
+----------------------------------------
+
+7.
+/healing-through-quran
+
+Keywords:
+- healing through quran
+- quran emotional healing
+- islamic healing journey
+
+Hero mood:
+spiritual emotional recovery
+
+----------------------------------------
+
+8.
+/dua-for-rizq
+
+Keywords:
+- dua for rizq
+- barakah in rizq
+- islamic financial stress
+
+Hero mood:
+hope + tawakkul + peaceful morning
+
+----------------------------------------
+
+9.
+/islamic-morning-routine
+
+Keywords:
+- islamic morning routine
+- fajr routine
+- muslim productivity
+
+Hero mood:
+golden sunrise after Fajr
+
+----------------------------------------
+
+10.
+/morning-azkar
+
+Keywords:
+- morning azkar
+- morning adhkar
+- daily morning remembrance
+
+Hero mood:
+peaceful sunrise remembrance
+
+========================================
+TECH REQUIREMENTS
+========================================
+
+- Next.js compatible
+- TailwindCSS
+- responsive
+- SEO optimized
+- lazy-loaded cinematic images
+- fast-loading
+- premium transitions
+- semantic HTML
+- accessibility optimized
+
+Do NOT break existing site structure or theme system.
+
+Maintain:
+- existing authentication
+- existing navigation
+- existing dark/light mode
+- existing component architecture
+
+Only UPGRADE visual quality and emotional depth.
