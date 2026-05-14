@@ -57,37 +57,30 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "MobileApplication",
+      "@type": "WebApplication",
       "name": "MyTazki",
       "alternateName": "My Tazki",
-      "description": "MyTazki is an AI-powered Islamic companion app for daily spiritual growth, featuring guided Quran reflections, Azkar sessions, Duas library, prayer times, dhikr counter, Qibla compass, masjid finder, zakat calculator, and a personalized Islamic growth journey.",
+      "description": "MyTazki is an AI-powered Islamic companion PWA for daily spiritual growth, featuring guided Quran reflections, Azkar sessions, Duas library, prayer times, dhikr counter, Qibla compass, masjid finder, and a personalised Islamic growth journey.",
       "url": "https://mytazki.com/",
       "applicationCategory": "LifestyleApplication",
-      "operatingSystem": "Web, iOS, Android",
+      "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
       },
-      "featureList": [
-        "AI Islamic Companion",
-        "Guided Quran Reflections",
-        "Azkar & Dhikr Sessions",
-        "Duas Library",
-        "Prayer Times (Salah / Namaz)",
-        "Qibla Direction Compass",
-        "Masjid / Mosque Finder",
-        "Zakat Calculator",
-        "Islamic Calendar",
-        "99 Names of Allah",
-        "Streak & Goal Tracker",
-        "Islamic Growth Journal"
-      ],
-      "screenshot": "https://mytazki.com/og-image.png",
+      "screenshot": {
+        "@type": "ImageObject",
+        "url": "https://mytazki.com/og-image.png",
+        "width": 1200,
+        "height": 630
+      },
       "inLanguage": "en",
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Muslims"
+      "creator": {
+        "@type": "Organization",
+        "name": "MyTazki",
+        "url": "https://mytazki.com"
       }
     }
     </script>
@@ -96,11 +89,14 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": "https://mytazki.com/#organization",
       "name": "MyTazki",
       "url": "https://mytazki.com",
-      "logo": "https://mytazki.com/favicon.svg",
-      "description": "AI-powered Islamic companion for daily Muslim growth",
-      "sameAs": []
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://mytazki.com/favicon.svg"
+      },
+      "description": "AI-powered Islamic companion for daily Muslim spiritual growth"
     }
     </script>
   </head>

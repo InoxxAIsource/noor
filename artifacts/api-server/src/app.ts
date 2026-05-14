@@ -1,4 +1,5 @@
 import express, { type Express } from "express";
+import compression from "compression";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -36,6 +37,8 @@ import { runNotificationScheduler } from "./routes/notifications.js";
 const app: Express = express();
 
 app.set("trust proxy", 1);
+
+app.use(compression());
 
 app.use(
   helmet({

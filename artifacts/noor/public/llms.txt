@@ -1,0 +1,54 @@
+# MyTazki
+
+> MyTazki is an AI-powered Islamic companion PWA for daily Muslim spiritual growth. Grow spiritually every day with guided Quran reflections, Azkar, Duas, and personalised Islamic journeys.
+
+MyTazki helps Muslims build consistent spiritual habits through AI-guided Quran reflections, Azkar (remembrance) sessions, authentic Duas (supplications), accurate prayer times, and a personal Islamic growth journey. Powered by Claude AI with Islamic adab guidelines.
+
+## Features
+
+- AI Islamic Companion — Claude-powered 24/7 spiritual guidance with Islamic adab
+- Guided Quran Reflections — all 114 surahs with Arabic, translation, and audio (Alafasy)
+- Azkar & Dhikr Sessions — 35 audio-guided sessions across 7 emotional pathways
+- Duas Library — 110+ authentic duas organised by occasion and need
+- Prayer Times (Salah / Namaz) — accurate times based on GPS location
+- Qibla Direction Compass — real-time qibla finder
+- Masjid / Mosque Finder — nearby mosques with map and GPS
+- Zakat Calculator — calculates zakat on gold, silver, savings, and assets
+- Islamic Calendar — Hijri date, Islamic events, and moon phases
+- 99 Names of Allah (Asma ul Husna) — with Arabic, meaning, and benefits
+- Islamic Baby Names — 1000+ names with meanings and origins
+- Tasbih Counter — digital dhikr bead counter
+- Streak & Goal Tracker — daily salah and Quran streaks
+- Islamic Growth Journal — personal reflection and gratitude log
+- Push Notifications — prayer time reminders and daily Azkar alerts
+- Qurbani, Wudu, Salah, Farz, and Sadqa guides
+
+## Audience
+
+Modern Muslims seeking a calm, premium digital Islamic lifestyle companion. Suitable for all ages and schools of thought (Sunni, Shia, General).
+
+## Technology
+
+- Progressive Web App (PWA) — works on iOS, Android, and desktop
+- AI powered by Anthropic Claude via Replit AI Integrations
+- Quran data from api.alquran.cloud; audio from everyayah.com (Alafasy recitation)
+- Prayer times from aladhan.com; Hijri calendar from aladhan.com
+- Mosque finder using Overpass API (OpenStreetMap)
+
+## Links
+
+- [Home](https://mytazki.com/): MyTazki — AI Islamic Companion for daily Muslim growth
+- [Quran Reader](https://mytazki.com/quran): Browse and read all 114 surahs
+- [Duas Library](https://mytazki.com/duas): 110+ authentic duas for every occasion
+- [Prayer Times](https://mytazki.com/prayer-times): Accurate salah times by location
+- [Islamic Baby Names](https://mytazki.com/names): 1000+ Islamic names with meanings
+- [99 Names of Allah](https://mytazki.com/99-names): Asma ul Husna with meanings
+- [Masjid Finder](https://mytazki.com/masjid-finder): Find mosques near you
+- [Zakat Calculator](https://mytazki.com/zakat-calculator): Calculate your annual zakat
+- [Islamic Calendar](https://mytazki.com/islamic-calendar): Hijri dates and Islamic events
+- [Qibla Compass](https://mytazki.com/qibla): Real-time qibla direction
+- [Tasbih Counter](https://mytazki.com/tasbih): Digital dhikr counter
+- [Salah Guide](https://mytazki.com/salah-guide): Step-by-step salah instructions
+- [Wudu Guide](https://mytazki.com/wudu-guide): Step-by-step wudu instructions
+- [Growth Journey](https://mytazki.com/growth): Personalised Islamic growth plan
+- [AI Companion](https://mytazki.com/companion): Chat with your AI Islamic guide

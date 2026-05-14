@@ -177,17 +177,7 @@ export default function LandingPage() {
     return () => clearInterval(id);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div style={{ minHeight: "100vh", background: s.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ width: 40, height: 40, borderRadius: "50%", border: "2px solid rgba(52,201,122,0.3)", borderTop: "2px solid #34c97a", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
-          <div style={{ color: s.green, fontFamily: "Inter, sans-serif", fontSize: 13, letterSpacing: 2, fontWeight: 600 }}>MYTAZKI</div>
-        </div>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
+  if (isLoading) { /* render full page below — H1 must be visible on first paint for SEO */ }
 
   const verse = VERSES[verseIdx]!;
 
@@ -643,7 +633,7 @@ export default function LandingPage() {
         {/* Footer bottom */}
         <div style={{ borderTop: `1px solid ${s.borderSoft}`, paddingTop: 20, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "space-between", alignItems: "center" }}>
           <p style={{ fontSize: 11, color: "#2a3830", margin: 0 }}>
-            © 2026 MyTazki · AI Islamic Companion · <a href="/about" style={{ color: "#2a3830", textDecoration: "none" }}>About</a> · <a href="/ai-ethics" style={{ color: "#2a3830", textDecoration: "none" }}>AI Ethics</a> · <a href="/trust-and-safety" style={{ color: "#2a3830", textDecoration: "none" }}>Trust &amp; Safety</a>
+            © 2026 <a href="/" style={{ color: "#2a3830", textDecoration: "none" }}>MyTazki</a> · AI Islamic Companion · <a href="/about" style={{ color: "#2a3830", textDecoration: "none" }}>About</a> · <a href="/ai-ethics" style={{ color: "#2a3830", textDecoration: "none" }}>AI Ethics</a> · <a href="/trust-and-safety" style={{ color: "#2a3830", textDecoration: "none" }}>Trust &amp; Safety</a>
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {[
