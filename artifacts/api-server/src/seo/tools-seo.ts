@@ -254,6 +254,10 @@ ${faqHtml(faqs)}
   res.send(page(head, body));
 });
 
+router.get("/islamic-calendar", (_req: Request, res: Response) => {
+  res.redirect(301, "/islamic-calendar/2026");
+});
+
 router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
   const events = [
     { date: "Jan 3, 2026", hijri: "3 Rajab 1447", event: "Islamic New Year (approx)" },
