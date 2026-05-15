@@ -4,12 +4,16 @@ import {
   esc, INDIA_CITIES, PAKISTAN_CITIES,
 } from "./shared.js";
 
-function spreadCities(currentDisplay: string, pool: string[], count = 10): string[] {
+function spreadCities(currentDisplay: string, pool: string[], count = 12): string[] {
   const clean = (s: string) => s.replace(/-PK$/i, "").replace(/-pk$/i, "").toLowerCase().replace(/-/g, " ");
-  const others = pool.filter(c => clean(c) !== clean(currentDisplay));
-  if (others.length <= count) return others;
-  const step = others.length / count;
-  return Array.from({ length: count }, (_, i) => others[Math.floor(i * step)]!).filter(Boolean);
+  const currentIdx = pool.findIndex(c => clean(c) === clean(currentDisplay));
+  const offset = currentIdx >= 0 ? currentIdx : 0;
+  const result: string[] = [];
+  for (let i = 1; result.length < count && i <= pool.length; i++) {
+    const city = pool[(offset + i) % pool.length]!;
+    if (clean(city) !== clean(currentDisplay)) result.push(city);
+  }
+  return result;
 }
 
 const router = Router();

@@ -17,9 +17,17 @@ export function seoHead({ title, description, canonical, schema }: SeoHeadOpts):
 <link rel="canonical" href="https://mytazki.com${canonical}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="https://mytazki.com/og-image.jpg">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://mytazki.com/opengraph.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MyTazki, AI Islamic Companion">
 <meta property="og:url" content="https://mytazki.com${canonical}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="https://mytazki.com/opengraph.jpg">
+<meta name="twitter:image:alt" content="MyTazki, AI Islamic Companion">
 ${schemas.map(s => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}
 <link rel="stylesheet" href="/seo.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -67,7 +75,10 @@ export function ctaBlock(): string {
   return `<div class="cta-box">
   <p style="color:#34c97a;font-family:DM Sans,Inter,sans-serif;font-size:1.1rem;margin:0 0 8px;font-weight:700">Grow Spiritually Every Day, Download MyTazki free</p>
   <p style="color:#4a6858;font-size:14px;margin:0 0 16px;font-family:Inter,sans-serif">Prayer times, Quran, Azkar, Duas, AI Islamic guide & spiritual growth tracker</p>
-  <a href="/download" class="cta-btn">Download MyTazki →</a>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <a href="/download" class="cta-btn">Download MyTazki →</a>
+    <a href="/register" style="background:transparent;border:1px solid rgba(52,201,122,0.4);color:#34c97a;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-family:Inter,sans-serif;font-size:15px">Create free account →</a>
+  </div>
 </div>`;
 }
 

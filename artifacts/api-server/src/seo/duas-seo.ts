@@ -138,8 +138,13 @@ ${ctaBlock()}
     return;
   }
 
-  const related = rawDuas.filter(d => d.category === dua.category && d.title !== dua.title).slice(0, 5);
-  const popular = rawDuas.filter(d => d.isPopular && d.title !== dua.title && d.category !== dua.category).slice(0, 4);
+  const duaIdx = rawDuas.findIndex(d => d.title === dua.title);
+  const sameCat = rawDuas.filter(d => d.category === dua.category && d.title !== dua.title);
+  const catOffset = sameCat.length > 0 ? duaIdx % sameCat.length : 0;
+  const related = [...sameCat.slice(catOffset), ...sameCat.slice(0, catOffset)].slice(0, 5);
+  const popularPool = rawDuas.filter(d => d.isPopular && d.title !== dua.title && d.category !== dua.category);
+  const popOffset = popularPool.length > 0 ? duaIdx % popularPool.length : 0;
+  const popular = [...popularPool.slice(popOffset), ...popularPool.slice(0, popOffset)].slice(0, 4);
 
   const faqs = [
     { q: `When should I say ${dua.title}?`, a: `${dua.title} is a ${dua.category.toLowerCase()} dua. Recite it during your ${dua.category.toLowerCase()} routine or whenever you need this supplication.` },
