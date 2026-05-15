@@ -125,6 +125,13 @@ ${ctaBlock()}
 router.get("/names/boy", async (_req, res) => genderPage("boy", res));
 router.get("/names/girl", async (_req, res) => genderPage("girl", res));
 
+const ALPHA_NAV = (current: string, gender: "boy" | "girl") =>
+  `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:16px 0">
+  ${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(l =>
+    `<a href="/names/${gender}/letter/${l.toLowerCase()}" style="background:${l === current ? "#003a00" : "#002800"};border:1px solid rgba(0,165,80,${l === current ? "0.6" : "0.2"});color:${l === current ? "#00cc60" : "#00a550"};padding:5px 11px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:${l === current ? "bold" : "normal"}">${l}</a>`
+  ).join("")}
+</div>`;
+
 router.get("/names/boy/letter/:letter", async (req: Request, res: Response) => {
   const letter = String(req.params["letter"] ?? "").toUpperCase();
   const rawNames = (await getAllNames() || []) as Name[];
@@ -140,6 +147,7 @@ router.get("/names/boy/letter/:letter", async (req: Request, res: Response) => {
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: "Boy Names", item: "/names/boy" }, { name: `Letter ${letter}` }])}
 <h1>Muslim Boy Names Starting with ${esc(letter)}</h1>
+${ALPHA_NAV(letter, "boy")}
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
   ${names.length > 0 ? names.map(n => `
     <a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:10px;padding:14px;text-decoration:none;display:block">
@@ -150,6 +158,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { 
   `).join("") : `<div class="card"><p style="color:#4a7a4a">No boy names starting with ${esc(letter)} in our current database. <a href="/names/boy" style="color:#00a550">Browse all boy names</a>.</p></div>`}
 </div>
 ${ctaBlock()}
+<p style="color:#4a7a4a;margin-top:8px">Also see: <a href="/names/girl/letter/${letter.toLowerCase()}" style="color:#00a550">Girl names starting with ${esc(letter)}</a> · <a href="/names/boy" style="color:#00a550">All boy names</a> · <a href="/names/trending" style="color:#00a550">Trending names 2025</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -172,6 +181,7 @@ router.get("/names/girl/letter/:letter", async (req: Request, res: Response) => 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: "Girl Names", item: "/names/girl" }, { name: `Letter ${letter}` }])}
 <h1>Muslim Girl Names Starting with ${esc(letter)}</h1>
+${ALPHA_NAV(letter, "girl")}
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
   ${names.length > 0 ? names.map(n => `
     <a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:10px;padding:14px;text-decoration:none;display:block">
@@ -182,6 +192,7 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { 
   `).join("") : `<div class="card"><p style="color:#4a7a4a">No girl names starting with ${esc(letter)} in our current database. <a href="/names/girl" style="color:#00a550">Browse all girl names</a>.</p></div>`}
 </div>
 ${ctaBlock()}
+<p style="color:#4a7a4a;margin-top:8px">Also see: <a href="/names/boy/letter/${letter.toLowerCase()}" style="color:#00a550">Boy names starting with ${esc(letter)}</a> · <a href="/names/girl" style="color:#00a550">All girl names</a> · <a href="/names/trending" style="color:#00a550">Trending names 2025</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");

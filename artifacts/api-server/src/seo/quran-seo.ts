@@ -134,7 +134,15 @@ router.get("/quran/:surahSlug", async (req: Request, res: Response) => {
     { q: `What are the benefits of Surah ${surah.name}?`, a: surah.benefits },
   ];
 
-  const relatedSurahs = SURAHS.filter(s => s.slug !== surah!.slug && s.slug !== "ayatul-kursi").slice(0, 4);
+  const adjNums = [-5, -2, -1, 1, 2, 5].map(o => surah.number + o).filter(n => n >= 1 && n <= 114 && n !== surah.number);
+  const relatedSurahs = adjNums.slice(0, 6).map(n => {
+    const found = SURAHS.find(s => s.number === n && s.slug !== "ayatul-kursi");
+    return found ?? {
+      number: n, name: `Surah ${n}`, arabicName: "", slug: `surah-${n}`,
+      meaning: `Chapter ${n}`, verses: 0, place: "Makkah" as const,
+      benefits: "", firstAyah: "", firstAyahTranslation: "",
+    };
+  });
 
   const head = seoHead({
     title: `Surah ${surah.name}, Meaning, Translation & Benefits`,
@@ -176,13 +184,19 @@ ${surah.firstAyah ? `
 
 ${ctaBlock()}
 
+<div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0;flex-wrap:wrap;gap:10px">
+  ${surah.number > 1 ? `<a href="/quran/surah-${surah.number - 1}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:14px">← Surah ${surah.number - 1}</a>` : "<span></span>"}
+  <a href="/quran" style="color:#4a7a4a;font-size:13px">All 114 Surahs</a>
+  ${surah.number < 114 ? `<a href="/quran/surah-${surah.number + 1}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:14px">Surah ${surah.number + 1} →</a>` : "<span></span>"}
+</div>
+
 ${relatedSurahs.length > 0 ? `
-<h2>Related Surahs</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0">
+<h2>Read More Surahs</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:16px 0">
   ${relatedSurahs.map(s => `<a href="/quran/${s.slug}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:8px;padding:12px;text-decoration:none;display:block">
     <p style="color:#ffd700;font-family:Cinzel,serif;font-size:0.85rem;margin:0 0 2px">${esc(s.name)}</p>
-    <p class="arabic" style="font-size:0.9rem;margin:0 0 2px">${s.arabicName}</p>
-    <p style="color:#4a7a4a;font-size:11px;margin:0">${s.verses} verses</p>
+    ${s.arabicName ? `<p class="arabic" style="font-size:0.9rem;margin:0 0 2px">${s.arabicName}</p>` : ""}
+    <p style="color:#4a7a4a;font-size:11px;margin:0">${s.verses > 0 ? `${s.verses} verses` : `Surah ${s.number}`}</p>
   </a>`).join("")}
 </div>` : ""}
 

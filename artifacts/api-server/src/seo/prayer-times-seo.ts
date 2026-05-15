@@ -1,8 +1,16 @@
 import { Router, type Request, type Response } from "express";
 import {
   seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema,
-  esc, INDIA_CITIES, PAKISTAN_CITIES, ALL_CITIES,
+  esc, INDIA_CITIES, PAKISTAN_CITIES,
 } from "./shared.js";
+
+function spreadCities(currentDisplay: string, pool: string[], count = 10): string[] {
+  const clean = (s: string) => s.replace(/-PK$/i, "").replace(/-pk$/i, "").toLowerCase().replace(/-/g, " ");
+  const others = pool.filter(c => clean(c) !== clean(currentDisplay));
+  if (others.length <= count) return others;
+  const step = others.length / count;
+  return Array.from({ length: count }, (_, i) => others[Math.floor(i * step)]!).filter(Boolean);
+}
 
 const router = Router();
 
@@ -90,7 +98,8 @@ async function cityPageHandler(city: string, isNamaz: boolean, res: Response): P
     ]),
   ];
 
-  const nearbyCity = ALL_CITIES.find(c => c !== displayCity.replace(" Pk", "")) || "Delhi";
+  const cityPool = isNamaz ? PAKISTAN_CITIES : INDIA_CITIES;
+  const nearbyList = spreadCities(displayCity, cityPool, 12);
 
   const head = seoHead({
     title: `${isNamaz ? "Namaz" : "Prayer"} Times in ${apiCity} Today, ${dateStr}`,
@@ -126,11 +135,14 @@ ${ctaBlock()}
 <h2>Learn Salah</h2>
 <p style="color:#4a7a4a">New to prayer? Follow the complete <a href="/salah-guide" style="color:#00a550">Salah Guide</a> with Arabic text and step-by-step instructions.</p>
 
-<h2>Nearby Cities</h2>
+<h2>${isNamaz ? "Other Pakistan Cities" : "Other Indian Cities"}</h2>
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin:16px 0">
-  ${ALL_CITIES.filter(c => c !== displayCity.replace(" Pk", "")).slice(0, 8).map(c =>
-    `<a href="/prayer-times/${c.toLowerCase().replace(/\s+/g, "-")}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:13px">${esc(c)}</a>`
-  ).join("")}
+  ${nearbyList.map(c => {
+    const slug = c.toLowerCase().replace(/\s+/g, "-").replace(/-pk$/i, "");
+    const label = c.replace(/-PK$/i, "").replace(/-/g, " ");
+    const prefix = isNamaz ? "namaz-times" : "prayer-times";
+    return `<a href="/${prefix}/${slug}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);color:#00a550;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:13px">${esc(label)}</a>`;
+  }).join("")}
 </div>
 
 ${faqHtml(faqs)}

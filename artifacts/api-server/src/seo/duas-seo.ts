@@ -138,7 +138,8 @@ ${ctaBlock()}
     return;
   }
 
-  const related = rawDuas.filter(d => d.category === dua.category && d.title !== dua.title).slice(0, 3);
+  const related = rawDuas.filter(d => d.category === dua.category && d.title !== dua.title).slice(0, 5);
+  const popular = rawDuas.filter(d => d.isPopular && d.title !== dua.title && d.category !== dua.category).slice(0, 4);
 
   const faqs = [
     { q: `When should I say ${dua.title}?`, a: `${dua.title} is a ${dua.category.toLowerCase()} dua. Recite it during your ${dua.category.toLowerCase()} routine or whenever you need this supplication.` },
@@ -181,11 +182,20 @@ ${breadcrumb([
 ${ctaBlock()}
 
 ${related.length > 0 ? `
-<h2>Related Duas</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0">
+<h2>More ${esc(dua.category)} Duas</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0">
   ${related.map(d => `<a href="/duas/${slugify(d.title)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:10px;padding:14px;text-decoration:none;display:block">
     <p style="color:#ffd700;font-family:Cinzel,serif;font-size:0.85rem;margin:0 0 4px">${esc(d.title)}</p>
     <p style="color:#4a7a4a;font-size:12px;margin:0">${esc(d.meaningEnglish).substring(0, 60)}...</p>
+  </a>`).join("")}
+</div>` : ""}
+
+${popular.length > 0 ? `
+<h2>Popular Duas</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0">
+  ${popular.map(d => `<a href="/duas/${slugify(d.title)}" style="background:#002800;border:1px solid rgba(0,165,80,0.15);border-radius:10px;padding:14px;text-decoration:none;display:block">
+    <p style="color:#ffd700;font-family:Cinzel,serif;font-size:0.85rem;margin:0 0 4px">${esc(d.title)}</p>
+    <p style="color:#4a7a4a;font-size:12px;margin:0">${esc(d.category)} · ${esc(d.meaningEnglish).substring(0, 50)}...</p>
   </a>`).join("")}
 </div>` : ""}
 
