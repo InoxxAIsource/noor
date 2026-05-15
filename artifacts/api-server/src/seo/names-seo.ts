@@ -4,6 +4,7 @@ import {
   seoHead, page, ctaBlock, faqHtml, faqSchema, breadcrumb, breadcrumbSchema, esc,
 } from "./shared.js";
 
+
 const router = Router();
 
 interface Name {
@@ -87,22 +88,37 @@ async function genderPage(gender: "boy" | "girl", res: Response): Promise<void> 
   const rawNames = (await getAllNames() || []) as Name[];
   const names = rawNames.filter(n => n.gender === gender);
   const label = gender === "boy" ? "Boy" : "Girl";
+  const top5 = names.slice(0, 5).map(n => n.nameEnglish).join(", ");
+  const quranicCount = names.filter(n => n.quranReference).length;
+
+  const faqs = [
+    { q: `What are the most popular Muslim ${label.toLowerCase()} names in 2025?`, a: `The most popular Muslim ${label.toLowerCase()} names in 2025 include ${top5}. These names are widely chosen across India, Pakistan, and Muslim communities worldwide.` },
+    { q: `How do I choose a good Muslim ${label.toLowerCase()} name?`, a: `When choosing a Muslim ${label.toLowerCase()} name, look for names with positive meanings in Arabic, names mentioned in the Quran or Sunnah, and names of righteous companions or prophets. Avoid names with negative meanings or names exclusively belonging to non-Muslim deities.` },
+    { q: `Which Muslim ${label.toLowerCase()} names are mentioned in the Quran?`, a: `There are ${quranicCount}+ Quranic ${label.toLowerCase()} names in our database. Quranic names carry special blessing (barakah) as they appear in the words of Allah. Browse our Quranic names collection for the full list.` },
+    { q: `What is the importance of a name in Islam?`, a: `In Islam, a name is considered a du'a (prayer) that follows a person throughout their life. The Prophet Muhammad (PBUH) said: "You will be called by your names and the names of your fathers on the Day of Resurrection, so choose good names." (Abu Dawud)` },
+  ];
 
   const head = seoHead({
     title: `Muslim ${label} Names A-Z, Arabic Meaning & Origin`,
-    description: `Complete list of Muslim ${label.toLowerCase()} names with Arabic, meaning, and Quran reference. Updated 2025.`,
+    description: `Browse ${names.length}+ Muslim ${label.toLowerCase()} names with Arabic script, English meaning, origin, and Quranic reference. Find the perfect Islamic name for your baby ${label.toLowerCase()} — updated 2025.`,
     canonical: `/names/${gender}`,
-    schema: faqSchema([
-      { q: `What are popular Muslim ${label.toLowerCase()} names?`, a: names.slice(0, 5).map(n => n.nameEnglish).join(", ") + " are popular Muslim " + label.toLowerCase() + " names." },
-    ]),
+    schema: faqSchema(faqs),
   });
 
   const body = `
 ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: `${label} Names` }])}
 <h1>Muslim ${esc(label)} Names, Arabic Meaning &amp; Origin 2025</h1>
-<p style="color:#4a7a4a">${names.length}+ authentic Muslim ${label.toLowerCase()} names with Arabic script and meaning.</p>
+<p style="color:#4a7a4a;line-height:1.7;margin:0 0 12px">Browse our complete collection of ${names.length}+ authentic Muslim ${label.toLowerCase()} names with Arabic script, English meaning, origin, and Quranic reference. Each name includes its root meaning in Arabic, whether it appears in the Quran, and guidance on correct pronunciation.</p>
+<p style="color:#4a7a4a;line-height:1.7;margin:0 0 20px">Islamic scholars emphasise that a child's name is a lifelong du'a — so choosing a name with a beautiful, meaningful root is an important Sunnah. Names of prophets, companions, and those mentioned in the Quran carry special blessing.</p>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px">
+  <a href="/names/quranic" style="background:#002800;border:1px solid rgba(0,165,80,0.3);color:#00a550;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px">📖 Quranic Names</a>
+  <a href="/names/prophet" style="background:#002800;border:1px solid rgba(0,165,80,0.3);color:#00a550;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px">☪️ Prophet Names</a>
+  <a href="/names/trending" style="background:#002800;border:1px solid rgba(0,165,80,0.3);color:#00a550;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px">🔥 Trending 2025</a>
+  <a href="/names/${gender === "boy" ? "girl" : "boy"}" style="background:#002800;border:1px solid rgba(0,165,80,0.3);color:#00a550;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px">${gender === "boy" ? "👧 Girl Names" : "👦 Boy Names"}</a>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:0 0 32px">
   ${names.map(n => `
     <a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:10px;padding:14px;text-decoration:none;display:block">
       <p class="arabic" style="font-size:1.3rem;margin:0 0 4px">${n.nameArabic}</p>
@@ -113,8 +129,9 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { 
   `).join("")}
 </div>
 
+${faqHtml(faqs)}
 ${ctaBlock()}
-<p style="color:#4a7a4a">Also see: <a href="/names/${gender === "boy" ? "girl" : "boy"}" style="color:#00a550">${gender === "boy" ? "Girl" : "Boy"} names</a> · <a href="/names/quranic" style="color:#00a550">Quranic names</a> · <a href="/names/prophet" style="color:#00a550">Prophet names</a></p>
+<p style="color:#4a7a4a">Also see: <a href="/names/${gender === "boy" ? "girl" : "boy"}" style="color:#00a550">${gender === "boy" ? "Girl" : "Boy"} names</a> · <a href="/names/quranic" style="color:#00a550">Quranic names</a> · <a href="/names/prophet" style="color:#00a550">Prophet names</a> · <a href="/names/trending" style="color:#00a550">Trending 2025</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -200,21 +217,32 @@ ${ctaBlock()}
   res.send(page(head, body));
 });
 
-async function categoryPage(category: string, title: string, description: string, filter: (n: Name) => boolean, res: Response): Promise<void> {
+interface CategoryConfig {
+  title: string;
+  description: string;
+  intro: string;
+  faqs: Array<{ q: string; a: string }>;
+  filter: (n: Name) => boolean;
+}
+
+async function categoryPage(category: string, cfg: CategoryConfig, res: Response): Promise<void> {
   const rawNames = (await getAllNames() || []) as Name[];
-  const names = rawNames.filter(filter);
+  const names = rawNames.filter(cfg.filter);
 
   const head = seoHead({
-    title,
-    description,
+    title: cfg.title,
+    description: cfg.description,
     canonical: `/names/${category}`,
-    schema: breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: title }]),
+    schema: [
+      faqSchema(cfg.faqs),
+      breadcrumbSchema([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: cfg.title }]),
+    ],
   });
 
   const body = `
-${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: title }])}
-<h1>${esc(title)}</h1>
-<p style="color:#4a7a4a">${esc(description)}</p>
+${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { name: cfg.title }])}
+<h1>${esc(cfg.title)}</h1>
+<p style="color:#4a7a4a;line-height:1.7;margin:0 0 12px">${esc(cfg.intro)}</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0">
   ${names.map(n => `
     <a href="/names/${slugify(n.nameEnglish)}" style="background:#002800;border:1px solid rgba(0,165,80,0.2);border-radius:10px;padding:14px;text-decoration:none;display:block">
@@ -225,8 +253,9 @@ ${breadcrumb([{ name: "Home", item: "/" }, { name: "Names", item: "/names" }, { 
     </a>
   `).join("")}
 </div>
+${faqHtml(cfg.faqs)}
 ${ctaBlock()}
-<p style="color:#4a7a4a">Related: <a href="/names/boy" style="color:#00a550">Boy names</a> · <a href="/names/girl" style="color:#00a550">Girl names</a> · <a href="/blog/how-to-choose-muslim-name" style="color:#00a550">How to choose a Muslim name</a></p>
+<p style="color:#4a7a4a">Related: <a href="/names/boy" style="color:#00a550">Boy names</a> · <a href="/names/girl" style="color:#00a550">Girl names</a> · <a href="/names/trending" style="color:#00a550">Trending 2025</a> · <a href="/blog/how-to-choose-muslim-name" style="color:#00a550">How to choose a Muslim name</a></p>
 `;
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -235,16 +264,59 @@ ${ctaBlock()}
 }
 
 router.get("/names/quranic", async (_req, res) =>
-  categoryPage("quranic", "Quranic Names for Boys and Girls", "Names mentioned in the Holy Quran with their Arabic meaning and reference.", n => !!n.quranReference, res));
+  categoryPage("quranic", {
+    title: "Quranic Names for Boys and Girls",
+    description: "Names mentioned in the Holy Quran with Arabic script, English meaning, and Quran verse reference. Quranic baby names for boys and girls, updated 2025.",
+    intro: "Quranic names are those that appear directly in the words of Allah in the Holy Quran. Giving your child a Quranic name is a beloved Sunnah — these names carry deep spiritual meaning and a direct connection to divine scripture. Each name below includes the Arabic text, its meaning, and the Quranic verse where it appears.",
+    faqs: [
+      { q: "What are the best Quranic names for boys?", a: "The most beloved Quranic boy names include Ibrahim (Abraham), Yusuf (Joseph), Musa (Moses), Isa (Jesus), Adam, Yahya (John), Idris, Luqman, and Dawud (David). These are names of prophets mentioned directly in the Quran." },
+      { q: "What are beautiful Quranic names for girls?", a: "Beautiful Quranic girl names include Maryam (Mary), Aisha, Fatima, Zainab, Asiya, and Hawwa (Eve). Maryam is the only woman named directly in the Quran and has an entire surah (chapter) named after her." },
+      { q: "Are Quranic names better than other Muslim names?", a: "Quranic names carry a special blessing (barakah) because they appear in the words of Allah. While all names with good meanings are permissible in Islam, scholars recommend choosing names mentioned in the Quran or Sunnah as a first preference." },
+      { q: "How many names are mentioned in the Quran?", a: "The Quran mentions the names of 25 prophets, several companions, and a number of righteous individuals. The total count of distinct personal names in the Quran is approximately 50-60, covering both male and female names." },
+    ],
+    filter: n => !!n.quranReference,
+  }, res));
 
 router.get("/names/prophet", async (_req, res) =>
-  categoryPage("prophet", "Prophet Names in Islam", "Names of the Prophets of Islam mentioned in the Quran and Sunnah.", n => !!n.prophetConnection, res));
+  categoryPage("prophet", {
+    title: "Prophet Names in Islam",
+    description: "Prophet names in Islam with Arabic meaning and Quranic reference. Names of all 25 prophets mentioned in the Quran — a blessed Islamic choice for your baby boy.",
+    intro: "Islam recognises 25 prophets mentioned by name in the Holy Quran, from Adam (the first prophet) to Muhammad ﷺ (the final messenger). Naming a child after a prophet is among the most highly recommended choices in Islam. The Prophet Muhammad ﷺ said: 'Name yourselves with the names of the prophets.' (Abu Dawud). Each name below carries a rich history and spiritual significance.",
+    faqs: [
+      { q: "How many prophets are named in the Quran?", a: "The Quran names 25 prophets: Adam, Idris, Nuh, Hud, Salih, Ibrahim, Lut, Ismail, Ishaq, Yaqub, Yusuf, Shuaib, Ayyub, Musa, Harun, Dhul-Kifl, Dawud, Sulaiman, Ilyas, Al-Yasa, Yunus, Zakariyya, Yahya, Isa, and Muhammad (peace be upon them all)." },
+      { q: "Which prophet name is most popular for Muslim boys?", a: "Muhammad is the most common Muslim boy name globally, chosen in honour of the Prophet Muhammad ﷺ. Ibrahim, Yusuf, Musa, and Dawud are also extremely popular prophet names for Muslim boys in India, Pakistan, and across the world." },
+      { q: "Is it Sunnah to name a child after a prophet?", a: "Yes, naming a child after a prophet is highly recommended in Islam. The Prophet ﷺ said: 'Name yourselves with the names of the prophets. The most beloved names to Allah are Abdullah and Abdur-Rahman.' (Abu Dawud). Prophet names bring barakah and a connection to Islamic heritage." },
+      { q: "Can I give my daughter a prophet's name?", a: "Prophet names are typically used for boys. For girls, names from female companions (Sahabiyat) like Aisha, Fatima, Khadijah, and Maryam are recommended. However, some names like Maryam (Mary) are both prophetess-adjacent and directly Quranic." },
+    ],
+    filter: n => !!n.prophetConnection,
+  }, res));
 
 router.get("/names/forbidden", async (_req, res) =>
-  categoryPage("forbidden", "Forbidden Names in Islam", "Names that are not allowed in Islam according to scholars, with explanations.", n => !!n.isForbidden, res));
+  categoryPage("forbidden", {
+    title: "Forbidden Names in Islam",
+    description: "Names that are not allowed in Islam according to Islamic scholars, with explanations of why each name is prohibited and better alternatives to consider.",
+    intro: "Islamic scholars have identified certain categories of names that are forbidden or strongly disliked in Islam. These include names that attribute servitude to anyone other than Allah, names of false deities, names with evil meanings, and names that imply arrogance. Below is a guide to names Muslims should avoid and the scholarly reasoning behind each.",
+    faqs: [
+      { q: "What types of names are forbidden in Islam?", a: "Forbidden names in Islam include: names meaning servitude to other than Allah (e.g. Abd-ul-Uzza), names of false deities, names that imply divine attributes belonging only to Allah (e.g. Malik-ul-Muluk), names with evil or degrading meanings, and names exclusively used by non-Muslims in a religious context." },
+      { q: "Is it forbidden to name a child Iblees or Shaitan?", a: "Yes, names like Iblees (Satan) or Shaitan are absolutely forbidden in Islam. Similarly, names meaning rebellion, wickedness, or evil are strongly prohibited as Islamic scholars consider a name to be a lifelong du'a for the child." },
+      { q: "What should I do if my child has a forbidden name?", a: "If a child has been given a forbidden or disliked name, it is recommended to change it. The Prophet Muhammad ﷺ himself changed several names of companions to better ones. It is not too late to give a child a new, blessed Islamic name." },
+    ],
+    filter: n => !!n.isForbidden,
+  }, res));
 
 router.get("/names/trending", async (_req, res) =>
-  categoryPage("trending", "Trending Muslim Names 2025, India & Pakistan", "The most popular Muslim baby names in India and Pakistan in 2025.", n => !!n.trending2025, res));
+  categoryPage("trending", {
+    title: "Trending Muslim Names 2025, India & Pakistan",
+    description: "The most popular Muslim baby names in India and Pakistan in 2025. Trending Islamic names with Arabic meaning and Quranic significance — for boys and girls.",
+    intro: "These are the most searched and chosen Muslim baby names in India and Pakistan in 2025. Trending Islamic names blend traditional Arabic roots with modern appeal — names that sound beautiful in both Arabic and English. Whether you are looking for a classic name with deep meaning or a modern Islamic name gaining popularity, this list covers the most beloved choices of the year.",
+    faqs: [
+      { q: "What are the most trending Muslim boy names in 2025?", a: "Trending Muslim boy names in India and Pakistan in 2025 include Muhammad, Ahmed, Ali, Ibrahim, Ayaan, Zayan, Hamza, Omar, Bilal, and Rayaan. These names combine strong Islamic heritage with modern popularity." },
+      { q: "What are the most trending Muslim girl names in 2025?", a: "Trending Muslim girl names in 2025 include Fatima, Aisha, Maryam, Zara, Noor, Layla, Inaya, Amira, Hana, and Safiya. These names are rising in popularity across India, Pakistan, UAE, and Muslim communities in the UK." },
+      { q: "Why are certain Muslim names trending in 2025?", a: "Names trend due to cultural influences, popular Islamic figures, social media, and regional traditions. In 2025, short 2-3 syllable names with positive Arabic meanings are particularly popular, as they work well in both native languages and English-speaking environments." },
+      { q: "Are trending names a good choice Islamically?", a: "Trending names can be excellent Islamic choices as long as they have positive meanings in Arabic, are not forbidden in Islam, and ideally have a Quranic or Sunnah connection. Popularity does not diminish a name's Islamic value — Muhammad remains the most common name in the world precisely because of its religious significance." },
+    ],
+    filter: n => !!n.trending2025,
+  }, res));
 
 router.get("/names/:slug", async (req: Request, res: Response) => {
   const slug = String(req.params["slug"] ?? "");
