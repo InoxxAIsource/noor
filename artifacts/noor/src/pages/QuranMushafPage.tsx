@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Languages, List } from "lucide-react";
+import { ChevronLeft, ChevronRight, Languages, List, Play, Pause } from "lucide-react";
 
 interface PageAyah {
   surahNumber: number;
@@ -139,29 +139,46 @@ const QuranMushafPage: React.FC = () => {
     return () => { clearTimeout(timer); controller.abort(); };
   }, [pageNum]);
 
-  const playAyah = (surahNum: number, ayahNum: number) => {
-    const key = `${surahNum}:${ayahNum}`;
-    const audio = audioRef.current!;
-    if (playingKey === key) {
-      audio.pause();
+  const playFromIndex = (index: number, ayahsList: PageAyah[]) => {
+    if (index < 0 || index >= ayahsList.length) {
       setPlayingKey(null);
       return;
     }
-    audio.pause();
-    audio.src = audioUrl(surahNum, ayahNum);
+    const ayah = ayahsList[index];
+    const key = `${ayah.surahNumber}:${ayah.ayahNumber}`;
+    const audio = audioRef.current!;
+
+    audio.src = audioUrl(ayah.surahNumber, ayah.ayahNumber);
     audio.load();
     audio.play().catch(() => {});
     setPlayingKey(key);
-    audio.onended = () => setPlayingKey(null);
 
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: `Surah ${surahNum} — Ayah ${ayahNum}`,
+        title: `Surah ${ayah.surahNumber} — Ayah ${ayah.ayahNumber}`,
         artist: "Sheikh Mishary Alafasy",
         album: "Al-Quran Al-Kareem • MyTazki",
         artwork: [{ src: "/favicon.svg", sizes: "512x512", type: "image/svg+xml" }],
       });
     }
+
+    // Auto-advance to next ayah when this one ends
+    audio.onended = () => playFromIndex(index + 1, ayahsList);
+  };
+
+  const playAyah = (surahNum: number, ayahNum: number) => {
+    const key = `${surahNum}:${ayahNum}`;
+    const audio = audioRef.current!;
+    if (playingKey === key) {
+      audio.pause();
+      audio.onended = null;
+      setPlayingKey(null);
+      return;
+    }
+    audio.pause();
+    audio.onended = null;
+    const idx = allAyahs.findIndex(a => a.surahNumber === surahNum && a.ayahNumber === ayahNum);
+    playFromIndex(idx, allAyahs);
   };
 
   const goToPage = (n: number) => {
@@ -185,6 +202,9 @@ const QuranMushafPage: React.FC = () => {
     else goToPage(pageNum + 1);
   };
 
+  // Flat ordered list of all ayahs on this page (for flowing audio)
+  const allAyahs = groups.flatMap(g => g.ayahs);
+
   const firstGroup  = groups[0];
   const juzLabel    = firstGroup ? `Juz ${firstGroup.juz}` : "";
   const surahLabel  = groups.map(g => g.surahEnglishName).join(" · ");
@@ -195,54 +215,108 @@ const QuranMushafPage: React.FC = () => {
 
       {/* ── Sticky header ───────────────────────────────────────── */}
       <div style={{
-        position: "sticky", top: 0, zIndex: 20,
+        position: "sticky", top: 0, zIndex: 60,
         background: "rgba(13,20,17,0.97)", backdropFilter: "blur(12px)",
         borderBottom: "0.5px solid rgba(184,148,106,0.2)",
-        padding: "11px 14px", display: "flex", alignItems: "center", gap: 8,
+        padding: "8px 10px", display: "flex", alignItems: "center", gap: 6,
       }}>
+        {/* Back */}
         <button onClick={() => navigate("/quran")} style={{
           background: "transparent", border: "none", color: "#b8946a",
-          cursor: "pointer", padding: "4px 2px", display: "flex",
+          cursor: "pointer", padding: "4px 2px", display: "flex", flexShrink: 0,
         }}>
-          <ChevronLeft size={22} />
+          <ChevronLeft size={20} />
         </button>
 
-        <div style={{ flex: 1, overflow: "hidden" }}>
+        {/* Prev page */}
+        <button
+          onClick={() => goToPage(pageNum - 1)}
+          disabled={pageNum <= 1}
+          title="Previous page"
+          style={{
+            background: pageNum > 1 ? "rgba(184,148,106,0.12)" : "transparent",
+            border: `1px solid ${pageNum > 1 ? "rgba(184,148,106,0.35)" : "rgba(184,148,106,0.1)"}`,
+            borderRadius: 7, width: 32, height: 32, cursor: pageNum > 1 ? "pointer" : "default",
+            color: pageNum > 1 ? "#b8946a" : "#3a2a1a", display: "flex",
+            alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+          <ChevronRight size={16} />
+        </button>
+
+        {/* Center — surah + page info */}
+        <div style={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
           <div style={{
-            fontSize: 13, fontWeight: 600, color: "#e8ddd0",
+            fontSize: 12, fontWeight: 600, color: "#e8ddd0",
             fontFamily: "Inter, sans-serif", whiteSpace: "nowrap",
             overflow: "hidden", textOverflow: "ellipsis",
           }}>{surahLabel || "Al-Quran"}</div>
-          <div style={{ fontSize: 11, color: "#7a6a58", fontFamily: "Inter, sans-serif" }}>
-            Page {pageNum} of 604{juzLabel ? ` · ${juzLabel}` : ""}
+          <div style={{ fontSize: 10, color: "#7a6a58", fontFamily: "Inter, sans-serif" }}>
+            p.{pageNum} / 604{juzLabel ? ` · ${juzLabel}` : ""}
           </div>
         </div>
 
-        {/* Font size − */}
-        <button onClick={() => setFontSize(s => Math.max(14, s - 2))} style={{
-          background: "rgba(184,148,106,0.08)", border: "1px solid rgba(184,148,106,0.2)",
-          borderRadius: 6, width: 28, height: 28, cursor: "pointer",
-          color: "#b8946a", fontSize: 14, fontFamily: "Inter, sans-serif",
-          display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700,
-        }}>A</button>
+        {/* Next page */}
+        <button
+          onClick={() => goToPage(pageNum + 1)}
+          disabled={pageNum >= 604}
+          title="Next page"
+          style={{
+            background: pageNum < 604 ? "rgba(184,148,106,0.12)" : "transparent",
+            border: `1px solid ${pageNum < 604 ? "rgba(184,148,106,0.35)" : "rgba(184,148,106,0.1)"}`,
+            borderRadius: 7, width: 32, height: 32, cursor: pageNum < 604 ? "pointer" : "default",
+            color: pageNum < 604 ? "#b8946a" : "#3a2a1a", display: "flex",
+            alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+          <ChevronLeft size={16} />
+        </button>
 
-        {/* Font size + */}
-        <button onClick={() => setFontSize(s => Math.min(32, s + 2))} style={{
-          background: "rgba(184,148,106,0.08)", border: "1px solid rgba(184,148,106,0.2)",
-          borderRadius: 6, width: 28, height: 28, cursor: "pointer",
-          color: "#b8946a", fontSize: 19, fontFamily: "Inter, sans-serif",
-          display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700,
-        }}>A</button>
+        {/* Play all from first ayah */}
+        <button
+          onClick={() => {
+            if (playingKey) {
+              audioRef.current!.pause();
+              audioRef.current!.onended = null;
+              setPlayingKey(null);
+            } else {
+              playFromIndex(0, allAyahs);
+            }
+          }}
+          disabled={allAyahs.length === 0}
+          title={playingKey ? "Stop" : "Play all"}
+          style={{
+            background: playingKey ? "rgba(52,201,122,0.18)" : "rgba(52,201,122,0.08)",
+            border: `1px solid ${playingKey ? "rgba(52,201,122,0.5)" : "rgba(52,201,122,0.22)"}`,
+            borderRadius: 7, width: 32, height: 32, cursor: "pointer",
+            color: "#34c97a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+          {playingKey ? <Pause size={14} /> : <Play size={14} />}
+        </button>
 
         {/* Translation toggle */}
         <button onClick={() => setShowTranslation(v => !v)} title="Toggle translation" style={{
           background: showTranslation ? "rgba(184,148,106,0.18)" : "rgba(184,148,106,0.06)",
           border: `1px solid ${showTranslation ? "rgba(184,148,106,0.55)" : "rgba(184,148,106,0.2)"}`,
-          borderRadius: 6, padding: "5px 7px", cursor: "pointer",
-          color: "#b8946a", display: "flex", alignItems: "center",
+          borderRadius: 7, width: 32, height: 32, cursor: "pointer",
+          color: "#b8946a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
         }}>
-          <Languages size={15} />
+          <Languages size={14} />
         </button>
+
+        {/* Font size − */}
+        <button onClick={() => setFontSize(s => Math.max(14, s - 2))} style={{
+          background: "rgba(184,148,106,0.08)", border: "1px solid rgba(184,148,106,0.2)",
+          borderRadius: 7, width: 28, height: 28, cursor: "pointer",
+          color: "#b8946a", fontSize: 11, fontFamily: "Inter, sans-serif",
+          display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, flexShrink: 0,
+        }}>A−</button>
+
+        {/* Font size + */}
+        <button onClick={() => setFontSize(s => Math.min(32, s + 2))} style={{
+          background: "rgba(184,148,106,0.08)", border: "1px solid rgba(184,148,106,0.2)",
+          borderRadius: 7, width: 28, height: 28, cursor: "pointer",
+          color: "#b8946a", fontSize: 14, fontFamily: "Inter, sans-serif",
+          display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, flexShrink: 0,
+        }}>A+</button>
 
         {/* Switch to list view */}
         <button
@@ -250,10 +324,10 @@ const QuranMushafPage: React.FC = () => {
           title="Switch to list view"
           style={{
             background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.22)",
-            borderRadius: 6, padding: "5px 7px", cursor: "pointer",
-            color: "#34c97a", display: "flex", alignItems: "center",
+            borderRadius: 7, width: 32, height: 32, cursor: "pointer",
+            color: "#34c97a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
           }}>
-          <List size={15} />
+          <List size={14} />
         </button>
       </div>
 
@@ -478,7 +552,7 @@ const QuranMushafPage: React.FC = () => {
 
       {/* ── Fixed bottom nav ─────────────────────────────────────── */}
       <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 30,
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 60,
         background: "rgba(13,20,17,0.98)", backdropFilter: "blur(16px)",
         borderTop: "0.5px solid rgba(184,148,106,0.2)",
         padding: "10px 16px", display: "flex", alignItems: "center", gap: 10,
