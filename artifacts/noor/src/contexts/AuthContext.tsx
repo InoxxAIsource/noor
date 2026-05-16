@@ -20,36 +20,34 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   // Support migration from old deen_token key
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token")
-  );
-  const [isLoading, setIsLoading] = useState(true);
+  const storedTokenInit = localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token");
+  const [token, setToken] = useState<string | null>(storedTokenInit);
+  // If a token already exists in localStorage, trust it immediately — no flash.
+  // Background validation will silently log out if the token is truly invalid.
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setAuthTokenGetter(() => localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token"));
-  }, []);
 
-  useEffect(() => {
     const validateToken = async () => {
       const storedToken = localStorage.getItem(TOKEN_KEY) ?? localStorage.getItem("deen_token");
       if (storedToken) {
         try {
           const userData = await getMe();
           setUser(userData);
-          setToken(storedToken);
           // Migrate old token key silently
           if (!localStorage.getItem(TOKEN_KEY)) {
             localStorage.setItem(TOKEN_KEY, storedToken);
+            setToken(storedToken);
           }
-        } catch (error) {
-          console.error("Token validation failed:", error);
+        } catch {
+          // Token is invalid — silently clear and redirect
           localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem("deen_token");
           setToken(null);
           setUser(null);
         }
       }
-      setIsLoading(false);
     };
 
     validateToken();
