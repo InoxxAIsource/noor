@@ -176,6 +176,7 @@ kind = "api"
     "/daily-tazkiyah",
     "/healing-with-dhikr",
     "/spiritual-burnout-islam",
+    "/islamic-emotional-healing",
   ]
 
   [services.development]

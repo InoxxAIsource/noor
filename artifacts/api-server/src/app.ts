@@ -4,6 +4,8 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
+import path from "path";
+import { readFileSync } from "fs";
 import router from "./routes/index.js";
 import { logger } from "./lib/logger.js";
 import indexnowRouter from "./routes/indexnow.js";
@@ -35,6 +37,7 @@ import funnelPagesRouter from "./seo/funnel-pages.js";
 import sanctuaryAnxietySleepRouter from "./seo/sanctuary-anxiety-sleep.js";
 import sanctuaryHealingRizqRouter from "./seo/sanctuary-healing-rizq.js";
 import sanctuaryGrowthSpiritualRouter from "./seo/sanctuary-growth-spiritual.js";
+import emotionalHealingClusterRouter from "./seo/emotional-healing-cluster.js";
 import { runNotificationScheduler } from "./routes/notifications.js";
 
 const app: Express = express();
@@ -94,6 +97,19 @@ const aiLimiter = rateLimit({
 
 app.use(indexnowRouter);
 
+// Serve social preview image with public cache headers so X/Twitter bot can use it
+// Must write headers directly — middleware chain overwrites Cache-Control otherwise
+const _ogImagePath = path.resolve(import.meta.dirname, "../../noor/public/opengraph.jpg");
+const _ogImageBuf = readFileSync(_ogImagePath);
+app.get("/opengraph.jpg", (_req, res) => {
+  res.writeHead(200, {
+    "Cache-Control": "public, max-age=86400, immutable",
+    "Content-Type": "image/jpeg",
+    "Content-Length": _ogImageBuf.length,
+  });
+  res.end(_ogImageBuf);
+});
+
 // SEO routers — registered before API routes
 app.use(sitemapRouter);
 app.use(landingRouter);
@@ -125,6 +141,9 @@ app.use(aiExpansionRouter);
 app.use(entityPagesRouter);
 app.use(geoLandingPagesRouter);
 app.use(funnelPagesRouter);
+
+// SEO Phase 5 — Premium Emotional Healing Cluster (overrides basic versions above)
+app.use(emotionalHealingClusterRouter);
 
 // SEO Phase 4 — Sanctuary Mode: anxiety/sleep, healing/rizq, growth/spiritual
 app.use(sanctuaryAnxietySleepRouter);
