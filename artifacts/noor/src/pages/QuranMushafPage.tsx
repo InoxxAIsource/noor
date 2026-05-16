@@ -71,50 +71,60 @@ const QuranMushafPage: React.FC = () => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
 
-    fetch(
-      `https://api.alquran.cloud/v1/page/${pageNum}/editions/quran-uthmani,en.asad`,
-      { signal: controller.signal }
-    )
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-      .then(data => {
+    // API returns a flat ayahs array per edition — make two parallel requests
+    interface RawAyah {
+      number: number;
+      text: string;
+      numberInSurah: number;
+      juz: number;
+      surah: { number: number; name: string; englishName: string };
+    }
+
+    const fetchEdition = (edition: string) =>
+      fetch(`https://api.alquran.cloud/v1/page/${pageNum}/${edition}`, { signal: controller.signal })
+        .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+        .then(d => (d.data?.ayahs ?? []) as RawAyah[]);
+
+    Promise.all([fetchEdition("quran-uthmani"), fetchEdition("en.asad")])
+      .then(([arabicAyahs, transAyahs]) => {
         clearTimeout(timer);
-        const editions: Array<{
-          edition: { identifier: string };
-          surahs: Record<string, {
-            number: number; name: string; englishName: string;
-            ayahs: Array<{ numberInSurah: number; text: string; juz: number }>;
-          }>;
-        }> = data.data ?? [];
 
-        const arabicEd = editions.find(e => e.edition.identifier === "quran-uthmani");
-        const transEd  = editions.find(e => e.edition.identifier === "en.asad");
+        if (!arabicAyahs.length) { setError(true); setLoading(false); return; }
 
-        if (!arabicEd) { setError(true); setLoading(false); return; }
-
-        const surahNums = Object.keys(arabicEd.surahs).map(Number).sort((a, b) => a - b);
-
-        const built: SurahGroup[] = surahNums.map(snum => {
-          const arS = arabicEd.surahs[snum];
-          const trS = transEd?.surahs[snum];
-          const ayahs: PageAyah[] = arS.ayahs.map((a, i) => ({
-            surahNumber: snum,
-            surahName: arS.name,
-            surahEnglishName: arS.englishName,
-            ayahNumber: a.numberInSurah,
-            arabicText: a.text,
-            translation: (trS?.ayahs[i]?.text ?? "")
-              .replace(/<[^>]+>/g, "").replace(/\[\d+\]/g, "").trim(),
-            juz: a.juz,
-          }));
-          return {
-            surahNumber: snum,
-            surahName: arS.name,
-            surahEnglishName: arS.englishName,
-            isSurahStart: arS.ayahs[0].numberInSurah === 1,
-            juz: arS.ayahs[0].juz,
-            ayahs,
-          };
+        // Build a translation lookup by global ayah number
+        const transMap = new Map<number, string>();
+        transAyahs.forEach(a => {
+          transMap.set(a.number, a.text.replace(/<[^>]+>/g, "").replace(/\[\d+\]/g, "").trim());
         });
+
+        // Group Arabic ayahs by surah, preserving page order
+        const surahMap = new Map<number, { name: string; englishName: string; ayahs: RawAyah[] }>();
+        arabicAyahs.forEach(a => {
+          if (!surahMap.has(a.surah.number)) {
+            surahMap.set(a.surah.number, { name: a.surah.name, englishName: a.surah.englishName, ayahs: [] });
+          }
+          surahMap.get(a.surah.number)!.ayahs.push(a);
+        });
+
+        // Convert to SurahGroup array in surah-number order
+        const built: SurahGroup[] = Array.from(surahMap.entries())
+          .sort(([a], [b]) => a - b)
+          .map(([snum, s]) => ({
+            surahNumber: snum,
+            surahName: s.name,
+            surahEnglishName: s.englishName,
+            isSurahStart: s.ayahs[0].numberInSurah === 1,
+            juz: s.ayahs[0].juz,
+            ayahs: s.ayahs.map(a => ({
+              surahNumber: snum,
+              surahName: s.name,
+              surahEnglishName: s.englishName,
+              ayahNumber: a.numberInSurah,
+              arabicText: a.text,
+              translation: transMap.get(a.number) ?? "",
+              juz: a.juz,
+            })),
+          }));
 
         setGroups(built);
         setLoading(false);
