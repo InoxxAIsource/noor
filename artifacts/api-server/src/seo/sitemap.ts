@@ -196,12 +196,25 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
     "/build-islamic-habits", "/start-praying-again",
   ].forEach(p => urls.push(url(p, "0.95")));
 
+  // Phase 5 — Premium Emotional Healing Cluster (hub + 9 child pages)
+  urls.push(url("/islamic-emotional-healing", "1.0"));
+  [
+    "/dua-for-anxiety",
+    "/islamic-anxiety-help",
+    "/quran-verses-for-anxiety",
+    "/how-to-stop-overthinking-islam",
+    "/dua-for-overthinking",
+    "/trust-allah-and-stop-overthinking",
+    "/islamic-sleep-meditation",
+    "/quran-for-sleep",
+    "/dua-before-sleep",
+  ].forEach(p => urls.push(url(p, "0.95")));
+
   // Phase 4, Sanctuary Mode — Anxiety & Sleep cluster
   [
-    "/ruqyah-for-anxiety", "/islamic-anxiety-help", "/panic-attack-dua",
-    "/quran-verses-for-anxiety", "/how-to-calm-anxiety-islam",
-    "/negative-thoughts-in-islam", "/trust-allah-and-stop-overthinking",
-    "/islamic-sleep-meditation", "/quran-for-sleep", "/dua-before-sleep",
+    "/ruqyah-for-anxiety", "/panic-attack-dua",
+    "/how-to-calm-anxiety-islam",
+    "/negative-thoughts-in-islam",
     "/ruqyah-for-sleep", "/surah-for-sleep", "/night-dhikr",
   ].forEach(p => urls.push(url(p, "0.8")));
 
