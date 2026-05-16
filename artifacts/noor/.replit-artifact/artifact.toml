@@ -11,7 +11,7 @@ version = "1.0.0"
 
 [[services]]
 name = "web"
-paths = [ "/", "/quran/read" ]
+paths = [ "/", "/quran/read", "/quran/mushaf", "/c14fa12d3e0ea4c8058f828f78fe6459.txt", "/indexnow.json" ]
 localPort = 24247
 
 [services.development]
@@ -21,10 +21,6 @@ run = "pnpm --filter @workspace/noor run dev"
 build = [ "pnpm", "--filter", "@workspace/noor", "run", "build" ]
 publicDir = "artifacts/noor/dist/public"
 serve = "static"
-
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
 
 [services.env]
 PORT = "24247"

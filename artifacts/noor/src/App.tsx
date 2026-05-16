@@ -20,6 +20,7 @@ import TasbihPage from "@/pages/TasbihPage";
 import ProfilePage from "@/pages/ProfilePage";
 import QuranPage from "@/pages/QuranPage";
 import QuranSurahPage from "@/pages/QuranSurahPage";
+import QuranMushafPage from "@/pages/QuranMushafPage";
 import MoodPage from "@/pages/MoodPage";
 import NamesOfAllahPage from "@/pages/NamesOfAllahPage";
 import QiblaPage from "@/pages/QiblaPage";
@@ -76,6 +77,7 @@ const router = createBrowserRouter(
         { path: "/room/:code", element: <RoomPage /> },
         { path: "/quran", element: <QuranPage /> },
         { path: "/quran/read/:number", element: <QuranSurahPage /> },
+        { path: "/quran/mushaf/:page", element: <QuranMushafPage /> },
         { path: "/mood", element: <MoodPage /> },
         { path: "/99-names", element: <NamesOfAllahPage /> },
         { path: "/qibla", element: <QiblaPage /> },

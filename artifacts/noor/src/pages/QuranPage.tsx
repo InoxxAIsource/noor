@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, BookOpen, ChevronRight } from "lucide-react";
+import { Search, BookOpen, ChevronRight, BookMarked } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { SURAH_PAGE } from "@/pages/QuranMushafPage";
 
 const SURAHS = [
   { n: 1, ar: "الفاتحة", en: "Al-Fatihah", ayahs: 7, type: "Meccan" },
@@ -138,7 +139,22 @@ const QuranPage: React.FC = () => {
         <div className="flex items-center gap-3">
           <BookOpen className="text-[var(--gold)]" size={28} />
           <h1 className="font-cinzel text-3xl text-[var(--gold)]">Al-Quran</h1>
-          <span className="ml-auto text-xs text-[var(--muted)] bg-[var(--surface)] px-2 py-1 rounded-full">114 Surahs</span>
+          <button
+            onClick={() => {
+              const lastPage = localStorage.getItem("lastMushafPage");
+              navigate(`/quran/mushaf/${lastPage ?? "1"}`);
+            }}
+            className="ml-auto flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border"
+            style={{
+              background: "rgba(184,148,106,0.1)",
+              border: "1px solid rgba(184,148,106,0.35)",
+              color: "#b8946a",
+              fontFamily: "Inter, sans-serif",
+            }}
+          >
+            <BookMarked size={13} />
+            Mushaf View
+          </button>
         </div>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" size={18} />
@@ -150,13 +166,30 @@ const QuranPage: React.FC = () => {
           />
         </div>
         {lastSurah && (
-          <button
-            onClick={() => navigate(`/quran/read/${lastSurah}`)}
-            className="w-full text-left flex items-center gap-2 bg-[var(--green)]/10 border border-[var(--green)]/30 rounded-xl px-4 py-2 text-sm text-[var(--green)]"
-          >
-            <span>↩ Continue reading: Surah {lastSurah}</span>
-            <ChevronRight size={14} className="ml-auto" />
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => navigate(`/quran/read/${lastSurah}`)}
+              className="flex-1 text-left flex items-center gap-2 bg-[var(--green)]/10 border border-[var(--green)]/30 rounded-xl px-4 py-2 text-sm text-[var(--green)]"
+            >
+              <span>↩ Continue: Surah {lastSurah}</span>
+              <ChevronRight size={14} className="ml-auto" />
+            </button>
+            {localStorage.getItem("lastMushafPage") && (
+              <button
+                onClick={() => navigate(`/quran/mushaf/${localStorage.getItem("lastMushafPage") ?? "1"}`)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold"
+                style={{
+                  background: "rgba(184,148,106,0.08)",
+                  border: "1px solid rgba(184,148,106,0.3)",
+                  color: "#b8946a",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                <BookMarked size={13} />
+                p.{localStorage.getItem("lastMushafPage")}
+              </button>
+            )}
+          </div>
         )}
       </div>
 

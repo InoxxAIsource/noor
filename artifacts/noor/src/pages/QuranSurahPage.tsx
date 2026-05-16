@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Play, Pause, Bookmark, SkipForward } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause, Bookmark, SkipForward, BookMarked } from "lucide-react";
+import { SURAH_PAGE } from "@/pages/QuranMushafPage";
 
 interface Verse {
   id: number;
@@ -295,7 +296,19 @@ const QuranSurahPage: React.FC = () => {
               Surah {num} · {verses.length} ayahs · {ayahsRead.size} read
             </div>
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 6 }}>
+            {/* Mushaf view shortcut */}
+            <button
+              onClick={() => { stopAll(); navigate(`/quran/mushaf/${SURAH_PAGE[num] ?? 1}`); }}
+              title="Open in Mushaf view"
+              style={{
+                background: "rgba(184,148,106,0.1)", border: "1px solid rgba(184,148,106,0.3)",
+                borderRadius: 8, padding: "5px 8px", color: "#b8946a", cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 4,
+                fontSize: 11, fontFamily: "Inter, sans-serif", fontWeight: 600,
+              }}>
+              <BookMarked size={13} /> Mushaf
+            </button>
             <button onClick={() => { stopAll(); navigate(`/quran/read/${num - 1}`); }} disabled={num <= 1}
               style={{ background: "rgba(52,201,122,0.08)", border: "1px solid rgba(52,201,122,0.2)", borderRadius: 8, padding: "5px 10px", color: num > 1 ? "#34c97a" : "#241a10", cursor: num > 1 ? "pointer" : "default" }}>
               <ChevronLeft size={14} />
