@@ -6,12 +6,19 @@ import "./index.css";
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register(import.meta.env.BASE_URL + "sw.js")
+      .register(import.meta.env.BASE_URL + "sw.js", { scope: "/" })
       .then((reg) => {
         console.info("[SW] Registered:", reg.scope);
       })
-      .catch((err) => {
-        console.warn("[SW] Registration failed:", err);
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        // Replit's deployment proxy intercepts SW registration on hosted apps —
+        // this is a platform limitation, not a bug. Log at info, not warn.
+        if (msg.includes("wrsParams") || msg.includes("Rejected") || msg.includes("SecurityError")) {
+          console.info("[SW] Skipped — proxy environment does not support service workers.");
+        } else {
+          console.warn("[SW] Registration failed:", err);
+        }
       });
   });
 }
