@@ -254,11 +254,12 @@ ${faqHtml(faqs)}
   res.send(page(head, body));
 });
 
-router.get("/islamic-calendar", (_req: Request, res: Response) => {
-  res.redirect(301, "/islamic-calendar/2026");
+// /islamic-calendar/2026 redirects to the canonical URL
+router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
+  res.redirect(301, "/islamic-calendar");
 });
 
-router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
+router.get("/islamic-calendar", (_req: Request, res: Response) => {
   const events = [
     { date: "Jan 3, 2026", hijri: "3 Rajab 1447", event: "Islamic New Year (approx)" },
     { date: "Feb 18, 2026", hijri: "1 Ramadan 1447", event: "Ramadan 2026 begins" },
@@ -274,7 +275,7 @@ router.get("/islamic-calendar/2026", (_req: Request, res: Response) => {
   const head = seoHead({
     title: "Islamic Calendar 2026 India, Hijri Calendar & Islamic Events",
     description: "Islamic calendar 2026 for India with all major Islamic events, Ramadan, Eid ul Fitr, Eid ul Adha, Ashura, Laylatul Qadr dates in Gregorian and Hijri.",
-    canonical: "/islamic-calendar/2026",
+    canonical: "/islamic-calendar",
     schema: { "@context": "https://schema.org", "@type": "Article", "headline": "Islamic Calendar 2026 India", "description": "Complete Islamic calendar 2026 with Hijri dates and all major Islamic events.", "author": { "@type": "Organization", "name": "MyTazki" } },
   });
 

@@ -87,7 +87,7 @@ router.get("/sitemap.xml", async (_req: Request, res: Response) => {
   urls.push(url("/masjid-finder", "0.7"));
   urls.push(url("/qibla-direction", "0.7"));
   urls.push(url("/ramadan", "0.7"));
-  urls.push(url("/islamic-calendar/2026", "0.7"));
+  urls.push(url("/islamic-calendar", "0.7"));
 
   urls.push(url("/best-muslim-prayer-app-india", "0.6"));
 
@@ -249,6 +249,10 @@ router.get("/robots.txt", (_req: Request, res: Response) => {
 Allow: /
 
 Disallow: /api/
+Disallow: /home
+Disallow: /login
+Disallow: /register
+Disallow: /onboarding
 Disallow: /player/
 Disallow: /profile
 Disallow: /journal
@@ -258,6 +262,9 @@ Disallow: /growth
 Disallow: /tasbih
 Disallow: /mood
 Disallow: /rooms
+Disallow: /subscribe
+Disallow: /gift/
+Disallow: /quran/read/
 
 Sitemap: https://mytazki.com/sitemap.xml
 `;
